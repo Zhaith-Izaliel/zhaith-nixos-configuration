@@ -15,6 +15,5 @@
     curl
     tree
     xbrightness
-    licensor
   ];
 }

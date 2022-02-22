@@ -6,14 +6,20 @@ in
 callPackage ../builder.nix rec {
   pname = "nix-npm-install";
   version = "v1.0.0";
-  nativeBuildInputs = [
-    bash
-    xorg.xrandr
-  ];
+
   src = fetchFromGitLab {
     repo = "nix-npm-install";
     owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
     rev = version;
-    sha256 = "18LNK4HbD+Ib8oHvZDYs0pRyZbTop9zYzBEVKFIkd9g=";
+    sha256 = "11c9a990z1y4d9ka1gh1y60d30crjm2l11gr9l10jkji92cy845l";
   };
+
+  buildInputs = [
+    bash
+    nodejs
+  ];
+
+  paths = [
+    nodePackages.node2nix
+  ];
 }

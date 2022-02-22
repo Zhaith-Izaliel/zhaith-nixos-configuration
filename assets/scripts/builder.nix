@@ -1,9 +1,13 @@
-{stdenv, pname, version, src, nativeBuildInputs ? [], buildInputs ? [] }:
+{stdenv, lib, pname, version, src, makeWrapper, buildInputs ? [], paths ? [] }:
 
 stdenv.mkDerivation rec {
-  inherit pname version src nativeBuildInputs buildInputs;
+  inherit pname version src buildInputs;
 
-  dontUseCmakeBuild = true;
+  nativeBuildInputs = [
+    makeWrapper
+  ];
+
+  wrapperPath = with lib; makeBinPath (paths);
 
   installPhase = ''
     mkdir -p $out/bin
@@ -11,5 +15,13 @@ stdenv.mkDerivation rec {
     chmod +x $out/bin/${pname}
   '';
 
+  postFixup = ''
+    # Ensure all dependencies are in PATH
+      wrapProgram $out/bin/${pname} \
+        --prefix PATH : "${wrapperPath}"
+  '';
+
+
+  dontUseCmakeBuild = true;
   dontUseCmakeConfigure = true;
 }
