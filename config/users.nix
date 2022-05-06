@@ -5,7 +5,14 @@
   users.users = {
     zhaith = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "kvm" "libvirtd" "qemu-libvirtd" ]; # 'wheel' Enable ‘sudo’ for the user.
+      extraGroups = [
+        "wheel" # 'wheel' Enable ‘sudo’ for the user.
+        "kvm"
+        "libvirtd"
+        "qemu-libvirtd"
+        "scanner"
+        "lp"
+      ];
       group = "zhaith";
       description = "Virgil Ribeyre";
       useDefaultShell = true;

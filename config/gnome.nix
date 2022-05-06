@@ -15,7 +15,6 @@
   # Gnome
   services.xserver.desktopManager.gnome = {
     enable = true;
-    extraGSettingsOverridePackages = with pkgs; [ pantheon.elementary-files ];
   };
 
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
@@ -46,9 +45,8 @@
     gnome.gnome-tweaks
     libnotify
     papirus-icon-theme
-    torrential
-    gthumb
     cinnamon.nemo
+    gnome.simple-scan
     (import ../assets/packages/volante-cursors)
   ];
 }

@@ -16,5 +16,8 @@
     onefetch
     docker-compose
     glab
+    rustup
+    rnix-lsp
+    nixpkgs-fmt
   ];
 }

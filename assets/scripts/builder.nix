@@ -1,13 +1,19 @@
-{stdenv, lib, pname, version, src, makeWrapper, buildInputs ? [], paths ? [] }:
+{stdenv, lib, pname, version, src, makeWrapper, buildInputs ? [], paths ? [], desktopItemPhase ? "" }:
 
+let
+  wrapperPath = with lib; makeBinPath (paths);
+  desktopItemPhaseName = if (desktopItemPhase != "") then "desktopItemPhase" else "";
+in
 stdenv.mkDerivation rec {
-  inherit pname version src buildInputs;
+  inherit pname version src buildInputs desktopItemPhase;
 
   nativeBuildInputs = [
     makeWrapper
   ];
 
-  wrapperPath = with lib; makeBinPath (paths);
+  postPhases = [
+    desktopItemPhaseName
+  ];
 
   installPhase = ''
     mkdir -p $out/bin
@@ -20,7 +26,6 @@ stdenv.mkDerivation rec {
       wrapProgram $out/bin/${pname} \
         --prefix PATH : "${wrapperPath}"
   '';
-
 
   dontUseCmakeBuild = true;
   dontUseCmakeConfigure = true;

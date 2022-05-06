@@ -6,6 +6,8 @@
     evince
     qalculate-gtk
     calibre
-    # geogebra6
+    geogebra6
+    apostrophe
+    pandoc
   ];
 }

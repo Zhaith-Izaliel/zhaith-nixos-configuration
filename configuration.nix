@@ -31,6 +31,7 @@
     ./config/shell.nix
     ./config/sound.nix
     ./config/ssh.nix
+    ./config/tex.nix
     ./config/tools.nix
     ./config/unity.nix
     ./config/users.nix

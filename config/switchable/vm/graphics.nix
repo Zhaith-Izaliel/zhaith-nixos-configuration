@@ -7,12 +7,17 @@
     enable = true;
     videoDrivers = [ "modesetting" ];
 
+    # Enable UDev rules and driver for wacom tablet
+    wacom.enable = true;
+
     # Configure keymap in X11
     layout = "fr";
     # xkbOptions = "eurosign:e";
 
     # Enable touchpad support (enabled default in most desktopManager).
     libinput.enable = true;
+
+    useGlamor = true;
   };
 
   hardware.opengl = {

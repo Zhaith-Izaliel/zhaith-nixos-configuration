@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 {
-
   environment.systemPackages = with pkgs; [
     virtmanager
   ];
@@ -13,6 +12,9 @@
     qemu = {
       ovmf.enable = true;
       runAsRoot = false;
+      verbatimConfig = ''
+        user = "zhaith"
+      '';
     };
     onBoot = "ignore";
     onShutdown = "shutdown";

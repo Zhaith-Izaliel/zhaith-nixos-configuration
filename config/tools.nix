@@ -15,5 +15,16 @@
     curl
     tree
     xbrightness
+    mcrcon
+    sublime
+    torrential
+    gthumb
+    etcher
+    rar
+    unrar
+  ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-14.2.9" # HACK For Etcher
   ];
 }

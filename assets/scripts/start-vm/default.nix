@@ -2,25 +2,35 @@ with import <nixpkgs>{};
 
 let
   inherit (pkgs) callPackage fetchFromGitLab;
-  my-build-inputs = [
-    scream
-    virt-manager
-    pstree
-    libnotify
-    bash
-    (import ../../packages/looking-glass/default.nix)
-  ];
+  startVmDI = makeDesktopItem rec {
+    name = "luminous-rafflesia";
+    exec = "start-vm -F";
+    icon = "luminous-rafflesia";
+    comment = "Luminous Rafflesia - The Windows KVM VM with GPU Passthrough";
+    desktopName = "Luminous Rafflesia";
+    genericName = "KVM (Luminous Rafflesia)";
+    categories = ["Game;Development;Graphics"];
+  };
+  startVmNoLG = makeDesktopItem rec {
+    name = "luminous-rafflesia-nolg";
+    exec = "start-vm -l";
+    icon = "luminous-rafflesia-nolg";
+    comment = "Luminous Rafflesia - The Windows KVM VM with GPU Passthrough";
+    desktopName = "Luminous Rafflesia (No Looking-Glass)";
+    genericName = "KVM NoLG (Luminous Rafflesia)";
+    categories = ["Game;Development;Graphics"];
+  };
 in
 callPackage ../builder.nix rec {
   pname = "start-vm";
 
-  version = "v1.0.0";
+  version = "v1.3.0";
 
   src = fetchFromGitLab {
     repo = "start-vm";
     owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
     rev = version;
-    sha256 = "1pgv5wgpxl2l8fmc39nx8sfc07nwl8mp01fh46w3yd1bpzd4b05j";
+    sha256 = "109n6qm2x22blih47q3kl7cnp9fqhn82s6dyzrg2z6d08wnr6a1n";
   };
 
   buildInputs = [
@@ -34,4 +44,13 @@ callPackage ../builder.nix rec {
     libnotify
     (import ../../packages/looking-glass/default.nix)
   ];
+
+  desktopItemPhase = ''
+    mkdir -p $out/share/applications $out/share/icons/hicolor/512x512/apps
+
+    ln -s ${startVmDI}/share/applications/* $out/share/applications
+    ln -s ${startVmNoLG}/share/applications/* $out/share/applications
+
+    cp share/icons/* $out/share/icons/hicolor/512x512/apps
+  '';
 }
