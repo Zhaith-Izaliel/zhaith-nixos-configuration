@@ -19,10 +19,13 @@
     sublime
     torrential
     gthumb
-    etcher
     rar
     unrar
+    teamviewer
+    cheat
   ];
+
+  services.teamviewer.enable = true;
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-14.2.9" # HACK For Etcher

@@ -25,8 +25,5 @@
 
   hardware.sane = {
     enable = true;
-    netConf = ''
-      192.168.1.20
-    '';
   };
 }

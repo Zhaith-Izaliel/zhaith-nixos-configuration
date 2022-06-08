@@ -9,7 +9,7 @@ let
     comment = "Luminous Rafflesia - The Windows KVM VM with GPU Passthrough";
     desktopName = "Luminous Rafflesia";
     genericName = "KVM (Luminous Rafflesia)";
-    categories = ["Game;Development;Graphics"];
+    categories = ["Game" "Development" "Graphics"];
   };
   startVmNoLG = makeDesktopItem rec {
     name = "luminous-rafflesia-nolg";
@@ -18,19 +18,28 @@ let
     comment = "Luminous Rafflesia - The Windows KVM VM with GPU Passthrough";
     desktopName = "Luminous Rafflesia (No Looking-Glass)";
     genericName = "KVM NoLG (Luminous Rafflesia)";
-    categories = ["Game;Development;Graphics"];
+    categories = ["Game" "Development" "Graphics"];
+  };
+  startVmWacom = makeDesktopItem rec {
+    name = "luminous-rafflesia-wacom";
+    exec = "start-vm --resolution=1920x1080";
+    icon = "luminous-rafflesia-wacom";
+    comment = "Luminous Rafflesia - The Windows KVM VM with GPU Passthrough";
+    desktopName = "Luminous Rafflesia (Wacom)";
+    genericName = "KVM Wacom (Luminous Rafflesia)";
+    categories = ["Game" "Development" "Graphics"];
   };
 in
 callPackage ../builder.nix rec {
   pname = "start-vm";
 
-  version = "v1.3.0";
+  version = "v1.4.1";
 
   src = fetchFromGitLab {
     repo = "start-vm";
     owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
     rev = version;
-    sha256 = "109n6qm2x22blih47q3kl7cnp9fqhn82s6dyzrg2z6d08wnr6a1n";
+    sha256 = "0mca7k10i37wds4kq326r2xz3wjpc79rdynyygsxzql1mi27138m";
   };
 
   buildInputs = [
@@ -42,7 +51,7 @@ callPackage ../builder.nix rec {
     virt-manager
     pstree
     libnotify
-    (import ../../packages/looking-glass/default.nix)
+    looking-glass-client
   ];
 
   desktopItemPhase = ''
@@ -50,6 +59,7 @@ callPackage ../builder.nix rec {
 
     ln -s ${startVmDI}/share/applications/* $out/share/applications
     ln -s ${startVmNoLG}/share/applications/* $out/share/applications
+    ln -s ${startVmWacom}/share/applications/* $out/share/applications
 
     cp share/icons/* $out/share/icons/hicolor/512x512/apps
   '';
