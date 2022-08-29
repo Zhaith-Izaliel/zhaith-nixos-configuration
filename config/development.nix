@@ -19,5 +19,8 @@
     rustup
     rnix-lsp
     nixpkgs-fmt
+    # C/C++
+    gcc
+    clang
   ];
 }

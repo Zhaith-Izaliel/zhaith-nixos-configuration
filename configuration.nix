@@ -35,7 +35,6 @@
     ./config/tools.nix
     ./config/unity.nix
     ./config/users.nix
-    ./config/vpn.nix
 
     # ----------------------------- Custom Scripts ----------------------------- #
     ./assets/scripts/scripts.nix
