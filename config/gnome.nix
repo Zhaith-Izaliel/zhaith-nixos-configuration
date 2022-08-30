@@ -1,6 +1,12 @@
 # Enable the GNOME Desktop Environment.
 { config, pkgs, ... }:
 
+let
+  orchis-theme-override = pkgs.orchis-theme.override { tweaks = [
+      "primary"
+      "black"
+    ]; };
+in
 {
   # GDM service
   services.xserver.displayManager = {
@@ -48,5 +54,6 @@
     cinnamon.nemo
     gnome.simple-scan
     (import ../assets/packages/volante-cursors)
+    orchis-theme-override
   ];
 }
