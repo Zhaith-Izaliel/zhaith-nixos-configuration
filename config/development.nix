@@ -2,25 +2,30 @@
 
 {
   virtualisation.docker.enable = true;
+  documentation.dev.enable = true;
 
   environment.systemPackages = with pkgs; [
+    # Editors
     vscode
+    vim
+    # Git
     git
     gitAndTools.gitflow
-    gitAndTools.git-ignore
-    gnumake
-    cmake
-    vim
+    git-ignore
+    gitkraken
+    # hooks
     direnv
-    shfmt
+    # Tools
     onefetch
     docker-compose
     glab
-    rustup
+    # Nix
     rnix-lsp
     nixpkgs-fmt
-    # C/C++
-    gcc
-    clang
+    # Bash
+    shfmt
+    # Man
+    man-pages
+    man-pages-posix
   ];
 }
