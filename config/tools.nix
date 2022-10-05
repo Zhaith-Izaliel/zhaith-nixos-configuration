@@ -16,7 +16,6 @@
     tree
     xbrightness
     mcrcon
-    sublime
     torrential
     gthumb
     rar

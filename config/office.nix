@@ -9,5 +9,6 @@
     geogebra6
     apostrophe
     pandoc
+    obs-studio
   ];
 }
