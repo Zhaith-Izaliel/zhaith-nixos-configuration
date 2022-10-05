@@ -11,6 +11,5 @@
 
   environment.systemPackages = with pkgs; [
     discord
-    #(import ../assets/packages/discord/default.nix)
   ];
 }
