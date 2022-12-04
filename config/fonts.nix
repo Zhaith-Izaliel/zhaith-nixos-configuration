@@ -12,6 +12,8 @@
       cantarell-fonts
       ubuntu_font_family
       nerdfonts
+      fira-code
+      fira-code-symbols
     ];
     fontconfig = {
       enable = true;

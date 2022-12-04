@@ -32,15 +32,18 @@
   };
 
   hardware = {
-    enable = true;
-    driSupport = true;
 
-    opengl.extraPackages = with pkgs; [
-      intel-media-driver
-      vaapiIntel
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
+    opengl = {
+      enable = true;
+      extraPackages = with pkgs; [
+        intel-media-driver
+        vaapiIntel
+        vaapiVdpau
+        libvdpau-va-gl
+      ];
+      driSupport = true;
+    };
+
     nvidia = {
       prime = {
         #offload.enable = true;

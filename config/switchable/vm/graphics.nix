@@ -16,8 +16,6 @@
 
     # Enable touchpad support (enabled default in most desktopManager).
     libinput.enable = true;
-
-    useGlamor = true;
   };
 
   hardware.opengl = {

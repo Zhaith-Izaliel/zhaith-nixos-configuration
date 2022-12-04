@@ -26,6 +26,7 @@
     ./config/networking.nix
     ./config/nur.nix
     ./config/office.nix
+    ./config/power.nix
     ./config/printing.nix
     ./config/productivity.nix
     ./config/reMarkable.nix
@@ -50,8 +51,8 @@
     ./config/switchable/vm/vm.nix
 
     # --------------------------------- NVidia --------------------------------- #
-    #./config/switchable/nvidia/graphics.nix
-    #./config/switchable/nvidia/kernel.nix
+    # ./config/switchable/nvidia/graphics.nix
+    # ./config/switchable/nvidia/kernel.nix
   ];
 
   # This value determines the NixOS release from which the default

@@ -8,9 +8,9 @@
       "mem_sleep_default=deep"
       "nvidia-drm.modeset=1"
     ];
-    extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
-    initrd = {
-      kernelModules = [ "nvidia_x11" ];
-    };
+    # extraModulePackages = [ pkgs.linuxKernel.packages.linux_zen.nvidia_x11 ];
+    # initrd = {
+    #   kernelModules = [ "nvidia_x11" ];
+    # };
   };
 }

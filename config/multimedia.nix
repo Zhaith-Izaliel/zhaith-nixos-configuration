@@ -5,6 +5,7 @@
     vlc
     kid3
     ffmpeg
+    input-remapper
   ];
 
   hardware = {
