@@ -6,7 +6,7 @@
     fonts = with pkgs; [
       noto-fonts
       noto-fonts-emoji
-      noto-fonts-cjk
+      noto-fonts-cjk-sans
       twitter-color-emoji
       powerline-fonts
       cantarell-fonts

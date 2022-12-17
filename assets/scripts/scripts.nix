@@ -6,5 +6,6 @@
     (import ./nix-npm-install/default.nix)
     (import ./start-vm/default.nix)
     (import ./config-share/default.nix)
+    (import ./power-management/default.nix)
   ];
 }

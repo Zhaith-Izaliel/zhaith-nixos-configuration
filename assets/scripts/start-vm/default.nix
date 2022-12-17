@@ -4,7 +4,7 @@ let
   inherit (pkgs) callPackage fetchFromGitLab;
   startVmDI = makeDesktopItem rec {
     name = "luminous-rafflesia";
-    exec = "start-vm -F";
+    exec = "start-vm -Fi";
     icon = "luminous-rafflesia";
     comment = "Luminous Rafflesia - The Windows KVM VM with GPU Passthrough";
     desktopName = "Luminous Rafflesia";
@@ -13,7 +13,7 @@ let
   };
   startVmNoLG = makeDesktopItem rec {
     name = "luminous-rafflesia-nolg";
-    exec = "start-vm -l";
+    exec = "start-vm -li";
     icon = "luminous-rafflesia-nolg";
     comment = "Luminous Rafflesia - The Windows KVM VM with GPU Passthrough";
     desktopName = "Luminous Rafflesia (No Looking-Glass)";
@@ -22,7 +22,7 @@ let
   };
   startVmWacom = makeDesktopItem rec {
     name = "luminous-rafflesia-wacom";
-    exec = "start-vm --resolution=1920x1080";
+    exec = "start-vm --resolution=1920x1080 -i";
     icon = "luminous-rafflesia-wacom";
     comment = "Luminous Rafflesia - The Windows KVM VM with GPU Passthrough";
     desktopName = "Luminous Rafflesia (Wacom)";
@@ -33,13 +33,13 @@ in
 callPackage ../builder.nix rec {
   pname = "start-vm";
 
-  version = "v1.4.1";
+  version = "v2.1.2";
 
   src = fetchFromGitLab {
     repo = "start-vm";
     owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
     rev = version;
-    sha256 = "0mca7k10i37wds4kq326r2xz3wjpc79rdynyygsxzql1mi27138m";
+    sha256 = "sha256-SMF+3IaQWLEDqoCYjEVDLlhpicKfFNmWErDNb4eLl98=";
   };
 
   buildInputs = [

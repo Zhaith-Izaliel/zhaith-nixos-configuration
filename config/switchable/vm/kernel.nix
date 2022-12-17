@@ -3,12 +3,19 @@
 
 {
   boot = {
-    kernelModules = [ "kvm-intel" ];
+    kernelModules = [
+      "kvm-intel"
+      "vfio"
+      "vfio_iommu_type1"
+      "vfio_pci"
+      "vfio_virqfd"
+      "vhost-net"
+    ];
     kernelParams = [
       "intel_iommu=on"
       "iommu=pt"
       #"pcie_aspm=off"
-      "pcie_acs_override=downstream,multifunction"
+      #"pcie_acs_override=downstream,multifunction"
     ];
     initrd = {
       availableKernelModules = [

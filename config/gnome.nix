@@ -29,6 +29,7 @@ in
     core-utilities.enable = true;
     gnome-settings-daemon.enable = true;
     gnome-keyring.enable = true;
+    gnome-browser-connector.enable = true;
   };
 
   programs.gnome-disks.enable = true;
