@@ -24,7 +24,7 @@
     ./config/locale.nix
     ./config/multimedia.nix
     ./config/networking.nix
-    ./config/nur.nix
+    ./config/nix-alien.nix
     ./config/office.nix
     ./config/power.nix
     ./config/printing.nix

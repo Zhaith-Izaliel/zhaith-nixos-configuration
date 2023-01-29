@@ -14,6 +14,7 @@
       nerdfonts
       fira-code
       fira-code-symbols
+      terminus_font
     ];
     fontconfig = {
       enable = true;

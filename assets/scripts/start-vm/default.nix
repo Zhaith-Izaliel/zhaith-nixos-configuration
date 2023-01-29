@@ -51,7 +51,7 @@ callPackage ../builder.nix rec {
     virt-manager
     pstree
     libnotify
-    looking-glass-client
+    (import ../../packages/looking-glass/default.nix)
   ];
 
   desktopItemPhase = ''

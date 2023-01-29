@@ -27,5 +27,9 @@
     # Man
     man-pages
     man-pages-posix
+
+    mongodb-tools #TEMP
   ];
+
+  services.mongodb.enable = true; #TEMP
 }
