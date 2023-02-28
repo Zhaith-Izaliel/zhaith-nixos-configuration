@@ -9,6 +9,10 @@
     geogebra6
     apostrophe
     pandoc
-    obs-studio
+    evolution
+  ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-14.2.9" # DEPRECATED: here for geogebra6
   ];
 }

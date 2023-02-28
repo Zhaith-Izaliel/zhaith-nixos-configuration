@@ -8,11 +8,19 @@ let
     ]; };
 in
 {
-  # GDM service
-  services.xserver.displayManager = {
-    gdm = {
-     enable = true;
-     wayland = false;
+  # XServer
+  services.xserver = {
+    enable = true;
+
+    layout = "fr";
+
+    libinput.enable = true;
+
+    displayManager = {
+      gdm = {
+        enable = true;
+        wayland = false;
+      };
     };
   };
 

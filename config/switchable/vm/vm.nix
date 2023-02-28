@@ -1,9 +1,16 @@
 { config, pkgs, ... }:
 
+let
+  totalCores = "0-15";
+  hostCores = "0-3,8-11";
+  vmCores = "4-7,12-15";
+  vmName = "Luminous-Rafflesia";
+  isolateCpuVariableName = "ISOLATE_CPUS";
+  libvirtHooks = "/var/lib/libvirt/hooks";
+in
 {
   environment.systemPackages = with pkgs; [
     virtmanager
-    cpuset
   ];
 
   networking.firewall.interfaces.virbr0.allowedUDPPorts = [ 4010 ];
@@ -29,30 +36,26 @@
   systemd.services.libvirtd.preStart = let
     qemuHook = pkgs.writeScript "qemu-hook" ''
       #!${pkgs.stdenv.shell}
-      TOTAL_CORES='0-15'
-      HOST_CORES='0-3,8-11'           # Cores reserved for host
-      VIRT_CORES='4-7,12-15'          # Cores reserved for virtual machine(s)
-      WINDOWS_VM_NAME="Luminous-Rafflesia"
 
       VM_NAME="$1"
       VM_ACTION="$2/$3"
-      if [ "$VM_NAME" = "$WINDOWS_VM_NAME" ] && [ "$ISOLATE_CPUS" = "true" ]; then
+      if [ "$VM_NAME" = "${vmName}" ] && [ "${isolateCpuVariableName}" = "true" ]; then
         if [[ "$VM_ACTION" == "prepare/begin" ]]; then
-            systemctl set-property --runtime -- user.slice AllowedCPUs=$HOST_CORES
-            systemctl set-property --runtime -- system.slice AllowedCPUs=$HOST_CORES
-            systemctl set-property --runtime -- init.scope AllowedCPUs=$HOST_CORES
+            systemctl set-property --runtime -- user.slice AllowedCPUs="${hostCores}"
+            systemctl set-property --runtime -- system.slice AllowedCPUs="${hostCores}"
+            systemctl set-property --runtime -- init.scope AllowedCPUs="${hostCores}"
         elif [[ "$VM_ACTION" == "release/end" ]]; then
-            systemctl set-property --runtime -- user.slice AllowedCPUs=$TOTAL_CORES
-            systemctl set-property --runtime -- system.slice AllowedCPUs=$TOTAL_CORES
-            systemctl set-property --runtime -- init.scope AllowedCPUs=$TOTAL_CORES
+            systemctl set-property --runtime -- user.slice AllowedCPUs="${totalCores}"
+            systemctl set-property --runtime -- system.slice AllowedCPUs="${totalCores}"
+            systemctl set-property --runtime -- init.scope AllowedCPUs="${totalCores}"
         fi
       fi
     '';
   in ''
-    mkdir -p /var/lib/libvirt/hooks
-    chmod 755 /var/lib/libvirt/hooks
+    mkdir -p "${libvirtHooks}"
+    chmod 755 "${libvirtHooks}"
 
     # Copy hook files
-    ln -sf ${qemuHook} /var/lib/libvirt/hooks/qemu
+    ln -sf ${qemuHook} "${libvirtHooks}/qemu"
   '';
 }

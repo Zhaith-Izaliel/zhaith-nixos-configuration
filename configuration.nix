@@ -18,9 +18,9 @@
     ./config/chat.nix
     ./config/development.nix
     ./config/ecryptfs.nix
+    ./config/experimental.nix
     ./config/fonts.nix
     ./config/gnome.nix
-    ./config/kernel.nix
     ./config/locale.nix
     ./config/multimedia.nix
     ./config/networking.nix
@@ -28,14 +28,12 @@
     ./config/office.nix
     ./config/power.nix
     ./config/printing.nix
-    ./config/productivity.nix
     ./config/reMarkable.nix
     ./config/shell.nix
     ./config/sound.nix
     ./config/ssh.nix
     ./config/tex.nix
     ./config/tools.nix
-    ./config/unity.nix
     ./config/users.nix
 
     # ----------------------------- Custom Scripts ----------------------------- #
@@ -46,13 +44,10 @@
     # -------------------------------------------------------------------------- #
 
     # ----------------------------------- VM ----------------------------------- #
-    ./config/switchable/vm/graphics.nix
-    ./config/switchable/vm/kernel.nix
-    ./config/switchable/vm/vm.nix
+    ./config/switchable/vm/index.nix
 
     # --------------------------------- NVidia --------------------------------- #
-    # ./config/switchable/nvidia/graphics.nix
-    # ./config/switchable/nvidia/kernel.nix
+    #./config/switchable/nvidia/index.nix
   ];
 
   # This value determines the NixOS release from which the default

@@ -14,19 +14,11 @@
     qview
     curl
     tree
-    xbrightness
-    mcrcon
-    torrential
+    fragments
     gthumb
     rar
     unrar
-    teamviewer
-    cheat
   ];
 
   services.teamviewer.enable = true;
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-14.2.9" # HACK For Etcher
-  ];
 }

@@ -12,7 +12,6 @@
     git
     gitAndTools.gitflow
     git-ignore
-    gitkraken
     # hooks
     direnv
     # Tools
@@ -27,9 +26,13 @@
     # Man
     man-pages
     man-pages-posix
+    # Unity
+    unityhub
+    mono
+    dotnet-sdk
 
-    mongodb-tools #TEMP
+    mongodb-tools #TEMP: For FV
   ];
 
-  services.mongodb.enable = true; #TEMP
+  services.mongodb.enable = true; #TEMP: For FV
 }

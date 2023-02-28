@@ -1,6 +1,9 @@
 # Boot loader config
 { config, pkgs, ... }:
 
+let
+  pcis = "0000:01:00.0 0000:01:00.1";
+in
 {
   boot = {
     kernelModules = [
@@ -14,8 +17,6 @@
     kernelParams = [
       "intel_iommu=on"
       "iommu=pt"
-      #"pcie_aspm=off"
-      #"pcie_acs_override=downstream,multifunction"
     ];
     initrd = {
       availableKernelModules = [
@@ -29,8 +30,7 @@
       kernelModules = [ "i915" ];
 
       preDeviceCommands = ''
-        DEVS="0000:01:00.0 0000:01:00.1"
-        for DEV in $DEVS; do
+        for DEV in ${pcis}; do
           echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
         done
         modprobe -i vfio-pci
