@@ -1,10 +1,12 @@
 { config, pkgs, ... }:
 
 let
+  # IMPORTANT Update these values for your vms and your wanting core isolation
   totalCores = "0-15";
   hostCores = "0-3,8-11";
   vmCores = "4-7,12-15";
   vmName = "Luminous-Rafflesia";
+  # NOTE This variable is used in the script start-vm
   isolateCpuVariableName = "ISOLATE_CPUS";
   libvirtHooks = "/var/lib/libvirt/hooks";
 in
@@ -13,13 +15,11 @@ in
     virtmanager
   ];
 
-  networking.firewall.interfaces.virbr0.allowedUDPPorts = [ 4010 ];
-
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
       ovmf.enable = true;
-      runAsRoot = false;
+      runAsRoot = true;
       verbatimConfig = ''
         user = "zhaith"
       '';

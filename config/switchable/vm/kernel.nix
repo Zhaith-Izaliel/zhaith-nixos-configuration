@@ -2,6 +2,7 @@
 { config, pkgs, ... }:
 
 let
+  # IMPORTANT Change these pcis for your vm GPU (https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF#Ensuring_that_the_groups_are_valid)
   pcis = "0000:01:00.0 0000:01:00.1";
 in
 {

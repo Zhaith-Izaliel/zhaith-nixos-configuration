@@ -33,13 +33,13 @@ in
 callPackage ../builder.nix rec {
   pname = "start-vm";
 
-  version = "v2.1.2";
+  version = "v2.2.0";
 
   src = fetchFromGitLab {
     repo = "start-vm";
     owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
     rev = version;
-    sha256 = "sha256-SMF+3IaQWLEDqoCYjEVDLlhpicKfFNmWErDNb4eLl98=";
+    sha256 = "sha256-c/FIIYjsbRK3jQeXjN+8EIkoyTa7CmyB2XSwCIAaiMY=";
   };
 
   buildInputs = [
@@ -47,11 +47,10 @@ callPackage ../builder.nix rec {
   ];
 
   paths = [
-    scream
     virt-manager
     pstree
     libnotify
-    (import ../../packages/looking-glass/default.nix)
+    (import ../../packages/looking-glass/default.nix) # TEMP Switch to the nixpkgs version when updated to B6
   ];
 
   desktopItemPhase = ''
