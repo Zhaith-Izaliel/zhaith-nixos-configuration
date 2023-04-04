@@ -6,7 +6,6 @@
 
   environment.systemPackages = with pkgs; [
     # Editors
-    vscode
     vim
     # Git
     git
