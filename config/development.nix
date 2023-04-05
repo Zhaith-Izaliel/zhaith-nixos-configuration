@@ -3,6 +3,7 @@
 {
   virtualisation.docker.enable = true;
   documentation.dev.enable = true;
+  services.lorri.enable = true;
 
   environment.systemPackages = with pkgs; [
     # Editors
