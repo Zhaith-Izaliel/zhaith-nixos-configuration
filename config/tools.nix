@@ -3,6 +3,7 @@
 {
   environment.systemPackages = with pkgs; [
     htop
+    ripgrep
     jq
     neofetch
     zip

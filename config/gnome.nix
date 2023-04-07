@@ -2,10 +2,12 @@
 { config, pkgs, ... }:
 
 let
-  orchis-theme-override = pkgs.orchis-theme.override { tweaks = [
+  orchis-theme-override = pkgs.orchis-theme.override {
+    tweaks = [
       "primary"
       "black"
-    ]; };
+    ];
+  };
 in
 {
   # XServer
