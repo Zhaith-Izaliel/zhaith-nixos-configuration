@@ -1,14 +1,6 @@
 # Enable the GNOME Desktop Environment.
 { config, pkgs, ... }:
 
-let
-  orchis-theme-override = pkgs.orchis-theme.override {
-    tweaks = [
-      "primary"
-      "black"
-    ];
-  };
-in
 {
   # XServer
   services.xserver = {
@@ -64,7 +56,7 @@ in
     papirus-icon-theme
     cinnamon.nemo
     gnome.simple-scan
-    (import ../assets/packages/volante-cursors)
-    orchis-theme-override
+    nordzy-cursor-theme
+    nordic
   ];
 }
