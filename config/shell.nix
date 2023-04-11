@@ -1,12 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [
-    tilda
-    tdrop
-    kitty
-  ];
-
   #Set ZSH as defautl Shell
   users.defaultUserShell = pkgs.zsh;
 

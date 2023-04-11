@@ -2,7 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
-    htop
+    gotop
     ripgrep
     jq
     neofetch
@@ -20,6 +20,4 @@
     rar
     unrar
   ];
-
-  services.teamviewer.enable = true;
 }

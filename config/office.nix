@@ -7,7 +7,7 @@
     qalculate-gtk
     calibre
     geogebra6
-    apostrophe
+    obsidian
     pandoc
     evolution
   ];

@@ -16,14 +16,15 @@
         wayland = false;
       };
     };
+
+    # Gnome
+    desktopManager.gnome = {
+      enable = true;
+    };
   };
 
   programs.dconf.enable = true;
 
-  # Gnome
-  services.xserver.desktopManager.gnome = {
-    enable = true;
-  };
 
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
@@ -53,10 +54,7 @@
     gnome.gnome-color-manager
     gnome.gnome-tweaks
     libnotify
-    papirus-icon-theme
     cinnamon.nemo
     gnome.simple-scan
-    nordzy-cursor-theme
-    nordic
   ];
 }

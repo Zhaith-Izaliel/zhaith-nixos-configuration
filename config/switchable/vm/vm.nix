@@ -8,7 +8,6 @@ let
   vmName = "Luminous-Rafflesia";
   # NOTE This variable is used in the script start-vm
   isolateCpuVariableName = "ISOLATE_CPUS";
-  libvirtHooks = "/var/lib/libvirt/hooks";
 in
 {
   environment.systemPackages = with pkgs; [
@@ -51,6 +50,7 @@ in
         fi
       fi
     '';
+    libvirtHooks = "/var/lib/libvirt/hooks";
   in ''
     mkdir -p "${libvirtHooks}"
     chmod 755 "${libvirtHooks}"
