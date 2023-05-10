@@ -39,7 +39,6 @@
 
   environment.gnome.excludePackages = with pkgs; [
     gnome.nautilus
-    gnome.cheese
     gnome-photos
     gnome.gnome-music
     gnome.gnome-terminal
@@ -52,6 +51,7 @@
 
   environment.systemPackages = with pkgs; [
     gnome.gnome-color-manager
+    gnome.cheese
     gnome.gnome-tweaks
     libnotify
     cinnamon.nemo

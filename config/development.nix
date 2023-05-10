@@ -6,8 +6,6 @@
   services.lorri.enable = true;
 
   environment.systemPackages = with pkgs; [
-    # Editors
-    vim
     # Git
     git
     gitAndTools.gitflow
@@ -18,11 +16,7 @@
     onefetch
     docker-compose
     glab
-    # Nix
-    rnix-lsp
-    nixpkgs-fmt
-    # Bash
-    shfmt
+    universal-ctags
     # Man
     man-pages
     man-pages-posix
@@ -31,8 +25,8 @@
     mono
     dotnet-sdk
 
-    mongodb-tools #TEMP For FV
+    mongodb-tools # TEMP: For FV
   ];
 
-  services.mongodb.enable = true; #TEMP For FV
+  services.mongodb.enable = true; # TEMP: For FV
 }

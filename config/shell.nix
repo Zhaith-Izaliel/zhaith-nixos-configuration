@@ -1,11 +1,10 @@
 { config, pkgs, ... }:
 
 {
-  #Set ZSH as defautl Shell
-  users.defaultUserShell = pkgs.zsh;
+  users.defaultUserShell = pkgs.fish;
 
-  environment.shells = with pkgs; [ zsh ];
+  environment.shells = with pkgs; [ fish ];
 
   # Enable zsh
-  programs.zsh.enable = true;
+  programs.fish.enable = true;
 }

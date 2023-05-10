@@ -14,6 +14,7 @@
       nerdfonts
       fira-code
       fira-code-symbols
+      rictydiminished-with-firacode
       terminus_font
     ];
     fontconfig = {
