@@ -1,18 +1,13 @@
 { inputs }:
 {
-  mkSystem = { hostname, system, users ? [ ], output }:
+  mkSystem = { hostname, system, users ? [ ]}:
     inputs.nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
-        inherit inputs system hostname;
+        inherit inputs hostname;
       };
       modules = [
         ../hosts/${hostname}
-        ({ pkgs, ... }: {
-          # Let 'nixos-version --json' know about the Git revision
-          # of this flake.
-          system.configurationRevision = inputs.nixpkgs.lib.mkIf (output ? rev) output.rev;
-        })
         {
           networking.hostName = hostname;
 
@@ -22,9 +17,9 @@
           };
 
           # Add each input as a registry
-          nix.registry = inputs.nixpkgs.lib.mapAttrs'
-            (n: v: inputs.nixpkgs.lib.nameValuePair n { flake = v; })
-            inputs;
+          # nix.registry = inputs.nixpkgs.lib.mapAttrs'
+          #   (n: v: inputs.nixpkgs.lib.nameValuePair n { flake = v; })
+          #   inputs;
         }
       ] ++ inputs.nixpkgs.lib.forEach users (u: ../users/${u}/system);
     };

@@ -1,8 +1,16 @@
-with import <nixpkgs>{};
+{
+  makeDesktopItem,
+  fetchFromGitLab,
+  callPackage,
+  bash,
+  virt-manager,
+  pstree,
+  looking-glass-client,
+  libnotify,
+}:
 
 let
-  inherit (pkgs) callPackage fetchFromGitLab;
-  startVmDI = makeDesktopItem rec {
+  startVmDI = makeDesktopItem {
     name = "luminous-rafflesia";
     exec = "start-vm -Fi";
     icon = "luminous-rafflesia";
@@ -11,7 +19,7 @@ let
     genericName = "KVM (Luminous Rafflesia)";
     categories = ["Game" "Development" "Graphics"];
   };
-  startVmNoLG = makeDesktopItem rec {
+  startVmNoLG = makeDesktopItem {
     name = "luminous-rafflesia-nolg";
     exec = "start-vm -li";
     icon = "luminous-rafflesia-nolg";
@@ -20,7 +28,7 @@ let
     genericName = "KVM NoLG (Luminous Rafflesia)";
     categories = ["Game" "Development" "Graphics"];
   };
-  startVmWacom = makeDesktopItem rec {
+  startVmWacom = makeDesktopItem {
     name = "luminous-rafflesia-wacom";
     exec = "start-vm --resolution=1920x1080 -i";
     icon = "luminous-rafflesia-wacom";
@@ -50,7 +58,7 @@ callPackage ../builder.nix rec {
     virt-manager
     pstree
     libnotify
-    (import ../../packages/looking-glass/default.nix) # TEMP Switch to the nixpkgs version when updated to B6
+    looking-glass-client
   ];
 
   desktopItemPhase = ''

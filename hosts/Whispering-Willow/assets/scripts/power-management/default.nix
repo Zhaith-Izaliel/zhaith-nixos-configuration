@@ -1,8 +1,10 @@
-with import <nixpkgs>{};
+{
+  callPackage,
+  fetchFromGitLab,
+  bash,
+  libnotify,
+}:
 
-let
-  inherit (pkgs) callPackage fetchFromGitLab;
-in
 callPackage ../builder.nix rec {
   pname = "power-management";
 

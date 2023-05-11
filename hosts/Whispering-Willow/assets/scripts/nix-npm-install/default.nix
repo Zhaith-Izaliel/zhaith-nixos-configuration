@@ -1,8 +1,11 @@
-with import <nixpkgs>{};
+{
+  fetchFromGitLab,
+  callPackage,
+  bash,
+  nodejs,
+  node2nix,
+}:
 
-let
-  inherit (pkgs) callPackage fetchFromGitLab;
-in
 callPackage ../builder.nix rec {
   pname = "nix-npm-install";
   version = "v1.0.2";
@@ -20,6 +23,6 @@ callPackage ../builder.nix rec {
   ];
 
   paths = [
-    nodePackages.node2nix
+    node2nix
   ];
 }

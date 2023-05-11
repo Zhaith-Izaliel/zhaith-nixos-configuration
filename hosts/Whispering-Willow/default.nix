@@ -34,7 +34,6 @@
     ./config/ssh.nix
     ./config/tex.nix
     ./config/tools.nix
-    ./config/users.nix
 
     # ----------------------------- Custom Scripts ----------------------------- #
     ./assets/scripts/scripts.nix

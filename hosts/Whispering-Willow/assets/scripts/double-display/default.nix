@@ -1,8 +1,10 @@
-with import <nixpkgs>{};
+{
+  callPackage,
+  fetchFromGitLab,
+  bash,
+  xrandr,
+}:
 
-let
-  inherit (pkgs) callPackage fetchFromGitLab;
-in
 callPackage ../builder.nix rec {
   pname = "double-display";
   version = "v1.0.2";
@@ -19,6 +21,6 @@ callPackage ../builder.nix rec {
   ];
 
   paths = [
-    xorg.xrandr
+    xrandr
   ];
 }

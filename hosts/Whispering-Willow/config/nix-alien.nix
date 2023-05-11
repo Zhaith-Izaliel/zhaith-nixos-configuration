@@ -2,7 +2,10 @@
 
 let
   nix-alien-pkgs = import (
-    fetchTarball "https://github.com/thiagokokada/nix-alien/tarball/master"
+    fetchTarball {
+      url = "https://github.com/thiagokokada/nix-alien/tarball/master";
+      sha256 = "1mb9m3cahjq2g37a0p94ydskwcxr9365zngilxd9h1qhi4fvf5jb";
+    }
   ) { };
 in
 {

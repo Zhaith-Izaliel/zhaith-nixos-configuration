@@ -20,7 +20,6 @@
     ./config/shell.nix
     ./config/ssh.nix
     ./config/tools.nix
-    ./config/users.nix
 
     # ------------------------------ Server Config ----------------------------- #
     ./config/server/index.nix

@@ -1,4 +1,6 @@
 {
+  description = "Zhaith's NixOS configuation";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -7,11 +9,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
   };
 
-  outputs = { self, inputs }:
+  outputs = inputs:
   let
-    lib = import ./lib { inherit inputs self; };
+    lib = import ./lib { inherit inputs; };
   in
   {
     nixosConfigurations = {
@@ -46,16 +52,15 @@
     pkgs = import inputs.nixpkgs { inherit system; };
   in
   {
-          # If you're not using NixOS and only want to load your home
-          # configuration when `nix` is installed on your system and
-          # flakes are enabled.
-          #
-          # Enable a `nix develop` shell with home-manager and git to
-          # only load your home configuration.
-          devShell = pkgs.mkShell {
-            buildInputs = with pkgs; [ home-manager git ];
-            NIX_CONFIG = "experimental-features = nix-command flakes";
-          };
-        }
-        );
-      }
+    # If you're not using NixOS and only want to load your home
+    # configuration when `nix` is installed on your system and
+    # flakes are enabled.
+    #
+    # Enable a `nix develop` shell with home-manager and git to
+    # only load your home configuration.
+    devShells.default = pkgs.mkShell {
+      buildInputs = with pkgs; [ home-manager git ];
+      NIX_CONFIG = "experimental-features = nix-command flakes";
+    };
+  });
+}
