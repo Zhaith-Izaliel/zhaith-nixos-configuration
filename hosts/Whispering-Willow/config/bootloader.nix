@@ -1,9 +1,5 @@
 { config, pkgs, ... }:
 
-let
-  theme = "tela";
-  grub2-themes = import ../assets/packages/grub2-themes { inherit pkgs theme; };
-in
 {
   # Use efi grub
   boot.loader = {
@@ -11,7 +7,6 @@ in
     grub = {
       enable = true;
       efiSupport = true;
-      theme = "${grub2-themes.package}/${theme}";
       #efiInstallAsRemovable = true; # in case canTouchEfiVariables doesn't work for your system
       device = "nodev";
       copyKernels = true;
@@ -25,6 +20,14 @@ in
       '';
       entryOptions = "--class nixos --unrestricted";
       subEntryOptions = "--class recovery";
+    };
+
+    grub2-theme = {
+      enable = true;
+      theme = "tela";
+      icon = "color";
+      screen = "1080p";
+      footer = true;
     };
   };
 }

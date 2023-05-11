@@ -1,4 +1,3 @@
-# Boot loader config
 { config, pkgs, ... }:
 
 {
@@ -9,9 +8,16 @@
     grub = {
       enable = true;
       efiSupport = true;
-      theme = "/etc/nixos/assets/grub-theme/vimix";
       #efiInstallAsRemovable = true; # in case canTouchEfiVariables doesn't work for your system
       device = "nodev";
+    };
+
+    grub2-theme = {
+      enable = true;
+      theme = "tela";
+      icon = "color";
+      screen = "1080p";
+      footer = true;
     };
   };
 }

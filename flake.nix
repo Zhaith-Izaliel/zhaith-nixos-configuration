@@ -13,9 +13,10 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
+    grub2-themes.url = "github:/vinceliuice/grub2-themes";
   };
 
-  outputs = {nixpkgs, flake-utils, ...}@attrs:
+  outputs = {nixpkgs, flake-utils, grub2-themes, ...}@attrs:
   let
     lib = import ./lib { inputs = attrs; };
   in
@@ -25,11 +26,17 @@
         hostname = "Whispering-Willow";
         system = "x86_64-linux";
         users = [ "zhaith" ];
+        extraModules = [
+          grub2-themes.nixosModules.default
+        ];
       };
       Ethereal-Edelweiss = lib.mkSystem {
         hostname = "Ethereal-Edelweiss";
         system = "x86_64-linux";
         users = [ "lilith" ];
+        extraModules = [
+          grub2-themes.nixosModules.default
+        ];
       };
     };
     homeConfigurations = {
@@ -48,9 +55,9 @@
     };
   } // flake-utils.lib.eachDefaultSystem
   (system:
-  # let
-  #   pkgs = import inputs.nixpkgs { inherit system; };
-  # in
+  let
+    pkgs = nixpkgs.legacyPackages.${system};
+  in
   {
     # If you're not using NixOS and only want to load your home
     # configuration when `nix` is installed on your system and
@@ -58,8 +65,8 @@
     #
     # Enable a `nix develop` shell with home-manager and git to
     # only load your home configuration.
-    devShells.default = nixpkgs.mkShell {
-      buildInputs = with nixpkgs; [ home-manager git ];
+    devShells.default = pkgs.mkShell {
+      buildInputs = with pkgs; [ home-manager git ];
       NIX_CONFIG = "experimental-features = nix-command flakes";
     };
   });

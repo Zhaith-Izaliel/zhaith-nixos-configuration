@@ -1,6 +1,6 @@
 { inputs }:
 {
-  mkSystem = { hostname, system, users ? [ ]}:
+  mkSystem = { hostname, system, users ? [ ], extraModules ? [ ]}:
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
     in
@@ -33,10 +33,11 @@
             inputs;
           };
         }
-      ] ++ inputs.nixpkgs.lib.forEach users (u: ../users/${u}/system);
+      ] ++ inputs.nixpkgs.lib.forEach users (u: ../users/${u}/system)
+      ++ extraModules;
     };
 
-    mkHome = { username, system, hostname, stateVersion }:
+    mkHome = { username, system, hostname, stateVersion, extraModules ? [ ] }:
     inputs.home-manager.lib.homeManagerConfiguration {
       extraSpecialArgs = {
         inherit system hostname inputs;
@@ -59,6 +60,6 @@
             homeDirectory = "/home/${username}";
           };
         }
-      ];
+      ] ++ extraModules;
     };
   }
