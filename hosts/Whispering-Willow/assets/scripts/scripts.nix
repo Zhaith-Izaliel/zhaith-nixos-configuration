@@ -1,10 +1,10 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstable-pkgs, ... }:
 
 {
   environment.systemPackages = [
-    (import ./double-display/default.nix)
-    (import ./nix-npm-install/default.nix)
-    (import ./start-vm/default.nix)
-    (import ./power-management/default.nix)
+    (import ./double-display { inherit pkgs; })
+    (import ./nix-npm-install { inherit pkgs; })
+    (import ./start-vm { inherit pkgs unstable-pkgs; })
+    (import ./power-management { inherit pkgs; })
   ];
 }

@@ -1,4 +1,4 @@
-with import <nixpkgs> {};
+{ pkgs }:
 
 pkgs.callPackage ../builder.nix rec {
   pname = "nix-npm-install";

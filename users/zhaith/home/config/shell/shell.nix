@@ -57,7 +57,7 @@ in
           ip = "ip --color=auto";
           tree = "tree -C";
           cat = "bat";
-          #ssh = "kitty +kitten ssh";
+          ssh = "kitty +kitten ssh";
           icat = "kitty +kitten icat";
         };
 

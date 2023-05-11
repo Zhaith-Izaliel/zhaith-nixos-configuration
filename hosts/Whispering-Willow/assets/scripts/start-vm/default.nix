@@ -1,4 +1,7 @@
-with import <nixpkgs> {};
+{
+  pkgs,
+  unstable-pkgs,
+}:
 
 let
   startVmDI = pkgs.makeDesktopItem {
@@ -49,7 +52,7 @@ pkgs.callPackage ../builder.nix rec {
     virt-manager
     pstree
     libnotify
-    looking-glass-client
+    unstable-pkgs.looking-glass-client
   ];
 
   desktopItemPhase = ''

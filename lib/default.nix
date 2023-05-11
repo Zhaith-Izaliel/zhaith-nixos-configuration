@@ -1,14 +1,14 @@
-{ attrs }:
+{ inputs }:
 {
   mkSystem = { hostname, system, users ? [ ]}:
     let
-      pkgs = attrs.nixpkgs.legacyPackages.${system};
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
     in
-    attrs.nixpkgs.lib.nixosSystem {
+    inputs.nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
-        inherit  hostname system attrs;
-        unstable-pkgs = attrs.nixpkgs-unstable.legacyPackages.${system};
+        inherit  hostname system inputs;
+        unstable-pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
       };
       modules = [
         ../hosts/${hostname}
@@ -28,21 +28,21 @@
             '';
 
             # Add each input as a registry
-            registry = attrs.nixpkgs.lib.mapAttrs'
-            (n: v: attrs.nixpkgs.lib.nameValuePair n { flake = v; })
-            attrs;
+            registry = inputs.nixpkgs.lib.mapAttrs'
+            (n: v: inputs.nixpkgs.lib.nameValuePair n { flake = v; })
+            inputs;
           };
         }
-      ] ++ attrs.nixpkgs.lib.forEach users (u: ../users/${u}/system);
+      ] ++ inputs.nixpkgs.lib.forEach users (u: ../users/${u}/system);
     };
 
     mkHome = { username, system, hostname, stateVersion }:
-    attrs.home-manager.lib.homeManagerConfiguration {
+    inputs.home-manager.lib.homeManagerConfiguration {
       extraSpecialArgs = {
-        inherit  system hostname;inputs = attrs;
-        unstable-pkgs = builtins.getAttr system attrs.nixpkgs-unstable.outputs.legacyPackages;
+        inherit system hostname inputs;
+        unstable-pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
       };
-      pkgs = builtins.getAttr system attrs.nixpkgs.outputs.legacyPackages;
+      pkgs = builtins.getAttr system inputs.nixpkgs.outputs.legacyPackages;
       modules = [
         ../users/${username}/home
         {

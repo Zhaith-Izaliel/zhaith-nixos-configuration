@@ -4,7 +4,7 @@
   services = {
     mpd = {
       enable = true;
-      musicDirectory = ~/Music;
+      musicDirectory = /${config.home.homeDirectory}/Music;
       extraConfig = ''
         # must specify one or more outputs in order to play audio!
         # (e.g. ALSA, PulseAudio, PipeWire), see next sections

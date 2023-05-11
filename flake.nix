@@ -17,7 +17,7 @@
 
   outputs = {nixpkgs, flake-utils, ...}@attrs:
   let
-    lib = import ./lib { inherit attrs; };
+    lib = import ./lib { inputs = attrs; };
   in
   {
     nixosConfigurations = {

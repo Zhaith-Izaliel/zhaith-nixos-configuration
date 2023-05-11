@@ -1,6 +1,9 @@
-# Boot loader config
 { config, pkgs, ... }:
 
+let
+  theme = "tela";
+  grub2-themes = import ../assets/packages/grub2-themes { inherit pkgs theme; };
+in
 {
   # Use efi grub
   boot.loader = {
@@ -8,7 +11,7 @@
     grub = {
       enable = true;
       efiSupport = true;
-      theme = ../assets/grub-theme/vimix;
+      theme = "${grub2-themes.package}/${theme}";
       #efiInstallAsRemovable = true; # in case canTouchEfiVariables doesn't work for your system
       device = "nodev";
       copyKernels = true;
