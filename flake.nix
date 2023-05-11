@@ -31,13 +31,13 @@
         username = "zhaith";
         system = "x86_64-linux";
         hostname = "Whispering-Willow";
-        stateVersion = "";
+        stateVersion = "22.05";
       };
       "lilith@Ethereal-Edelweiss" = lib.mkHome {
         username = "lilith";
         system = "x86_64-linux";
         hostname = "Ethereal-Edelweiss";
-        stateVersion = "";
+        stateVersion = "21.05";
       };
     };
   } // inputs.flake-utils.lib.eachDefaultSystem
