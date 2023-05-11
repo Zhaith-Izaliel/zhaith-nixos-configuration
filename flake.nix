@@ -14,9 +14,10 @@
       flake = false;
     };
     grub2-themes.url = "github:/vinceliuice/grub2-themes";
+    nix-alien.url = "github:thiagokokada/nix-alien";
   };
 
-  outputs = {nixpkgs, flake-utils, grub2-themes, ...}@attrs:
+  outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, ...}@attrs:
   let
     lib = import ./lib { inputs = attrs; };
   in
@@ -28,6 +29,9 @@
         users = [ "zhaith" ];
         extraModules = [
           grub2-themes.nixosModules.default
+        ];
+        overlays = [
+          nix-alien.overlays.default
         ];
       };
       Ethereal-Edelweiss = lib.mkSystem {

@@ -20,5 +20,8 @@
     rar
     unrar
     unstable-pkgs.erdtree
+    nix-alien
   ];
+
+  programs.nix-ld.enable = true;
 }

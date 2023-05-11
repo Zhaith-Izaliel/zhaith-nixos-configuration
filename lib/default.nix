@@ -1,6 +1,6 @@
 { inputs }:
 {
-  mkSystem = { hostname, system, users ? [ ], extraModules ? [ ]}:
+  mkSystem = { hostname, system, users ? [ ], extraModules ? [ ], overlays ? [ ] }:
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
     in
@@ -17,6 +17,7 @@
 
           # Allow unfree packages
           nixpkgs = {
+            inherit overlays;
             config.allowUnfree = true;
           };
 
@@ -37,7 +38,7 @@
       ++ extraModules;
     };
 
-    mkHome = { username, system, hostname, stateVersion, extraModules ? [ ] }:
+    mkHome = { username, system, hostname, stateVersion, extraModules ? [ ], overlays ? [ ] }:
     inputs.home-manager.lib.homeManagerConfiguration {
       extraSpecialArgs = {
         inherit system hostname inputs;
@@ -48,6 +49,7 @@
         ../users/${username}/home
         {
           nixpkgs = {
+            inherit overlays;
             config.allowUnfree = true;
           };
           programs = {

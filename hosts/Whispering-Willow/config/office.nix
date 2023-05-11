@@ -13,6 +13,6 @@
   ];
 
   nixpkgs.config.permittedInsecurePackages = [
-    "electron-14.2.9" # DEPRECATED here for geogebra6
+     "electron-14.2.9" # DEPRECATED: here for geogebra6
   ];
 }
