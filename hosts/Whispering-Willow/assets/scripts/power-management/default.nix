@@ -1,27 +1,22 @@
-{
-  callPackage,
-  fetchFromGitLab,
-  bash,
-  libnotify,
-}:
+with import <nixpkgs> {};
 
-callPackage ../builder.nix rec {
+pkgs.callPackage ../builder.nix rec {
   pname = "power-management";
 
   version = "v2.1.1";
 
-  src = fetchFromGitLab {
+  src = pkgs.fetchFromGitLab {
     repo = "power-management";
     owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
     rev = version;
     sha256 = "sha256-zrThij/dWZA2lGIW1PJpGgjQswydKwgGAS0Y9EHzJ3Q=";
   };
 
-  buildInputs = [
+  buildInputs = with pkgs; [
     bash
   ];
 
-  paths = [
+  paths = with pkgs; [
     libnotify
   ];
 }

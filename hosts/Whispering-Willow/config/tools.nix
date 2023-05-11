@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstable-pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -19,5 +19,6 @@
     gthumb
     rar
     unrar
+    unstable-pkgs.erdtree
   ];
 }

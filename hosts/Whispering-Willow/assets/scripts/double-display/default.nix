@@ -1,15 +1,10 @@
-{
-  callPackage,
-  fetchFromGitLab,
-  bash,
-  xrandr,
-}:
+with import <nixpkgs> {};
 
-callPackage ../builder.nix rec {
+pkgs.callPackage ../builder.nix rec {
   pname = "double-display";
   version = "v1.0.2";
 
-  src = fetchFromGitLab {
+  src = pkgs.fetchFromGitLab {
     repo = "double-display";
     owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
     rev = version;
@@ -17,10 +12,10 @@ callPackage ../builder.nix rec {
   };
 
   buildInputs = [
-    bash
+    pkgs.bash
   ];
 
   paths = [
-    xrandr
+    pkgs.xorg.xrandr
   ];
 }

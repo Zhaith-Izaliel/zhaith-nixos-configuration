@@ -1,16 +1,7 @@
-{
-  makeDesktopItem,
-  fetchFromGitLab,
-  callPackage,
-  bash,
-  virt-manager,
-  pstree,
-  looking-glass-client,
-  libnotify,
-}:
+with import <nixpkgs> {};
 
 let
-  startVmDI = makeDesktopItem {
+  startVmDI = pkgs.makeDesktopItem {
     name = "luminous-rafflesia";
     exec = "start-vm -Fi";
     icon = "luminous-rafflesia";
@@ -19,7 +10,7 @@ let
     genericName = "KVM (Luminous Rafflesia)";
     categories = ["Game" "Development" "Graphics"];
   };
-  startVmNoLG = makeDesktopItem {
+  startVmNoLG = pkgs.makeDesktopItem {
     name = "luminous-rafflesia-nolg";
     exec = "start-vm -li";
     icon = "luminous-rafflesia-nolg";
@@ -28,7 +19,7 @@ let
     genericName = "KVM NoLG (Luminous Rafflesia)";
     categories = ["Game" "Development" "Graphics"];
   };
-  startVmWacom = makeDesktopItem {
+  startVmWacom = pkgs.makeDesktopItem {
     name = "luminous-rafflesia-wacom";
     exec = "start-vm --resolution=1920x1080 -i";
     icon = "luminous-rafflesia-wacom";
@@ -38,23 +29,23 @@ let
     categories = ["Game" "Development" "Graphics"];
   };
 in
-callPackage ../builder.nix rec {
+pkgs.callPackage ../builder.nix rec {
   pname = "start-vm";
 
   version = "v2.2.0";
 
-  src = fetchFromGitLab {
+  src = pkgs.fetchFromGitLab {
     repo = "start-vm";
     owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
     rev = version;
     sha256 = "sha256-c/FIIYjsbRK3jQeXjN+8EIkoyTa7CmyB2XSwCIAaiMY=";
   };
 
-  buildInputs = [
+  buildInputs = with pkgs; [
     bash
   ];
 
-  paths = [
+  paths = with pkgs; [
     virt-manager
     pstree
     libnotify

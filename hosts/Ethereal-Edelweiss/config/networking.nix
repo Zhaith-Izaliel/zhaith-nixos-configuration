@@ -2,7 +2,6 @@
 
 {
   networking = {
-    hostName = "Ethereal-Edelweiss"; # Define your hostname.
     domain = "ethereal-edelweiss.cloud";
 
     # wireless.enable = true;  # Enables wireless support via wpa_supplicant.

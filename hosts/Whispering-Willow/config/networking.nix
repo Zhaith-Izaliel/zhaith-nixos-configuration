@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  networking.hostName = "Whispering-Willow"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Per-interface useDHCP will be mandatory in the future, so this generated config

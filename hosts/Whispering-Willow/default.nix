@@ -18,7 +18,6 @@
     ./config/chat.nix
     ./config/development.nix
     ./config/ecryptfs.nix
-    ./config/experimental.nix
     ./config/fonts.nix
     ./config/gnome.nix
     ./config/locale.nix

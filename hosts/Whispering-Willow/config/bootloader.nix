@@ -8,7 +8,7 @@
     grub = {
       enable = true;
       efiSupport = true;
-      theme = "/etc/nixos/assets/grub-theme/vimix";
+      theme = ../assets/grub-theme/vimix;
       #efiInstallAsRemovable = true; # in case canTouchEfiVariables doesn't work for your system
       device = "nodev";
       copyKernels = true;
