@@ -7,7 +7,7 @@ pkgs.callPackage ../builder.nix rec {
 
   src = pkgs.fetchFromGitLab {
     repo = "power-management";
-    owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
+    owner = "Zhaith-Izaliel";
     rev = version;
     sha256 = "sha256-zrThij/dWZA2lGIW1PJpGgjQswydKwgGAS0Y9EHzJ3Q=";
   };

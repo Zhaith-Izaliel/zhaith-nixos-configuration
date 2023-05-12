@@ -39,7 +39,7 @@ pkgs.callPackage ../builder.nix rec {
 
   src = pkgs.fetchFromGitLab {
     repo = "start-vm";
-    owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
+    owner = "Zhaith-Izaliel";
     rev = version;
     sha256 = "sha256-c/FIIYjsbRK3jQeXjN+8EIkoyTa7CmyB2XSwCIAaiMY=";
   };

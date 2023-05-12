@@ -6,7 +6,7 @@ pkgs.callPackage ../builder.nix rec {
 
   src = pkgs.fetchFromGitLab {
     repo = "double-display";
-    owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
+    owner = "Zhaith-Izaliel";
     rev = version;
     sha256 = "sha256-AZPGAUpm9Pr/RwnQBD0epN8M9fkVE1OsMf/FDdCAI6E=";
   };

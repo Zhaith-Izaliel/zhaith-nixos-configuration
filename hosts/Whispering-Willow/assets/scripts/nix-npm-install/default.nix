@@ -6,7 +6,7 @@ pkgs.callPackage ../builder.nix rec {
 
   src = pkgs.fetchFromGitLab {
     repo = "nix-npm-install";
-    owner = "zhaith-izaliel-group/configuration/nixos/nixos-scripts";
+    owner = "Zhaith-Izaliel";
     rev = version;
     sha256 = "sha256-RG2WGe6MKCvIy4hL0QqI1iCHTmrnwZFbGeCQP5Toelk=";
   };
