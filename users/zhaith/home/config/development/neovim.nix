@@ -10,7 +10,7 @@ let
   neovim-config = (import ./config.nix { inherit pkgs lib; });
 in
 {
-  # home.file.".config/nvim/lua".source = neovim-config.lua; # Import config fetched from gitlab
+  home.file.".config/nvim/lua".source = neovim-config.lua; # Import config fetched from gitlab
 
   # Doc Here: https://github.com/NixOS/nixpkgs/blob/nixos-22.11/doc/languages-frameworks/vim.section.md
   programs.neovim = {
