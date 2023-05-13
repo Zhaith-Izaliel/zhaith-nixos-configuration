@@ -56,5 +56,6 @@
     libnotify
     cinnamon.nemo
     gnome.simple-scan
+    gnomeExtensions.paperwm
   ];
 }
