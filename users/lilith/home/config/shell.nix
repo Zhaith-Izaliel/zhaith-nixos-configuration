@@ -18,74 +18,72 @@ in
       chroma
       bat
       any-nix-shell
+      fzf
     ];
 
     programs = {
-    # Command not found for ZSH
-    command-not-found.enable = true;
+      # Command not found for ZSH
+      command-not-found.enable = true;
 
-    z-lua = {
-      enable = true;
-      enableZshIntegration = true;
-      enableAliases = true;
-    };
-
-    # FISH shell
-    fish = {
-      enable = true;
-
-      shellAliases = {
-        ls = "ls --color=auto";
-        ll = "ls --color=auto -lh";
-        grep = "grep --color=auto";
-        ip = "ip --color=auto";
-        tree = "tree -C";
-        cat = "bat";
+      zoxide = {
+        enable = true;
+        enableZshIntegration = true;
       };
 
-      shellInit = ''
-        # ---Exports---
+      zsh = {
+        enable = true;
+        enableAutosuggestions = true;
+        enableCompletion = true;
+        enableSyntaxHighlighting = true;
 
-        # Language
-        set -xg LANG en_US.UTF-8
+        shellAliases = {
+          ls = "ls --color=auto";
+          ll = "ls --color=auto -lh";
+          grep = "grep --color=auto";
+          ip = "ip --color=auto";
+          tree = "tree -C";
+          cat = "ccat";
+          less = "cless";
+          ssh = "kitty +kitten ssh";
+          icat = "kitty +kitten icat";
+        };
 
-        # EDITOR and VISUAL
-        set -xg VISUAL 'vim'
-        set -xg EDITOR 'vim'
+        envExtra = ''
+          # Colorize
+          export ZSH_COLORIZE_TOOL=chroma
+          export ZSH_COLORIZE_CHROMA_FORMATTER=true-color
 
-        # Remove log from direnv
-        set -xg DIRENV_LOG_FORMAT ""
+          # Language
+          export LANG="en_US.UTF-8"
 
-        # Remove greeting
-        set fish_greeting ""
+          # EDITOR and VISUAL
+          export VISUAL="vim"
+          export EDITOR="vim"
 
-        # ---Inits---
-
-        # Nix shell integration
-        any-nix-shell fish --info-right | source
-
-        # Auto use direnv
-        direnv hook fish | source
-
-        # Set vi mode
-        fish_vi_key_bindings
+          # Zsh autosuggestions
+          export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#a5adcb"
         '';
 
-        plugins = [
-          {
-            name = "fish-git";
-            src = pkgs.fetchFromGitHub {
-              owner = "jhillyerd";
-              repo = "plugin-git";
-              rev = "1697adf";
-              sha256 = "sha256-tsw+npcOga8NBM1F8hnsT69k33FS5nK1zaPB1ohasPk=";
-            };
-          }
-          {
-            name = "colored-man-page";
-            src = pkgs.fishPlugins.colored-man-pages;
-          }
-        ];
+        initExtra = ''
+          # Nix shell integration
+          any-nix-shell zsh | source /dev/stdin
+
+          # Auto use direnv
+          eval "$(direnv hook zsh)"
+        '';
+
+        oh-my-zsh = {
+          enable = true;
+
+          plugins = [
+            "vi-mode"
+            "git"
+            "git-flow-avh"
+            "colored-man-pages"
+            "colorize"
+            "command-not-found"
+          ];
+        };
       };
 
       starship = {

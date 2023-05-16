@@ -14,6 +14,6 @@
     ];
     group = "zhaith";
     description = "Virgil Ribeyre";
-    shell = pkgs.fish;
+    shell = pkgs.zsh;
   };
 }

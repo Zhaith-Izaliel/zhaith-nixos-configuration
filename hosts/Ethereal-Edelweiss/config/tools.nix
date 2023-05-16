@@ -16,5 +16,6 @@
     ranger
     git
     direnv
+    viu
   ];
 }

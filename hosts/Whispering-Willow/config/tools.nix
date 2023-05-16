@@ -21,6 +21,7 @@
     unrar
     unstable-pkgs.erdtree
     nix-alien
+    viu
   ];
 
   programs.nix-ld.enable = true;

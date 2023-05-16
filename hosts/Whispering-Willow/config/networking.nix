@@ -13,8 +13,8 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 10003 10004 ];
+  networking.firewall.allowedUDPPorts = [ 10003 10004 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
