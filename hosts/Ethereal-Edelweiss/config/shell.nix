@@ -1,12 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  users.defaultUserShell = pkgs.bash;
-
   services.lorri.enable = true;
 
-  environment.shells = with pkgs; [ fish bash zsh ];
-
-  programs.fish.enable = true;
+  # Enable shells
+  environment.shells = with pkgs; [ zsh bash bashInteractive ];
   programs.zsh.enable = true;
 }

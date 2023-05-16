@@ -1,9 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  environment.shells = with pkgs; [ fish zsh bash bashInteractive ];
+  services.lorri.enable = true;
 
   # Enable shells
-  programs.fish.enable = true;
+  environment.shells = with pkgs; [ zsh bash bashInteractive ];
   programs.zsh.enable = true;
 }
