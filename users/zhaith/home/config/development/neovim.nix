@@ -23,6 +23,7 @@ in
     extraLuaConfig = ''
 
     omnisharp_path = "${pkgs.omnisharp-roslyn}/lib/omnisharp-roslyn/OmniSharp.dll"
+    require('themes')
     require('globals')
     require('options')
     require('keymaps')
@@ -36,7 +37,6 @@ in
     require('plugins')
     require('telescope-config')
     require('notes')
-    require('themes')
     ''; # + neovim-config.init;
 
     plugins = with pkgs.vimPlugins; [
@@ -50,7 +50,7 @@ in
       nvim-neoclip-lua
       nvim-lspconfig
       go-nvim
-      surround-nvim
+      nvim-surround
       vim-illuminate
       nvim-dap
       nvim-dap-ui
@@ -92,6 +92,7 @@ in
       ripgrep
       dotnet-sdk
       viu
+      xclip
     ] ++ lsp-servers;
   };
 }

@@ -12,22 +12,6 @@ let
     rev = "3e3e544"; # Replace with the latest commit hash
     sha256 = "sha256-soEBVlq3ULeiZFAdQYMRFuswIIhI9bclIU8WXjxd7oY=";
   } + /palettes/${catppuccin_flavour}.toml));
-  git-flow-completion = pkgs.stdenv.mkDerivation rec {
-    name = "git-flow-completion";
-    version = "1.1.0";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "bobthecow";
-      repo = name;
-      rev  = version;
-      sha256 = "sha256-ccRJEycguVdsEXVURX74iuKPSDxOR9bdpCUn9aHcL2Y=";
-    };
-
-    installPhase = ''
-      mkdir -p $out
-      cp -r git.fish $out/git-flow.fish
-    '';
-  };
 in
   {
     home.packages = with pkgs; [
@@ -43,12 +27,14 @@ in
 
       zoxide = {
         enable = true;
-        enableFishIntegration = true;
+        enableZshIntegration = true;
       };
 
-      # ZSH and Oh-My-ZSH
-      fish = {
+      zsh = {
         enable = true;
+        enableAutosuggestions = true;
+        enableCompletion = true;
+        enableSyntaxHighlighting = true;
 
         shellAliases = {
           ls = "ls --color=auto";
@@ -56,72 +42,67 @@ in
           grep = "grep --color=auto";
           ip = "ip --color=auto";
           tree = "tree -C";
-          cat = "bat";
+          cat = "ccat";
+          less = "cless";
           ssh = "kitty +kitten ssh";
           icat = "kitty +kitten icat";
         };
 
-        shellAbbrs = {
-          companies = "$HOME/Documents/Work/Companies";
-          freelance = "$HOME/Documents/Work/Freelance";
+        dirHashes = {
           dev = "$HOME/Development";
           templates = "$HOME/Templates";
           documents = "$HOME/Documents";
           pictures = "$HOME/Pictures";
           music = "$HOME/Music";
           downloads = "$HOME/Downloads";
-          cheatsheets = "$HOME/Cheatsheets";
+          notes = "$HOME/Notes";
         };
 
-        shellInit = ''
-          # ---Exports---
+        envExtra = ''
+          # Colorize
+          export ZSH_COLORIZE_TOOL=chroma
+          export ZSH_COLORIZE_CHROMA_FORMATTER=true-color
 
           # Language
-          set -xg LANG en_US.UTF-8
+          export LANG="en_US.UTF-8"
 
           # EDITOR and VISUAL
-          set -xg VISUAL 'nvim'
-          set -xg EDITOR 'nvim'
+          export VISUAL="nvim"
+          export EDITOR="nvim"
 
           # Remove log from direnv
-          set -xg DIRENV_LOG_FORMAT ""
+          export DIRENV_LOG_FORMAT=""
 
-          # Remove greeting
-          set fish_greeting ""
-
-          # ---Inits---
-
-          # Neofetch MOTD
-          set -x NEOFETCH_IMAGE "/home/zhaith/Pictures/Wallpapers/Nord/cats.png"
-          if test "$KITTY_WINDOW_ID" = "1"
-          neofetch --kitty $NEOFETCH_IMAGE
-          end
-
-          # Nix shell integration
-          any-nix-shell fish --info-right | source
-
-          # Auto use direnv
-          direnv hook fish | source
-
-          # Set vi mode
-          fish_vi_key_bindings
+          # Zsh autosuggestions
+          export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#a5adcb"
         '';
 
-        plugins = [
-          {
-            name = "fish-git";
-            src = pkgs.fetchFromGitHub {
-              owner = "jhillyerd";
-              repo = "plugin-git";
-              rev = "1697adf";
-              sha256 = "sha256-tsw+npcOga8NBM1F8hnsT69k33FS5nK1zaPB1ohasPk=";
-            };
-          }
-          {
-            name = "colored-man-page";
-            src = pkgs.fishPlugins.colored-man-pages;
-          }
-        ];
+        initExtra = ''
+          # Neofetch MOTD
+          export NEOFETCH_IMAGE="/home/zhaith/Pictures/Wallpapers/Nord/cats.png"
+          if [ "$KITTY_WINDOW_ID" = "1" ]; then
+            neofetch --kitty $NEOFETCH_IMAGE
+          fi
+
+          # Nix shell integration
+          any-nix-shell zsh | source /dev/stdin
+
+          # Auto use direnv
+          eval "$(direnv hook zsh)"
+        '';
+
+        oh-my-zsh = {
+          enable = true;
+
+          plugins = [
+            "vi-mode"
+            "git"
+            "git-flow-avh"
+            "colored-man-pages"
+            "colorize"
+            "command-not-found"
+          ];
+        };
       };
 
       starship = {
@@ -213,14 +194,13 @@ in
 
         directory.substitutions = {
           Companies = " Companies";
-          Freelance = " Freelance";
           Development = " Development";
           Templates = " Templates";
           Documents = " Documents";
           Pictures = " Pictures";
           Music = " Music";
           Downloads = " Downloads";
-          Cheatsheets = " Cheatsheets";
+          Notes = " Notes";
         };
 
         haskell = {
@@ -241,10 +221,5 @@ in
         };
       } // catppuccin_palette;
     };
-  };
-
-  # HACK: Completion for git-flow for FISH
-  home.file = {
-    ".config/fish/completions/git-flow.fish".source = "${git-flow-completion}/git-flow.fish";
   };
 }
