@@ -10,6 +10,6 @@
     ]; # 'wheel' Enable ‘sudo’ for the user.
     group = "lilith";
     description = "Lilith Izaliel";
-    shell = pkgs.fish;
+    shell = pkgs.zsh;
   };
 }
