@@ -80,8 +80,8 @@ in
 
   # HACK: Adding kittens
   home.file = {
-    ".config/kitty/pass_keys.py".source = "${kittens.vim-kitty-navigator}/pass_keys.py";
-    ".config/kitty/neighboring_window.py".source = "${kittens.vim-kitty-navigator}/neighboring_window.py";
-    ".config/kitty/tab_bar.py".source = lib.cleanSource ./tab_bar.py;
+    "${config.xdg.configHome}/kitty/pass_keys.py".source = "${kittens.vim-kitty-navigator}/pass_keys.py";
+    "${config.xdg.configHome}/kitty/neighboring_window.py".source = "${kittens.vim-kitty-navigator}/neighboring_window.py";
+    "${config.xdg.configHome}/kitty/tab_bar.py".source = lib.cleanSource ./tab_bar.py;
   };
 }
