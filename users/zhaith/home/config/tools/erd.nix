@@ -10,6 +10,10 @@ let
 
     # Using Icons
     --icons
+
+    # Sort
+    --dirs-first
+    --sort name
   '';
 in
 {

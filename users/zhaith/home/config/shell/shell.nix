@@ -193,6 +193,7 @@ in
         };
 
         directory.substitutions = {
+          Work = " Work";
           Companies = " Companies";
           Development = " Development";
           Templates = " Templates";

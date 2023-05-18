@@ -1,4 +1,4 @@
-{config, pkgs, lib, ...}:
+{config, pkgs, unstable-pkgs, lib, ...}:
 
 let
   customPlugins = lib.attrsets.mapAttrsToList
@@ -10,11 +10,14 @@ let
   neovim-config = (import ./config.nix { inherit pkgs lib; });
 in
 {
-  # home.file.".config/nvim/lua".source = neovim-config.lua; # Import config fetched from gitlab
+  # home.file.".config/nvim/lua".source = neovim-config.lua; # Import config
+  # fetched from gitlab
 
-  # Doc Here: https://github.com/NixOS/nixpkgs/blob/nixos-22.11/doc/languages-frameworks/vim.section.md
+  # Doc Here:
+  # https://github.com/NixOS/nixpkgs/blob/nixos-22.11/doc/languages-frameworks/vim.section.md
   programs.neovim = {
     enable = true;
+    package = unstable-pkgs.neovim;
     withNodeJs = true;
     withPython3 = true;
     vimAlias = true;
@@ -22,21 +25,23 @@ in
     vimdiffAlias = true;
     extraLuaConfig = ''
 
-    omnisharp_path = "${pkgs.omnisharp-roslyn}/lib/omnisharp-roslyn/OmniSharp.dll"
-    require('themes')
+    omnisharp_path =
+      "${pkgs.omnisharp-roslyn}/lib/omnisharp-roslyn/OmniSharp.dll"
     require('globals')
     require('options')
     require('keymaps')
     require('autocmd')
     require('commands')
+    require('treesitter')
+    require('themes')
+    require('statusline')
     require('lsp')
     require('completion')
-    require('treesitter')
+    require('formatter')
     require('dap-config')
-    require('statusline')
-    require('plugins')
     require('telescope-config')
     require('notes')
+    require('plugins')
     ''; # + neovim-config.init;
 
     plugins = with pkgs.vimPlugins; [
@@ -45,14 +50,18 @@ in
       vim-sleuth
       {
         plugin = sqlite-lua;
-        config = "let g:sqlite_clib_path = '${pkgs.sqlite.out}/lib/libsqlite3.so'";
+        config = ''
+        let g:sqlite_clib_path = '${pkgs.sqlite.out}/lib/libsqlite3.so'
+        '';
       }
       nvim-neoclip-lua
+      zen-mode-nvim
       nvim-lspconfig
       go-nvim
       nvim-surround
       vim-illuminate
       nvim-dap
+      neorg
       nvim-dap-ui
       nui-nvim
       vim-kitty-navigator
@@ -81,6 +90,7 @@ in
       telescope-nvim
       telescope-symbols-nvim
       telescope-zoxide
+      neorg-telescope
       popup-nvim
     ] ++ customPlugins;
 
@@ -96,3 +106,4 @@ in
     ] ++ lsp-servers;
   };
 }
+

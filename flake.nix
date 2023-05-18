@@ -15,9 +15,11 @@
     };
     grub2-themes.url = "github:/vinceliuice/grub2-themes";
     nix-alien.url = "github:thiagokokada/nix-alien";
+    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
   };
 
-  outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, ...}@attrs:
+  outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, neorg-overlay,
+  ...}@attrs:
   let
     lib = import ./lib { inputs = attrs; };
   in
@@ -49,6 +51,9 @@
         system = "x86_64-linux";
         hostname = "Whispering-Willow";
         stateVersion = "22.05";
+        overlays = [
+          neorg-overlay.overlays.default
+        ];
       };
       "lilith@Ethereal-Edelweiss" = lib.mkHome {
         username = "lilith";
@@ -75,3 +80,4 @@
     };
   });
 }
+
