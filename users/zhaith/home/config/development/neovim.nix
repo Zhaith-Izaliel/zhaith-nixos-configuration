@@ -17,7 +17,6 @@ in
   # https://github.com/NixOS/nixpkgs/blob/nixos-22.11/doc/languages-frameworks/vim.section.md
   programs.neovim = {
     enable = true;
-    package = unstable-pkgs.neovim;
     withNodeJs = true;
     withPython3 = true;
     vimAlias = true;
@@ -55,13 +54,11 @@ in
         '';
       }
       nvim-neoclip-lua
-      zen-mode-nvim
       nvim-lspconfig
       go-nvim
       nvim-surround
       vim-illuminate
       nvim-dap
-      neorg
       nvim-dap-ui
       nui-nvim
       vim-kitty-navigator

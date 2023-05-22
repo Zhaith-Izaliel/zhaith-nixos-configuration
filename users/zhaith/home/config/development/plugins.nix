@@ -79,5 +79,16 @@
       sha256 = "sha256-2gZujR8Isf6klBIjOi7tDpDn1Uu4klSnclSYJ7z3ZKM=";
     };
   };
+
+  nabla-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix rec {
+    pname = "nabla-nvim";
+    version = "8c143ad";
+    src = pkgs.fetchFromGitHub {
+      repo = "nabla.nvim";
+      owner = "jbyuki";
+      rev = version;
+      sha256 = "sha256-YRkqxKn3J4HQZci6Im/25rg4nIVvfuKQ4bmilRQzPJ4=";
+    };
+  };
 }
 
