@@ -87,7 +87,6 @@ in
       telescope-nvim
       telescope-symbols-nvim
       telescope-zoxide
-      neorg-telescope
       popup-nvim
     ] ++ customPlugins;
 

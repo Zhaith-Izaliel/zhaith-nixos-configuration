@@ -216,15 +216,13 @@
       "locked": {
         "lastModified": 1684426544,
         "narHash": "sha256-pfD5Bg4auVft/BxhWCkZ3n0cT2z01QnQt99xp1duSr8=",
-        "owner": "nvim-neorg",
-        "repo": "nixpkgs-neorg-overlay",
+        "path": "/nix/store/ks0l5yc9g6pwyhadv9znfxjqkx34ysiy-source",
         "rev": "696a11f032edc5a74442d058eac399bbe6e8ebc0",
-        "type": "github"
+        "type": "path"
       },
       "original": {
-        "owner": "nvim-neorg",
-        "repo": "nixpkgs-neorg-overlay",
-        "type": "github"
+        "id": "neorg-overlay",
+        "type": "indirect"
       }
     },
     "neorg-telescope": {
