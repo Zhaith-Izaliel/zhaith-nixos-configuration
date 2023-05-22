@@ -22,7 +22,9 @@
     unstable-pkgs.erdtree
     nix-alien
     viu
+    (import ../assets/packages/tape { inherit pkgs; })
   ];
 
   programs.nix-ld.enable = true;
 }
+

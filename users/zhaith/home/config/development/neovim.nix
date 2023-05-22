@@ -83,6 +83,7 @@ in
       undotree
       which-key-nvim
       markdown-preview-nvim
+      vim-markdown-toc
       # Telescope
       telescope-nvim
       telescope-symbols-nvim
