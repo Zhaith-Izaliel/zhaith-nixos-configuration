@@ -1,4 +1,4 @@
-{config, pkgs, lib, ...}:
+{config, pkgs, unstable-pkgs, lib, ...}:
 
 let
   customPlugins = lib.attrsets.mapAttrsToList
@@ -10,8 +10,7 @@ let
   neovim-config = (import ./config.nix { inherit pkgs lib; });
 in
 {
-  # home.file.".config/nvim/lua".source = neovim-config.lua; # Import config
-  # fetched from gitlab
+  home.file.".config/nvim/lua".source = neovim-config.lua; # Import config
 
   # Doc Here:
   # https://github.com/NixOS/nixpkgs/blob/nixos-22.11/doc/languages-frameworks/vim.section.md
@@ -26,22 +25,7 @@ in
 
     omnisharp_path =
       "${pkgs.omnisharp-roslyn}/lib/omnisharp-roslyn/OmniSharp.dll"
-    require('globals')
-    require('options')
-    require('keymaps')
-    require('autocmd')
-    require('commands')
-    require('treesitter')
-    require('themes')
-    require('statusline')
-    require('lsp')
-    require('completion')
-    require('formatter')
-    require('dap-config')
-    require('telescope-config')
-    require('notes')
-    require('plugins')
-    ''; # + neovim-config.init;
+    '' + neovim-config.init;
 
     plugins = with pkgs.vimPlugins; [
       nvim-treesitter.withAllGrammars
@@ -84,6 +68,7 @@ in
       which-key-nvim
       markdown-preview-nvim
       vim-markdown-toc
+      unstable-pkgs.vimPlugins.mini-nvim
       # Telescope
       telescope-nvim
       telescope-symbols-nvim
