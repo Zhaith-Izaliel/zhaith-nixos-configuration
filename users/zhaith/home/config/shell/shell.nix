@@ -155,7 +155,7 @@ in
 
         git_metrics = {
           disabled = false;
-          format = "[ ](bold bg:${gitMetricsSegmentBg})[+$added]($added_style)[ ▏](bg:${gitMetricsSegmentBg})[-$deleted ]($deleted_style)";
+          format = "[ ](bold bg:${gitMetricsSegmentBg})[+$added]($added_style)[ ▏](bg:${gitMetricsSegmentBg})[-$deleted]($deleted_style)";
           added_style = "bold fg:green bg:${gitMetricsSegmentBg}";
           deleted_style = "bold fg:red bg:${gitMetricsSegmentBg}";
         };
@@ -201,7 +201,7 @@ in
           Pictures = " Pictures";
           Music = " Music";
           Downloads = " Downloads";
-          Notes = " Notes";
+          Notes = "󰂺 Notes";
         };
 
         haskell = {
@@ -224,3 +224,4 @@ in
     };
   };
 }
+

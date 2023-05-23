@@ -1,4 +1,4 @@
-{config, pkgs, unstable-pkgs, lib, ...}:
+{config, pkgs, lib, ...}:
 
 let
   customPlugins = lib.attrsets.mapAttrsToList
