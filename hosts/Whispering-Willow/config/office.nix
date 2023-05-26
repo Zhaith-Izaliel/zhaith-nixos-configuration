@@ -6,12 +6,8 @@
     evince
     qalculate-gtk
     calibre
-    geogebra6
     pandoc
     evolution
   ];
-
-  nixpkgs.config.permittedInsecurePackages = [
-     "electron-14.2.9" # DEPRECATED: here for geogebra6
-  ];
 }
+

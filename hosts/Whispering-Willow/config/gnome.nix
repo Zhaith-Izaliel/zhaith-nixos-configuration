@@ -47,15 +47,14 @@
     gnome.totem
     gnome-tour
     gnome.geary
+    gnome.cheese
   ];
 
   environment.systemPackages = with pkgs; [
     gnome.gnome-color-manager
-    gnome.cheese
     gnome.gnome-tweaks
-    libnotify
     cinnamon.nemo
     gnome.simple-scan
-    gnomeExtensions.paperwm
   ];
 }
+
