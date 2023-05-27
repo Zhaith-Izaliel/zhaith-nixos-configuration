@@ -3,13 +3,13 @@
 let
   config = pkgs.stdenv.mkDerivation rec {
     name = "neovim-config";
-    version = "1.1.0";
+    version = "1.2.0";
 
     src = pkgs.fetchFromGitLab {
       repo = name;
-      owner = "zhaith-izaliel-group/configuration";
+      owner = "Zhaith-Izaliel";
       rev = "v${version}";
-      sha256 = "sha256-yrdIHLDubba5X2BEtKcifz9Hz5NZKNTzE3THpBv/mAM=";
+      sha256 = "sha256-XFjhxtXxP2SQp8SWt4d9ocb+EXT2taq2mINOWEK5dIo=";
     };
 
     installPhase = ''
@@ -23,3 +23,4 @@ in
 
   lua = lib.sources.cleanSource "${config}/lua";
 }
+

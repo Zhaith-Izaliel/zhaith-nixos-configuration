@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstable-pkgs, ... }:
 
 {
   # Fonts
@@ -12,6 +12,7 @@
       cantarell-fonts
       ubuntu_font_family
       nerdfonts
+      unstable-pkgs.nerdfonts  # TEMP: will move after switching to 23.05
       fira-code
       fira-code-symbols
       rictydiminished-with-firacode
@@ -31,3 +32,4 @@
     fontDir.enable = true;
   };
 }
+

@@ -1,7 +1,8 @@
 { pkgs, lib }:
 
 {
-  # Doc Here: https://github.com/NixOS/nixpkgs/blob/nixos-22.11/doc/languages-frameworks/vim.section.md
+  # Doc Here:
+  # https://github.com/NixOS/nixpkgs/blob/nixos-22.11/doc/languages-frameworks/vim.section.md
   neogen = pkgs.vimUtils.buildVimPluginFrom2Nix rec {
     pname = "neogen";
     version = "2.13.2";
@@ -67,4 +68,27 @@
       sha256 = "sha256-c1HwWQlmrtb6TYFU3pp51qpXQ8ah5oRz2htcGhMi37s=";
     };
   };
+
+  nvim-strict = pkgs.vimUtils.buildVimPluginFrom2Nix rec {
+    pname = "nvim-strict";
+    version = "cba2f98";
+    src = pkgs.fetchFromGitHub {
+      repo = pname;
+      owner = "emileferreira";
+      rev = version;
+      sha256 = "sha256-2gZujR8Isf6klBIjOi7tDpDn1Uu4klSnclSYJ7z3ZKM=";
+    };
+  };
+
+  nabla-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix rec {
+    pname = "nabla-nvim";
+    version = "8c143ad";
+    src = pkgs.fetchFromGitHub {
+      repo = "nabla.nvim";
+      owner = "jbyuki";
+      rev = version;
+      sha256 = "sha256-YRkqxKn3J4HQZci6Im/25rg4nIVvfuKQ4bmilRQzPJ4=";
+    };
+  };
 }
+

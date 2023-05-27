@@ -17,7 +17,8 @@
     nix-alien.url = "github:thiagokokada/nix-alien";
   };
 
-  outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, ...}@attrs:
+  outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, neorg-overlay,
+  ...}@attrs:
   let
     lib = import ./lib { inputs = attrs; };
   in
@@ -75,3 +76,4 @@
     };
   });
 }
+

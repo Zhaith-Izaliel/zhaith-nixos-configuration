@@ -193,6 +193,7 @@ in
         };
 
         directory.substitutions = {
+          Work = " Work";
           Companies = " Companies";
           Development = " Development";
           Templates = " Templates";
@@ -200,7 +201,7 @@ in
           Pictures = " Pictures";
           Music = " Music";
           Downloads = " Downloads";
-          Notes = " Notes";
+          Notes = "󰂺 Notes";
         };
 
         haskell = {
@@ -223,3 +224,4 @@ in
     };
   };
 }
+

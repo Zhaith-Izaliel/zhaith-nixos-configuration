@@ -22,15 +22,6 @@ let
     genericName = "KVM NoLG (Luminous Rafflesia)";
     categories = ["Game" "Development" "Graphics"];
   };
-  startVmWacom = pkgs.makeDesktopItem {
-    name = "luminous-rafflesia-wacom";
-    exec = "start-vm --resolution=1920x1080 -i";
-    icon = "luminous-rafflesia-wacom";
-    comment = "Luminous Rafflesia - The Windows KVM VM with GPU Passthrough";
-    desktopName = "Luminous Rafflesia (Wacom)";
-    genericName = "KVM Wacom (Luminous Rafflesia)";
-    categories = ["Game" "Development" "Graphics"];
-  };
 in
 pkgs.callPackage ../builder.nix rec {
   pname = "start-vm";
@@ -60,8 +51,8 @@ pkgs.callPackage ../builder.nix rec {
 
     ln -s ${startVmDI}/share/applications/* $out/share/applications
     ln -s ${startVmNoLG}/share/applications/* $out/share/applications
-    ln -s ${startVmWacom}/share/applications/* $out/share/applications
 
     cp share/icons/* $out/share/icons/hicolor/512x512/apps
   '';
 }
+
