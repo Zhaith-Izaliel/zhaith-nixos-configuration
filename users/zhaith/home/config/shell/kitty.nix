@@ -85,3 +85,4 @@ in
     "${config.xdg.configHome}/kitty/tab_bar.py".source = lib.cleanSource ./tab_bar.py;
   };
 }
+

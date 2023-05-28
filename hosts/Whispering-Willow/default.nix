@@ -19,8 +19,8 @@
     ./config/development.nix
     ./config/ecryptfs.nix
     ./config/fonts.nix
-    # ./config/gnome.nix
-    ./config/graphics.nix
+    ./config/gnome.nix
+    # ./config/graphics.nix
     ./config/locale.nix
     ./config/multimedia.nix
     ./config/networking.nix

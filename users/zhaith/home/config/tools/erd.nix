@@ -12,7 +12,7 @@ let
     --icons
 
     # Sort
-    --dirs-first
+    --dir-order first
     --sort name
   '';
 in
