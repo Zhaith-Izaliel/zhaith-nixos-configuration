@@ -6,7 +6,7 @@ let
     --human
 
     # Inverted tree
-    --inverted
+    --layout inverted
 
     # Using Icons
     --icons
@@ -19,3 +19,4 @@ in
 {
   home.file."${config.xdg.configHome}/erdtree/.erdtreerc".text = erdConfig;
 }
+

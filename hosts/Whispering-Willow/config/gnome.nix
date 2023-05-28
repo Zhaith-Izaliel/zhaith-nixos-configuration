@@ -14,6 +14,7 @@
       gdm = {
         enable = true;
         wayland = false;
+        debug = true;
       };
     };
 
