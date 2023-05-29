@@ -35,17 +35,17 @@
     ./config/tools.nix
 
     # ----------------------------- Custom Scripts ----------------------------- #
-    ./assets/scripts/scripts.nix
+    ./assets/scripts
 
     # -------------------------------------------------------------------------- #
     #                              Switchable Config                             #
     # -------------------------------------------------------------------------- #
 
     # ----------------------------------- VM ----------------------------------- #
-    ./config/switchable/vm/index.nix
+    ./config/switchable/vm
 
     # --------------------------------- NVidia --------------------------------- #
-    #./config/switchable/nvidia/index.nix
+    #./config/switchable/nvidia
   ];
 
   # This value determines the NixOS release from which the default
