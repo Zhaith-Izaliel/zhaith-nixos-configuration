@@ -11,6 +11,7 @@
       powerline-fonts
       cantarell-fonts
       ubuntu_font_family
+      corefonts
       nerdfonts
       fira-code
       fira-code-symbols

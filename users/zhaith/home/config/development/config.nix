@@ -3,13 +3,13 @@
 let
   config = pkgs.stdenv.mkDerivation rec {
     name = "neovim-config";
-    version = "1.2.0";
+    version = "1.3.0";
 
     src = pkgs.fetchFromGitLab {
       repo = name;
       owner = "Zhaith-Izaliel";
       rev = "v${version}";
-      sha256 = "sha256-XFjhxtXxP2SQp8SWt4d9ocb+EXT2taq2mINOWEK5dIo=";
+      sha256 = "sha256-SJ/p3vmGtuMwt4h/2ekjJIYdh05lM/7xNjZyLahfEIg";
     };
 
     installPhase = ''
