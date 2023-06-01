@@ -27,7 +27,7 @@
       Whispering-Willow = lib.mkSystem {
         hostname = "Whispering-Willow";
         system = "x86_64-linux";
-        users = [ "zhaith" "lilith" ];
+        users = [ "zhaith" ];
         extraModules = [
           grub2-themes.nixosModules.default
         ];
@@ -50,13 +50,6 @@
         system = "x86_64-linux";
         hostname = "Whispering-Willow";
         stateVersion = "22.05";
-      };
-
-      "lilth@Whispering-Willow" = lib.mkHome {
-        username = "lilith";
-        system = "x86_64-linux";
-        hostname = "Whispering-Willow";
-        stateVersion = "21.05";
       };
 
       "lilith@Ethereal-Edelweiss" = lib.mkHome {
