@@ -14,7 +14,7 @@
     enable = true;
     ports = [ 4242 ];
     openFirewall = true;
-    passwordAuthentication = false;
+    settings.PasswordAuthentication = false;
     allowSFTP = true;
     sftpServerExecutable = "internal-sftp";
   };
@@ -24,3 +24,4 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE72R8aIght+Ci0DjXvXJ4l1UZ2f7/phFHc5gfqJ16E4 virgil.ribeyre@protonmail.com"
   ];
 }
+
