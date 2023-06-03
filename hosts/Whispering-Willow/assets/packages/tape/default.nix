@@ -18,6 +18,8 @@ pkgs.appimageTools.wrapType2 {
       $out/share/applications/${name}.desktop
     sed -i "s/.*Exec.*/Exec=${name}/" \
       $out/share/applications/${name}.desktop
+    mkdir -p $out/share/icons
+    cp -r ${appimageContents}/usr/share/icons/* $out/share/icons
   '';
 }
 

@@ -11,8 +11,8 @@
       powerline-fonts
       cantarell-fonts
       ubuntu_font_family
+      corefonts
       nerdfonts
-      unstable-pkgs.nerdfonts  # TEMP: will move after switching to 23.05
       fira-code
       fira-code-symbols
       rictydiminished-with-firacode

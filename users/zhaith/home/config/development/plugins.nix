@@ -90,5 +90,16 @@
       sha256 = "sha256-YRkqxKn3J4HQZci6Im/25rg4nIVvfuKQ4bmilRQzPJ4=";
     };
   };
+
+  coq_nvim = pkgs.vimUtils.buildVimPluginFrom2Nix rec {
+    pname = "coq_nvim";
+    version = "7d7cebb";
+    src = pkgs.fetchFromGitHub {
+      repo = pname;
+      owner = "ms-jpq";
+      rev = version;
+      sha256 = "sha256-WW6t0OfMaemUr0nnje8XiGyeH6ROtGZtQEKQNw3Lpa4=";
+    };
+  };
 }
 

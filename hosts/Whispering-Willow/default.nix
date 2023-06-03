@@ -20,6 +20,7 @@
     ./config/ecryptfs.nix
     ./config/fonts.nix
     ./config/gnome.nix
+    # ./config/graphics.nix
     ./config/locale.nix
     ./config/multimedia.nix
     ./config/networking.nix
@@ -34,17 +35,17 @@
     ./config/tools.nix
 
     # ----------------------------- Custom Scripts ----------------------------- #
-    ./assets/scripts/scripts.nix
+    ./assets/scripts
 
     # -------------------------------------------------------------------------- #
     #                              Switchable Config                             #
     # -------------------------------------------------------------------------- #
 
     # ----------------------------------- VM ----------------------------------- #
-    ./config/switchable/vm/index.nix
+    ./config/switchable/vm
 
     # --------------------------------- NVidia --------------------------------- #
-    #./config/switchable/nvidia/index.nix
+    #./config/switchable/nvidia
   ];
 
   # This value determines the NixOS release from which the default
@@ -53,6 +54,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.05"; # Did you read the comment?
+  system.stateVersion = "23.05"; # Did you read the comment?
 }
 
