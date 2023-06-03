@@ -4,10 +4,6 @@ let
   kittens = import ./kitten.nix { inherit pkgs lib; };
 in
 {
-  home.packages = with pkgs; [
-    tdrop
-  ];
-
   programs = {
     kitty = {
       enable = true;
@@ -15,7 +11,7 @@ in
       font = {
         package = pkgs.fira-code;
         name = "Fira Code";
-        size = 14;
+        size = 16;
       };
 
       settings = {
@@ -28,6 +24,7 @@ in
         enable_audio_bell = false;
         allow_remote_control = true; # Used with vim-kitty
         listen_on = "unix:@mykitty"; # Used with vim-kitty
+        linux_display_server = "wayland";
         # Tab Bar
         tab_bar_edge = "bottom";
         tab_bar_align = "left";
@@ -68,16 +65,6 @@ in
     };
   };
 
-  services.sxhkd = {
-    enable = true;
-    keybindings = {
-      "super + shift + t" = "${pkgs.tdrop}/bin/tdrop -ma -h 100% -w 100% kitty --start-as fullscreen";
-    };
-  };
-
-  # NOTE: Used in tandem with sxhkd to work with its enable option.
-  xsession.enable = true;
-
   # HACK: Adding kittens
   home.file = {
     "${config.xdg.configHome}/kitty/pass_keys.py".source = "${kittens.vim-kitty-navigator}/pass_keys.py";
@@ -85,3 +72,4 @@ in
     "${config.xdg.configHome}/kitty/tab_bar.py".source = lib.cleanSource ./tab_bar.py;
   };
 }
+

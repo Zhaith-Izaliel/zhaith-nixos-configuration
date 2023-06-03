@@ -6,16 +6,17 @@ let
     --human
 
     # Inverted tree
-    --inverted
+    --layout inverted
 
     # Using Icons
     --icons
 
     # Sort
-    --dirs-first
+    --dir-order first
     --sort name
   '';
 in
 {
   home.file."${config.xdg.configHome}/erdtree/.erdtreerc".text = erdConfig;
 }
+

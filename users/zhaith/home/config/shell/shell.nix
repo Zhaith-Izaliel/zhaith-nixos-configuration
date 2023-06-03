@@ -41,7 +41,6 @@ in
           ll = "ls --color=auto -lh";
           grep = "grep --color=auto";
           ip = "ip --color=auto";
-          tree = "tree -C";
           cat = "ccat";
           less = "cless";
           ssh = "kitty +kitten ssh";

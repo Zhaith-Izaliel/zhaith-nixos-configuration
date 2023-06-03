@@ -25,8 +25,9 @@
     mono
     dotnet-sdk
 
-    mongodb-tools # TEMP: For FV
+    # mongodb-tools # TEMP: For FV
   ];
 
-  services.mongodb.enable = true; # TEMP: For FV
+  # services.mongodb.enable = true; # TEMP: For FV
 }
+

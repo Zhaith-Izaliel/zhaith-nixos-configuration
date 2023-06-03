@@ -1,6 +1,5 @@
 {
   pkgs,
-  unstable-pkgs,
 }:
 
 let
@@ -43,7 +42,7 @@ pkgs.callPackage ../builder.nix rec {
     virt-manager
     pstree
     libnotify
-    unstable-pkgs.looking-glass-client
+    looking-glass-client
   ];
 
   desktopItemPhase = ''

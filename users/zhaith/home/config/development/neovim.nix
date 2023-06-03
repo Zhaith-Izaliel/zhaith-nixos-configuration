@@ -1,4 +1,4 @@
-{config, pkgs, unstable-pkgs, lib, ...}:
+{pkgs, unstable-pkgs, lib, ...}:
 
 let
   customPlugins = lib.attrsets.mapAttrsToList
@@ -62,13 +62,12 @@ in
       alpha-nvim
       mkdir-nvim
       yankring
-      coq_nvim
       coq-artifacts
       undotree
       which-key-nvim
       markdown-preview-nvim
       vim-markdown-toc
-      unstable-pkgs.vimPlugins.mini-nvim
+      mini-nvim
       # Telescope
       telescope-nvim
       telescope-symbols-nvim
@@ -80,7 +79,7 @@ in
       graphviz
       universal-ctags
       watchman
-      virtualenv
+      python310Packages.virtualenv
       ripgrep
       dotnet-sdk
       viu

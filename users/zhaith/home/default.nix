@@ -6,7 +6,7 @@
     ./config/browser.nix
     ./config/development/development.nix
     ./config/development/neovim.nix
-    ./config/gnome.nix
+    # ./config/gnome.nix
     ./config/mail.nix
     ./config/mpd.nix
     ./config/nextcloud.nix
