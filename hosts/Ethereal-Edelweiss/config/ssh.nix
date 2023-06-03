@@ -14,7 +14,7 @@
     enable = true;
     ports = [ 4242 ];
     openFirewall = true;
-    config.passwordAuthentication = false;
+    settings.passwordAuthentication = false;
     allowSFTP = true;
     sftpServerExecutable = "internal-sftp";
   };
