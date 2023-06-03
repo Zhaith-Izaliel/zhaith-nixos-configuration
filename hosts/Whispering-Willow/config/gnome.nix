@@ -21,6 +21,7 @@
     # Gnome
     desktopManager.gnome = {
       enable = true;
+      debug = true;
     };
   };
 
