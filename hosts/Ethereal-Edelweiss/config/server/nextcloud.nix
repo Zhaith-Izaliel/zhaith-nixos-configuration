@@ -11,7 +11,7 @@
     https = true;
 
     # Nextcloud Version
-    package = pkgs.nextcloud25;
+    package = pkgs.nextcloud26;
 
     # IMPORTANT set it to true if using server-side encryption
     enableBrokenCiphersForSSE = false;
