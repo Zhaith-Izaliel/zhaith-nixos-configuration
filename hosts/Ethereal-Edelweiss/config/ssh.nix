@@ -14,7 +14,7 @@
     enable = true;
     ports = [ 4242 ];
     openFirewall = true;
-    settings.passwordAuthentication = false;
+    settings.PasswordAuthentication = false;
     allowSFTP = true;
     sftpServerExecutable = "internal-sftp";
   };
