@@ -83,7 +83,7 @@ in
     };
     bluetooth.enable = true;
   };
-  environment.etc."pipewire/pipewire.conf.d/90-low-latency.conf".source =
-    json.generate "90-low-latency.conf" low-latency-config;
+  # environment.etc."pipewire/pipewire.conf.d/90-low-latency.conf".source =
+  #   json.generate "90-low-latency.conf" low-latency-config;
 }
 

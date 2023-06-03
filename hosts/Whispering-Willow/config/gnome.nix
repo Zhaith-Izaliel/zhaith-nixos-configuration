@@ -10,18 +10,19 @@
 
     libinput.enable = true;
 
-    displayManager = {
-      gdm = {
-        enable = true;
-        wayland = false;
-        debug = true;
-      };
+    displayManager.gdm = {
+      enable = true;
+      wayland = true;
     };
 
     # Gnome
     desktopManager.gnome = {
       enable = true;
-      debug = true;
+      extraGSettingsOverrides = ''
+        [org.gnome.mutter]
+        experimental-features=['scale-monitor-framebuffer']
+      '';
+      extraGSettingsOverridePackages = [ pkgs.gnome.mutter ];
     };
   };
 
@@ -57,6 +58,22 @@
     gnome.gnome-tweaks
     cinnamon.nemo
     gnome.simple-scan
+    (pkgs.catppuccin-gtk.override {
+      accents = [ "blue" "flamingo" "green" "lavender" "maroon" "mauve" "peach"
+      "pink" "red" "rosewater" "sapphire" "sky" "teal" "yellow" ];
+      size = "standard";
+      variant = "macchiato";
+    })
+    catppuccin-cursors.macchiatoDark
+    papirus-icon-theme
+    gnomeExtensions.appindicator
+    gnomeExtensions.espresso
+    gnomeExtensions.clipboard-indicator
+    gnomeExtensions.color-picker
+    gnomeExtensions.customize-ibus
+    gnomeExtensions.just-perfection
+    gnomeExtensions.places-status-indicator
+    gnomeExtensions.workspace-indicator
   ];
 }
 

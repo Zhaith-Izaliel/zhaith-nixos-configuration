@@ -5,8 +5,13 @@
     enable = true;
 
     theme = {
-      name = "Catppuccin-Dark";
-      package = pkgs.catppuccin-gtk;
+      name = "Catppuccin-Macchiato-Standard-Sapphire-Dark";
+      package = pkgs.catppuccin-gtk.override {
+      accents = [ "blue" "flamingo" "green" "lavender" "maroon" "mauve" "peach"
+      "pink" "red" "rosewater" "sapphire" "sky" "teal" "yellow" ];
+      size = "standard";
+      variant = "macchiato";
+    };
     };
 
     cursorTheme = {
@@ -45,3 +50,4 @@
     workspace-indicator
   ];
 }
+

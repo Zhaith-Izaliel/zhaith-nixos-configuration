@@ -15,7 +15,7 @@ in
       font = {
         package = pkgs.fira-code;
         name = "Fira Code";
-        size = 14;
+        size = 16;
       };
 
       settings = {
@@ -28,6 +28,7 @@ in
         enable_audio_bell = false;
         allow_remote_control = true; # Used with vim-kitty
         listen_on = "unix:@mykitty"; # Used with vim-kitty
+        linux_display_server = "wayland";
         # Tab Bar
         tab_bar_edge = "bottom";
         tab_bar_align = "left";
