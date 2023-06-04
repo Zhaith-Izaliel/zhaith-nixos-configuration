@@ -1,9 +1,8 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   services.ddclient = {
     enable = true;
-    use = "web, web=checkip.dyndns.com, web-skip='Current IP Address: '";
     username = "ethereal-edelweiss.cloud-zhaith";
     server = "www.ovh.com";
     domains = [
@@ -17,3 +16,4 @@
     zone = "dns101.ovh.net";
   };
 }
+

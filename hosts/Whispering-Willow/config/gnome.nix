@@ -62,6 +62,7 @@
       accents = [ "blue" "flamingo" "green" "lavender" "maroon" "mauve" "peach"
       "pink" "red" "rosewater" "sapphire" "sky" "teal" "yellow" ];
       size = "standard";
+      tweaks = [ "rimless" ];
       variant = "macchiato";
     })
     catppuccin-cursors.macchiatoDark

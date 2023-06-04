@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   gtk = {
@@ -9,6 +9,7 @@
       package = pkgs.catppuccin-gtk.override {
       accents = [ "blue" "flamingo" "green" "lavender" "maroon" "mauve" "peach"
       "pink" "red" "rosewater" "sapphire" "sky" "teal" "yellow" ];
+      tweaks = [ "rimless" ];
       size = "standard";
       variant = "macchiato";
     };
