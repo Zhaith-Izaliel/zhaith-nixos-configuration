@@ -3,6 +3,7 @@
 {
   services.ddclient = {
     enable = true;
+    use = "if, if=enp4s0";
     username = "ethereal-edelweiss.cloud-zhaith";
     server = "www.ovh.com";
     domains = [
