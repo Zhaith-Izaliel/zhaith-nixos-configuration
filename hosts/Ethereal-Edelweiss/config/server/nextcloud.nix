@@ -24,6 +24,21 @@
     # Max upload size for files
     maxUploadSize = "10G";
 
+    phpOptions = {
+      catch_workers_output = "yes";
+      display_errors = "stderr";
+      error_reporting = "E_ALL & ~E_DEPRECATED & ~E_STRICT";
+      expose_php = "Off";
+      "opcache.enable_cli" = "1";
+      "opcache.fast_shutdown" = "1";
+      "opcache.interned_strings_buffer" = "16";
+      "opcache.max_accelerated_files" = "10000";
+      "opcache.memory_consumption" = "128";
+      "opcache.revalidate_freq" = "1";
+      "openssl.cafile" = "/etc/ssl/certs/ca-certificates.crt";
+      short_open_tag = "Off";
+    };
+
     config = {
       # Further forces Nextcloud to use HTTPS
       overwriteProtocol = "https";
