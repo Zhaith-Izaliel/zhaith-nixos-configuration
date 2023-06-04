@@ -4,7 +4,6 @@
   services.ddclient = {
     enable = true;
     use = "web";
-    web = "dyndns";
     ssl = true;
     username = "ethereal-edelweiss.cloud-zhaith";
     server = "www.ovh.com";
@@ -17,6 +16,9 @@
     passwordFile = "/var/ddclient-password";
     protocol = "dyndns2";
     zone = "dns101.ovh.net";
+    extraConfig = ''
+      web=dyndns
+    '';
   };
 }
 
