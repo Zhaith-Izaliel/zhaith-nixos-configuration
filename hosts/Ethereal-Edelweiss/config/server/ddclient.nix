@@ -5,6 +5,7 @@
     enable = true;
     use = "web, web=dyndns";
     ssl = false;
+    ipv6 = true;
     username = "ethereal-edelweiss.cloud-zhaith";
     server = "www.ovh.com";
     domains = [
