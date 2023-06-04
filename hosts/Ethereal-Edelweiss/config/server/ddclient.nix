@@ -3,8 +3,8 @@
 {
   services.ddclient = {
     enable = true;
-    use = "web, web=ip4only.me";
-    ssl = true;
+    use = "web, web=dyndns";
+    ssl = false;
     username = "ethereal-edelweiss.cloud-zhaith";
     server = "www.ovh.com";
     domains = [
