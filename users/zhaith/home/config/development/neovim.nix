@@ -68,6 +68,7 @@ in
       vim-markdown-toc
       mini-nvim
       crates-nvim
+      trouble-nvim
       # Telescope
       telescope-nvim
       telescope-symbols-nvim
