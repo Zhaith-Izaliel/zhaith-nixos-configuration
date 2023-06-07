@@ -1,4 +1,4 @@
-{pkgs, unstable-pkgs, lib, ...}:
+{pkgs, lib, ...}:
 
 let
   customPlugins = lib.attrsets.mapAttrsToList
@@ -54,7 +54,6 @@ in
       comment-nvim
       luasnip
       nvim-web-devicons
-      rust-tools-nvim
       plenary-nvim
       rest-nvim
       catppuccin-nvim
@@ -68,6 +67,7 @@ in
       markdown-preview-nvim
       vim-markdown-toc
       mini-nvim
+      crates-nvim
       # Telescope
       telescope-nvim
       telescope-symbols-nvim

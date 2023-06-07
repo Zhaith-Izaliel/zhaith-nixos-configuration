@@ -13,7 +13,7 @@
     Service = {
       Type = "simple";
       Restart = "always";
-      ExecStart = "${pkgs.protonmail-bridge}/bin/protonmail-bridge --no-window --log-level info";
+      ExecStart = "${pkgs.protonmail-bridge}/bin/protonmail-bridge -n --log-level info";
     };
 
     Install = {

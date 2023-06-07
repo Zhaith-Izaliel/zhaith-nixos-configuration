@@ -22,4 +22,7 @@
   cmake-language-server = pkgs.cmake-language-server;
 
   omnisharp = pkgs.omnisharp-roslyn;
+
+  ltex = pkgs.ltex-ls;
 }
+

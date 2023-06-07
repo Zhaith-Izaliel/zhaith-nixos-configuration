@@ -101,5 +101,17 @@
       sha256 = "sha256-WW6t0OfMaemUr0nnje8XiGyeH6ROtGZtQEKQNw3Lpa4=";
     };
   };
+
+  rust-tools-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix rec {
+    pname = "rust-tools-nvim";
+    version = "e39cb93";
+    src = pkgs.fetchFromGitHub {
+      repo = "rust-tools.nvim";
+      owner = "Ciel-MC";
+      rev = version;
+      sha256 = "sha256-U4rJLMEWH/Cls8i/EMvDxUCCoh0kEZYrK51D1luLWPw=";
+    };
+  };
+
 }
 
