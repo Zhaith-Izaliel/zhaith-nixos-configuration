@@ -1,5 +1,5 @@
 # Enable the GNOME Desktop Environment.
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # XServer
@@ -12,7 +12,6 @@
 
     displayManager.gdm = {
       enable = true;
-      wayland = true;
     };
 
     # Gnome
@@ -58,23 +57,6 @@
     gnome.gnome-tweaks
     cinnamon.nemo
     gnome.simple-scan
-    (pkgs.catppuccin-gtk.override {
-      accents = [ "blue" "flamingo" "green" "lavender" "maroon" "mauve" "peach"
-      "pink" "red" "rosewater" "sapphire" "sky" "teal" "yellow" ];
-      size = "standard";
-      tweaks = [ "rimless" ];
-      variant = "macchiato";
-    })
-    catppuccin-cursors.macchiatoDark
-    papirus-icon-theme
-    gnomeExtensions.appindicator
-    gnomeExtensions.espresso
-    gnomeExtensions.clipboard-indicator
-    gnomeExtensions.color-picker
-    gnomeExtensions.customize-ibus
-    gnomeExtensions.just-perfection
-    gnomeExtensions.places-status-indicator
-    gnomeExtensions.workspace-indicator
   ];
 }
 

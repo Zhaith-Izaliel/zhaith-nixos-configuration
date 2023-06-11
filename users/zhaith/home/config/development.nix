@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ ... }:
 {
   # Git dot file
   programs = {
@@ -19,3 +19,4 @@
     enableNotifications = true;
   };
 }
+
