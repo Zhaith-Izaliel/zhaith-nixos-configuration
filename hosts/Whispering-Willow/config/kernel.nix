@@ -1,8 +1,9 @@
 # Boot loader config
-{ config, pkgs, ... }:
+{ ... }:
 
 let
-  # IMPORTANT Change these pcis for your vm GPU (https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF#Ensuring_that_the_groups_are_valid)
+  # IMPORTANT: Change these pcis for your vm GPU
+  # (https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF#Ensuring_that_the_groups_are_valid)
   pcis = "0000:01:00.0 0000:01:00.1";
 in
 {
@@ -30,6 +31,7 @@ in
 
       kernelModules = [ "i915" ];
 
+      # NOTE: Comment out to remove binding at boot
       preDeviceCommands = ''
         for DEV in ${pcis}; do
           echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
@@ -37,6 +39,8 @@ in
         modprobe -i vfio-pci
       '';
     };
+
+    # NOTE: Comment out to unbind HDMI port at boot
     extraModprobeConfig = ''
       blacklist nouveau
       options nouveau modeset=0

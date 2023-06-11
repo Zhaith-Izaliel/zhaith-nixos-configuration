@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
@@ -20,7 +20,8 @@
     ./config/ecryptfs.nix
     ./config/fonts.nix
     ./config/gnome.nix
-    # ./config/graphics.nix
+    ./config/graphics.nix
+    ./config/kernel.nix
     ./config/locale.nix
     ./config/multimedia.nix
     ./config/networking.nix
@@ -33,19 +34,10 @@
     ./config/ssh.nix
     ./config/tex.nix
     ./config/tools.nix
+    ./config/vm.nix
 
     # ----------------------------- Custom Scripts ----------------------------- #
     ./assets/scripts
-
-    # -------------------------------------------------------------------------- #
-    #                              Switchable Config                             #
-    # -------------------------------------------------------------------------- #
-
-    # ----------------------------------- VM ----------------------------------- #
-    ./config/switchable/vm
-
-    # --------------------------------- NVidia --------------------------------- #
-    #./config/switchable/nvidia
   ];
 
   # This value determines the NixOS release from which the default

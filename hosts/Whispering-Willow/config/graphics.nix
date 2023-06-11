@@ -1,14 +1,22 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   services.xserver = {
+    videoDrivers = [ "modesetting" ];
+    displayManager.gdm.wayland = true;
+  };
+
+  hardware.opengl = {
     enable = true;
+    driSupport = true;
 
-    layout = "fr";
-
-    libinput.enable = true;
-
-    windowManager.leftwm.enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
+      mesa
+    ];
   };
 }
 

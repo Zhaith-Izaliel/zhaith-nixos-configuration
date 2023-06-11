@@ -15,9 +15,10 @@
     };
     grub2-themes.url = "github:/vinceliuice/grub2-themes";
     nix-alien.url = "github:thiagokokada/nix-alien";
+    zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config";
   };
 
-  outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien,
+  outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, zhaith-neovim,
   ...}@attrs:
   let
     lib = import ./lib { inputs = attrs; };
@@ -50,6 +51,9 @@
         system = "x86_64-linux";
         hostname = "Whispering-Willow";
         stateVersion = "22.05";
+        extraModules = [
+          zhaith-neovim.nixosModules.default
+        ];
       };
 
       "lilith@Ethereal-Edelweiss" = lib.mkHome {
