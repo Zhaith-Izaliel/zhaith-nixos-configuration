@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 
 let
   gitMetricsSegmentBg = "black";
@@ -59,8 +59,8 @@ in
 
         envExtra = ''
           # Colorize
-          export ZSH_COLORIZE_TOOL=chroma
-          export ZSH_COLORIZE_CHROMA_FORMATTER=true-color
+          export ZSH_COLORIZE_TOOL="chroma"
+          export ZSH_COLORIZE_CHROMA_FORMATTER="terminal16m"
 
           # Language
           export LANG="en_US.UTF-8"

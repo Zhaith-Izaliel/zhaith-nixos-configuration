@@ -10,6 +10,7 @@ let
     comment = "Luminous Rafflesia - The Windows KVM VM with GPU Passthrough";
     desktopName = "Luminous Rafflesia";
     genericName = "KVM (Luminous Rafflesia)";
+    startupWMClass = "LuminousRafflesia";
     categories = ["Game" "Development" "Graphics"];
   };
   startVmNoLG = pkgs.makeDesktopItem {
@@ -19,6 +20,7 @@ let
     comment = "Luminous Rafflesia - The Windows KVM VM with GPU Passthrough";
     desktopName = "Luminous Rafflesia (No Looking-Glass)";
     genericName = "KVM NoLG (Luminous Rafflesia)";
+    startupWMClass = "LuminousRafflesia";
     categories = ["Game" "Development" "Graphics"];
   };
 in

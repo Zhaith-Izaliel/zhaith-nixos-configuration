@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   programs.firefox = {
@@ -76,3 +76,4 @@
     };
   };
 }
+

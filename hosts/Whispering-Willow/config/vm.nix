@@ -1,12 +1,12 @@
 { config, pkgs, ... }:
 
 let
-  # IMPORTANT Update these values for your vms and your wanting core isolation
+  # IMPORTANT: Update these values for your vms and your wanting core isolation
   totalCores = "0-15";
   hostCores = "0-3,8-11";
-  vmCores = "4-7,12-15"; # NOTE This variable isn't used, but help defining isolated cores
+  vmCores = "4-7,12-15"; # NOTE: This variable isn't used, but help defining isolated cores
   vmName = "Luminous-Rafflesia";
-  # NOTE This variable is used in the script start-vm
+  # NOTE: This variable is used in the script start-vm
   isolateCpuVariableName = "ISOLATE_CPUS";
 in
 {
@@ -59,3 +59,4 @@ in
     ln -sf ${qemuHook} "${libvirtHooks}/qemu"
   '';
 }
+

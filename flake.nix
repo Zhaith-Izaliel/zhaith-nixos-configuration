@@ -13,9 +13,12 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
-    grub2-themes.url = "github:/vinceliuice/grub2-themes";
+    grub2-themes ={
+      url = "github:/vinceliuice/grub2-themes";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-alien.url = "github:thiagokokada/nix-alien";
-    zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config";
+    zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
   };
 
   outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, zhaith-neovim,

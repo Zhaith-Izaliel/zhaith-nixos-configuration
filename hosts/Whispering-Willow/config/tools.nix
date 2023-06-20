@@ -19,12 +19,16 @@
     gthumb
     rar
     unrar
-    unstable-pkgs.erdtree
+    erdtree
     nix-alien
     viu
     (import ../assets/packages/tape { inherit pkgs; })
   ];
 
   programs.nix-ld.enable = true;
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "nodejs-14.21.3"
+  ];
 }
 
