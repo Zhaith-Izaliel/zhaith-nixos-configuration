@@ -2,7 +2,7 @@
 
 {
   services.xserver = {
-    videoDrivers = [ "modesetting" ];
+    videoDrivers = [ "mesa" ];
     displayManager.gdm.wayland = true;
   };
 

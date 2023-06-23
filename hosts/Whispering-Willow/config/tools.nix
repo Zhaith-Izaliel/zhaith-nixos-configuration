@@ -1,4 +1,4 @@
-{ config, pkgs, unstable-pkgs, ... }:
+{ pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
