@@ -6,6 +6,7 @@ let
 in
 {
   systemd.services.disable-integrated-camera = {
+    enable = true;
     script = ''
       echo 0 > "${usbBusDevices}/${cameraBus}/bConfigurationValue"
     '';
