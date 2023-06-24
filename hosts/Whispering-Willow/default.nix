@@ -21,6 +21,7 @@
     ./config/fonts.nix
     ./config/gnome.nix
     ./config/graphics.nix
+    ./config/hardware.nix
     ./config/kernel.nix
     ./config/locale.nix
     ./config/multimedia.nix
