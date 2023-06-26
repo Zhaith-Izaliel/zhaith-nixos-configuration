@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # Define user accounts. Don't forget to set a password with ‘passwd’.
@@ -11,9 +11,11 @@
       "qemu-libvirtd"
       "scanner"
       "lp"
+      "docker"
     ];
     group = "zhaith";
     description = "Virgil Ribeyre";
     shell = pkgs.zsh;
   };
 }
+
