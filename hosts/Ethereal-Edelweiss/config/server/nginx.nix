@@ -18,6 +18,7 @@
           };
           "/socket" = {
             proxyPass = "http://localhost:8096";
+            proxyWebsockets = true;
             extraConfig = ''
               proxy_http_version 1.1;
               proxy_set_header Upgrade $http_upgrade;
