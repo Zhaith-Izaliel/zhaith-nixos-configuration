@@ -22,26 +22,30 @@
               proxy_http_version 1.1;
               proxy_set_header Upgrade $http_upgrade;
               proxy_set_header Connection "upgrade";
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto $scheme;
               proxy_set_header X-Forwarded-Protocol $scheme;
-
+              proxy_set_header X-Forwarded-Host $http_host;
             '';
           };
         };
       };
 
       "books.ethereal-edelweiss.cloud" = { # Jellyfin
-        addSSL = true;
-        enableACME = true;
-        locations."/" = {
-          proxyPass = "http://localhost:8083";
-        };
-      };
-
-      "nextcloud.ethereal-edelweiss.cloud" = { # Nextcloud
-        addSSL = true;
-        enableACME = true;
+      addSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://localhost:8083";
       };
     };
+
+    "nextcloud.ethereal-edelweiss.cloud" = { # Nextcloud
+    addSSL = true;
+    enableACME = true;
+  };
+};
   };
 
   security.acme = {
@@ -53,3 +57,4 @@
     };
   };
 }
+
