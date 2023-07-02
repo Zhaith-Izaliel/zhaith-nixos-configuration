@@ -796,11 +796,11 @@
         "nixpkgs-unstable": "nixpkgs-unstable_2"
       },
       "locked": {
-        "lastModified": 1688324648,
-        "narHash": "sha256-W/Bcbmlj3p1lBmkiGJzQIWK5JL6dTgqksPaLnLfxnek=",
+        "lastModified": 1688326728,
+        "narHash": "sha256-4bxEGVbc/VJi8h0bymhMmZUNEUyFMndFZ8YyBOC2rQ8=",
         "owner": "Zhaith-Izaliel",
         "repo": "neovim-config",
-        "rev": "98dc56cdc7862744958c201cf11281b7de6816b7",
+        "rev": "1b3de8dc17b9132759615ea40786a5549b1640ab",
         "type": "gitlab"
       },
       "original": {
