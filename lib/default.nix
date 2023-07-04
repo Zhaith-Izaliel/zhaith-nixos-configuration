@@ -1,7 +1,7 @@
 { inputs }:
 
 let
-  makeSystem = import ./make-system { inherit inputs; };
+  makeSystem = import ./make-system.nix { inherit inputs; };
 in
   makeSystem
 
