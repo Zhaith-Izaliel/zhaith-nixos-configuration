@@ -59,7 +59,10 @@
         {
           nixpkgs = {
             inherit overlays;
-            config.allowUnfree = true;
+            config = {
+              allowUnfree = true;
+              allowUnfreePredicate = _: true;
+            };
           };
           programs = {
             home-manager.enable = true;

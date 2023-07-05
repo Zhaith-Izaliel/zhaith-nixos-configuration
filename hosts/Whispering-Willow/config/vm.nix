@@ -12,6 +12,7 @@ in
 {
   environment.systemPackages = with pkgs; [
     virtmanager
+    start-vm
   ];
 
   virtualisation.libvirtd = {

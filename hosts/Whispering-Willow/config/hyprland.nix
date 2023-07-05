@@ -1,10 +1,28 @@
 { pkgs, lib, config, common-attrs, ... }:
 
+let
+  regreet-override = pkgs.greetd.regreet.overrideAttrs (final: prev: {
+    SESSION_DIRS = "${config.services.xserver.displayManager.sessionData.desktops}/share";
+  });
+in
 {
   environment.systemPackages = with pkgs; [
     xdg-desktop-portal-hyprland
+    wl-clipboard
+    cliphist
     dunst
   ] ++ common-attrs.gtk-theme.packages;
+
+  services.xserver.displayManager.session = [
+    {
+      manage = "desktop";
+      name = "hyprland";
+      start = ''
+        ${lib.getExe pkgs.hyprland} &
+        waitPID=$!
+      '';
+    }
+  ];
 
   services.greetd = {
     enable = true;
@@ -12,6 +30,7 @@
 
   programs.regreet = {
     enable = true;
+    package = regreet-override;
     settings = {
       GTK = {
         # Whether to use the dark theme
