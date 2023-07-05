@@ -1,28 +1,13 @@
-{ pkgs, common-attrs, ... }:
+{ pkgs, lib, config, common-attrs, ... }:
 
-let
-  greetdHyprlandConfig = pkgs.writeText "hyprland-greetd.conf" ''
-    regreet; hyprctl dispatch exit
-  '';
-in
 {
   environment.systemPackages = with pkgs; [
-    cinnamon.nemo
     xdg-desktop-portal-hyprland
-    gnome.simple-scan
+    dunst
   ] ++ common-attrs.gtk-theme.packages;
 
   services.greetd = {
     enable = true;
-    settings = {
-      terminal = {
-        vt = 1;
-      };
-      default_session = {
-        command = "${pkgs.hyprland}/bin/Hyprland --config ${greetdHyprlandConfig}";
-        user = "greeter";
-      };
-    };
   };
 
   programs.regreet = {
@@ -36,7 +21,7 @@ in
         cursor_theme_name = common-attrs.gtk-theme.cursorTheme.name;
 
         # Font name and size
-        font_name = "${common-attrs.gtk-theme.font.name} 14";
+        font_name = "${common-attrs.gtk-theme.font.name} 20";
 
         # Icon theme name
         icon_theme_name = common-attrs.gtk-theme.iconTheme.name;
