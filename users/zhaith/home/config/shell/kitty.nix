@@ -11,7 +11,7 @@ in
       font = {
         package = pkgs.fira-code;
         name = "Fira Code";
-        size = 16;
+        size = 12;
       };
 
       settings = {

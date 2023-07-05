@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, common-attrs, ... }:
 
 let
   greetdHyprlandConfig = pkgs.writeText "hyprland-greetd.conf" ''
@@ -10,7 +10,7 @@ in
     cinnamon.nemo
     xdg-desktop-portal-hyprland
     gnome.simple-scan
-  ];
+  ] ++ common-attrs.gtk-theme.packages;
 
   services.greetd = {
     enable = true;
@@ -33,16 +33,16 @@ in
         application_prefer_dark_theme = true;
 
         # Cursor theme name
-        cursor_theme_name = "Adwaita";
+        cursor_theme_name = common-attrs.gtk-theme.cursorTheme.name;
 
         # Font name and size
-        font_name = "Cantarell 16";
+        font_name = "${common-attrs.gtk-theme.font.name} 14";
 
         # Icon theme name
-        icon_theme_name = "Adwaita";
+        icon_theme_name = common-attrs.gtk-theme.iconTheme.name;
 
         # GTK theme name
-        theme_name = "Adwaita";
+        theme_name = common-attrs.gtk-theme.theme.name;
 
       };
 
@@ -60,9 +60,8 @@ in
     enable = true;
     xwayland = {
       enable = true;
-      hdi = true;
+      hidpi = true;
     };
-    nvidiaPatches = true;
   };
 
 }

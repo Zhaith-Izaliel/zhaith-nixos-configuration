@@ -1,6 +1,8 @@
 { ... }:
 
 {
+  nixpkgs.config.allowUnfree = true;
+
   # Importing configuration
   imports = [
     ./config/browser.nix
