@@ -22,6 +22,7 @@
     erdtree
     nix-alien
     viu
+    gitnuro
     (import ../assets/packages/tape { inherit pkgs; })
   ];
 
