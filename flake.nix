@@ -37,6 +37,7 @@
         ];
         overlays = [
           nix-alien.overlays.default
+          (final: prev: import ./overlay { inherit final prev; })
         ];
       };
       Ethereal-Edelweiss = lib.mkSystem {
@@ -56,6 +57,9 @@
         stateVersion = "22.05";
         extraModules = [
           zhaith-neovim.nixosModules.default
+        ];
+        overlays = [
+          (final: prev: import ./overlay { inherit final prev; })
         ];
       };
 

@@ -1,12 +1,11 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [
+  home.packages = with pkgs; [
     onlyoffice-bin
     evince
     qalculate-gtk
     calibre
-    pandoc
     evolution
   ];
 

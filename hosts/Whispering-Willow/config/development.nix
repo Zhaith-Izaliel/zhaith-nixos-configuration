@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   virtualisation.docker.enable = true;
@@ -15,19 +15,10 @@
     # Tools
     onefetch
     docker-compose
-    glab
     universal-ctags
     # Man
     man-pages
     man-pages-posix
-    # Unity
-    unityhub
-    mono
-    dotnet-sdk
-
-    # mongodb-tools # TEMP: For FV
   ];
-
-  # services.mongodb.enable = true; # TEMP: For FV
 }
 
