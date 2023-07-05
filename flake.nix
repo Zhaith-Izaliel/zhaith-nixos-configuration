@@ -19,10 +19,11 @@
     };
     nix-alien.url = "github:thiagokokada/nix-alien";
     zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, zhaith-neovim,
-  ...}@attrs:
+  hyprland, ...}@attrs:
   let
     lib = import ./lib { inputs = attrs; };
   in
@@ -33,6 +34,7 @@
         system = "x86_64-linux";
         users = [ "zhaith" ];
         extraModules = [
+          hyprland.nixosModules.default
           grub2-themes.nixosModules.default
         ];
         overlays = [
@@ -57,6 +59,7 @@
         stateVersion = "22.05";
         extraModules = [
           zhaith-neovim.nixosModules.default
+          hyprland.homeManagerModules.default
         ];
         overlays = [
           (final: prev: import ./overlay { inherit final prev; })

@@ -1,37 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, common-attrs, ... }:
 
 let
-  cursorThemeName = "Catppuccin-Macchiato-Dark-Cursors";
+  gtk-theme = common-attrs.gtk-theme;
 in
 {
   gtk = {
     enable = true;
-
-    theme = {
-      name = "Catppuccin-Macchiato-Standard-Sapphire-Dark";
-      package = pkgs.catppuccin-gtk.override {
-      accents = [ "blue" "flamingo" "green" "lavender" "maroon" "mauve" "peach"
-      "pink" "red" "rosewater" "sapphire" "sky" "teal" "yellow" ];
-      size = "standard";
-      variant = "macchiato";
-    };
-    };
-
-    cursorTheme = {
-      name = "${cursorThemeName}";
-      package = pkgs.catppuccin-cursors.macchiatoDark;
-    };
-
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-
-    font = {
-      package = pkgs.cantarell-fonts;
-      name = "Cantarell Regular";
-      size = 14;
-    };
+    inherit (gtk-theme) theme cursorTheme iconTheme font;
 
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
@@ -42,6 +17,10 @@ in
     };
   };
 
+  services.dunst = {
+    enable = true;
+    inherit (gtk-theme) iconTheme;
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -50,9 +29,6 @@ in
       hidpi = true;
     };
     systemdIntegration = true;
-    extraConfig = ''
-      exec-once=hyprctl setcursor ${cursorThemeName} 32
-    '';
     plugins = [
 
     ];
