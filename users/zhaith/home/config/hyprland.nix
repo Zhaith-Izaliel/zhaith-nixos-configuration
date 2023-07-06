@@ -1,9 +1,13 @@
-{ pkgs, common-attrs, ... }:
+{ common-attrs, ... }:
 
 let
   gtk-theme = common-attrs.gtk-theme;
 in
 {
+  imports = [
+    ../../../../assets/hyprland/default.nix
+  ];
+
   gtk = {
     enable = true;
     inherit (gtk-theme) theme cursorTheme iconTheme font;
@@ -29,6 +33,7 @@ in
       hidpi = true;
     };
     systemdIntegration = true;
+    recommendedEnvironment = true;
     plugins = [
 
     ];
