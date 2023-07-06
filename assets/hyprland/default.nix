@@ -3,7 +3,7 @@
 let
   hyprland-conf = builtins.readFile ./hyprland.conf;
   catppuccin-colors-hyprland = import ./colors.nix { inherit pkgs; };
-  catppuccin-colors-wofi = import ./wofi-style { inherit pkgs; };
+  catppuccin-colors-wofi = import ./wofi-style.nix { inherit pkgs; };
 in
 {
   config = ''

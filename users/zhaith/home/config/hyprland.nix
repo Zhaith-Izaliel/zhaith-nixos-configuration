@@ -6,6 +6,7 @@ let
 in
 {
   home.packages = with pkgs; [
+    xdg-desktop-portal-hyprland
   ];
 
   gtk = {
@@ -40,7 +41,6 @@ in
     systemdIntegration = true;
     recommendedEnvironment = true;
     plugins = with pkgs; [
-      waybar-hyprland
     ];
     extraConfig = hyprland-config.config;
   };

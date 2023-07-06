@@ -8,7 +8,7 @@ pkgs.stdenv.mkDerivation rec {
     owner = "laymoth";
     repo = "wofi";
     rev  = version;
-    sha256 = "";
+    sha256 = "sha256-A34ccUNBxlPevFd1W78vCBOYQ2NyuunImkvt/4HtObs=";
   };
 
   installPhase = ''
