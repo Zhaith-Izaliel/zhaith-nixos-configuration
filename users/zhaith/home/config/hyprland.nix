@@ -41,11 +41,11 @@ in
         stdin
         dictionary
       ];
-      width = { fraction = 0.3; };
-      verticalOffset = { absolute = 0; };
+      width = { fraction = 0.5; };
+      height = { fraction = 0.5; };
       hideIcons = false;
       ignoreExclusiveZones = false;
-      layer = "overlay";
+      layer = "top";
       hidePluginInfo = false;
       closeOnClick = false;
       showResultsImmediately = false;

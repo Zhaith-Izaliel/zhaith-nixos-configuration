@@ -22,7 +22,7 @@
     hyprland.url = "github:hyprwm/Hyprland";
     anyrun = {
       url = "github:Kirottu/anyrun";
-      follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
