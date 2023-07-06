@@ -1,8 +1,9 @@
-{ pkgs, common-attrs, ... }:
+{ pkgs, inputs, common-attrs, ... }:
 
 let
   gtk-theme = common-attrs.gtk-theme;
   hyprland-config = import  ../../../../assets/hyprland/default.nix { inherit pkgs; };
+  anyrun-plugins = inputs.anyrun.packages.${pkgs.system};
 in
 {
   home.packages = with pkgs; [
@@ -27,16 +28,36 @@ in
     inherit (gtk-theme) iconTheme;
   };
 
-  programs.wofi = {
+  programs.anyrun = {
     enable = true;
-    style = hyprland-config.wofi-theme;
+    config = {
+      plugins = with anyrun-plugins; [
+        applications
+        symbols
+        rink
+        shell
+        translate
+        randr
+        stdin
+        dictionary
+      ];
+      width = { fraction = 0.3; };
+      verticalOffset = { absolute = 0; };
+      hideIcons = false;
+      ignoreExclusiveZones = false;
+      layer = "overlay";
+      hidePluginInfo = false;
+      closeOnClick = false;
+      showResultsImmediately = false;
+      maxEntries = null;
+    };
   };
 
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland = {
       enable = true;
-      hidpi = false;
+      hidpi = true;
     };
     systemdIntegration = true;
     recommendedEnvironment = true;

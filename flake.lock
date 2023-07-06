@@ -801,6 +801,9 @@
     },
     "root": {
       "inputs": {
+        "anyrun": [
+          "nixpkgs"
+        ],
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "grub2-themes": "grub2-themes",

@@ -20,10 +20,14 @@
     nix-alien.url = "github:thiagokokada/nix-alien";
     zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
     hyprland.url = "github:hyprwm/Hyprland";
+    anyrun = {
+      url = "github:Kirottu/anyrun";
+      follows = "nixpkgs";
+    };
   };
 
   outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, zhaith-neovim,
-  hyprland, ...}@attrs:
+  hyprland, anyrun, ...}@attrs:
   let
     lib = import ./lib { inputs = attrs; };
   in
@@ -61,6 +65,7 @@
         extraModules = [
           zhaith-neovim.nixosModules.default
           hyprland.homeManagerModules.default
+          anyrun.homeManagerModules.default
         ];
         overlays = [
           hyprland.overlays.default
