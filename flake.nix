@@ -39,6 +39,7 @@
         ];
         overlays = [
           nix-alien.overlays.default
+          hyprland.overlays.default
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };
@@ -62,6 +63,7 @@
           hyprland.homeManagerModules.default
         ];
         overlays = [
+          hyprland.overlays.default
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };

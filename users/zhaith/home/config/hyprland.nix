@@ -1,11 +1,11 @@
-{ common-attrs, ... }:
+{ pkgs, common-attrs, ... }:
 
 let
   gtk-theme = common-attrs.gtk-theme;
+  hyprland-config = import  ../../../../assets/hyprland/default.nix { inherit pkgs; };
 in
 {
-  imports = [
-    ../../../../assets/hyprland/default.nix
+  home.packages = with pkgs; [
   ];
 
   gtk = {
@@ -26,17 +26,23 @@ in
     inherit (gtk-theme) iconTheme;
   };
 
+  programs.wofi = {
+    enable = true;
+    style = hyprland-config.wofi-theme;
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland = {
       enable = true;
-      hidpi = true;
+      hidpi = false;
     };
     systemdIntegration = true;
     recommendedEnvironment = true;
-    plugins = [
-
+    plugins = with pkgs; [
+      waybar-hyprland
     ];
+    extraConfig = hyprland-config.config;
   };
 }
 

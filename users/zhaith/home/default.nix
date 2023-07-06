@@ -15,6 +15,7 @@
     ./config/shell/kitty.nix
     ./config/shell/shell.nix
     ./config/tools
+    ./config/hyprland.nix
   ];
 }
 
