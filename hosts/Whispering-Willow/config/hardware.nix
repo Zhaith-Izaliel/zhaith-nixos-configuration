@@ -38,5 +38,7 @@ in
     '';
     wantedBy = [ "multi-user.target" ];
   };
+
+  services.blueman.enable = true;
 }
 
