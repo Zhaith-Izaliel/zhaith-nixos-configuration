@@ -7,7 +7,9 @@ let
 in
 {
   home.packages = with pkgs; [
-    xdg-desktop-portal-hyprland
+    hyprpicker
+    swww
+    swayosd
   ];
 
   gtk = {
@@ -26,6 +28,27 @@ in
   services.dunst = {
     enable = true;
     inherit (gtk-theme) iconTheme;
+    settings = {
+      global = {
+        corner_radius = 15;
+        font = "${gtk-theme.font.name} ${toString gtk-theme.font.size}";
+        frame_color = "#7DC4E4";
+        separator_color = "frame";
+      };
+      urgency_low = {
+        background = "#24273A";
+        foreground = "#CAD3F5";
+      };
+      urgency_normal = {
+        background = "#24273A";
+        foreground = "#CAD3F5";
+      };
+      urgency_critical = {
+        background = "#24273A";
+        foreground = "#CAD3F5";
+        frame_color = "#ED8796";
+      };
+    };
   };
 
   programs.anyrun = {
@@ -33,24 +56,35 @@ in
     config = {
       plugins = with anyrun-plugins; [
         applications
-        symbols
         rink
-        shell
         translate
         randr
-        stdin
         dictionary
       ];
       width = { fraction = 0.5; };
       height = { fraction = 0.5; };
+      x = { fraction = 0.5; };
+      y = { fraction = 0.5; };
       hideIcons = false;
-      ignoreExclusiveZones = false;
-      layer = "top";
-      hidePluginInfo = false;
-      closeOnClick = false;
-      showResultsImmediately = false;
-      maxEntries = null;
+      ignoreExclusiveZones = true;
+      layer = "overlay";
+      hidePluginInfo = true;
+      closeOnClick = true;
+      showResultsImmediately = true;
+      maxEntries = 5;
     };
+    extraCss = ''
+      window:after {
+        opacity: 0.5;
+      }
+    '';
+    extraConfigFiles."applications.ron".text = ''
+      Config(
+        desktop_actions = true,
+        max_entries = 5,
+        terminal: Some("kitty"),
+      )
+    '';
   };
 
   wayland.windowManager.hyprland = {

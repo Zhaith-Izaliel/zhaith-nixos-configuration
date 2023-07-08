@@ -10,6 +10,7 @@
     ./obs.nix
     ./office.nix
     ./reMarkable.nix
+    ./bat.nix
   ];
 
   home.packages = with pkgs; [
@@ -22,6 +23,7 @@
     qview
     tape
     viu
+    power-management
   ];
 }
 

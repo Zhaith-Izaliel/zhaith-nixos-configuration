@@ -3,13 +3,13 @@
 pkgs.callPackage ../builder.nix rec {
   pname = "power-management";
 
-  version = "v2.1.1";
+  version = "v2.2.1";
 
   src = pkgs.fetchFromGitLab {
     repo = "power-management";
     owner = "Zhaith-Izaliel";
     rev = version;
-    sha256 = "sha256-zrThij/dWZA2lGIW1PJpGgjQswydKwgGAS0Y9EHzJ3Q=";
+    sha256 = "sha256-Jmk/cRGVzpCnQrtzzNw+KDgGxE2vgQ5WYmGRqSHzbvw=";
   };
 
   buildInputs = with pkgs; [
@@ -18,5 +18,10 @@ pkgs.callPackage ../builder.nix rec {
 
   paths = with pkgs; [
     libnotify
+    gnugrep
+    sudo
+    gawk
+    coreutils
   ];
 }
+
