@@ -73,6 +73,7 @@ in
 
   services.swayidle = {
     enable = true;
+    systemdTarget = "hyprland-session.target";
     timeouts = [
       {
         timeout = 270;
@@ -88,9 +89,6 @@ in
     ];
     events = [
       { event = "lock"; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
-    ];
-    extraArgs = [
-      "-w"
     ];
   };
 
