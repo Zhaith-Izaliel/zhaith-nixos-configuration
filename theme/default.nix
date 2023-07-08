@@ -22,5 +22,7 @@ rec {
     package = theme-packages.hyprland-palette;
     palette = "${package}/themes/macchiato.conf";
   };
+
+  bat-theme = import ./bat.nix { inherit theme-packages; };
 }
 

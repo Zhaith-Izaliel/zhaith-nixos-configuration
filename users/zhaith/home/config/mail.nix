@@ -17,7 +17,7 @@
     };
 
     Install = {
-      WantedBy = [ "gnome-session@gnome.target" ];
+      WantedBy = [ "graphical-session.target" ];
     };
   };
 }
