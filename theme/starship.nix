@@ -1,13 +1,14 @@
 { colors, pkgs, lib }:
 
 let
-  gitMetricsSegmentBg = colors.crust;
-  nixShellSegmentColor = colors.lavender;
+  gitMetricsSegmentBg = "black";
+  nixShellSegmentColor = colors.blue;
+  nixShellTextColor = colors.base;
   catppuccin_flavour = "macchiato";
   theme-packages = import ./packages.nix { inherit lib pkgs; };
 in
   rec {
-    package = theme-packages.startship-palette;
+    package = theme-packages.starship-palette;
 
     palette = builtins.fromTOML (builtins.readFile (package +
     /palettes/${catppuccin_flavour}.toml));
@@ -78,7 +79,7 @@ in
         nix_shell = {
           format = "[ $symbol](bold $style)[$name]($style)[](${nixShellSegmentColor}) ";
           symbol = " ";
-          style = "bg:${nixShellSegmentColor}";
+          style = "bold bg:${nixShellSegmentColor} fg:${nixShellTextColor }";
         };
 
         c = {

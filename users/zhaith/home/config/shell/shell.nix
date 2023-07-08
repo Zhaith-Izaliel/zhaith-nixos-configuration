@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, theme, ... }:
 
 {
   home.packages = with pkgs; [
@@ -82,6 +82,11 @@
           "command-not-found"
         ];
       };
+    };
+
+    starship = {
+      enable = true;
+      inherit (theme.starship-theme.starship) settings;
     };
   };
 }
