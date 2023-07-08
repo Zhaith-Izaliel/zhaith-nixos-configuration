@@ -1,7 +1,7 @@
-{ pkgs, inputs, common-attrs, ... }:
+{ pkgs, inputs, theme, ... }:
 
 let
-  gtk-theme = common-attrs.gtk-theme;
+  gtk-theme = theme.gtk-theme;
   hyprland-config = import  ../../../../assets/hyprland/default.nix { inherit pkgs; };
   anyrun-plugins = inputs.anyrun.packages.${pkgs.system};
 in
@@ -131,7 +131,7 @@ in
     timeouts = [
       { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
       {
-        timeout = 600;
+        timeout = 360;
         command = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
         resumeCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
       }

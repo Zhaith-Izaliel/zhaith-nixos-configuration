@@ -4,12 +4,12 @@
   mkSystem = { hostname, system, users ? [ ], extraModules ? [ ], overlays ? [ ] }:
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
-      common-attrs = import ../common/default.nix { inherit pkgs; };
+      theme = import ../common/default.nix { inherit pkgs; };
     in
     inputs.nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
-        inherit hostname system inputs common-attrs;
+        inherit hostname system inputs theme;
         unstable-pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
       };
       modules = [
@@ -44,13 +44,13 @@
 
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
-      common-attrs = import ../common/default.nix { inherit pkgs; };
+      theme = import ../common/default.nix { inherit pkgs; };
     in
     inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
 
       extraSpecialArgs = {
-        inherit system hostname inputs common-attrs;
+        inherit system hostname inputs theme;
         unstable-pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
       };
 

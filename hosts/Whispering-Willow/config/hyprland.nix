@@ -1,4 +1,4 @@
-{ pkgs, lib, common-attrs, ... }:
+{ pkgs, lib, theme, ... }:
 
 let
   regreet-hyprland-config = pkgs.writeText "regreet-hyprland.conf" ''
@@ -13,7 +13,7 @@ in
 {
   environment.systemPackages = with pkgs; [
     seatd
-  ] ++ common-attrs.gtk-theme.packages;
+  ] ++ theme.gtk-theme.packages;
 
   # Swayosd udev rules
   services.udev.extraRules = ''
@@ -45,16 +45,16 @@ in
         application_prefer_dark_theme = true;
 
         # Cursor theme name
-        cursor_theme_name = common-attrs.gtk-theme.cursorTheme.name;
+        cursor_theme_name = theme.gtk-theme.cursorTheme.name;
 
         # Font name and size
-        font_name = "${common-attrs.gtk-theme.font.name} ${toString common-attrs.gtk-theme.font.size}";
+        font_name = "${theme.gtk-theme.font.name} ${toString theme.gtk-theme.font.size}";
 
         # Icon theme name
-        icon_theme_name = common-attrs.gtk-theme.iconTheme.name;
+        icon_theme_name = theme.gtk-theme.iconTheme.name;
 
         # GTK theme name
-        theme_name = common-attrs.gtk-theme.theme.name;
+        theme_name = theme.gtk-theme.theme.name;
 
       };
 
