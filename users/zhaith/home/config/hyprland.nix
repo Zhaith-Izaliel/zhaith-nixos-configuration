@@ -1,7 +1,6 @@
 { pkgs, inputs, theme, ... }:
 
 let
-  gtk-theme = theme.gtk-theme;
   hyprland-config = import  ../../../../assets/hyprland/default.nix { inherit pkgs; };
   anyrun-plugins = inputs.anyrun.packages.${pkgs.system};
 in
@@ -14,7 +13,7 @@ in
 
   gtk = {
     enable = true;
-    inherit (gtk-theme) theme cursorTheme iconTheme font;
+    inherit (theme.gtk-theme) theme cursorTheme iconTheme font;
 
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
@@ -27,28 +26,7 @@ in
 
   services.dunst = {
     enable = true;
-    inherit (gtk-theme) iconTheme;
-    settings = {
-      global = {
-        corner_radius = 15;
-        font = "${gtk-theme.font.name} ${toString gtk-theme.font.size}";
-        frame_color = "#7DC4E4";
-        separator_color = "frame";
-      };
-      urgency_low = {
-        background = "#24273A";
-        foreground = "#CAD3F5";
-      };
-      urgency_normal = {
-        background = "#24273A";
-        foreground = "#CAD3F5";
-      };
-      urgency_critical = {
-        background = "#24273A";
-        foreground = "#CAD3F5";
-        frame_color = "#ED8796";
-      };
-    };
+    inherit (theme.dunst-theme.dunst) iconTheme settings;
   };
 
   programs.anyrun = {
@@ -89,41 +67,7 @@ in
 
   programs.swaylock = {
     enable = true;
-    settings = {
-      color = "24273a";
-      bs-hl-color= "f4dbd6";
-      caps-lock-bs-hl-color = "f4dbd6";
-      caps-lock-key-hl-color="a6da95";
-      inside-color = "24273a";
-      inside-clear-color = "24273a";
-      inside-caps-lock-color = "24273a";
-      inside-ver-color = "24273a";
-      inside-wrong-color = "24273a";
-      key-hl-color = "a6da95";
-      layout-bg-color = "00000000";
-      layout-border-color = "00000000";
-      layout-text-color = "cad3f5";
-      line-color = "00000000";
-      line-clear-color="00000000";
-      line-caps-lock-color="00000000";
-      line-ver-color="00000000";
-      line-wrong-color="00000000";
-      ring-color="b7bdf8";
-      ring-clear-color="f4dbd6";
-      ring-caps-lock-color="f5a97f";
-      ring-ver-color="8aadf4";
-      ring-wrong-color="ee99a0";
-      separator-color="00000000";
-      text-color="cad3f5";
-      text-clear-color="f4dbd6";
-      text-caps-lock-color="f5a97f";
-      text-ver-color="8aadf4";
-      text-wrong-color="ee99a0";
-      font-size = gtk-theme.font.size;
-      font = gtk-theme.font.name;
-      indicator-caps-lock = true;
-      image = "/home/zhaith/Pictures/Wallpapers/Nord/cats.png";
-    };
+    inherit (theme.swaylock-theme.swaylock) settings;
   };
 
   services.swayidle = {
