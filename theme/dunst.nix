@@ -1,7 +1,7 @@
 { theme-packages, colors }:
 
 let
-  gtk-theme = import ./gtk-theme.nix { inherit theme-packages;};
+  gtk-theme = import ./gtk.nix { inherit theme-packages;};
 in
 {
   dunst = {

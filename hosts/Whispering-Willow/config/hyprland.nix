@@ -40,23 +40,7 @@ in
   programs.regreet = {
     enable = true;
     settings = {
-      GTK = {
-        # Whether to use the dark theme
-        application_prefer_dark_theme = true;
-
-        # Cursor theme name
-        cursor_theme_name = theme.gtk-theme.cursorTheme.name;
-
-        # Font name and size
-        font_name = "${theme.gtk-theme.font.name} ${toString theme.gtk-theme.font.size}";
-
-        # Icon theme name
-        icon_theme_name = theme.gtk-theme.iconTheme.name;
-
-        # GTK theme name
-        theme_name = theme.gtk-theme.theme.name;
-
-      };
+      inherit (theme.regreet-theme.regreet.settings) GTK background;
 
       commands = {
         # The command used to reboot the system

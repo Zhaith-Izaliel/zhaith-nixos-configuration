@@ -1,7 +1,8 @@
-{ pkgs, inputs, theme, ... }:
+{ pkgs, lib, inputs, theme, ... }:
 
 let
-  hyprland-config = import  ../../../../assets/hyprland/default.nix { inherit pkgs; };
+  hyprland-config = import  ../../../../assets/hyprland/default.nix { inherit
+  pkgs lib; };
   anyrun-plugins = inputs.anyrun.packages.${pkgs.system};
 in
 {

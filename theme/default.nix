@@ -6,7 +6,7 @@ in
 rec {
   packages = theme-packages.all;
 
-  colors = import ./colors;
+  colors = import ./colors.nix {};
 
   gtk-theme = import ./gtk.nix { inherit theme-packages; };
 
@@ -15,6 +15,8 @@ rec {
   dunst-theme = import ./dunst.nix { inherit colors theme-packages; };
 
   starship-theme = import ./starship.nix { inherit colors pkgs lib; };
+
+  regreet-theme = import ./regreet.nix { inherit gtk-theme lib; };
 
   hyprland-theme = rec {
     package = theme-packages.hyprland-palette;

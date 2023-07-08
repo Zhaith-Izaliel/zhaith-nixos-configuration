@@ -1,18 +1,17 @@
 { theme-packages, lib, colors }:
 
 let
-  gtk-theme = import ./gtk-theme.nix { inherit theme-packages; };
-  converted-colors = lib.attrsets.mapAttrs (name: value:
-     lib.strings.removePrefix "#" value
-  ) colors;
-
+  gtk-theme = import ./gtk.nix { inherit theme-packages; };
+  converted-colors = lib.attrsets.mapAttrs
+    (name: value: lib.strings.removePrefix "#" value)
+    colors;
   # TODO: set image in assets
-  image = lib.cleanSource ./.;
+  image = lib.cleanSource ../assets/images/lock-screen.png;
 in
 {
   swaylock = {
     settings = {
-      inherit image;
+      image = "${image}";
 
       color = converted-colors.base;
       bs-hl-color = converted-colors.rosewater;
