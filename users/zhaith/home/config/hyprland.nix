@@ -74,6 +74,11 @@ in
   services.swayidle = {
     enable = true;
     timeouts = [
+      {
+        timeout = 270;
+        command = "${pkgs.dim-on-lock}/bin/dim-on-lock dim";
+        resumeCommand = "${pkgs.dim-on-lock}/bin/dim-on-lock undim";
+      }
       { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
       {
         timeout = 360;
