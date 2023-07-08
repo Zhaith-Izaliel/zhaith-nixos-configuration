@@ -1,7 +1,7 @@
 { pkgs }:
 
 pkgs.callPackage ../builder.nix rec {
-  pname = "power-management";
+  pname = "dim-on-lock";
 
   version = "v1.0.0";
 
@@ -9,7 +9,7 @@ pkgs.callPackage ../builder.nix rec {
     repo = "dim-on-lock";
     owner = "Zhaith-Izaliel";
     rev = version;
-    sha256 = "";
+    sha256 = "sha256-LAMiY4E8CG0WaanK1+4XF0zG/h4uZf9ypkEIkfNB0d0=";
   };
 
   buildInputs = with pkgs; [
