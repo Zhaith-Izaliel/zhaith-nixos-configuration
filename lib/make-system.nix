@@ -44,10 +44,10 @@
     mkHome = { username, system, hostname, stateVersion, extraModules ? [ ], overlays ? [ ] }:
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
-      lib = inputs.home-manager.lib;
+      lib = inputs.nixpkgs.lib;
       theme = import ../theme/default.nix { inherit pkgs lib; };
     in
-    lib.homeManagerConfiguration {
+    inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
 
       extraSpecialArgs = {

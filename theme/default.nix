@@ -12,7 +12,7 @@ rec {
 
   swaylock-theme = import ./swaylock.nix { inherit colors theme-packages lib; };
 
-  dunst-theme = import ./dunst.nix { inherit theme-packages pkgs; };
+  dunst-theme = import ./dunst.nix { inherit colors theme-packages; };
 
   starship-theme = import ./starship.nix { inherit colors pkgs lib; };
 
