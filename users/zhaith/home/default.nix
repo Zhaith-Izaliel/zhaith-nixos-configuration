@@ -7,7 +7,6 @@
   imports = [
     ./config/browser.nix
     ./config/development.nix
-    ./config/gnome.nix
     ./config/mail.nix
     ./config/mpd.nix
     ./config/neovim.nix

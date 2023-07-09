@@ -77,7 +77,7 @@ in
     timeouts = [
       {
         timeout = 270;
-        command = "${pkgs.dim-on-lock}/bin/dim-on-lock dim";
+        command = "${pkgs.dim-on-lock}/bin/dim-on-lock dim 50";
         resumeCommand = "${pkgs.dim-on-lock}/bin/dim-on-lock undim";
       }
       { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
@@ -100,8 +100,6 @@ in
     };
     systemdIntegration = true;
     recommendedEnvironment = true;
-    plugins = with pkgs; [
-    ];
     extraConfig = hyprland-config.config;
   };
 }

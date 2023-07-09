@@ -1,19 +1,19 @@
 { pkgs, lib, theme, ... }:
 
 let
-  regreet-hyprland-config = pkgs.writeText "regreet-hyprland.conf" ''
-    exec-once = ${lib.getExe pkgs.greetd.regreet}; ${pkgs.hyprland}/bin/hyprctl dispatch exit
+  greeter-command = pkgs.writeScript "greeter-command" ''
+    #!${pkgs.bash}/bin/bash
 
-    input {
-      kb_layout = fr
-      kb_variant = oss_latin9
-    }
+    export XKB_DEFAULT_LAYOUT="fr"
+    export XKB_DEFAULT_VARIANT="oss_latin9"
+    export XDG_SESSION_TYPE="wayland"
+
+    ${pkgs.dbus}/bin/dbus-run-session ${lib.getExe pkgs.cage} -s ${lib.getExe
+    pkgs.greetd.regreet}
   '';
 in
 {
-  environment.systemPackages = with pkgs; [
-    seatd
-  ] ++ theme.gtk-theme.packages;
+  environment.systemPackages = theme.gtk-theme.packages;
 
   # Swayosd udev rules
   services.udev.extraRules = ''
@@ -24,18 +24,33 @@ in
   services.greetd = {
     enable = true;
     settings.default_session = {
-      command = "${pkgs.dbus}/bin/dbus-run-session -- ${lib.getExe pkgs.hyprland} --config ${regreet-hyprland-config}";
+      command = "${greeter-command}";
       user = "greeter";
     };
   };
 
   services.gnome.gnome-keyring.enable = true;
+  # security.pam.services.greetd.enableGnomeKeyring = true;
 
   security.pam.services.swaylock.text = ''
     # PAM configuration file for the swaylock screen locker. By default, it includes
     # the 'login' configuration file (see /etc/pam.d/login)
     auth include login
   '';
+
+  systemd.user.services.polkit-gnome-authentication-agent-1 = {
+    description = "polkit-gnome-authentication-agent-1";
+    wantedBy = [ "graphical-session.target" ];
+    wants = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+  };
 
   programs.regreet = {
     enable = true;
@@ -48,6 +63,12 @@ in
 
         # The command used to shut down the system
         poweroff = [ "systemctl" "poweroff" ];
+      };
+
+      env = {
+        XDG_CURRENT_DESKTOP = "Hyprland";
+        XDG_SESSION_DESKTOP = "Hyprland";
+        XDG_SESSION_TYPE = "wayland";
       };
     };
   };
