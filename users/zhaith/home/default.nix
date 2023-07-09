@@ -1,8 +1,6 @@
 { ... }:
 
 {
-  nixpkgs.config.allowUnfree = true;
-
   # Importing configuration
   imports = [
     ./config/browser.nix
@@ -11,8 +9,7 @@
     ./config/mpd.nix
     ./config/neovim.nix
     ./config/nextcloud.nix
-    ./config/shell/kitty.nix
-    ./config/shell/shell.nix
+    ./config/shell
     ./config/tools
     ./config/hyprland.nix
   ];

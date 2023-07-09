@@ -6,10 +6,10 @@ let
 
     export XKB_DEFAULT_LAYOUT="fr"
     export XKB_DEFAULT_VARIANT="oss_latin9"
-    export XDG_SESSION_TYPE="wayland"
 
-    ${pkgs.dbus}/bin/dbus-run-session ${lib.getExe pkgs.cage} -s ${lib.getExe
-    pkgs.greetd.regreet}
+    ${pkgs.dbus}/bin/dbus-run-session \
+      ${lib.getExe pkgs.cage} -s \
+      -- ${lib.getExe pkgs.greetd.regreet} 2> /tmp/greeter.log
   '';
 in
 {
@@ -30,7 +30,7 @@ in
   };
 
   services.gnome.gnome-keyring.enable = true;
-  # security.pam.services.greetd.enableGnomeKeyring = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
 
   security.pam.services.swaylock.text = ''
     # PAM configuration file for the swaylock screen locker. By default, it includes
