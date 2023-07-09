@@ -1,15 +1,18 @@
-{ pkgs, lib, theme, ... }:
+{ config, pkgs, lib, theme, ... }:
 
 let
-  greeter-command = pkgs.writeScript "greeter-command" ''
+  cage-command = pkgs.writeScript "cage-command" ''
     #!${pkgs.bash}/bin/bash
 
     export XKB_DEFAULT_LAYOUT="fr"
     export XKB_DEFAULT_VARIANT="oss_latin9"
 
-    ${pkgs.dbus}/bin/dbus-run-session \
-      ${lib.getExe pkgs.cage} -s \
-      -- ${lib.getExe pkgs.greetd.regreet} 2> /tmp/greeter.log
+    ${pkgs.dbus}/bin/dbus-run-session ${lib.getExe pkgs.cage} -s -- ${greeter-command}
+  '';
+
+  greeter-command = pkgs.writeScript "greeter-command" ''
+      exec ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY
+      ${lib.getExe pkgs.greetd.regreet}
   '';
 in
 {
@@ -23,14 +26,16 @@ in
 
   services.greetd = {
     enable = true;
+    vt = 2;
     settings.default_session = {
-      command = "${greeter-command}";
-      user = "greeter";
+      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time";
     };
   };
 
   services.gnome.gnome-keyring.enable = true;
-  security.pam.services.greetd.enableGnomeKeyring = true;
+  security.pam.services.greetd = {
+    enableGnomeKeyring = true;
+  };
 
   security.pam.services.swaylock.text = ''
     # PAM configuration file for the swaylock screen locker. By default, it includes

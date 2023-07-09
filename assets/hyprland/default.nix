@@ -2,12 +2,12 @@
 
 let
   hyprland-conf = builtins.readFile ./hyprland.conf;
-  catppuccin-colors-hyprland = (import ../../theme { inherit pkgs lib;
-}).hyprland-theme.palette;
+  theme = import ../../theme { inherit pkgs lib; };
 in
 {
   config = ''
-  source = ${catppuccin-colors-hyprland}
+  source = ${theme.hyprland-theme.palette}
+  exec-once = hyprctl setcursor ${theme.gtk-theme.cursorTheme.name} 24
 
   '' + hyprland-conf;
 }

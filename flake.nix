@@ -36,7 +36,7 @@
       Whispering-Willow = lib.mkSystem {
         hostname = "Whispering-Willow";
         system = "x86_64-linux";
-        users = [ "zhaith" ];
+        users = [ "zhaith" "lilith" ];
         extraModules = [
           hyprland.nixosModules.default
           grub2-themes.nixosModules.default

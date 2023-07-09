@@ -2,6 +2,7 @@
 
 {
   boot.kernelModules = [ "ecryptfs" ];
+  boot.supportedFilesystems = [ "ecryptfs" ];
 
   environment.systemPackages = with pkgs; [
     ecryptfs
