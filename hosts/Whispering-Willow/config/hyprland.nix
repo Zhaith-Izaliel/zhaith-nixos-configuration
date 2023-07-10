@@ -7,12 +7,7 @@ let
     export XKB_DEFAULT_LAYOUT="fr"
     export XKB_DEFAULT_VARIANT="oss_latin9"
 
-    ${pkgs.dbus}/bin/dbus-run-session ${lib.getExe pkgs.cage} -s -- ${greeter-command}
-  '';
-
-  greeter-command = pkgs.writeScript "greeter-command" ''
-      exec ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY
-      ${lib.getExe pkgs.greetd.regreet}
+    ${pkgs.dbus}/bin/dbus-run-session ${lib.getExe pkgs.cage} -s -- ${lib.getExe pkgs.greetd.regreet}
   '';
 in
 {
@@ -28,7 +23,7 @@ in
     enable = true;
     vt = 2;
     settings.default_session = {
-      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd zsh 2> /tmp/tuigreet.log";
+      command = "${cage-command}";
     };
   };
 
