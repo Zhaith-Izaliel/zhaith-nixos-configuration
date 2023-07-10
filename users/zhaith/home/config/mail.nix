@@ -18,7 +18,8 @@
     Service = {
       Type = "simple";
       Restart = "always";
-      ExecStart = "${pkgs.protonmail-bridge}/bin/protonmail-bridge -n --log-level info";
+      Environment = "PATH=${pkgs.gnome.gnome-keyring}/bin";
+      ExecStart = "${pkgs.protonmail-bridge}/bin/protonmail-bridge --grpc --log-level info";
     };
 
     Install = {
