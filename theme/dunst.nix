@@ -13,6 +13,8 @@ in
         font = "${gtk-theme.font.name} ${toString gtk-theme.font.size}";
         frame_color = colors.sapphire;
         separator_color = "frame";
+        width = 400;
+        height = 400;
       };
       urgency_low = {
         background = colors.base;
