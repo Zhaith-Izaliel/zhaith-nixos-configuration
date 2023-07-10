@@ -14,10 +14,10 @@ rustPlatform.buildRustPackage rec {
     owner = "~kennylevinsen";
     repo = pname;
     rev = version;
-    sha256 = "";
+    sha256 = "sha256-w68iKabVVIHB+ujCd5q+L4T6+Tfqedou3wXOuMGi6aw=";
   };
 
-  cargoHash = "";
+  cargoHash = "sha256-vn1ih4YXsltR1zdy7BzS3CSJO9Uewx/654lRTSkWV0k=";
 
   nativeBuildInputs = [
     scdoc
