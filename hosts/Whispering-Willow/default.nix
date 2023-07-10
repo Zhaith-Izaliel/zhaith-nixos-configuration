@@ -14,7 +14,6 @@
     ./config/base.nix
     ./config/bootloader.nix
     ./config/development.nix
-    ./config/ecryptfs.nix
     ./config/fonts.nix
     ./config/graphics.nix
     ./config/hardware.nix
