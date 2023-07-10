@@ -1,18 +1,6 @@
-{ config, pkgs, lib, theme, ... }:
+{ pkgs, lib, ... }:
 
-let
-  cage-command = pkgs.writeScript "cage-command" ''
-    #!${pkgs.bash}/bin/bash
-
-    export XKB_DEFAULT_LAYOUT="fr"
-    export XKB_DEFAULT_VARIANT="oss_latin9"
-
-    ${pkgs.dbus}/bin/dbus-run-session ${lib.getExe pkgs.cage} -s -- ${lib.getExe pkgs.greetd.regreet}
-  '';
-in
 {
-  environment.systemPackages = theme.gtk-theme.packages;
-
   # Swayosd udev rules
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness"
@@ -23,11 +11,12 @@ in
     enable = true;
     vt = 2;
     settings.default_session = {
-      command = "${cage-command}";
+      command = "${lib.getExe pkgs.greetd.tuigreet} --time";
     };
   };
 
   services.gnome.gnome-keyring.enable = true;
+
   security.pam.services.greetd = {
     enableGnomeKeyring = true;
   };
@@ -50,35 +39,6 @@ in
         RestartSec = 1;
         TimeoutStopSec = 10;
       };
-  };
-
-  programs.regreet = {
-    enable = true;
-    settings = {
-      inherit (theme.regreet-theme.regreet.settings) GTK background;
-
-      commands = {
-        # The command used to reboot the system
-        reboot = [ "systemctl" "reboot" ];
-
-        # The command used to shut down the system
-        poweroff = [ "systemctl" "poweroff" ];
-      };
-
-      env = {
-        XDG_CURRENT_DESKTOP = "Hyprland";
-        XDG_SESSION_DESKTOP = "Hyprland";
-        XDG_SESSION_TYPE = "wayland";
-      };
-    };
-  };
-
-  programs.hyprland = {
-    enable = true;
-    xwayland = {
-      enable = true;
-      hidpi = true;
-    };
   };
 }
 
