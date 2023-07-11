@@ -10,7 +10,7 @@ in
     hyprpicker
     swww
     swayosd
-  ];
+  ] ++ theme.waybar-theme.extraPackages;
 
   gtk = {
     enable = true;
@@ -90,6 +90,16 @@ in
     events = [
       { event = "lock"; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
     ];
+  };
+
+  programs.waybar = {
+    inherit (theme.waybar-theme.waybar) settings style;
+    enable = true;
+    package = pkgs.waybar-hyprland;
+    systemd = {
+      enable = true;
+      target = "hyprland-session.target";
+    };
   };
 
   wayland.windowManager.hyprland = {

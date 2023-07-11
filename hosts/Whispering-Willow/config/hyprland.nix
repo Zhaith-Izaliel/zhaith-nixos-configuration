@@ -13,10 +13,6 @@ in
 {
   environment.systemPackages = theme.gtk-theme.packages;
 
-  services.xserver.displayManager.sessionPackages = [
-    pkgs.hyprland
-  ];
-
   # Swayosd udev rules
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness"
