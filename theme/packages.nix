@@ -64,9 +64,26 @@ let
       cp -r *.tmTheme $out
       '';
     };
+
+    gitui-theme = pkgs.stdenv.mkDerivation rec {
+      pname = "gitui-catppuccin";
+      version  = "3c97c7a";
+
+      src = pkgs.fetchFromGitHub {
+        owner = "catppuccin";
+        repo = "gitui"; # Bat uses sublime syntax for its themes
+        rev = version;
+        sha256 = "";
+      };
+
+      installPhase = ''
+      mkdir -p $out
+      cp -r theme $out
+      '';
+    };
   };
 in
   default // {
-    all = lib.attrsets.mapAttrsToList (name: value: value) default; # TODO: map all attributes to this list.
+    all = lib.attrsets.mapAttrsToList (name: value: value) default;
   }
 

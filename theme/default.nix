@@ -24,5 +24,7 @@ rec {
   };
 
   bat-theme = import ./bat.nix { inherit theme-packages; };
+
+  gitui-theme = import ./gitui.nix { inherit theme-packages; };
 }
 

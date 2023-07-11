@@ -25,7 +25,7 @@ in
 
       background = {
         # Path to the background image
-        path = "${image}";
+        # path = "${image}";
 
         # How the background image covers the screen if the aspect ratio doesn't match
         # Available values: "Fill", "Contain", "Cover", "ScaleDown"
