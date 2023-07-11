@@ -22,6 +22,7 @@
     ./config/locale.nix
     ./config/networking.nix
     ./config/power.nix
+    ./config/samba.nix
     ./config/shell.nix
     ./config/sound.nix
     ./config/ssh.nix
