@@ -3,14 +3,15 @@
 {
   imports = [
     ./art.nix
+    ./bat.nix
     ./commitlint.nix
     ./discord.nix
     ./erd.nix
+    ./gitui.nix
     ./multimedia.nix
     ./obs.nix
     ./office.nix
     ./reMarkable.nix
-    ./bat.nix
   ];
 
   home.packages = with pkgs; [

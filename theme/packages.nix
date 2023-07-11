@@ -73,7 +73,7 @@ let
         owner = "catppuccin";
         repo = "gitui"; # Bat uses sublime syntax for its themes
         rev = version;
-        sha256 = "";
+        sha256 = "sha256-m6Tjch6A2ZPZ3/muvb/9sEAQUZfjnWqcwyhNVeqPS2c=";
       };
 
       installPhase = ''
