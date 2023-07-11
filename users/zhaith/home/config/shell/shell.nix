@@ -27,7 +27,7 @@
         ip = "ip --color=auto";
         cat = "ccat";
         less = "cless";
-        ssh = "kitty +kitten ssh";
+        # ssh = "kitty +kitten ssh";
         icat = "kitty +kitten icat";
       };
 
