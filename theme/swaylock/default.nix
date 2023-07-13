@@ -1,7 +1,6 @@
-{ theme-packages, lib, colors }:
+{ theme-packages, gtk-theme, lib, colors }:
 
 let
-  gtk-theme = import ./gtk.nix { inherit theme-packages; };
   converted-colors = lib.attrsets.mapAttrs
     (name: value: lib.strings.removePrefix "#" value)
     colors;

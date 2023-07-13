@@ -1,8 +1,5 @@
-{ theme-packages, colors }:
+{ gtk-theme, colors }:
 
-let
-  gtk-theme = import ./gtk.nix { inherit theme-packages;};
-in
 {
   dunst = {
     inherit (gtk-theme) iconTheme;

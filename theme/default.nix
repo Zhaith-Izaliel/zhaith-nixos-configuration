@@ -10,11 +10,11 @@ rec {
 
   gtk-theme = import ./gtk { inherit theme-packages; };
 
-  swaylock-theme = import ./swaylock { inherit colors theme-packages lib; };
+  swaylock-theme = import ./swaylock { inherit colors gtk-theme theme-packages lib; };
 
-  dunst-theme = import ./dunst { inherit colors theme-packages; };
+  dunst-theme = import ./dunst { inherit colors gtk-theme; };
 
-  starship-theme = import ./starship { inherit colors pkgs lib; };
+  starship-theme = import ./starship { inherit colors theme-packages lib; };
 
   regreet-theme = import ./regreet { inherit gtk-theme lib; };
 

@@ -1,11 +1,10 @@
-{ colors, pkgs, lib }:
+{ colors, lib, theme-packages }:
 
 let
   gitMetricsSegmentBg = "black";
   nixShellSegmentColor = colors.blue;
   nixShellTextColor = colors.base;
   catppuccin_flavour = "macchiato";
-  theme-packages = import ./packages.nix { inherit lib pkgs; };
 in
   rec {
     package = theme-packages.starship-palette;
