@@ -1,7 +1,8 @@
-{ inputs, theme }:
+{ inputs }:
 
 {
-  mkSystem = { hostname, system, users ? [ ], extraModules ? [ ], overlays ? [ ] }:
+  mkSystem = { hostname, system, users ? [ ], extraModules ? [ ], overlays ? [
+  ], theme ? "" }:
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
       lib = inputs.nixpkgs.lib;
@@ -42,7 +43,8 @@
       ++ extraModules;
     };
 
-    mkHome = { username, system, hostname, stateVersion, extraModules ? [ ], overlays ? [ ] }:
+    mkHome = { username, system, hostname, stateVersion, extraModules ? [ ],
+    overlays ? [ ], theme ? "" }:
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
       lib = inputs.nixpkgs.lib;

@@ -1,7 +1,7 @@
-{ inputs, theme }:
+{ inputs }:
 
 let
-  makeSystem = import ./make-system.nix { inherit inputs theme; };
+  makeSystem = import ./make-system.nix { inherit inputs; };
 in
   makeSystem
 

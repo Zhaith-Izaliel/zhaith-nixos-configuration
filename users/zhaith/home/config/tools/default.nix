@@ -12,6 +12,7 @@
     ./obs.nix
     ./office.nix
     ./reMarkable.nix
+    ./thunar.nix
   ];
 
   home.packages = with pkgs; [

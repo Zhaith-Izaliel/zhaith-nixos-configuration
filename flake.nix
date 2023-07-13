@@ -31,12 +31,12 @@
   let
     system = "x86_64-linux";
     theme = "catppuccin";
-    lib = import ./lib { inherit theme; inputs = attrs; };
+    lib = import ./lib { inputs = attrs; };
   in
   {
     nixosConfigurations = {
       Whispering-Willow = lib.mkSystem {
-        inherit system;
+        inherit system theme;
         hostname = "Whispering-Willow";
         users = [ "zhaith" ];
         extraModules = [
@@ -50,7 +50,7 @@
         ];
       };
       Ethereal-Edelweiss = lib.mkSystem {
-        inherit system;
+        inherit system theme;
         hostname = "Ethereal-Edelweiss";
         users = [ "lilith" ];
         extraModules = [
@@ -60,7 +60,7 @@
     };
     homeConfigurations = {
       "zhaith@Whispering-Willow" = lib.mkHome {
-        inherit system;
+        inherit system theme;
         username = "zhaith";
         hostname = "Whispering-Willow";
         stateVersion = "22.05";
@@ -76,7 +76,7 @@
       };
 
       "lilith@Ethereal-Edelweiss" = lib.mkHome {
-        inherit system;
+        inherit system theme;
         username = "lilith";
         hostname = "Ethereal-Edelweiss";
         stateVersion = "21.05";
