@@ -5,14 +5,11 @@ let
   converted-colors = lib.attrsets.mapAttrs
     (name: value: lib.strings.removePrefix "#" value)
     colors;
-  # TODO: set image in assets
-  image = lib.cleanSource ../assets/images/lock-screen.png;
 in
 {
   swaylock = {
     settings = {
-      image = "${image}";
-
+      indicator-radius = 100;
       color = converted-colors.base;
       bs-hl-color = converted-colors.rosewater;
       caps-lock-bs-hl-color = converted-colors.rosewater;
@@ -42,9 +39,15 @@ in
       text-caps-lock-color = converted-colors.peach;
       text-ver-color = converted-colors.blue;
       text-wrong-color = converted-colors.maroon;
-      font-size = gtk-theme.font.size;
+      font-size = gtk-theme.font.size + 10;
       font = gtk-theme.font.name;
       indicator-caps-lock = true;
+      clock = true;
+      indicator = true;
+      screenshots = true;
+      effect-blur = "30x10";
+      timestr = "%H:%M";
+      datestr = "%d %b, %Y";
     };
   };
 }

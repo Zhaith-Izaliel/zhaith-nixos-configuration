@@ -8,25 +8,22 @@ rec {
 
   colors = import ./colors.nix {};
 
-  gtk-theme = import ./gtk.nix { inherit theme-packages; };
+  gtk-theme = import ./gtk { inherit theme-packages; };
 
-  swaylock-theme = import ./swaylock.nix { inherit colors theme-packages lib; };
+  swaylock-theme = import ./swaylock { inherit colors theme-packages lib; };
 
-  dunst-theme = import ./dunst.nix { inherit colors theme-packages; };
+  dunst-theme = import ./dunst { inherit colors theme-packages; };
 
-  starship-theme = import ./starship.nix { inherit colors pkgs lib; };
+  starship-theme = import ./starship { inherit colors pkgs lib; };
 
-  regreet-theme = import ./regreet.nix { inherit gtk-theme lib; };
+  regreet-theme = import ./regreet { inherit gtk-theme lib; };
 
-  hyprland-theme = rec {
-    package = theme-packages.hyprland-palette;
-    palette = "${package}/themes/macchiato.conf";
-  };
+  hyprland-theme = import ./hyprland { inherit gtk-theme theme-packages; };
 
-  bat-theme = import ./bat.nix { inherit theme-packages; };
+  bat-theme = import ./bat { inherit theme-packages; };
 
-  gitui-theme = import ./gitui.nix { inherit theme-packages; };
+  gitui-theme = import ./gitui { inherit theme-packages; };
 
-  waybar-theme = import ./waybar.nix { inherit pkgs colors; };
+  waybar-theme = import ./waybar { inherit pkgs colors; };
 }
 

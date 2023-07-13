@@ -1,8 +1,6 @@
-{ pkgs, lib, inputs, theme, ... }:
+{ config, pkgs, lib, inputs, theme, ... }:
 
 let
-  hyprland-config = import  ../../../../assets/hyprland/default.nix { inherit
-  pkgs lib; };
   anyrun-plugins = inputs.anyrun.packages.${pkgs.system};
 in
 {
@@ -68,6 +66,7 @@ in
 
   programs.swaylock = {
     enable = true;
+    package = pkgs.swaylock-effects;
     inherit (theme.swaylock-theme.swaylock) settings;
   };
 
@@ -77,10 +76,10 @@ in
     timeouts = [
       {
         timeout = 270;
-        command = "${pkgs.dim-on-lock}/bin/dim-on-lock dim 50";
-        resumeCommand = "${pkgs.dim-on-lock}/bin/dim-on-lock undim";
+        command = "${lib.getExe pkgs.dim-on-lock} dim 50";
+        resumeCommand = "${lib.getExe pkgs.dim-on-lock} undim";
       }
-      { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
+      { timeout = 300; command = "${lib.getExe config.programs.swaylock.package} -fF"; }
       {
         timeout = 360;
         command = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
@@ -103,6 +102,7 @@ in
   };
 
   wayland.windowManager.hyprland = {
+    inherit (theme.hyprland-theme.hyprland) extraConfig;
     enable = true;
     xwayland = {
       enable = true;
@@ -110,7 +110,6 @@ in
     };
     systemdIntegration = true;
     recommendedEnvironment = true;
-    extraConfig = hyprland-config.config;
   };
 }
 
