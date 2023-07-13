@@ -5,11 +5,13 @@
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
       lib = inputs.nixpkgs.lib;
+      theme-set = (import ../themes { inherit pkgs lib; }).${theme};
     in
     lib.nixosSystem {
       inherit system;
       specialArgs = {
-        inherit hostname system inputs theme;
+        inherit hostname system inputs;
+        theme = theme-set;
         unstable-pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
       };
       modules = [
@@ -43,12 +45,15 @@
     mkHome = { username, system, hostname, stateVersion, extraModules ? [ ], overlays ? [ ] }:
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
+      lib = inputs.nixpkgs.lib;
+      theme-set = (import ../themes { inherit pkgs lib; }).${theme};
     in
     inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
 
       extraSpecialArgs = {
-        inherit system hostname inputs theme;
+        inherit system hostname inputs;
+        theme = theme-set;
         unstable-pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
       };
 

@@ -1,7 +1,7 @@
 { gtk-theme, lib }:
 
 let
-  image = lib.cleanSource ../assets/images/greeter.jpg;
+  image = lib.cleanSource ../../assets/images/greeter.jpg;
 in
 {
   regreet = {

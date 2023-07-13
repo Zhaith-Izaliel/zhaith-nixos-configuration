@@ -30,8 +30,7 @@
   hyprland, anyrun, ...}@attrs:
   let
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-    theme = (import ../theme { inherit pkgs lib; }).catppuccin;
+    theme = "catppuccin";
     lib = import ./lib { inherit theme; inputs = attrs; };
   in
   {
