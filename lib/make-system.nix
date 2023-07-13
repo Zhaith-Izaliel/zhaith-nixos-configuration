@@ -1,10 +1,9 @@
-{ inputs }:
+{ inputs, theme }:
 
 {
   mkSystem = { hostname, system, users ? [ ], extraModules ? [ ], overlays ? [ ] }:
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
-      theme = import ../theme/default.nix { inherit pkgs lib; };
       lib = inputs.nixpkgs.lib;
     in
     lib.nixosSystem {
@@ -44,8 +43,6 @@
     mkHome = { username, system, hostname, stateVersion, extraModules ? [ ], overlays ? [ ] }:
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
-      lib = inputs.nixpkgs.lib;
-      theme = import ../theme/default.nix { inherit pkgs lib; };
     in
     inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;

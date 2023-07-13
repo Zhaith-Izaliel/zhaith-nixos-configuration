@@ -29,13 +29,16 @@
   outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, zhaith-neovim,
   hyprland, anyrun, ...}@attrs:
   let
-    lib = import ./lib { inputs = attrs; };
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+    theme = (import ../theme { inherit pkgs lib; }).catppuccin;
+    lib = import ./lib { inherit theme; inputs = attrs; };
   in
   {
     nixosConfigurations = {
       Whispering-Willow = lib.mkSystem {
+        inherit system;
         hostname = "Whispering-Willow";
-        system = "x86_64-linux";
         users = [ "zhaith" ];
         extraModules = [
           hyprland.nixosModules.default
@@ -48,8 +51,8 @@
         ];
       };
       Ethereal-Edelweiss = lib.mkSystem {
+        inherit system;
         hostname = "Ethereal-Edelweiss";
-        system = "x86_64-linux";
         users = [ "lilith" ];
         extraModules = [
           grub2-themes.nixosModules.default
@@ -58,8 +61,8 @@
     };
     homeConfigurations = {
       "zhaith@Whispering-Willow" = lib.mkHome {
+        inherit system;
         username = "zhaith";
-        system = "x86_64-linux";
         hostname = "Whispering-Willow";
         stateVersion = "22.05";
         extraModules = [
@@ -74,8 +77,8 @@
       };
 
       "lilith@Ethereal-Edelweiss" = lib.mkHome {
+        inherit system;
         username = "lilith";
-        system = "x86_64-linux";
         hostname = "Ethereal-Edelweiss";
         stateVersion = "21.05";
       };
