@@ -14,6 +14,7 @@
     ./reMarkable.nix
     ./thunar.nix
     ./blueman.nix
+    ./networkmanager.nix
   ];
 
   home.packages = with pkgs; [
