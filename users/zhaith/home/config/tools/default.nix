@@ -14,7 +14,7 @@
     ./reMarkable.nix
     ./thunar.nix
     ./blueman.nix
-    ./flameshot.nix
+    ./gnome-screenshot.nix
   ];
 
   home.packages = with pkgs; [
