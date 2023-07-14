@@ -6,7 +6,6 @@ let
 in
 {
   home.packages = with pkgs; [
-    hyprpicker
     swww
     swayosd
   ] ++ theme.waybar-theme.extraPackages;

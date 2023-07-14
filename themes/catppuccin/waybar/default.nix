@@ -17,6 +17,7 @@ rec {
         height = 0;
         modules-left = [
           "clock"
+          "mpd"
           "wlr/workspaces"
         ];
         modules-center = [
@@ -76,7 +77,7 @@ rec {
         battery = {
           states = {
             good = 95;
-           warning = 30;
+            warning = 30;
             critical = 20;
           };
 
@@ -88,7 +89,7 @@ rec {
 
         clock = {
           format = "{:${mkIcon ""} %R  ${mkIcon ""} %a. %d, %b.}";
-          tooltip-format = "<center><big>{:%Y %B}</big></center>\n<tt>{calendar}</tt>";
+          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
           calendar = {
             mode = "month";
             mode-mon-col = 3;
@@ -119,6 +120,17 @@ rec {
           on-scroll-up = "${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
           on-scroll-down = "${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
           format-icons = [ "" "" "" ];
+        };
+
+        mpd = {
+          format = "${mkIcon "{stateIcon}"} {title}";
+          tooltip-format = "{albumArtist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})";
+          format-stopped = "${mkIcon "󰙧"} Stopped";
+          state-icons = {
+            playing = "󰫔";
+            paused = "󰏦";
+          };
+
         };
       };
     };

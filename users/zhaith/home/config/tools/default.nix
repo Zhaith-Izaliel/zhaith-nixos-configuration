@@ -14,6 +14,7 @@
     ./reMarkable.nix
     ./thunar.nix
     ./blueman.nix
+    ./flameshot.nix
   ];
 
   home.packages = with pkgs; [
@@ -27,6 +28,7 @@
     tape
     viu
     power-management
+    hyprpicker
   ];
 }
 

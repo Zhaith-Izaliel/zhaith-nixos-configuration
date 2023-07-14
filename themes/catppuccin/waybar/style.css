@@ -1,3 +1,15 @@
+/* Keyframes */
+
+@keyframes idle-activated {
+  50% { color: @flamingo; }
+  100%  { color: @maroon; }
+}
+
+@keyframes blink {
+    to {
+        color: @rosemary;
+    }
+}
 
 * {
   border: none;
@@ -22,7 +34,7 @@ tooltip {
 }
 
 #workspaces button {
-color: @surface0;
+  color: @surface0;
   margin-right: .1rem;
   padding: .1rem .2rem;
 }
@@ -56,12 +68,13 @@ color: @surface0;
 #network,
 #workspaces,
 #tray,
+#mpd,
 #backlight {
-background: @base;
-padding: 0px 10px;
-margin: 3px 0px;
-margin-top: 10px;
-border: 1px solid @mantle;
+  background: @base;
+  padding: 0px 10px;
+  margin: 3px 0px;
+  margin-top: 10px;
+  border: 1px solid @mantle;
 }
 
 #workspaces {
@@ -74,11 +87,32 @@ border: 1px solid @mantle;
 }
 
 #workspaces {
-background: @base;
-border-radius: 10px;
-margin-left: 10px;
-padding-right: 0px;
-padding-left: 5px;
+  border-radius: 10px;
+  margin-left: 10px;
+  padding-right: 0px;
+  padding-left: 5px;
+}
+
+#mpd {
+  border-radius: 10px;
+  margin-left: 10px;
+  transition: color .5s ease-in-out;
+}
+
+#mpd.playing {
+  color: @lavender;
+}
+
+#mpd.stopped {
+  color: @rosewater;
+}
+
+#mpd.paused {
+  color: @sapphire;
+}
+
+#mpd.disconnected {
+  color: @pink;
 }
 
 #idle_inhibitor {
@@ -92,10 +126,13 @@ padding-left: 5px;
 
 #idle_inhibitor.activated {
   color: @maroon;
+  animation-name: idle-activated;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
 }
 
 #idle_inhibitor.deactivated {
-  colors: @text;
+  color: @text;
 }
 
 #custom-language {
@@ -129,11 +166,30 @@ padding-left: 5px;
 }
 
 #battery {
-  color: @teal;
+  color: @sky;
   border-radius: 0 10px 10px 0;
   margin-right: 10px;
   border-left: 0px;
 }
+
+#battery.good,
+#battery.charging {
+  color: @teal;
+}
+
+#battery.warning {
+  color: @peach;
+}
+
+#battery.critical:not(.charging) {
+    color: @red;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
 
 #backlight {
   color: @mauve;
