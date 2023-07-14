@@ -27,9 +27,7 @@ in
     (mkOrder 1501 [ "mdns4" ]) # 1501 to ensure it's after dns
   ]);
 
-  hardware.sane = {
-    enable = true;
-  };
+  hardware.sane.enable = true;
 
   systemd.services.disable-integrated-camera = {
     enable = true;
@@ -40,5 +38,10 @@ in
   };
 
   services.blueman.enable = true;
+
+  hardware.bluetooth = {
+    enable = true;
+    package = pkgs.bluez.override { withExperimental = true; };
+  };
 }
 

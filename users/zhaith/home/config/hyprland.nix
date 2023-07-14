@@ -2,6 +2,7 @@
 
 let
   anyrun-plugins = inputs.anyrun.packages.${pkgs.system};
+  hyprland-session = "hyprland-session.target";
 in
 {
   home.packages = with pkgs; [
@@ -72,7 +73,7 @@ in
 
   services.swayidle = {
     enable = true;
-    systemdTarget = "hyprland-session.target";
+    systemdTarget = hyprland-session;
     timeouts = [
       {
         timeout = 270;
@@ -97,7 +98,7 @@ in
     package = pkgs.waybar-hyprland;
     systemd = {
       enable = true;
-      target = "hyprland-session.target";
+      target = hyprland-session;
     };
   };
 

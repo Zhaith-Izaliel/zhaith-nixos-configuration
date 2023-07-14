@@ -1,8 +1,11 @@
 { pkgs, lib, colors } :
 
 rec {
+  mkIcon = icon: "<big>${icon}</big>";
+
   extraPackages = with pkgs; [
     sutils
+    libappindicator-gtk3
     brightnessctl
   ];
 
@@ -16,11 +19,13 @@ rec {
           "clock"
           "wlr/workspaces"
         ];
-        modules-center = ["hyprland/window"];
+        modules-center = [
+          "hyprland/window"
+        ];
         modules-right = [
           "tray"
-          "custom/caffeine"
-          "custom/language"
+          "idle_inhibitor"
+          # "custom/language"
           "network"
           "backlight"
           "wireplumber"
@@ -51,8 +56,13 @@ rec {
         };
 
         idle_inhibitor = {
-          format = "{icon}";
-          format-icons = [ "󰅶" "󰶞" ];
+          format = mkIcon "{icon}";
+          format-icons = {
+            deactivated = "󰅶";
+            activated = "󰶞";
+          };
+          tooltip-format-activated = "Active";
+          tooltip-format-deactivated = "Inactive";
         };
 
         # "custom/language" = {
@@ -68,8 +78,8 @@ rec {
 
         backlight = {
           device = "intel_backlight";
-          format = "{icon} {percent}%";
-          format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖙"];
+          format = "${mkIcon "{icon}"} {percent}%";
+          format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" ""];
           on-scroll-up = "${lib.getExe pkgs.brightnessctl} set 1%+";
           on-scroll-down = "${lib.getExe pkgs.brightnessctl} set 1%-";
           min-length = 6;
@@ -78,26 +88,23 @@ rec {
         battery = {
           states = {
             good = 95;
-            warning = 30;
+           warning = 30;
             critical = 20;
           };
 
           format = "{icon} {capacity}%";
           format-charging = "󰂄 {capacity}%";
           format-plugged = " {capacity}%";
-          format-alt = "{time} {icon}";
           format-icons = ["󰁺" "󰁻" "󰁼" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
         };
 
         clock = {
-          format = "{: %R   %d/%m}";
-          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          format = "{:${mkIcon ""} %R  ${mkIcon ""} %d/%m}";
+          tooltip-format = "<big>{:%Y %B}</big>\n<tt>{calendar}</tt>";
           calendar = {
             mode = "month";
             mode-mon-col = 3;
             weeks-pos = "right";
-            on-scroll = 1;
-            on-click = "mode";
             format = {
               months = "<span color='${colors.mauve}'><b>{}</b></span>";
               days = "<span color='${colors.lavender}'><b>{}</b></span>";
@@ -105,27 +112,24 @@ rec {
               weekdays = "<span color='${colors.blue}'><b>{}</b></span>";
               today = "<span color='${colors.red}'><b><u>{}</u></b></span>";
             };
-            actions =  {
-              on-click = "mode";
-            };
           };
         };
 
         network = {
-          format-wifi = " {essid}";
-          format-ethernet = "󰈀 {essid}";
-          format-linked = "󰈀 {ifname} (No IP)";
-          format-disconnected = "󰒏 Disconnected";
+          format-wifi = "${mkIcon ""} {essid}";
+          format-ethernet = "${mkIcon "󰈀"} {essid}";
+          format-linked = "${mkIcon "󰈀"} {ifname} (No IP)";
+          format-disconnected = "${mkIcon "󰒏"} Disconnected";
           tooltip-format-wifi = "Signal Strenght: {signalStrength}% | Down Speed: {bandwidthDownBits}, Up Speed: {bandwidthUpBits}";
           # on-click = "wofi-wifi-menu";
         };
 
         wireplumber = {
-          format = "{icon} {volume}%";
-          format-muted = "󰖁";
-          on-click = "helvum";
-          max-volume = 150;
-          scroll-step = 1.0;
+          format = "${mkIcon "{icon}"} {volume}%";
+          format-muted = mkIcon "󰖁";
+          on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          on-scroll-up = "${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
+          on-scroll-down = "${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
           format-icons = [ "" "" "" ];
         };
       };
@@ -137,7 +141,7 @@ rec {
       border-radius: 0;
       font-family: 'Fira Code Nerd Font Mono';
       font-weight: bold;
-      font-size: 8pt;
+      font-size: 10pt;
       min-height: 0;
     }
 
@@ -149,14 +153,15 @@ rec {
     tooltip {
       background: ${colors.base};
       border-radius: 10px;
-      border-width: 2px;
+      border-width: 1px;
       border-style: solid;
       border-color: ${colors.mantle};
     }
 
     #workspaces button {
       color: ${colors.surface0};
-      margin-right: 5px;
+      margin-right: .1rem;
+      padding: .15rem .2rem;
     }
 
     #workspaces button.active {

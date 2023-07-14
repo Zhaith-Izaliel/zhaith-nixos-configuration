@@ -11,7 +11,9 @@ let
   '';
 in
 {
-  environment.systemPackages = theme.gtk-theme.packages;
+  environment.systemPackages = with pkgs; [
+    at-spi2-core
+  ] ++theme.gtk-theme.packages;
 
   # Swayosd udev rules
   services.udev.extraRules = ''

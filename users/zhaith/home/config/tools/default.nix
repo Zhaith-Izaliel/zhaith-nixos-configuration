@@ -13,6 +13,7 @@
     ./office.nix
     ./reMarkable.nix
     ./thunar.nix
+    ./blueman.nix
   ];
 
   home.packages = with pkgs; [
