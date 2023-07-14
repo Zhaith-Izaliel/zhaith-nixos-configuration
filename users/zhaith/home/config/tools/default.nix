@@ -14,8 +14,6 @@
     ./reMarkable.nix
     ./thunar.nix
     ./blueman.nix
-    ./grimblast.nix
-    ./flameshot.nix
   ];
 
   home.packages = with pkgs; [
@@ -30,6 +28,7 @@
     viu
     power-management
     hyprpicker
+    grimblast
   ];
 }
 

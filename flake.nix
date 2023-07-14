@@ -24,10 +24,14 @@
       url = "github:Kirottu/anyrun";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, zhaith-neovim,
-  hyprland, anyrun, ...}@attrs:
+  hyprland, anyrun, hyprland-contrib, ...}@attrs:
   let
     system = "x86_64-linux";
     theme = "catppuccin";
@@ -46,6 +50,7 @@
         overlays = [
           nix-alien.overlays.default
           hyprland.overlays.default
+          hyprland-contrib.overlays.default
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };
@@ -71,6 +76,7 @@
         ];
         overlays = [
           hyprland.overlays.default
+          hyprland-contrib.overlays.default
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };

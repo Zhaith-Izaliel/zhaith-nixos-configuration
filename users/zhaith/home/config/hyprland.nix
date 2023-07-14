@@ -8,6 +8,7 @@ in
   home.packages = with pkgs; [
     swww
     swayosd
+    wl-clipboard
   ] ++ theme.waybar-theme.extraPackages;
 
   gtk = {
