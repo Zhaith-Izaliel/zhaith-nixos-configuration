@@ -81,6 +81,22 @@ let
       cp -r theme $out
       '';
     };
+
+    sddm-theme = pkgs.stdenv.mkDerivation rec {
+      pname = "sugar-candy-sddm";
+      version = "1.1";
+      src = pkgs.fetchgit {
+        url = "https://framagit.org/MarianArlt/sddm-sugar-candy";
+        rev = "v${version}";
+        sha256 = "";
+      };
+
+      installPhase = ''
+        local themeDir=$out/share/sddm/themes/${pname}
+        mkdir -p $themeDir
+        cp -aR $src $themeDir
+      '';
+    };
   };
 in
   default // {

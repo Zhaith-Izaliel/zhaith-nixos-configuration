@@ -41,18 +41,6 @@ rec {
           all-outputs = true;
           on-click = "activate";
           # format = "{icon}";
-          persistent_workspaces = {
-            "1" = [];
-            "2" = [];
-            "3" = [];
-            "4" = [];
-            "5" = [];
-            "6" = [];
-            "7" = [];
-            "8" = [];
-            "9" = [];
-            "10" = [];
-          };
         };
 
         idle_inhibitor = {
@@ -99,8 +87,8 @@ rec {
         };
 
         clock = {
-          format = "{:${mkIcon ""} %R  ${mkIcon ""} %d/%m}";
-          tooltip-format = "<big>{:%Y %B}</big>\n<tt>{calendar}</tt>";
+          format = "{:${mkIcon ""} %R  ${mkIcon ""} %a. %d, %b.}";
+          tooltip-format = "<center><big>{:%Y %B}</big></center>\n<tt>{calendar}</tt>";
           calendar = {
             mode = "month";
             mode-mon-col = 3;
@@ -136,138 +124,38 @@ rec {
     };
 
     style = ''
-    * {
-      border: none;
-      border-radius: 0;
-      font-family: 'Fira Code Nerd Font Mono';
-      font-weight: bold;
-      font-size: 10pt;
-      min-height: 0;
-    }
+    @define-color base   ${colors.base};
+    @define-color mantle ${colors.mantle};
+    @define-color crust  ${colors.crust};
 
-    window#waybar {
-      background: rgba(21, 18, 27, 0);
-      color: ${colors.text};
-    }
+    @define-color text     ${colors.text};
+    @define-color subtext0 ${colors.subtext0};
+    @define-color subtext1 ${colors.subtext1};
 
-    tooltip {
-      background: ${colors.base};
-      border-radius: 10px;
-      border-width: 1px;
-      border-style: solid;
-      border-color: ${colors.mantle};
-    }
+    @define-color surface0 ${colors.surface0};
+    @define-color surface1 ${colors.surface1};
+    @define-color surface2 ${colors.surface2};
 
-    #workspaces button {
-      color: ${colors.surface0};
-      margin-right: .1rem;
-      padding: .15rem .2rem;
-    }
+    @define-color overlay0 ${colors.overlay0};
+    @define-color overlay1 ${colors.overlay1};
+    @define-color overlay2 ${colors.overlay2};
 
-    #workspaces button.active {
-      color: ${colors.subtext1};
-    }
+    @define-color blue      ${colors.blue};
+    @define-color lavender  ${colors.lavender};
+    @define-color sapphire  ${colors.sapphire};
+    @define-color sky       ${colors.sky};
+    @define-color teal      ${colors.teal};
+    @define-color green     ${colors.green};
+    @define-color yellow    ${colors.yellow};
+    @define-color peach     ${colors.peach};
+    @define-color maroon    ${colors.maroon};
+    @define-color red       ${colors.red};
+    @define-color mauve     ${colors.mauve};
+    @define-color pink      ${colors.pink};
+    @define-color flamingo  ${colors.flamingo};
+    @define-color rosewater ${colors.rosewater};
 
-    #workspaces button.focused {
-      color: ${colors.subtext1};
-      background: ${colors.red};
-    }
-
-    #workspaces button.urgent {
-      color: ${colors.subtext1};
-      background: ${colors.green};
-    }
-
-    #workspaces button:hover {
-      background: ${colors.mauve};
-      color: ${colors.base};
-      border-radius: 9999px;
-    }
-
-    #custom-language,
-    #idle_inhibitor,
-    #window,
-    #clock,
-    #battery,
-    #wireplumber,
-    #network,
-    #workspaces,
-    #tray,
-    #backlight {
-      background: ${colors.base};
-      padding: 0px 10px;
-      margin: 3px 0px;
-      margin-top: 10px;
-      border: 1px solid ${colors.mantle};
-    }
-
-    #workspaces {
-      padding: 0;
-    }
-
-    #tray {
-      border-radius: 10px;
-      margin-right: 10px;
-    }
-
-    #workspaces {
-      background: ${colors.base};
-      border-radius: 10px;
-      margin-left: 10px;
-      padding-right: 0px;
-      padding-left: 5px;
-    }
-
-    #idle_inhibitor {
-      color: ${colors.sapphire};
-      border-radius: 10px 0px 0px 10px;
-      border-right: 0px;
-      margin-left: 10px;
-    }
-
-    #custom-language {
-      color: ${colors.red};
-      border-left: 0px;
-      border-right: 0px;
-    }
-
-    #window {
-      border-radius: 10px;
-      margin-left: 60px;
-      margin-right: 60px;
-    }
-
-    #clock {
-      color: ${colors.yellow};
-      border-radius: 10px;
-      margin-left: 10px;
-    }
-
-    #network {
-      color: ${colors.peach};
-      border-left: 0px;
-      border-right: 0px;
-    }
-
-    #wireplumber {
-      color: ${colors.blue};
-      border-left: 0px;
-      border-right: 0px;
-    }
-
-    #battery {
-      color: ${colors.teal};
-      border-radius: 0 10px 10px 0;
-      margin-right: 10px;
-      border-left: 0px;
-    }
-
-    #backlight {
-      color: ${colors.mauve};
-      border-left: 0px;
-      border-right: 0px;
-    }
-    '';
+    '' + builtins.readFile ./style.css;
   };
 }
 

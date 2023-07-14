@@ -18,6 +18,8 @@ rec {
 
   regreet-theme = import ./regreet { inherit gtk-theme lib; };
 
+  sddm-theme = import ./sddm { inherit theme-packages; };
+
   hyprland-theme = import ./hyprland { inherit gtk-theme theme-packages; };
 
   bat-theme = import ./bat { inherit theme-packages; };
