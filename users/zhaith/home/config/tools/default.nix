@@ -15,6 +15,7 @@
     ./thunar.nix
     ./blueman.nix
     ./grimblast.nix
+    ./flameshot.nix
   ];
 
   home.packages = with pkgs; [
