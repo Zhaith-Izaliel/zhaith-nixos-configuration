@@ -10,20 +10,13 @@
     unzip
     pstree
     pciutils
-    gparted
     wget
-    qview
     curl
     tree
-    fragments
-    gthumb
     rar
     unrar
     erdtree
     nix-alien
-    viu
-    gitnuro
-    (import ../assets/packages/tape { inherit pkgs; })
   ];
 
   programs.nix-ld.enable = true;

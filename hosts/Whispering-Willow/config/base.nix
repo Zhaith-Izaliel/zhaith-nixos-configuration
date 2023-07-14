@@ -1,5 +1,4 @@
-# Base config
-{ config, pkgs, ...}:
+{ ...}:
 
 {
   # Set your time zone.
@@ -15,3 +14,4 @@
     options = "--delete-older-than 30d";
   };
 }
+

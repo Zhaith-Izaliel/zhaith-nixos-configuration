@@ -11,34 +11,24 @@
     #                                Custom Config                               #
     # -------------------------------------------------------------------------- #
     # --------------------------------- Config --------------------------------- #
-    ./config/art.nix
     ./config/base.nix
     ./config/bootloader.nix
-    ./config/browser.nix
-    ./config/chat.nix
     ./config/development.nix
-    ./config/ecryptfs.nix
     ./config/fonts.nix
-    ./config/gnome.nix
     ./config/graphics.nix
     ./config/hardware.nix
+    ./config/hyprland.nix
     ./config/kernel.nix
     ./config/locale.nix
-    ./config/multimedia.nix
     ./config/networking.nix
-    ./config/office.nix
     ./config/power.nix
-    ./config/printing.nix
-    ./config/reMarkable.nix
+    ./config/samba.nix
     ./config/shell.nix
     ./config/sound.nix
     ./config/ssh.nix
     ./config/tex.nix
     ./config/tools.nix
     ./config/vm.nix
-
-    # ----------------------------- Custom Scripts ----------------------------- #
-    ./assets/scripts
   ];
 
   # This value determines the NixOS release from which the default

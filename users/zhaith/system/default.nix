@@ -12,6 +12,7 @@
       "scanner"
       "lp"
       "docker"
+      "video"
     ];
     group = "zhaith";
     description = "Virgil Ribeyre";

@@ -1,6 +1,11 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
+
+  home.packages = with pkgs; [
+    protonmail-bridge
+  ];
+
   systemd.user.services.protonmail-bridge = {
     Unit = {
       Description = "Protonmail Bridge";
@@ -13,11 +18,12 @@
     Service = {
       Type = "simple";
       Restart = "always";
-      ExecStart = "${pkgs.protonmail-bridge}/bin/protonmail-bridge -n --log-level info";
+      Environment = "PATH=${pkgs.gnome.gnome-keyring}/bin";
+      ExecStart = "${pkgs.protonmail-bridge}/bin/protonmail-bridge --grpc --log-level info";
     };
 
     Install = {
-      WantedBy = [ "gnome-session@gnome.target" ];
+      WantedBy = [ "hyprland-session.target" ];
     };
   };
 }
