@@ -12,6 +12,7 @@
     ./config/shell
     ./config/tools
     ./config/hyprland.nix
+    ./config/i18n.nix
   ];
 }
 

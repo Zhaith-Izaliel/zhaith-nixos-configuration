@@ -37,6 +37,7 @@ tooltip {
   color: @surface0;
   margin-right: .1rem;
   padding: .1rem .2rem;
+  border-radius: 9999px;
 }
 
 #workspaces button.active {
@@ -44,19 +45,18 @@ tooltip {
 }
 
 #workspaces button.focused {
-  color: @subtext1;
+  color: @base;
   background: @red;
 }
 
 #workspaces button.urgent {
-  color: @subtext1;
+  color: @base;
   background: @green;
 }
 
 #workspaces button:hover {
   background: @mauve;
   color: @base;
-  border-radius: 9999px;
 }
 
 #custom-language,
