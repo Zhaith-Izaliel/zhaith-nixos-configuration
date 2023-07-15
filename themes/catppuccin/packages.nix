@@ -106,7 +106,7 @@ let
         owner = "catppuccin";
         repo = "fcitx5";
         rev = version;
-        sha256 = "";
+        sha256 = "sha256-uFaCbyrEjv4oiKUzLVFzw+UY54/h7wh2cntqeyYwGps=";
       };
 
       installPhase = ''

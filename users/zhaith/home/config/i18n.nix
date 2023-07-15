@@ -1,11 +1,11 @@
 { pkgs, theme, ... }:
 
 let
-  fcitx5-theme = theme.fcitx5-theme.fcitx5;
+  fcitx5-theme = theme.fcitx5-theme.fcitx5.theme;
 in
 {
   home.packages = [
-    fcitx5-theme.package
+    theme.fcitx5-theme.package
   ];
 
   i18n.inputMethod = {
@@ -16,6 +16,8 @@ in
     ];
   };
 
-  xdg.configFile."${fcitx5-theme.theme.xdgConfigFile}" = fcitx5-theme.theme.content;
+  xdg.configFile."${fcitx5-theme.xdgConfigFile}" = {
+    source = pkgs.writeText fcitx5-theme.xdgConfigFile fcitx5-theme.content;
+  };
 }
 
