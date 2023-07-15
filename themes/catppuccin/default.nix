@@ -28,6 +28,6 @@ rec {
 
   waybar-theme = import ./waybar { inherit pkgs lib colors; };
 
-  fcitx5-theme = import ./fcitx5 { inherit theme-packages; };
+  fcitx5-theme = import ./fcitx5 { inherit theme-packages colors; };
 }
 
