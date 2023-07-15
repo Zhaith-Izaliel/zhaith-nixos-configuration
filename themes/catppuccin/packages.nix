@@ -97,6 +97,24 @@ let
         cp -aR $src $themeDir
       '';
     };
+
+
+    fcitx5-theme = pkgs.stdenv.mkDerivation rec {
+      pname = "catppuccin-fcitx5";
+      version = "ce244cf";
+      src = pkgs.fetchFromGitHub {
+        owner = "catppuccin";
+        repo = "fcitx5";
+        rev = version;
+        sha256 = "";
+      };
+
+      installPhase = ''
+        local themeDir=$out/share/fcitx5/themes
+        mkdir -p $themeDir
+        cp -aR ./src/* $themeDir
+      '';
+    };
   };
 in
   default // {

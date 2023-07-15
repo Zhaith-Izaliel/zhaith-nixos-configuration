@@ -27,5 +27,7 @@ rec {
   gitui-theme = import ./gitui { inherit theme-packages; };
 
   waybar-theme = import ./waybar { inherit pkgs lib colors; };
+
+  fcitx5-theme = import ./fcitx5 { inherit theme-packages; };
 }
 

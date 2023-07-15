@@ -11,6 +11,14 @@ in
     wl-clipboard
   ] ++ theme.waybar-theme.extraPackages;
 
+
+  systemd.user.targets.tray = {
+    Unit = {
+      Description = "Home Manager System Tray";
+      Requires = [ hyprland-session ];
+    };
+  };
+
   gtk = {
     enable = true;
     inherit (theme.gtk-theme) theme cursorTheme iconTheme font;
