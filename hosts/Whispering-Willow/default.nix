@@ -14,6 +14,7 @@
     ./config/base.nix
     ./config/bootloader.nix
     ./config/development.nix
+    ./config/display-manager.nix
     ./config/fonts.nix
     ./config/graphics.nix
     ./config/hardware.nix
