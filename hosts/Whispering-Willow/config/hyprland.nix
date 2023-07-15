@@ -46,6 +46,8 @@ in
 
   services.gnome.gnome-keyring.enable = true;
 
+  services.gnome.gnome-settings-daemon.enable = true;
+
   security.pam.services.greetd.enableGnomeKeyring = true;
 
   security.pam.services.swaylock.text = ''
