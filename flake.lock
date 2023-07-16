@@ -911,16 +911,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1689517722,
-        "narHash": "sha256-bWcEFDC7lOwKCWYA9ri0fz2rSjsHe7QeK3wsysUzLOE=",
+        "lastModified": 1689519542,
+        "narHash": "sha256-BRsWu4lew+JbF5XZykZLUS6Wzpu41TPNw95T0UePZqQ=",
         "owner": "Zhaith-Izaliel",
         "repo": "sddm-sugar-candy-nix",
-        "rev": "bb8c886c5e4eff7e10876383a33e62b3f525e764",
+        "rev": "d0b670e6c6b06a8f64b0dbf6b96b47dc9c1f1db8",
         "type": "gitlab"
       },
       "original": {
         "owner": "Zhaith-Izaliel",
-        "ref": "develop",
         "repo": "sddm-sugar-candy-nix",
         "type": "gitlab"
       }
