@@ -5,14 +5,14 @@
   imports = [
     ./config/browser.nix
     ./config/development.nix
-    ./config/gnome.nix
     ./config/mail.nix
     ./config/mpd.nix
     ./config/neovim.nix
     ./config/nextcloud.nix
-    ./config/shell/kitty.nix
-    ./config/shell/shell.nix
-    ./config/tools/erd.nix
+    ./config/shell
+    ./config/tools
+    ./config/hyprland.nix
+    ./config/i18n.nix
   ];
 }
 

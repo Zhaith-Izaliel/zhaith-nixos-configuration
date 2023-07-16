@@ -13,32 +13,56 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
-    grub2-themes.url = "github:/vinceliuice/grub2-themes";
+    grub2-themes ={
+      url = "github:/vinceliuice/grub2-themes";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-alien.url = "github:thiagokokada/nix-alien";
-    zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config";
+    zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
+    hyprland.url = "github:hyprwm/Hyprland";
+    anyrun = {
+      url = "github:Kirottu/anyrun";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    sddm-sugar-candy-nix = {
+      url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {nixpkgs, flake-utils, grub2-themes, nix-alien, zhaith-neovim,
-  ...}@attrs:
+  hyprland, anyrun, hyprland-contrib, sddm-sugar-candy-nix, ...}@attrs:
   let
+    system = "x86_64-linux";
+    theme = "catppuccin";
     lib = import ./lib { inputs = attrs; };
   in
   {
     nixosConfigurations = {
       Whispering-Willow = lib.mkSystem {
+        inherit system theme;
         hostname = "Whispering-Willow";
-        system = "x86_64-linux";
         users = [ "zhaith" ];
         extraModules = [
+          hyprland.nixosModules.default
           grub2-themes.nixosModules.default
+          sddm-sugar-candy-nix.nixosModules.default
         ];
         overlays = [
           nix-alien.overlays.default
+          hyprland.overlays.default
+          hyprland-contrib.overlays.default
+          sddm-sugar-candy-nix.overlays.default
+          (final: prev: import ./overlay { inherit final prev; })
         ];
       };
       Ethereal-Edelweiss = lib.mkSystem {
+        inherit system theme;
         hostname = "Ethereal-Edelweiss";
-        system = "x86_64-linux";
         users = [ "lilith" ];
         extraModules = [
           grub2-themes.nixosModules.default
@@ -47,18 +71,25 @@
     };
     homeConfigurations = {
       "zhaith@Whispering-Willow" = lib.mkHome {
+        inherit system theme;
         username = "zhaith";
-        system = "x86_64-linux";
         hostname = "Whispering-Willow";
         stateVersion = "22.05";
         extraModules = [
           zhaith-neovim.nixosModules.default
+          hyprland.homeManagerModules.default
+          anyrun.homeManagerModules.default
+        ];
+        overlays = [
+          hyprland.overlays.default
+          hyprland-contrib.overlays.default
+          (final: prev: import ./overlay { inherit final prev; })
         ];
       };
 
       "lilith@Ethereal-Edelweiss" = lib.mkHome {
+        inherit system theme;
         username = "lilith";
-        system = "x86_64-linux";
         hostname = "Ethereal-Edelweiss";
         stateVersion = "21.05";
       };

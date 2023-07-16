@@ -1,4 +1,4 @@
-{ config, pkgs, unstable-pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # Fonts
@@ -17,6 +17,7 @@
       fira-code-symbols
       rictydiminished-with-firacode
       terminus_font
+      font-awesome
     ];
     fontconfig = {
       enable = true;

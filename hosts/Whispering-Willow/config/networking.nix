@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -7,6 +7,18 @@
   # replicates the default behaviour.
   networking.interfaces.enp46s0.useDHCP = true;
   networking.interfaces.wlp47s0.useDHCP = true;
+
+  networking.networkmanager = {
+    enable = true;
+    plugins = with pkgs; [
+      networkmanager-openvpn
+    ];
+  };
+
+  programs.nm-applet = {
+    enable = true;
+    indicator = false;
+  };
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -22,3 +34,4 @@
     openvpn
   ];
 }
+

@@ -1,9 +1,10 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 
-let
-  kittens = import ./kitten.nix { inherit pkgs lib; };
-in
 {
+  imports = [
+    ../../../../../assets/kitten
+  ];
+
   programs = {
     kitty = {
       enable = true;
@@ -11,7 +12,7 @@ in
       font = {
         package = pkgs.fira-code;
         name = "Fira Code";
-        size = 16;
+        size = 14;
       };
 
       settings = {
@@ -63,13 +64,6 @@ in
         "ctrl+space>h" = "launch --allow-remote-control kitty +kitten broadcast --match-tab state:focused";
       };
     };
-  };
-
-  # HACK: Adding kittens
-  home.file = {
-    "${config.xdg.configHome}/kitty/pass_keys.py".source = "${kittens.vim-kitty-navigator}/pass_keys.py";
-    "${config.xdg.configHome}/kitty/neighboring_window.py".source = "${kittens.vim-kitty-navigator}/neighboring_window.py";
-    "${config.xdg.configHome}/kitty/tab_bar.py".source = lib.cleanSource ./tab_bar.py;
   };
 }
 
