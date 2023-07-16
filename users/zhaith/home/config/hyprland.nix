@@ -2,7 +2,7 @@
 
 let
   anyrun-plugins = inputs.anyrun.packages.${pkgs.system};
-  hyprland-session = "hyprland-session.target";
+  hyprland-session = "graphical-session.target";
 in
 {
   home.packages = with pkgs; [
