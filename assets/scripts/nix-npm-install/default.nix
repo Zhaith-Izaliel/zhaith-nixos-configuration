@@ -5,7 +5,7 @@ pkgs.callPackage ../builder.nix rec {
   version = "v1.0.2";
 
   src = pkgs.fetchFromGitLab {
-    repo = "nix-npm-install";
+    repo = pname;
     owner = "Zhaith-Izaliel";
     rev = version;
     sha256 = "sha256-RG2WGe6MKCvIy4hL0QqI1iCHTmrnwZFbGeCQP5Toelk=";
@@ -20,3 +20,4 @@ pkgs.callPackage ../builder.nix rec {
     nodePackages.node2nix
   ];
 }
+

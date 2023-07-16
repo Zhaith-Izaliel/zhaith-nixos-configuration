@@ -28,7 +28,7 @@ pkgs.callPackage ../builder.nix rec {
   version = "v2.2.0";
 
   src = pkgs.fetchFromGitLab {
-    repo = "start-vm";
+    repo = pname;
     owner = "Zhaith-Izaliel";
     rev = version;
     sha256 = "sha256-c/FIIYjsbRK3jQeXjN+8EIkoyTa7CmyB2XSwCIAaiMY=";

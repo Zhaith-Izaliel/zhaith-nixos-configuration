@@ -6,7 +6,7 @@ pkgs.callPackage ../builder.nix rec {
   version = "v2.2.1";
 
   src = pkgs.fetchFromGitLab {
-    repo = "power-management";
+    repo = pname;
     owner = "Zhaith-Izaliel";
     rev = version;
     sha256 = "sha256-Jmk/cRGVzpCnQrtzzNw+KDgGxE2vgQ5WYmGRqSHzbvw=";

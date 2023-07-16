@@ -10,5 +10,7 @@
   power-management = import ./power-management { inherit pkgs; };
 
   dim-on-lock = import ./dim-on-lock { inherit pkgs; };
+
+  wlogout-blur = import ./wlogout-blur { inherit pkgs; };
 }
 

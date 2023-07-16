@@ -1,15 +1,15 @@
 { pkgs }:
 
 pkgs.callPackage ../builder.nix rec {
-  pname = "dim-on-lock";
+  pname = "wlogout-blur";
 
-  version = "v1.1.0";
+  version = "v1.0.0";
 
   src = pkgs.fetchFromGitLab {
     repo = pname;
     owner = "Zhaith-Izaliel";
     rev = version;
-    sha256 = "sha256-PkkLHkwPYcsfMf5LkeK8w8ZxpKxVuiWq3c3FK5MODL8=";
+    sha256 = "";
   };
 
   buildInputs = with pkgs; [
@@ -17,7 +17,9 @@ pkgs.callPackage ../builder.nix rec {
   ];
 
   paths = with pkgs; [
-    brightnessctl
+    imagemagick
+    wlogout
+    grimblast
   ];
 }
 
