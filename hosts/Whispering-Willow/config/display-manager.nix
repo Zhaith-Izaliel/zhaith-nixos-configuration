@@ -1,4 +1,4 @@
-{ ... }:
+{ theme, ... }:
 
 {
   services.xserver = {
@@ -7,14 +7,8 @@
     xkbVariant = "oss_latin9";
 
     displayManager.sddm.sugarCandy = {
+      inherit (theme.sddm-theme.sddm) settings;
       enable = true;
-      settings = {
-        ScreenWidth = 1920;
-        ScreenHeight = 1080;
-        FormPosition = "left";
-        HaveFormBackground = true;
-        PartialBlur = true;
-      };
     };
   };
 }

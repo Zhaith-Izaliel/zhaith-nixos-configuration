@@ -82,23 +82,6 @@ let
       '';
     };
 
-    sddm-theme = pkgs.stdenv.mkDerivation rec {
-      pname = "sugar-candy-sddm";
-      version = "1.1";
-      src = pkgs.fetchgit {
-        url = "https://framagit.org/MarianArlt/sddm-sugar-candy";
-        rev = "v${version}";
-        sha256 = "";
-      };
-
-      installPhase = ''
-        local themeDir=$out/share/sddm/themes/${pname}
-        mkdir -p $themeDir
-        cp -aR $src $themeDir
-      '';
-    };
-
-
     fcitx5-theme = pkgs.stdenv.mkDerivation rec {
       pname = "catppuccin-fcitx5";
       version = "ce244cf";
