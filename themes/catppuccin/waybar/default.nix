@@ -31,7 +31,15 @@ rec {
           "backlight"
           "wireplumber"
           "battery"
+          "custom/shutdown"
         ];
+
+        "custom/shutdown" = {
+          format = mkIcon "";
+          on-click = "${lib.getExe pkgs.wlogout}";
+          tooltip = false;
+          interval = "once";
+        };
 
         "hyprland/window" = {
           format = "{}";
