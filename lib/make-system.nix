@@ -4,9 +4,11 @@
   mkSystem = { hostname, system, users ? [ ], extraModules ? [ ], overlays ? [
   ], theme ? "" }:
     let
-      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      pkgs = import inputs.nixpkgs {
+        inherit overlays system;
+      };
       lib = inputs.nixpkgs.lib;
-      theme-set = (import ../themes { inherit pkgs lib; }).${theme};
+      theme-set = (import ../themes { inherit lib pkgs; }).${theme};
     in
     lib.nixosSystem {
       inherit system;
@@ -46,7 +48,9 @@
     mkHome = { username, system, hostname, stateVersion, extraModules ? [ ],
     overlays ? [ ], theme ? "" }:
     let
-      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      pkgs = import inputs.nixpkgs {
+        inherit overlays system;
+      };
       lib = inputs.nixpkgs.lib;
       theme-set = (import ../themes { inherit pkgs lib; }).${theme};
     in

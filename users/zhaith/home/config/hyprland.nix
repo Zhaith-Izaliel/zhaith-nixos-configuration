@@ -9,6 +9,7 @@ in
     swww
     swayosd
     wl-clipboard
+    wlogout-blur
   ] ++ theme.waybar-theme.extraPackages;
 
 

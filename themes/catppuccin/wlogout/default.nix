@@ -71,7 +71,8 @@ rec {
         font-family: "Fira Code";
         font-size: 14pt;
         color: ${colors.text};
-        background-color: rgba(30, 30, 46, 0.75);
+        background-repeat: no-repeat;
+        background-image: image(url("/tmp/wlogout-blur.png"));
       }
 
       button {

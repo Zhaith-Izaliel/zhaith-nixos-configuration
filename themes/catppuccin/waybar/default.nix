@@ -36,7 +36,7 @@ rec {
 
         "custom/shutdown" = {
           format = mkIcon "";
-          on-click = "${lib.getExe pkgs.wlogout}";
+          on-click = "${lib.getExe pkgs.wlogout-blur} --protocol layer-shell -b 5 -T 400 -B 400";
           tooltip = false;
           interval = "once";
         };
