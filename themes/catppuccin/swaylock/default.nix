@@ -18,7 +18,7 @@ in
       inside-caps-lock-color = converted-colors.base;
       inside-ver-color = converted-colors.base;
       inside-wrong-color = converted-colors.base;
-      key-hl-color = converted-colors.green;
+      key-hl-color = converted-colors.lavender;
       layout-bg-color = "00000000";
       layout-border-color = "00000000";
       layout-text-color = converted-colors.text;
@@ -27,7 +27,7 @@ in
       line-caps-lock-color = "00000000";
       line-ver-color = "00000000";
       line-wrong-color = "00000000";
-      ring-color = converted-colors.lavender;
+      ring-color = converted-colors.mauve;
       ring-clear-color = converted-colors.rosewater;
       ring-caps-lock-color = converted-colors.peach;
       ring-ver-color = converted-colors.blue;

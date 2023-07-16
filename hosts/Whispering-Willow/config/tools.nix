@@ -21,6 +21,15 @@
 
   programs.nix-ld.enable = true;
 
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-volman
+      thunar-media-tags-plugin
+    ];
+  };
+
   nixpkgs.config.permittedInsecurePackages = [
     "nodejs-14.21.3"
   ];
