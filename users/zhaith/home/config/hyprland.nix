@@ -37,6 +37,11 @@ in
     inherit (theme.dunst-theme.dunst) iconTheme settings;
   };
 
+  programs.wlogout = {
+    inherit (theme.wlogout-theme.wlogout) layout style;
+    enable = true;
+  };
+
   programs.anyrun = {
     enable = true;
     config = {
