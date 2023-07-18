@@ -5,19 +5,28 @@
   100%  { color: @maroon; }
 }
 
-@keyframes blink {
-    to {
-        color: @rosemary;
-    }
+@keyframes battery-blink {
+  from { color: @red; }
+  to { color: @rosemary; }
+}
+
+@keyframes workspace-blink {
+  50% {
+    background-color: @base;
+  }
+
+  100% {
+    background-color: @green;
+  }
 }
 
 * {
-  border: none;
-  border-radius: 0;
   font-family: 'Fira Code Nerd Font Mono';
-  font-weight: bold;
   font-size: 10pt;
-  min-height: 0;
+  font-weight: bold;
+  border: none;
+  border-radius: 0px;
+  min-height: 0px;
 }
 
 window#waybar {
@@ -35,8 +44,8 @@ tooltip {
 
 #workspaces button {
   color: @surface0;
-  margin-right: .1rem;
-  padding: .1rem .2rem;
+  margin-right: .1em;
+  padding: 0px .2em;
   border-radius: 9999px;
   transition: all .5s ease-in-out;
 }
@@ -45,14 +54,10 @@ tooltip {
   color: @subtext1;
 }
 
-#workspaces button.focused {
-  color: @base;
-  background: @red;
-}
-
 #workspaces button.urgent {
-  color: @base;
-  background: @green;
+  animation-name: workspace-blink;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
 }
 
 #workspaces button:hover {
@@ -73,39 +78,39 @@ tooltip {
 #custom-shutdown,
 #backlight {
   background: @base;
-  padding: 0px 10px;
-  margin-bottom: 3px;
-  margin-top: 10px;
+  padding: 0px .6em;
+  margin-bottom: .225em;
+  margin-top: .75em;
   border: 1px solid @mantle;
 }
 
 #workspaces {
-  padding: 0;
+  padding: 0px;
 }
 
 #tray {
   border-radius: 10px;
-  margin-right: 10px;
+  margin-right: .75em;
 }
 
 #workspaces {
   border-radius: 10px;
-  margin-left: 10px;
+  margin-left: .75em;
   padding-right: 0px;
-  padding-left: 5px;
+  padding-left: .375em;
 }
 
 #custom-shutdown {
   border-radius: 9999px;
-  margin-right: 5px;
-  padding: 0 7px;
+  margin-right: .375em;
+  padding: 0 .525em;
   color: @text;
   transition: all .5s ease-in-out;
 }
 
 #mpd {
   border-radius: 10px;
-  margin-left: 10px;
+  margin-left: .75em;
   transition: color .5s ease-in-out;
 }
 
@@ -128,7 +133,7 @@ tooltip {
 #idle_inhibitor {
   border-radius: 10px 0px 0px 10px;
   border-right: 0px;
-  margin-left: 10px;
+  margin-left: .75em;
   transition-property: color;
   transition-duration: .5s;
   transition-timing-function: ease-in-out;
@@ -145,22 +150,17 @@ tooltip {
   color: @text;
 }
 
-#custom-language {
-  color: @red;
-  border-left: 0px;
-  border-right: 0px;
-}
 
 #window {
   border-radius: 10px;
-  margin-left: 60px;
-  margin-right: 60px;
+  margin-left: 4.5em;
+  margin-right: 4.5em;
 }
 
 #clock {
   color: @yellow;
   border-radius: 10px;
-  margin-left: 10px;
+  margin-left: .75em;
 }
 
 #network {
@@ -177,8 +177,8 @@ tooltip {
 
 #battery {
   color: @sky;
-  border-radius: 0 10px 10px 0;
-  margin-right: 10px;
+  border-radius: 0px .75em .75em 0px;
+  margin-right: .75em;
   border-left: 0px;
 }
 
@@ -192,12 +192,12 @@ tooltip {
 }
 
 #battery.critical:not(.charging) {
-    color: @red;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  color: @red;
+  animation-name: battery-blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 
