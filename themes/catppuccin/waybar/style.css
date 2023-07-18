@@ -1,23 +1,21 @@
 /* Keyframes */
 
 @keyframes idle-activated {
-  50% { color: @flamingo; }
-  100%  { color: @maroon; }
+  0% { color: @flamingo; }
+  50%  { color: @maroon; }
+  100% { color: @flamingo; }
 }
 
 @keyframes battery-blink {
-  from { color: @red; }
-  to { color: @rosemary; }
+  0% { color: @red; }
+  50% { color: @rosemary; }
+  100% { color: @red; }
 }
 
 @keyframes workspace-blink {
-  50% {
-    background-color: @base;
-  }
-
-  100% {
-    background-color: @green;
-  }
+  0% { background-color: @base; }
+  50% { background-color: @green; }
+  100% { background-color: @base; }
 }
 
 * {
@@ -45,7 +43,7 @@ tooltip {
 #workspaces button {
   color: @surface0;
   margin-right: .1em;
-  padding: 0px .2em;
+  padding: 0px .3em;
   border-radius: 9999px;
   transition: all .5s ease-in-out;
 }
@@ -140,7 +138,6 @@ tooltip {
 }
 
 #idle_inhibitor.activated {
-  color: @maroon;
   animation-name: idle-activated;
   animation-duration: 4s;
   animation-iteration-count: infinite;
