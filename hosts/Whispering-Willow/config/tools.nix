@@ -17,6 +17,7 @@
     unrar
     erdtree
     nix-alien
+    tape
   ];
 
   programs.nix-ld.enable = true;

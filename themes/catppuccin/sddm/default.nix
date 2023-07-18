@@ -29,7 +29,7 @@
       AccentColor = colors.mauve;
       BackgroundColor = colors.base;
       Font = gtk-theme.font.name;
-      FontSize = toString (gtk-theme.font.size + 10);
+      FontSize = toString gtk-theme.font.size;
       MainColor = colors.text;
       ForceHideCompletePassword = true;
     };

@@ -24,7 +24,7 @@
     gparted
     gthumb
     qview
-    tape
+    # tape
     viu
     power-management
     hyprpicker

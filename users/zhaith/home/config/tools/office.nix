@@ -7,6 +7,8 @@
     qalculate-gtk
     calibre
     evolution
+    obsidian
+    gnome.file-roller
   ];
 }
 
