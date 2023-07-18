@@ -12,7 +12,6 @@
     ./obs.nix
     ./office.nix
     ./reMarkable.nix
-    ./thunar.nix
     ./blueman.nix
     ./networkmanager.nix
   ];
@@ -25,7 +24,7 @@
     gparted
     gthumb
     qview
-    tape
+    # tape
     viu
     power-management
     hyprpicker

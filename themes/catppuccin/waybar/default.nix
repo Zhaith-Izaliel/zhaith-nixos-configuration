@@ -1,7 +1,7 @@
 { pkgs, lib, colors } :
 
 rec {
-  mkIcon = icon: "<big>${icon}</big>";
+  mkBig = icon: "<big>${icon}</big>";
 
   extraPackages = with pkgs; [
     sutils
@@ -35,7 +35,7 @@ rec {
         ];
 
         "custom/shutdown" = {
-          format = mkIcon "";
+          format = mkBig "";
           on-click = "${lib.getExe pkgs.wlogout-blur} --protocol layer-shell -b 5 -T 400 -B 400";
           tooltip = false;
           interval = "once";
@@ -47,13 +47,38 @@ rec {
 
         "wlr/workspaces" = {
           disable-scroll = true;
-          all-outputs = true;
+          all-outputs = false;
           on-click = "activate";
-          # format = "{icon}";
+          sort-by-number =  true;
+          format = mkBig "{icon}";
+          format-icons = {
+            "1" = "󰲠";
+            "2" = "󰲢";
+            "3" = "󰲤";
+            "4" = "󰲦";
+            "5" = "󰲨";
+            "6" = "󰲪";
+            "7" = "󰲬";
+            "8" = "󰲮";
+            "9" = "󰲰";
+            "10" = "󰿬";
+          };
+          persistent_workspaces =  {
+            "1" = [];
+            "2" = [];
+            "3" = [];
+            "4" = [];
+            "5" = [];
+            "6" = [];
+            "7" = [];
+            "8" = [];
+            "9" = [];
+            "10" = [];
+          };
         };
 
         idle_inhibitor = {
-          format = mkIcon "{icon}";
+          format = mkBig "{icon}";
           format-icons = {
             deactivated = "󰅶";
             activated = "󰶞";
@@ -75,7 +100,7 @@ rec {
 
         backlight = {
           device = "intel_backlight";
-          format = "${mkIcon "{icon}"} {percent}%";
+          format = "${mkBig "{icon}"} {percent}%";
           format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" ""];
           on-scroll-up = "${lib.getExe pkgs.brightnessctl} set 1%+";
           on-scroll-down = "${lib.getExe pkgs.brightnessctl} set 1%-";
@@ -96,7 +121,7 @@ rec {
         };
 
         clock = {
-          format = "{:${mkIcon ""} %R  ${mkIcon ""} %a. %d, %b.}";
+          format = "{:${mkBig ""} %R  ${mkBig ""} %a. %d, %b.}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
           calendar = {
             mode = "month";
@@ -113,17 +138,17 @@ rec {
         };
 
         network = {
-          format-wifi = "${mkIcon ""} {essid}";
-          format-ethernet = "${mkIcon "󰈀"} {essid}";
-          format-linked = "${mkIcon "󰈀"} {ifname} (No IP)";
-          format-disconnected = "${mkIcon "󰒏"} Disconnected";
+          format-wifi = "${mkBig ""} {essid}";
+          format-ethernet = "${mkBig "󰈀"} {essid}";
+          format-linked = "${mkBig "󰈀"} {ifname} (No IP)";
+          format-disconnected = "${mkBig "󰒏"} Disconnected";
           tooltip-format-wifi = "Signal Strenght: {signalStrength}% | Down Speed: {bandwidthDownBits}, Up Speed: {bandwidthUpBits}";
           # on-click = "wofi-wifi-menu";
         };
 
         wireplumber = {
-          format = "${mkIcon "{icon}"} {volume}%";
-          format-muted = mkIcon "󰖁";
+          format = "${mkBig "{icon}"} {volume}%";
+          format-muted = mkBig "󰖁";
           on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
           on-scroll-up = "${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
           on-scroll-down = "${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
@@ -131,9 +156,9 @@ rec {
         };
 
         mpd = {
-          format = "${mkIcon "{stateIcon}"} {title}";
+          format = "${mkBig "{stateIcon}"} {title}";
           tooltip-format = "{albumArtist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})";
-          format-stopped = "${mkIcon "󰙧"} Stopped";
+          format-stopped = "${mkBig "󰙧"} Stopped";
           state-icons = {
             playing = "󰫔";
             paused = "󰏦";

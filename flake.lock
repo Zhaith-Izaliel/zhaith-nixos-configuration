@@ -477,11 +477,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1689455405,
-        "narHash": "sha256-a/jPdb8JGMDqH0RAxdbeMJRccIOvGqIGQSx9ETMHMPY=",
+        "lastModified": 1689519965,
+        "narHash": "sha256-2C9RqRMT4XSsJ9hfGCUyqu8hXCbyhk84F3pEYpm680s=",
         "owner": "hyprwm",
         "repo": "Hyprland",
-        "rev": "3229862dd4cbfa93638a4d16ed86ec2fda5d38a6",
+        "rev": "b156a9654ff3379b8b40e7b03bb832924ba4665e",
         "type": "github"
       },
       "original": {
@@ -911,11 +911,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1689519542,
-        "narHash": "sha256-BRsWu4lew+JbF5XZykZLUS6Wzpu41TPNw95T0UePZqQ=",
+        "lastModified": 1689524467,
+        "narHash": "sha256-3BOEDaQckI0mwgmsvSTaXFiqhG9wtUjJNBlOulmoUTI=",
         "owner": "Zhaith-Izaliel",
         "repo": "sddm-sugar-candy-nix",
-        "rev": "d0b670e6c6b06a8f64b0dbf6b96b47dc9c1f1db8",
+        "rev": "1ea0bc4179577be00acdeb2ce305c736c1dc4785",
         "type": "gitlab"
       },
       "original": {
@@ -1098,11 +1098,11 @@
         "nixpkgs-unstable": "nixpkgs-unstable_2"
       },
       "locked": {
-        "lastModified": 1688413886,
-        "narHash": "sha256-YTGzkLRY3fvqdtANr8h1c3rx650fA7Z71K7yt7QRWd8=",
+        "lastModified": 1689716589,
+        "narHash": "sha256-nTcE/BhYfHNM96wmZ3eSD0J1uqUQfX66kXh0rJthP8s=",
         "owner": "Zhaith-Izaliel",
         "repo": "neovim-config",
-        "rev": "fe5d59b36bfb6f7b5f3ed40e58d5d22a66fe2145",
+        "rev": "6acc67c7a920f4e19477240f73e3b9bfb296a10d",
         "type": "gitlab"
       },
       "original": {
