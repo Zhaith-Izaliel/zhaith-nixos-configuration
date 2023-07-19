@@ -48,15 +48,15 @@
       "ctrl+space>backspace" = "close_window";
       "ctrl+space>s" = "focus_visible_window";
       # Kitten for smart-splits.nvim
-      "space+down" = "kitten pass_keys.py neighboring_window bottom space+down";
-      "space+up" = "kitten pass_keys.py neighboring_window top space+up";
-      "space+left" = "kitten pass_keys.py neighboring_window left space+left";
-      "space+right" = "kitten pass_keys.py neighboring_window right space+right";
+      "ctrl+space>down" = "kitten pass_keys.py neighboring_window bottom ctrl+space>down";
+      "ctrl+space>up" = "kitten pass_keys.py neighboring_window top ctrl+space>up";
+      "ctrl+space>left" = "kitten pass_keys.py neighboring_window left ctrl+space>left";
+      "ctrl+space>right" = "kitten pass_keys.py neighboring_window right ctrl+space>right";
 
-      "space+shift+down" = "kitten pass_keys.py relative_resize bottom 3 space+shift+down";
-      "space+shift+up" = "kitten pass_keys.py relative_resize top 3 space+shift+up";
-      "space+shift+left" = "kitten pass_keys.py relative_resize left 3 space+shift+left";
-      "space+shift+right" = "kitten pass_keys.py relative_resize right 3 space+shift+right";
+      "shift+space>down" = "kitten pass_keys.py relative_resize bottom 3 shift+space>down";
+      "shift+space>up" = "kitten pass_keys.py relative_resize top 3 shift+space>up";
+      "shift+space>left" = "kitten pass_keys.py relative_resize left 3 shift+space>left";
+      "shift+space>right" = "kitten pass_keys.py relative_resize right 3 shift+space>right";
 
       # Broadcast kitten
       "ctrl+space>b" = "launch --allow-remote-control kitty +kitten broadcast";
