@@ -9,8 +9,10 @@
       owner = "mrjones2014";
       repo = "smart-splits.nvim";
       rev  = version;
-      sha256 = "";
+      sha256 = "sha256-mLLh8rcq5D6dA9Iwn3ULiHRG/jI4Sjct4J498C+QPO8=";
     };
+
+    dontBuild = true;
 
     installPhase = ''
       mkdir -p $out
