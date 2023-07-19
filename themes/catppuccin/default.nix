@@ -29,5 +29,7 @@ rec {
   fcitx5-theme = import ./fcitx5 { inherit theme-packages colors; };
 
   wlogout-theme = import ./wlogout { inherit colors lib; };
+
+  kitty-theme = import ./kitty { inherit colors pkgs; };
 }
 
