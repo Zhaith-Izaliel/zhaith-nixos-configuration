@@ -2,6 +2,7 @@
 
 rec {
   mkBig = icon: "<big>${icon}</big>";
+  mkBold = icon: "<b>${icon}</b>";
 
   extraPackages = with pkgs; [
     sutils
@@ -35,20 +36,19 @@ rec {
         ];
 
         bluetooth = {
-          format= " {status}";
-          format-connected= " {device_alias}";
-          format-connected-battery= " {device_alias}
-          {device_battery_percentage}%";
-          tooltip-format=
-          "{controller_alias}\t{controller_address}\n\n{num_connections}
-          connected";
-          tooltip-format-connected=
-          "{controller_alias}\t{controller_address}\n\n{num_connections}
-          connected\n\n{device_enumerate}";
-          tooltip-format-enumerate-connected=
-          "{device_alias}\t{device_address}";
-          tooltip-format-enumerate-connected-battery=
-          "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+          format = "󰂯 {status}";
+          format-off = "󰂲 off";
+          format-disabled = "󰂳 off";
+          format-connected = "${mkBig "󰂱"} {device_alias}";
+          format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
+          tooltip-format =
+          "${mkBig ""} {controller_alias} - {controller_address}\n${mkBig "󰌡"} {num_connections} connected";
+          tooltip-format-connected =
+          "${mkBig ""} {controller_alias} - {controller_address}\n${mkBig "󰌡"} {num_connections} connected\n\n{device_enumerate}";
+          tooltip-format-enumerate-connected =
+          "${mkBig ""} {device_alias} - {device_address}";
+          tooltip-format-enumerate-connected-battery =
+          "${mkBig ""} {device_alias} - {device_address} (${mkBig"󰠠"} {device_battery_percentage}%)";
         };
 
         "custom/shutdown" = {
@@ -103,12 +103,6 @@ rec {
           tooltip-format-activated = "Active";
           tooltip-format-deactivated = "Inactive";
         };
-
-        # "custom/language" = {
-        #   exec = "cat /tmp/kb_layout";
-        #   interval = 3;
-        #   format = "󰌌 {}";
-        # };
 
         tray = {
           icon-size = 13;

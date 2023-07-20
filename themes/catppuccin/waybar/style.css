@@ -33,11 +33,15 @@ window#waybar {
 }
 
 tooltip {
+  background-color: rgba(21, 18, 27, 0) !important;
+}
+
+tooltip label {
   background: @base;
   border-radius: 10px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: @mantle;
+  padding: .5rem;
+  border: 1px solid @mantle;
+  font-weight: normal;
 }
 
 #workspaces button {
@@ -74,6 +78,7 @@ tooltip {
 #tray,
 #mpd,
 #custom-shutdown,
+#bluetooth,
 #backlight {
   background: @base;
   padding: 0px .6em;
@@ -202,5 +207,32 @@ tooltip {
   color: @mauve;
   border-left: 0px;
   border-right: 0px;
+}
+
+#bluetooth {
+  color: @text;
+  border-left: 0px;
+  border-right: 0px;
+}
+
+#bluetooth.disabled {
+  color: @maroon;
+}
+
+#bluetooth.discoverable {
+  color: @lavender;
+}
+
+#bluetooth.discovering {
+  color: @lavender;
+}
+
+#bluetooth.off {
+  color: @red;
+}
+
+#bluetooth.on,
+#bluetooth.connected {
+  color: @sapphire;
 }
 
