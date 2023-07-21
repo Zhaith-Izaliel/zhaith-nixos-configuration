@@ -1,4 +1,4 @@
-{ pkgs, lib, colors } :
+{ pkgs, lib, colors }:
 
 rec {
   mkBig = icon: "<big>${icon}</big>";
@@ -15,6 +15,7 @@ rec {
       mainBar = {
         layer = "top";
         position = "top";
+        spacing = 0;
         height = 0;
         modules-left = [
           "clock"
@@ -41,14 +42,15 @@ rec {
           format-disabled = "󰂳 off";
           format-connected = "${mkBig "󰂱"} {device_alias}";
           format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
+          on-click = "${lib.getExe pkgs.toggle-bluetooth}";
           tooltip-format =
-          "${mkBig ""} {controller_alias} - {controller_address}\n${mkBig "󰌡"} {num_connections} connected";
+          "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
           tooltip-format-connected =
-          "${mkBig ""} {controller_alias} - {controller_address}\n${mkBig "󰌡"} {num_connections} connected\n\n{device_enumerate}";
+          "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected\n\n{device_enumerate}";
           tooltip-format-enumerate-connected =
-          "${mkBig ""} {device_alias} - {device_address}";
+          "󰥰 {device_alias} - {device_address}";
           tooltip-format-enumerate-connected-battery =
-          "${mkBig ""} {device_alias} - {device_address} (${mkBig"󰠠"} {device_battery_percentage}%)";
+          "󰥰 {device_alias} - {device_address} (󰁹 {device_battery_percentage}%)";
         };
 
         "custom/shutdown" = {
@@ -86,11 +88,6 @@ rec {
             "3" = [];
             "4" = [];
             "5" = [];
-            "6" = [];
-            "7" = [];
-            "8" = [];
-            "9" = [];
-            "10" = [];
           };
         };
 

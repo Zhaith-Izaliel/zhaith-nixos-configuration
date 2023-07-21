@@ -27,19 +27,18 @@
   min-height: 0px;
 }
 
+.text-xl {
+  font-size: 1.5rem;
+}
+
 window#waybar {
   background: rgba(21, 18, 27, 0);
   color: @text;
 }
 
 tooltip {
-  background-color: rgba(21, 18, 27, 0) !important;
-}
-
-tooltip label {
   background: @base;
   border-radius: 10px;
-  padding: .5rem;
   border: 1px solid @mantle;
   font-weight: normal;
 }

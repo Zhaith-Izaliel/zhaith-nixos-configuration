@@ -1,7 +1,7 @@
 { pkgs }:
 
 pkgs.callPackage ../builder.nix rec {
-  pname = "wlogout-blur";
+  pname = "toggle-bluetooth";
 
   version = "1.0.0";
 
@@ -9,7 +9,7 @@ pkgs.callPackage ../builder.nix rec {
     repo = pname;
     owner = "Zhaith-Izaliel";
     rev = "v${version}";
-    sha256 = "sha256-mInyb108jKRMMmqgztm45JN8XOpyNCe56xjKIArj1Cw=";
+    sha256 = "";
   };
 
   buildInputs = with pkgs; [
@@ -17,9 +17,7 @@ pkgs.callPackage ../builder.nix rec {
   ];
 
   paths = with pkgs; [
-    imagemagick
-    wlogout
-    grimblast
+    bluez
   ];
 }
 
