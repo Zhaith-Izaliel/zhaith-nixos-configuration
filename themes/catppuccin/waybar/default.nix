@@ -42,7 +42,8 @@ rec {
           format-disabled = "󰂳 off";
           format-connected = "${mkBig "󰂱"} {device_alias}";
           format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
-          on-click = "${pkgs.bluez}/bin/bluetoothctl show; ${lib.getExe pkgs.toggle-bluetooth}";
+          on-click = "${lib.getExe pkgs.toggle-bluetooth}";
+          on-click-right = "${lib.getExe pkgs.blueberry}";
           tooltip-format =
           "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
           tooltip-format-connected =
