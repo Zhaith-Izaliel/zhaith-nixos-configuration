@@ -37,8 +37,6 @@ in
     wantedBy = [ "multi-user.target" ];
   };
 
-  services.blueman.enable = true;
-
   hardware.bluetooth = {
     enable = true;
     package = pkgs.bluez.override { withExperimental = true; };

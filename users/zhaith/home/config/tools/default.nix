@@ -12,19 +12,19 @@
     ./obs.nix
     ./office.nix
     ./reMarkable.nix
-    ./blueman.nix
     ./networkmanager.nix
   ];
 
   home.packages = with pkgs; [
     cinnamon.nemo
+    blueberry
     fragments
     glab
     gnome.simple-scan
     gparted
     gthumb
     qview
-    # tape
+    tape
     viu
     power-management
     hyprpicker

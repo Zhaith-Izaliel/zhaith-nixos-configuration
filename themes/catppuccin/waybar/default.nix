@@ -42,7 +42,7 @@ rec {
           format-disabled = "󰂳 off";
           format-connected = "${mkBig "󰂱"} {device_alias}";
           format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
-          on-click = "${lib.getExe pkgs.toggle-bluetooth}";
+          on-click = "${pkgs.bluez}/bin/bluetoothctl show; ${lib.getExe pkgs.toggle-bluetooth}";
           tooltip-format =
           "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
           tooltip-format-connected =
@@ -109,7 +109,7 @@ rec {
         backlight = {
           device = "intel_backlight";
           format = "${mkBig "{icon}"} {percent}%";
-          format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" ""];
+          format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖙"];
           on-scroll-up = "${lib.getExe pkgs.brightnessctl} set 1%+";
           on-scroll-down = "${lib.getExe pkgs.brightnessctl} set 1%-";
           min-length = 6;
