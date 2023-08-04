@@ -111,8 +111,8 @@ rec {
           device = "intel_backlight";
           format = "${mkBig "{icon}"} {percent}%";
           format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖙"];
-          on-scroll-up = "${lib.getExe pkgs.brightnessctl} set 1%+";
-          on-scroll-down = "${lib.getExe pkgs.brightnessctl} set 1%-";
+          on-scroll-up = "${lib.getExe pkgs.volume-brightness} -b 1%+";
+          on-scroll-down = "${lib.getExe pkgs.volume-brightness} -b 1%-";
           min-length = 6;
         };
 
@@ -159,8 +159,8 @@ rec {
           format = "${mkBig "{icon}"} {volume}%";
           format-muted = mkBig "󰖁";
           on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-          on-scroll-up = "${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
-          on-scroll-down = "${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
+          on-scroll-up = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
+          on-scroll-down = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
           format-icons = [ "" "" "" ];
         };
 

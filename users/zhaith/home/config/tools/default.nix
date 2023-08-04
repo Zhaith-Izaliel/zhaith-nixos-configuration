@@ -31,6 +31,7 @@
     power-management
     hyprpicker
     grimblast
+    volume-brightness
   ];
 }
 

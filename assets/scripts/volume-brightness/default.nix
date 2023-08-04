@@ -9,7 +9,7 @@ pkgs.callPackage ../builder.nix rec {
     repo = pname;
     owner = "Zhaith-Izaliel";
     rev = version;
-    sha256 = "";
+    sha256 = "sha256-z7ulwjulMlDfvyty8N+WRo1DBqjFComADjB1Ko4sH/w=";
   };
 
   buildInputs = with pkgs; [
