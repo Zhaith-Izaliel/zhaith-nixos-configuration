@@ -12,7 +12,7 @@ rec {
 
   swaylock-theme = import ./swaylock { inherit colors gtk-theme theme-packages lib; };
 
-  dunst-theme = import ./dunst { inherit colors gtk-theme; };
+  dunst-theme = import ./dunst { inherit colors gtk-theme lib; };
 
   starship-theme = import ./starship { inherit colors theme-packages lib; };
 
