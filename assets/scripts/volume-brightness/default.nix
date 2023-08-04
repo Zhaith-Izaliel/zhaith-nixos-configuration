@@ -22,6 +22,7 @@ pkgs.callPackage ../builder.nix rec {
     wireplumber
     bc
     dunst
+    gnused
   ];
 }
 

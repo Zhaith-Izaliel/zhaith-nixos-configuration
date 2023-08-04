@@ -148,7 +148,7 @@ rec {
 
         network = {
           format-wifi = "${mkBig ""} {essid}";
-          format-ethernet = "${mkBig "󰈀"} {essid}";
+          format-ethernet = "${mkBig "󰈀"} {ifname}";
           format-linked = "${mkBig "󰈀"} {ifname} (No IP)";
           format-disconnected = "${mkBig "󰒏"} Disconnected";
           tooltip-format-wifi = "Signal Strenght: {signalStrength}% | Down Speed: {bandwidthDownBits}, Up Speed: {bandwidthUpBits}";
