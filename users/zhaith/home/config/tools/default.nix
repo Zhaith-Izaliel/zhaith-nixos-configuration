@@ -17,6 +17,8 @@
 
   home.packages = with pkgs; [
     cinnamon.nemo
+    cinnamon.nemo-fileroller
+    gnome.file-roller
     blueberry
     fragments
     glab
