@@ -16,7 +16,7 @@ rec {
 
   starship-theme = import ./starship { inherit colors theme-packages lib; };
 
-  sddm-theme = import ./sddm { inherit gtk-theme colors; };
+  sddm-theme = import ./sddm { inherit gtk-theme colors lib; };
 
   hyprland-theme = import ./hyprland { inherit gtk-theme theme-packages; };
 
