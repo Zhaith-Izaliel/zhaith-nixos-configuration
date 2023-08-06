@@ -40,6 +40,7 @@
     system = "x86_64-linux";
     theme = "catppuccin";
     lib = import ./lib { inputs = attrs; };
+    modules = import ./modules;
   in
   {
     nixosConfigurations = {
@@ -66,6 +67,7 @@
         users = [ "lilith" ];
         extraModules = [
           grub2-themes.nixosModules.default
+          modules.inadyn
         ];
       };
     };
