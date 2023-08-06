@@ -15,7 +15,7 @@ let
   configFile = "/run/inadyn/inadyn.conf";
 
   preStart = if (cfg.passwordFile != null) then ''
-  mkdir -p ${RuntimeDirectory}
+  mkdir -p "/run/inadyn"
   install --mode=600 --owner=$USER ${configText} ${configFile}
   "${pkgs.replace-secret}/bin/replace-secret" "${cfg.passwordPlaceholder}" "${cfg.passwordFile}" "${configFile}"
   '' else "";
