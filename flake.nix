@@ -52,6 +52,7 @@
           hyprland.nixosModules.default
           grub2-themes.nixosModules.default
           sddm-sugar-candy-nix.nixosModules.default
+          modules.inadyn # TEMP: Move it when it works for Ethereal-Edelweiss
         ];
         overlays = [
           nix-alien.overlays.default

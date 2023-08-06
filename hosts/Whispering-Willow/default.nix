@@ -30,6 +30,7 @@
     ./config/tex.nix
     ./config/tools.nix
     ./config/vm.nix
+    ./config/test.nix # TEMP: REMOVE AFTER FINISHING TESTS
   ];
 
   # This value determines the NixOS release from which the default
