@@ -1,0 +1,6 @@
+{}:
+
+{
+  inadyn = import ./inadyn.nix;
+}
+
