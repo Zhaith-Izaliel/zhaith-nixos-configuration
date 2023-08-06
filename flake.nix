@@ -40,7 +40,7 @@
     system = "x86_64-linux";
     theme = "catppuccin";
     lib = import ./lib { inputs = attrs; };
-    modules = import ./modules;
+    modules = import ./modules {};
   in
   {
     nixosConfigurations = {

@@ -10,10 +10,12 @@
       provider default@dyndns.org {
         ssl         = true
         username    = ethereal-edelweiss.cloud-zhaith
-        password    = ${builtins.readFile /var/run/inadyn-password}
+        password    = "@password_placeholder@"
         hostname    = example.dyndns.org
       }
     '';
+    passwordFile = "/var/run/inadyn-password";
+    passwordPlaceholder = "@password_placeholder@";
   };
 }
 
