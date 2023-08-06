@@ -75,12 +75,14 @@ in
       default = [
         "--foreground"
         "--syslog"
+        "--no-pidfile"
       ];
       description = "Extra arguments when running Inadyn.";
       defaultText = literalExpression ''
       [
         "--foreground"
         "--syslog"
+        "--no-pidfile"
       ]
       '';
       example = literalExpression "--force";
