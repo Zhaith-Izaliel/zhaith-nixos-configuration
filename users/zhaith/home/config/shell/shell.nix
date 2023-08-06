@@ -1,5 +1,8 @@
-{ pkgs, theme, ... }:
+{ pkgs, theme, lib, ... }:
 
+let
+  image = lib.cleanSource ../../../../../assets/images/neofetch/neofetch.png;
+in
 {
   home.packages = with pkgs; [
     any-nix-shell
@@ -25,9 +28,7 @@
         ll = "ls --color=auto -lh";
         grep = "grep --color=auto";
         ip = "ip --color=auto";
-        cat = "ccat";
-        less = "cless";
-        # ssh = "kitty +kitten ssh";
+        ssh = "kitty_ssh";
         icat = "kitty +kitten icat";
       };
 
@@ -58,17 +59,24 @@
 
       initExtra = ''
       # Neofetch MOTD
-      export NEOFETCH_IMAGE="/home/zhaith/Pictures/Wallpapers/Nord/cats.png"
-
       if [ "$KITTY_WINDOW_ID" = "1" ]; then
-        neofetch --kitty $NEOFETCH_IMAGE
+        ${lib.getExe pkgs.neofetch} --kitty ${image}
       fi
 
       # Nix shell integration
-      ${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin
+      ${lib.getExe pkgs.any-nix-shell} zsh | source /dev/stdin
 
       # Auto use direnv
       eval "$(direnv hook zsh)"
+
+      # Special functions
+      kitty_ssh() {
+        if [ "$TERM" = "xterm-kitty" ]; then
+          ${lib.getExe pkgs.kitty} +kitten ssh $*
+          return $!
+        fi
+        ${pkgs.openssh}/bin/ssh $*
+      }
       '';
 
       oh-my-zsh = {

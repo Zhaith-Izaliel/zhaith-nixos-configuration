@@ -43,6 +43,7 @@ in
     # NOTE: Comment out to unbind HDMI port at boot
     extraModprobeConfig = ''
       blacklist nouveau
+      blacklist xpad
       options nouveau modeset=0
     '';
   };

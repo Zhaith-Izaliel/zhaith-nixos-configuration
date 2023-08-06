@@ -12,5 +12,9 @@
   dim-on-lock = import ./dim-on-lock { inherit pkgs; };
 
   wlogout-blur = import ./wlogout-blur { inherit pkgs; };
+
+  toggle-bluetooth = import ./toggle-bluetooth { inherit pkgs; };
+
+  volume-brightness = import ./volume-brightness { inherit pkgs; };
 }
 

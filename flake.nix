@@ -40,6 +40,7 @@
     system = "x86_64-linux";
     theme = "catppuccin";
     lib = import ./lib { inputs = attrs; };
+    modules = import ./modules {};
   in
   {
     nixosConfigurations = {
@@ -51,6 +52,7 @@
           hyprland.nixosModules.default
           grub2-themes.nixosModules.default
           sddm-sugar-candy-nix.nixosModules.default
+          modules.inadyn # TEMP: Move it when it works for Ethereal-Edelweiss
         ];
         overlays = [
           nix-alien.overlays.default
@@ -66,6 +68,7 @@
         users = [ "lilith" ];
         extraModules = [
           grub2-themes.nixosModules.default
+          modules.inadyn
         ];
       };
     };

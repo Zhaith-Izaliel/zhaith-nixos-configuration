@@ -1,4 +1,4 @@
-{ colors, gtk-theme }:
+{ colors, gtk-theme, lib }:
 
 {
   sddm = {
@@ -32,6 +32,7 @@
       FontSize = toString gtk-theme.font.size;
       MainColor = colors.text;
       ForceHideCompletePassword = true;
+      Background = lib.cleanSource ../../../assets/images/sddm/greeter.png;
     };
   };
 }

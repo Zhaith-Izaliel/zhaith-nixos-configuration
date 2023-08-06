@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
@@ -6,8 +6,9 @@
     ./nginx.nix
     ./jellyfin.nix
     ./fail2ban.nix
-    ./ddclient.nix
+    ./inadyn.nix
     ./calibre.nix
     #./minecraftServer.nix
   ];
 }
+

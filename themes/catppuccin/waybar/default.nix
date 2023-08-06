@@ -1,7 +1,8 @@
-{ pkgs, lib, colors } :
+{ pkgs, lib, colors }:
 
 rec {
   mkBig = icon: "<big>${icon}</big>";
+  mkBold = icon: "<b>${icon}</b>";
 
   extraPackages = with pkgs; [
     sutils
@@ -14,6 +15,7 @@ rec {
       mainBar = {
         layer = "top";
         position = "top";
+        spacing = 0;
         height = 0;
         modules-left = [
           "clock"
@@ -26,13 +28,31 @@ rec {
         modules-right = [
           "tray"
           "idle_inhibitor"
-          # "custom/language"
+          "bluetooth"
           "network"
           "backlight"
           "wireplumber"
           "battery"
           "custom/shutdown"
         ];
+
+        bluetooth = {
+          format = "󰂯 {status}";
+          format-off = "󰂲 off";
+          format-disabled = "󰂳 off";
+          format-connected = "${mkBig "󰂱"} {device_alias}";
+          format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
+          on-click = "${lib.getExe pkgs.toggle-bluetooth}";
+          on-click-right = "${lib.getExe pkgs.blueberry}";
+          tooltip-format =
+          "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
+          tooltip-format-connected =
+          "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected\n\n{device_enumerate}";
+          tooltip-format-enumerate-connected =
+          "󰥰 {device_alias} - {device_address}";
+          tooltip-format-enumerate-connected-battery =
+          "󰥰 {device_alias} - {device_address} (󰁹 {device_battery_percentage}%)";
+        };
 
         "custom/shutdown" = {
           format = mkBig "";
@@ -69,11 +89,6 @@ rec {
             "3" = [];
             "4" = [];
             "5" = [];
-            "6" = [];
-            "7" = [];
-            "8" = [];
-            "9" = [];
-            "10" = [];
           };
         };
 
@@ -87,12 +102,6 @@ rec {
           tooltip-format-deactivated = "Inactive";
         };
 
-        # "custom/language" = {
-        #   exec = "cat /tmp/kb_layout";
-        #   interval = 3;
-        #   format = "󰌌 {}";
-        # };
-
         tray = {
           icon-size = 13;
           spacing = 10;
@@ -101,9 +110,9 @@ rec {
         backlight = {
           device = "intel_backlight";
           format = "${mkBig "{icon}"} {percent}%";
-          format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" ""];
-          on-scroll-up = "${lib.getExe pkgs.brightnessctl} set 1%+";
-          on-scroll-down = "${lib.getExe pkgs.brightnessctl} set 1%-";
+          format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖙"];
+          on-scroll-up = "${lib.getExe pkgs.volume-brightness} -b 1%+";
+          on-scroll-down = "${lib.getExe pkgs.volume-brightness} -b 1%-";
           min-length = 6;
         };
 
@@ -139,7 +148,7 @@ rec {
 
         network = {
           format-wifi = "${mkBig ""} {essid}";
-          format-ethernet = "${mkBig "󰈀"} {essid}";
+          format-ethernet = "${mkBig "󰈀"} {ifname}";
           format-linked = "${mkBig "󰈀"} {ifname} (No IP)";
           format-disconnected = "${mkBig "󰒏"} Disconnected";
           tooltip-format-wifi = "Signal Strenght: {signalStrength}% | Down Speed: {bandwidthDownBits}, Up Speed: {bandwidthUpBits}";
@@ -150,8 +159,8 @@ rec {
           format = "${mkBig "{icon}"} {volume}%";
           format-muted = mkBig "󰖁";
           on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-          on-scroll-up = "${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
-          on-scroll-down = "${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
+          on-scroll-up = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
+          on-scroll-down = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
           format-icons = [ "" "" "" ];
         };
 

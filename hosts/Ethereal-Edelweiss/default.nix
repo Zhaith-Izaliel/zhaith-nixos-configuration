@@ -22,7 +22,7 @@
     ./config/tools.nix
 
     # ------------------------------ Server Config ----------------------------- #
-    ./config/server/index.nix
+    ./config/server
   ];
 
   # This value determines the NixOS release from which the default
@@ -33,3 +33,4 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.05"; # Did you read the comment?
 }
+

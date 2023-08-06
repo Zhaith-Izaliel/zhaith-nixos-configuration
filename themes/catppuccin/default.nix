@@ -12,11 +12,11 @@ rec {
 
   swaylock-theme = import ./swaylock { inherit colors gtk-theme theme-packages lib; };
 
-  dunst-theme = import ./dunst { inherit colors gtk-theme; };
+  dunst-theme = import ./dunst { inherit colors gtk-theme lib; };
 
   starship-theme = import ./starship { inherit colors theme-packages lib; };
 
-  sddm-theme = import ./sddm { inherit gtk-theme colors; };
+  sddm-theme = import ./sddm { inherit gtk-theme colors lib; };
 
   hyprland-theme = import ./hyprland { inherit gtk-theme theme-packages; };
 
@@ -29,5 +29,7 @@ rec {
   fcitx5-theme = import ./fcitx5 { inherit theme-packages colors; };
 
   wlogout-theme = import ./wlogout { inherit colors lib; };
+
+  kitty-theme = import ./kitty { inherit colors pkgs; };
 }
 
