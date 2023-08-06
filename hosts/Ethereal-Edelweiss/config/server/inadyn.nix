@@ -11,7 +11,7 @@
         ssl         = true
         username    = ethereal-edelweiss.cloud-zhaith
         password    = "@password_placeholder@"
-        hostname    = example.dyndns.org
+        hostname    = { nextcloud.ethereal-edelweiss.cloud jellyfin.ethereal-edelweiss.cloud books.ethereal-edelweiss.cloud ethereal-edelweiss.cloud }
       }
     '';
     passwordFile = "/var/run/inadyn-password";
