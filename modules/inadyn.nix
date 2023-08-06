@@ -25,7 +25,7 @@ let
   "${pkgs.replace-secret}/bin/replace-secret" "${cfg.passwordPlaceholder}" "${cfg.passwordFile}" "${configFile}"
   '' else "";
 
-  extraArgs = lib.strings.concatStringSep " " ([
+  extraArgs = lib.strings.concatStringsSep " " ([
     "--foreground"
     "--syslog"
     "--no-pidfile"
