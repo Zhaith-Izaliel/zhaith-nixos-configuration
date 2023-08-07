@@ -21,7 +21,7 @@ in
       enable = true;
       enableAutosuggestions = true;
       enableCompletion = true;
-      enableSyntaxHighlighting = true;
+      syntaxHighlighting.enable = true;
 
       shellAliases = {
         ls = "ls --color=auto";
@@ -72,7 +72,7 @@ in
       # Special functions
       kitty_ssh() {
         if [ "$TERM" = "xterm-kitty" ]; then
-          ${lib.getExe pkgs.kitty} +kitten ssh $*
+          ${pkgs.kitty}/bin/kitty +kitten ssh $*
           return $!
         fi
         ${pkgs.openssh}/bin/ssh $*

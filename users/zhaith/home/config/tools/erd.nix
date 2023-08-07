@@ -1,4 +1,4 @@
-{ config, unstable-pkgs, ...}:
+{ config,pkgs, ...}:
 
 let
   erdConfig = ''
@@ -17,8 +17,8 @@ let
   '';
 in
 {
-  home.packages = [
-    unstable-pkgs.erdtree
+  home.packages = with pkgs; [
+    erdtree
   ];
 
   home.file."${config.xdg.configHome}/erdtree/.erdtreerc".text = erdConfig;

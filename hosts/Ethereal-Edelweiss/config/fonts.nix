@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # Fonts
@@ -30,3 +30,4 @@
     fontDir.enable = true;
   };
 }
+

@@ -2,12 +2,12 @@
 
 {
   mkSystem = { hostname, system, users ? [ ], extraModules ? [ ], overlays ? [
-  ], theme ? "" }:
+  ], theme ? "", nixpkgs ? inputs.nixpkgs }:
     let
-      pkgs = import inputs.nixpkgs {
+      pkgs = import nixpkgs {
         inherit overlays system;
       };
-      lib = inputs.nixpkgs.lib;
+      lib = nixpkgs.lib;
       theme-set = (import ../themes { inherit lib pkgs; }).${theme};
     in
     lib.nixosSystem {
@@ -15,7 +15,6 @@
       specialArgs = {
         inherit hostname system inputs;
         theme = theme-set;
-        unstable-pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
       };
       modules = [
         ../hosts/${hostname}
@@ -41,26 +40,26 @@
             inputs;
           };
         }
-      ] ++ inputs.nixpkgs.lib.forEach users (u: ../users/${u}/system)
+      ] ++ nixpkgs.lib.forEach users (u: ../users/${u}/system)
       ++ extraModules;
     };
 
     mkHome = { username, system, hostname, stateVersion, extraModules ? [ ],
-    overlays ? [ ], theme ? "" }:
+    overlays ? [ ], theme ? "", nixpkgs ? inputs.nixpkgs, home-manager ?
+    inputs.home-manager }:
     let
-      pkgs = import inputs.nixpkgs {
+      pkgs = import nixpkgs {
         inherit overlays system;
       };
-      lib = inputs.nixpkgs.lib;
+      lib = nixpkgs.lib;
       theme-set = (import ../themes { inherit pkgs lib; }).${theme};
     in
-    inputs.home-manager.lib.homeManagerConfiguration {
+    home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
 
       extraSpecialArgs = {
         inherit system hostname inputs;
         theme = theme-set;
-        unstable-pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
       };
 
       modules = [
