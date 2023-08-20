@@ -18,7 +18,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-alien.url = "github:thiagokokada/nix-alien";
-    zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
+    zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/feature/plugins-flake-inputs";
     hyprland.url = "github:hyprwm/Hyprland";
     anyrun = {
       url = "github:Kirottu/anyrun";
