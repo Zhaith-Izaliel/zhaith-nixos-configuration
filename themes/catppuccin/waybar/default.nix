@@ -159,6 +159,7 @@ rec {
           format = "${mkBig "{icon}"} {volume}%";
           format-muted = mkBig "󰖁";
           on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          on-click-right = "${lib.getExe pkgs.pavucontrol}";
           on-scroll-up = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
           on-scroll-down = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
           format-icons = [ "" "" "" ];

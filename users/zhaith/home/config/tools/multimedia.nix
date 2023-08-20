@@ -6,6 +6,7 @@
     kid3
     ffmpeg
     input-remapper
+    pavucontrol
   ];
 }
 
