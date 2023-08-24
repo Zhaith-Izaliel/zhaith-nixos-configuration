@@ -28,7 +28,7 @@ in
         ll = "ls --color=auto -lh";
         grep = "grep --color=auto";
         ip = "ip --color=auto";
-        ssh = "kitty_ssh";
+        kssh = "kitty_ssh";
         icat = "kitty +kitten icat";
       };
 
