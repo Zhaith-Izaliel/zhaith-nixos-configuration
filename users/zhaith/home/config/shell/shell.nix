@@ -91,11 +91,6 @@ in
         ];
       };
     };
-
-    starship = {
-      enable = true;
-      inherit (theme.starship-theme.starship) settings;
-    };
   };
 }
 

@@ -1,20 +1,34 @@
-{ colors, lib, theme-packages }:
+{ theme }:
+{ config, lib, pkgs, ... }:
+
+with lib;
 
 let
+  cfg = config.hellebore.starship;
   gitMetricsSegmentBg = "black";
-  nixShellSegmentColor = colors.blue;
-  nixShellTextColor = colors.base;
-  catppuccin_flavour = "macchiato";
+  nixShellSegmentColor = theme.colors.blue;
+  nixShellTextColor = theme.colors.base;
 in
-  rec {
-    package = theme-packages.starship-palette;
+{
+  options.hellebore.starship = {
+    enable = mkEnableOption "Starship Hellebore's config";
 
-    palette = builtins.fromTOML (builtins.readFile (package +
-    /palettes/${catppuccin_flavour}.toml));
+    package = mkOption {
+      type = types.package;
+      default = config.programs.starship.package;
+      description = "Override default Starship package.";
+    };
+  };
 
-    starship = {
+  config = mkIf cfg.enable {
+
+    programs.starship = {
+      enable = true;
+
+      package = cfg.package;
+
       settings = {
-        palette = "catppuccin_${catppuccin_flavour}";
+        palette = theme.starship.paletteName;
 
         # Get editor completions based on the config schema
         "$schema" = "https://starship.rs/config-schema.json";
@@ -125,7 +139,8 @@ in
         nodejs = {
           symbol = " ";
         };
-      } // palette;
+      } // theme.starship.palette;
     };
+  };
 }
 

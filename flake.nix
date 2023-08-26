@@ -61,7 +61,7 @@
         users = [ "lilith" ];
         extraModules = [
           grub2-themes.nixosModules.default
-          modules.inadyn
+          modules.system.inadyn
         ];
       };
     };

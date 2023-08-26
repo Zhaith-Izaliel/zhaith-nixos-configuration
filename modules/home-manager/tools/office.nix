@@ -8,7 +8,6 @@
     calibre
     evolution
     obsidian
-    gnome.file-roller
   ];
 }
 
