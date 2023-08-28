@@ -1,18 +1,32 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
+with lib;
+
+let
+  cfg = config.hellebore.desktop-environment.browsers;
+in
 {
-  programs.chromium.enable = true;
+  options.hellebore.desktop-environment.browsers = {
+    enable = mkEnableOption "Hellebore Browsers configuration";
 
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox.override {
+    profiles.zhaith = {
+      enable = mkEnableOption "Zhaith's Firefox profile";
+    };
+  };
+
+  config = mkIf cfg.enable {
+    programs.chromium.enable = true;
+
+    programs.firefox = {
+      enable = true;
+      package = pkgs.firefox.override {
       # See nixpkgs' firefox/wrapper.nix to check which options you can use
       cfg = {
         # Gnome shell native connector
         enableGnomeExtensions = true;
       };
     };
-    profiles."zhaith" = {
+    profiles."zhaith" = mkIf cfg.profiles.zhaith.enable {
       isDefault = true;
       search = {
         default = "Google";
@@ -70,12 +84,13 @@
       };
 
       userChrome = ''
-        .bookmark-item {
-          margin-left: .25rem !important;
-          margin-right: .25rem !important;
-        }
+      .bookmark-item {
+        margin-left: .25rem !important;
+        margin-right: .25rem !important;
+      }
       '';
     };
   };
+}
 }
 
