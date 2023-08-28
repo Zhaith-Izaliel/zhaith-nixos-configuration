@@ -1,10 +1,9 @@
-{ colors, lib }:
+{ config, lib, theme, pkgs, ... }:
+
+with lib;
 
 let
-  getImage = name:
-    lib.cleanSource ../../../assets/images/wlogout/${name};
-in
-rec {
+  getImage = name: cleanSource ../../../../assets/images/wlogout/${name};
   images = {
     lock = {
       default = getImage "lock.png";
@@ -31,46 +30,72 @@ rec {
       hover = getImage "suspend-hover.png";
     };
   };
+  cfg = config.hellebore.desktop-environment.hyprland.wlogout;
+in
+{
+  options.hellebore.desktop-environment.hyprland.wlogout = {
+    enable = mkEnableOption "Hellebore WLogout configuration";
+  };
 
-  wlogout = {
-    layout = [
+  config = mkIf cfg.enable {
+    assertions = [
       {
-        label = "lock";
-        action = "swaylock -fF";
-        text = "Lock";
-        keybind = "l";
+        assertion = cfg.enable -> programs.swaylock.enable;
+        message = "WLogout depends on Swaylock to lock the screen. Please enable
+        it in your configuration.";
       }
+
       {
-        label = "reboot";
-        action = "systemctl reboot";
-        text = "Reboot";
-        keybind = "r";
-      }
-      {
-        label = "shutdown";
-        action = "systemctl poweroff";
-        text = "Shutdown";
-        keybind = "s";
-      }
-      {
-        label = "logout";
-        action = "hyprctl dispatch exit 0";
-        text = "Logout";
-        keybind = "e";
-      }
-      {
-        label = "suspend";
-        action = "systemctl suspend";
-        text = "Suspend";
-        keybind = "u";
+        assertion = cfg.enable -> wayland.windowManager.hyprland.enable;
+        message = "WLogout depends on Hyprland to logout. Please enable
+        it in your configuration.";
       }
     ];
 
-    style = ''
+    home.packages = with pkgs; [
+      wlogout-blur
+    ];
+
+    programs.wlogout = {
+      enable = true;
+      layout = [
+        {
+          label = "lock";
+          action = "${getExe config.programs.swaylock.package} -fF";
+          text = "Lock";
+          keybind = "l";
+        }
+        {
+          label = "reboot";
+          action = "${pkgs.systemd}/bin/systemctl reboot";
+          text = "Reboot";
+          keybind = "r";
+        }
+        {
+          label = "shutdown";
+          action = "${pkgs.systemd}/bin/systemctl poweroff";
+          text = "Shutdown";
+          keybind = "s";
+        }
+        {
+          label = "logout";
+          action = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch exit 0";
+          text = "Logout";
+          keybind = "e";
+        }
+        {
+          label = "suspend";
+          action = "${pkgs.systemd}/bin/systemctl suspend";
+          text = "Suspend";
+          keybind = "u";
+        }
+      ];
+
+      style = ''
       window {
         font-family: "Fira Code";
         font-size: 14pt;
-        color: ${colors.text};
+        color: ${theme.colors.text};
         background-repeat: no-repeat;
         background-image: image(url("/tmp/wlogout-blur.png"));
       }
@@ -90,8 +115,8 @@ rec {
       }
 
       button:focus {
-        background-color: ${colors.mauve};
-        color: ${colors.base};
+        background-color: ${theme.colors.mauve};
+        color: ${theme.colors.base};
       }
 
       #lock {
@@ -128,7 +153,8 @@ rec {
       #reboot:focus {
         background-image: image(url("${images.reboot.hover}"));
       }
-    '';
+      '';
+    };
   };
 }
 

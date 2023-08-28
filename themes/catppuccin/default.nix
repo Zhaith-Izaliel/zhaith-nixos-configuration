@@ -51,6 +51,11 @@ in
     /palettes/${paletteName}.toml));
   };
 
+  hyprland = rec {
+    package = theme-packages.hyprland-palette;
+    palette = "${package}/themes/macchiato.conf";
+  };
+
   fcitx5 = {
     package = theme-packages.fcitx5-theme;
     name = "catppuccin-macchiato";

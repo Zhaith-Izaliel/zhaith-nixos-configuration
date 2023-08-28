@@ -6,8 +6,8 @@
     evince
     qalculate-gtk
     calibre
-    evolution
     obsidian
+    gnome.simples-scan
   ];
 }
 

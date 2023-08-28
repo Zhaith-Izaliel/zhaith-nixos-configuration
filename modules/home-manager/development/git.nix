@@ -37,6 +37,7 @@ in
     home.packages = with pkgs; [
       gitAndTools.gitflow
       git-ignore
+      glab
     ];
 
     programs.git = {
