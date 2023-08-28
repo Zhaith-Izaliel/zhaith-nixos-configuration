@@ -16,16 +16,10 @@
   ];
 
   home.packages = with pkgs; [
-    cinnamon.nemo
-    cinnamon.nemo-fileroller
-    gnome.file-roller
     blueberry
-    fragments
     glab
     gnome.simple-scan
     gparted
-    gthumb
-    qview
     viu
     power-management
     hyprpicker

@@ -1,11 +1,23 @@
-{ pkgs, ... }:
+{ nixosConfig, config, lib, pkgs, ... }:
 
+with lib;
+
+let
+  cfg = config.hellebore.multimedia.obs;
+in
 {
-  programs.obs-studio = {
-    enable = true;
-    plugins = with pkgs.obs-studio-plugins; [
-      looking-glass-obs
-    ];
+  options.hellebore.multimedia.obs = {
+    enable = mkEnableOption "Hellebore OBS Studio configuration";
+  };
+
+  config = mkIf cfg.enable {
+
+    programs.obs-studio = {
+      enable = true;
+      plugins = lists.optionals nixosConfig.hellebore.kvm.enable [
+        pkgs.obs-studio-plugins.looking-glass-obs
+      ];
+    };
   };
 }
 

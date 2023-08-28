@@ -49,6 +49,15 @@ in
   };
 
   config = mkIf cfg.enable {
+
+    assertions = [
+      {
+        assertion = cfg.enable -> nixosConfig.services.pipewire.enable;
+        message = "Hellebore's MPD configuration relies on pipewire to be
+        enabled on your system globally.";
+      }
+    ];
+
     services = {
       mpd = {
         enable = true;
@@ -97,6 +106,7 @@ in
       };
     };
   };
+
 
 }
 

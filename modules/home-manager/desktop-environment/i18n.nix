@@ -4,10 +4,10 @@
 with lib;
 
 let
-  cfg = config.hellebore.desktop-environment.fcitx5;
+  cfg = config.hellebore.desktop-environment.i18n;
 in
 {
-  options.hellebore.desktop-environment.fcitx5 = {
+  options.hellebore.desktop-environment.i18n = {
     enable = mkEnableOption "Hellebore's Fcitx5 configuration";
 
     package = mkOption {
