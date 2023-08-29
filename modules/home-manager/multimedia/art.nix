@@ -3,10 +3,10 @@
 with lib;
 
 let
-  cfg = config.hellebore.art;
+  cfg = config.hellebore.multimedia.art;
 in
 {
-  options.hellebore.art = {
+  options.hellebore.multimedia.art = {
     enable = mkEnableOption "art related packages";
 
     gmic.enable = mkEnableOption "gmic plugins";

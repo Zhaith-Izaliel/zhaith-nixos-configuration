@@ -1,4 +1,4 @@
-{nixosConfig, config, lib, pkgs, ...}:
+{ osConfig, config, lib, pkgs, ... }:
 
 with lib;
 
@@ -52,7 +52,7 @@ in
 
     assertions = [
       {
-        assertion = cfg.enable -> nixosConfig.services.pipewire.enable;
+        assertion = cfg.enable -> osConfig.services.pipewire.enable;
         message = "Hellebore's MPD configuration relies on pipewire to be
         enabled on your system globally.";
       }

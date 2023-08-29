@@ -3,10 +3,10 @@
 with lib;
 
 let
-  cfg = config.hellebore.discord;
+  cfg = config.hellebore.tools.discord;
 in
 {
-  options.hellebore.discord = {
+  options.hellebore.tools.discord = {
     enable = mkEnableOption "discord Hellebore's config";
 
     package = mkOption {

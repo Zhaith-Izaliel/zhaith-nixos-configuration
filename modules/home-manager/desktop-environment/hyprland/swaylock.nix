@@ -16,7 +16,7 @@ in
     config = mkIf cfg.enable {
       assertions = [
         {
-          assertion = cfg.enable -> wayland.windowManager.hyprland.enable;
+          assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
           message = "Hyprland must be enabled for Swaylock and Swayidle to
           properly work";
         }

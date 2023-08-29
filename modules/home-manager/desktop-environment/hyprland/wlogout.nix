@@ -40,13 +40,13 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> programs.swaylock.enable;
+        assertion = cfg.enable -> config.programs.swaylock.enable;
         message = "WLogout depends on Swaylock to lock the screen. Please enable
         it in your configuration.";
       }
 
       {
-        assertion = cfg.enable -> wayland.windowManager.hyprland.enable;
+        assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
         message = "WLogout depends on Hyprland to logout. Please enable
         it in your configuration.";
       }

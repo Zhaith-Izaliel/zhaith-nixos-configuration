@@ -1,4 +1,4 @@
-{ nixosConfig, config, lib, pkgs, ... }:
+{ osConfig, config, lib, pkgs, ... }:
 
 with lib;
 
@@ -14,7 +14,7 @@ in
 
     programs.obs-studio = {
       enable = true;
-      plugins = lists.optionals nixosConfig.hellebore.kvm.enable [
+      plugins = lists.optionals osConfig.hellebore.kvm.enable [
         pkgs.obs-studio-plugins.looking-glass-obs
       ];
     };

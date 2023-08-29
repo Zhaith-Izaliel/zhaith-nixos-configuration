@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.hellebore.commitlint;
+  cfg = config.hellebore.development.commitlint;
   commitlintrc = ''
     module.exports = {
       extends:
@@ -23,7 +23,7 @@ let
 
 in
   {
-  options.hellebore.commitlint = {
+  options.hellebore.development.commitlint = {
     enable = mkEnableOption "Enable Commitlint with the Hellebore
     configuration";
 

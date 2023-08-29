@@ -3,10 +3,10 @@
 with lib;
 
 let
-  cfg = config.hellebore.bat;
+  cfg = config.hellebore.development.bat;
 in
 {
-  options.hellebore.bat = {
+  options.hellebore.development.bat = {
     enable = mkEnableOption "Hellebore's Bat configuration";
 
     package = mkOption {

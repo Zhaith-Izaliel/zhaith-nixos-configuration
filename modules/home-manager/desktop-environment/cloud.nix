@@ -1,4 +1,4 @@
-{ nixosConfig, config, lib, ... }:
+{ osConfig, config, lib, ... }:
 
 with lib;
 
@@ -14,7 +14,7 @@ in
     assertions = [
       {
         assertion = cfg.enable ->
-        nixosConfig.services.gnome.gnome-keyring.enable;
+        osConfig.services.gnome.gnome-keyring.enable;
         message = "Gnome Keyring should be enabled to store passwords for
         Nextcloud client.";
       }

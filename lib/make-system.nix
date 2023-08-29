@@ -60,6 +60,7 @@
       extraSpecialArgs = {
         inherit system hostname inputs;
         theme = theme-set;
+        osConfig = inputs.self.nixosConfigurations.${hostname}.config;
       };
 
       modules = [

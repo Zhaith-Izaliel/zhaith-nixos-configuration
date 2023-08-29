@@ -1,4 +1,4 @@
-{ nixosConfig, config, lib, pkgs, ... }:
+{ osConfig, config, lib, pkgs, ... }:
 
 with lib;
 
@@ -13,7 +13,7 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> nixosConfig.networking.networkmanager.enable;
+        assertion = cfg.enable -> osConfig.networking.networkmanager.enable;
         message = "Network Manager should be enabled to allow Hellebore's
         network support.";
       }

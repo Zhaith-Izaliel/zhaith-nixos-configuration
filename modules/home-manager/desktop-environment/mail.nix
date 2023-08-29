@@ -1,4 +1,4 @@
-{ nixosConfig, config, lib, pkgs, ... }:
+{ osConfig, config, lib, pkgs, ... }:
 
 with lib;
 
@@ -19,7 +19,7 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.protonmail.enable -> nixosConfig.services.gnome.gnome-keyring.enable;
+        assertion = cfg.protonmail.enable -> osConfig.services.gnome.gnome-keyring.enable;
         message = "Gnome keyring needs to be enable to allow Protonmail-Bridge
         to store passwords locally";
       }

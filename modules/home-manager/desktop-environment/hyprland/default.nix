@@ -1,4 +1,4 @@
-{ nixosConfig, config, lib, pkgs, ... }:
+{ osConfig, config, lib, pkgs, ... }:
 
 with lib;
 
@@ -15,7 +15,7 @@ in
     ./waybar
   ];
 
-  options.config.hellebore.desktop-environment.hyprland = {
+  options.hellebore.desktop-environment.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
     resolution = mkOption {
@@ -55,15 +55,15 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> nixosConfig.programs.hyprland.enable;
+        assertion = cfg.enable -> osConfig.programs.hyprland.enable;
         message = "Hyprland must be enabled in your system configuration";
       }
       {
-        assertion = cfg.enable -> nixosConfig.programs.hyprland.xwayland.enable;
+        assertion = cfg.enable -> osConfig.programs.hyprland.xwayland.enable;
         message = "Hyprland XWayland must be enabled in your system configuration";
       }
       {
-        assertion = cfg.enable -> nixosConfig.programs.hyprland.xwayland.hidpi;
+        assertion = cfg.enable -> osConfig.programs.hyprland.xwayland.hidpi;
         message = "Hyprland XWayland HiDPI must be enabled in your system
         configuration";
       }
@@ -133,7 +133,7 @@ exec-once = ${pkgs.hyprland}/bin/hyprctl setcursor ${theme.gtk.cursorTheme.name}
 # Palette
 source = ${theme.hyprland.palette}
 
-${strings.optional nixosConfig.hellebore.vm.enable
+${strings.optional osConfig.hellebore.vm.enable
 
 "${mkWindowrulev2 "title:(Luminous-Rafflesia)class:(looking-glass-client)" [
   "fullscreen"

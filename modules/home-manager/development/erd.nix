@@ -17,10 +17,10 @@ let
     --dir-order first
     --sort name
     '';
-    cfg = config.hellebore.erdtree;
+    cfg = config.hellebore.development.erdtree;
 in
 {
-  options.hellebore.erdtree = {
+  options.hellebore.development.erdtree = {
     enable = mkEnableOption "Erdtree - A modern, cross-platform, multi-threaded,
     and general purpose filesystem and disk-usage utility that is aware of
     .gitignore and hidden file rules";

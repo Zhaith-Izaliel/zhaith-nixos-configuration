@@ -14,7 +14,7 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> wayland.windowManager.hyprland.enable;
+        assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
         message = "Waybar depends on Hyprland for its modules. Please enable
         Hyprland in your configuration";
       }

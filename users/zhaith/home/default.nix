@@ -18,7 +18,7 @@
       files-manager.enable = true;
       disks.enable = true;
       mail.enable = true;
-      browser = {
+      browsers = {
         enable = true;
         profiles.zhaith.enable = true;
       };
@@ -52,7 +52,7 @@
         enable = true;
         gitui.enable = true;
       };
-      erd.enable = true;
+      erdtree.enable = true;
       bat.enable = true;
       lorri.enable = true;
     };
