@@ -1,7 +1,7 @@
-{ pkgs, theme, lib, ... }:
+{ pkgs, lib, ... }:
 
 let
-  image = lib.cleanSource ../../../../../assets/images/neofetch/neofetch.png;
+  image = lib.cleanSource ../../../assets/images/neofetch/neofetch.png;
 in
 {
   home.packages = with pkgs; [

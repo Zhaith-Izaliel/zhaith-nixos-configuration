@@ -61,7 +61,7 @@
         users = [ "lilith" ];
         extraModules = [
           grub2-themes.nixosModules.default
-          modules.system.inadyn
+          modules.system
         ];
       };
     };
@@ -75,6 +75,7 @@
           zhaith-neovim.nixosModules.default
           hyprland.homeManagerModules.default
           anyrun.homeManagerModules.default
+          modules.home-manager
         ];
         overlays = [
           hyprland.overlays.default

@@ -4,18 +4,18 @@
 with lib;
 
 let
-  cfg = config.hellebore.starship;
+  cfg = config.hellebore.shell.prompt;
   gitMetricsSegmentBg = "black";
   nixShellSegmentColor = theme.colors.blue;
   nixShellTextColor = theme.colors.base;
 in
 {
-  options.hellebore.starship = {
+  options.hellebore.shell.prompt = {
     enable = mkEnableOption "Starship Hellebore's config";
 
     package = mkOption {
       type = types.package;
-      default = config.programs.starship.package;
+      default = pkgs.starship;
       description = "Override default Starship package.";
     };
   };

@@ -1,6 +1,8 @@
-{}:
+{ ... }:
 
 {
-  inadyn = import ./inadyn.nix;
+  imports = [
+    ./inadyn.nix
+  ];
 }
 
