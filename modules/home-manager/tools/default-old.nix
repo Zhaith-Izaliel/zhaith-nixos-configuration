@@ -16,15 +16,6 @@
   ];
 
   home.packages = with pkgs; [
-    blueberry
-    glab
-    gnome.simple-scan
-    gparted
-    viu
-    power-management
-    hyprpicker
-    grimblast
-    volume-brightness
-  ];
+      ];
 }
 

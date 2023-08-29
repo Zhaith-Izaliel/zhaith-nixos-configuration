@@ -1,8 +1,18 @@
-{ pkgs, colors }:
+{ config, lib, pkgs, theme, ... }:
 
+with lib;
+
+let
+  cfg = config.hellebore.shell.emulator;
+in
 {
-  kitty = {
-    theme = "Catppuccin-Macchiato";
+  options.hellebore.shell.emulator = {
+    enable = mkEnableOption "Hellebore terminal emulator configuration";
+  };
+
+  config = mkOption cfg.enable ({
+    programs.kitty = {
+      inherit (theme.kitty) theme;
 
     font = {
       package = pkgs.fira-code;
@@ -33,7 +43,7 @@
       tab_title_template = "{f'{title[:30]}…' if title.rindex(title[-1]) + 1 > 30 else (title.center(6) if (title.rindex(title[-1]) + 1) % 2 == 0 else title.center(5))}";
       active_tab_font_style = "bold";
       active_tab_foreground = "black";
-      active_tab_background = colors.blue;
+      active_tab_background = theme.colors.blue;
       inactive_tab_font_style = "normal";
     };
 
@@ -62,6 +72,8 @@
       "ctrl+space>b" = "launch --allow-remote-control kitty +kitten broadcast";
       "ctrl+space>h" = "launch --allow-remote-control kitty +kitten broadcast --match-tab state:focused";
     };
-  };
+      enable = true;
+    };
+  } // (import ../../../assets/kitten { inherit config pkgs lib; }));
 }
 

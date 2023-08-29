@@ -73,6 +73,10 @@ in
       swww
       swayosd
       wl-clipboard
+      power-management
+      hyprpicker
+      grimblast
+      volume-brightness
     ];
 
     gtk = {
@@ -111,22 +115,37 @@ monitor=eDP-1,$resolution@165,0x0,1
 # Execute your favorite apps at launch
 exec-once = ${getExe pkgs.swayosd} --max-volume 150
 exec-once = ${getExe pkgs.swww} init
-exec-once = ${getExe config.hellebore.tools.discord.package}
+
+${strings.optional config.hellebore.tools.discord.enable
+"exec-once = ${getExe config.hellebore.tools.discord.package}"
+}
+
+${strings.optional config.hellebore.desktop-environment.mail.enable
+"exec-once = [workspace 3] ${getExe config.hellebore.desktop-environment.mail.package}"
+}
+${strings.optional config.hellebore.shell.emulator.enable
+"exec-once = [workspace 1] ${getExe config.hellebore.shell.emulator.package}"
+}
+
 exec-once = ${pkgs.wl-clipboard}/bin/wl-paste -p --watch ${pkgs.wl-clipboard}/bin/wl-copy -pc
-exec-once = [workspace 3] ${getExe config.hellebore.desktop-environment.mail.package}
-exec-once = [workspace 1] ${getExe config.hellebore.shell.emulator.package}
-exec-once = hyprctl setcursor ${theme.gtk.cursorTheme.name} 24
+exec-once = ${pkgs.hyprland}/bin/hyprctl setcursor ${theme.gtk.cursorTheme.name} 24
 
 # Palette
 source = ${theme.hyprland.palette}
 
-${mkWindowrulev2 "title:(Luminous-Rafflesia)class:(looking-glass-client)" [
+${strings.optional nixosConfig.hellebore.vm.enable
+
+"${mkWindowrulev2 "title:(Luminous-Rafflesia)class:(looking-glass-client)" [
   "fullscreen"
 ]}
 ${mkWindowrulev2 "title:(Luminous-Rafflesia),class:(looking-glass-client)"[
   "idleinhibit always"
-]}
-${mkWindowrulev2 "class:(discord)" [ "workspace 2" ]}
+]}"
+}
+
+${strings.optional config.hellebore.tools.discord
+  (mkWindowrulev2 "class:(discord)" [ "workspace 2" ])
+}
 
 
 # Some default env vars.

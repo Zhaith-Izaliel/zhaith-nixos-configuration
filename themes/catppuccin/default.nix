@@ -61,6 +61,8 @@ in
     name = "catppuccin-macchiato";
   };
 
+  kitty.theme = "Catppuccin-Macchiato";
+
   colors = import ./colors.nix {};
 }
 
