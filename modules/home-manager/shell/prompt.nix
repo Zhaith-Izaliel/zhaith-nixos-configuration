@@ -1,5 +1,4 @@
-{ theme }:
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, theme, ... }:
 
 with lib;
 

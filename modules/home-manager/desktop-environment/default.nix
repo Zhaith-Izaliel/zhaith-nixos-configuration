@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./browser.nix
+    ./browsers.nix
     ./mail.nix
     ./disks.nix
     ./files-manager.nix

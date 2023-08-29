@@ -1,5 +1,4 @@
-{ theme }:
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, theme, ... }:
 
 with lib;
 
@@ -28,7 +27,7 @@ in
       enable = true;
 
       themes = {
-        "${theme.packages.bat.name}" = builtins.readFile theme.packages.bat.file;
+        "${theme.bat.name}" = builtins.readFile theme.bat.file;
       };
 
       extraPackages = with pkgs.bat-extras; [
@@ -36,7 +35,7 @@ in
       ] ++ cfg.extraPlugins;
 
       config = {
-        theme = theme.packages.bat.name;
+        theme = theme.bat.name;
       };
     };
   };

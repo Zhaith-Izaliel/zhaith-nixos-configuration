@@ -18,6 +18,10 @@
       files-manager.enable = true;
       disks.enable = true;
       mail.enable = true;
+      browser = {
+        enable = true;
+        profiles.zhaith.enable = true;
+      };
     };
 
     tools = {
