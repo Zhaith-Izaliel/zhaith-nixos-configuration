@@ -1,4 +1,4 @@
-{ config, lib, theme, pkgs, ... }:
+{ osConfig, config, lib, theme, pkgs, ... }:
 
 with lib;
 
@@ -19,6 +19,11 @@ in
           assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
           message = "Hyprland must be enabled for Swaylock and Swayidle to
           properly work";
+        }
+        {
+          assertion = cfg.enable -> osConfig.hellebore.hyprland.enableSwaylockPam;
+          message = "PAM service for Swaylock must be enabled to allow Swaylock
+          to properly log you in.";
         }
       ];
 
