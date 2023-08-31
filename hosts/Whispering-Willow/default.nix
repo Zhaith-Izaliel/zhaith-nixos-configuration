@@ -18,6 +18,10 @@
     options = "--delete-older-than 30d";
   };
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "nodejs-14.21.3"
+  ];
+
   imports = [
     ./hardware-configuration.nix
     # -------------------------------------------------------------------------- #

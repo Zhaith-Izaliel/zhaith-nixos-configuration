@@ -1,9 +1,20 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
+with lib;
+
+let
+  cfg = config.hellebore.tex;
+in
 {
-  environment.systemPackages = with pkgs; [
-    texlive.combined.scheme-full
-    pandoc
-  ];
+  options.hellebore.tex = {
+    enable = mkEnableOption "Hellebore LaTeX packages";
+  };
+
+  config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      texlive.combined.scheme-full
+      pandoc
+    ];
+  };
 }
 

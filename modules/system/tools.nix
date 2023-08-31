@@ -1,28 +1,35 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
+with lib;
+
+let
+  cfg = config.hellebore.tools;
+in
 {
-  environment.systemPackages = with pkgs; [
-    gotop
-    ripgrep
-    jq
-    neofetch
-    zip
-    unzip
-    pstree
-    pciutils
-    wget
-    curl
-    tree
-    rar
-    unrar
-    erdtree
-    nix-alien
-  ];
+  options.hellebore.tools = {
+    enable = mkEnableOption "Hellebore tools packages";
+  };
 
-  programs.nix-ld.enable = true;
+  config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      gotop
+      ripgrep
+      jq
+      neofetch
+      zip
+      unzip
+      pstree
+      pciutils
+      wget
+      curl
+      tree
+      rar
+      unrar
+      erdtree
+      nix-alien
+    ];
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "nodejs-14.21.3"
-  ];
+    programs.nix-ld.enable = true;
+  };
 }
 

@@ -1,9 +1,18 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
+with lib;
+
+let
+  cfg = config.hellebore.shell;
+in
 {
-  services.lorri.enable = true;
+  options.hellebore.shell = {
+    enable = mkEnableOption "Hellebore shell configuration";
+  };
 
-  # Enable shells
-  environment.shells = with pkgs; [ zsh bash bashInteractive ];
-  programs.zsh.enable = true;
+  config = mkIf cfg.enable {
+    environment.shells = with pkgs; [ zsh bash bashInteractive ];
+    programs.zsh.enable = true;
+  };
 }
+

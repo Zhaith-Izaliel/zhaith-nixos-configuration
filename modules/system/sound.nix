@@ -1,21 +1,29 @@
-{ ... }:
+{ config, lib, ... }:
 
+with lib;
+
+let
+  cfg = config.hellebore.sound;
+in
 {
-  # Enable sound.
-  security.rtkit.enable = true;
-
-  services.pipewire = {
-    enable = true;
-    wireplumber.enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+  options.hellebore.sound = {
+    enable = mkEnableOption "Hellebore sound configuration";
   };
 
-  hardware = {
-    # IMPORTANT: disable pulseaudio when using pipewire
-    pulseaudio = {
-      enable = false;
+  config = mkIf cfg.enable {
+    security.rtkit.enable = true;
+
+    services.pipewire = {
+      enable = true;
+      wireplumber.enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+
+    hardware = {
+      # IMPORTANT: disable pulseaudio when using pipewire
+      pulseaudio.enable = false;
     };
   };
 }

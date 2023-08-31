@@ -15,6 +15,8 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = theme.gtk.packages;
 
+    services.gvfs.enable = true;
+
     services.gnome.gnome-keyring.enable = true;
 
     services.gnome.gnome-settings-daemon.enable = true;
