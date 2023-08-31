@@ -58,6 +58,7 @@
     };
 
     shell = {
+      enable = true;
       prompt.enable = true;
       emulator.enable = true;
     };

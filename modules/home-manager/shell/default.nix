@@ -88,7 +88,7 @@ in
         }
 
         # Zsh autosuggestions
-        export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=${theme.colors.subtext}"
+        export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=${theme.colors.subtext0}"
         '';
 
         initExtra = ''
