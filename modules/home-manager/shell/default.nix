@@ -60,7 +60,7 @@ in
         enable = true;
         enableAutosuggestions = true;
         enableCompletion = true;
-        syntaxHighlighting.enable = true;
+        enableSyntaxHighlighting = true;
 
         shellAliases = {
           ls = "ls --color=auto";

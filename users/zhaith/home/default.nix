@@ -1,16 +1,23 @@
-{ ... }:
+{ pkgs, unstable-pkgs, ... }:
 
 {
   hellebore = {
     desktop-environment = {
       hyprland = {
         enable = true;
+        # package = pkgs.hyprland.override {
+        #   wayland-protocols = unstable-pkgs.wayland-protocols;
+        #   wlroots = pkgs.wlroots-hyprland.override {
+        #     wlroots = pkgs.wlroots.override { wayland-protocols = unstable-pkgs.wayland-protocols; };
+        #   };
+        # };
         # resolution = "2560x1440";
-
-
         lockscreen.enable = true;
         logout.enable = true;
-        applications-launcher.enable = true;
+        applications-launcher = {
+          enable = true;
+          plugins.enable = true;
+        };
         notifications.enable = true;
         status-bar.enable = true;
       };
@@ -55,7 +62,10 @@
         gitui.enable = true;
         commitlint.enable = true;
       };
-      erdtree.enable = true;
+      erdtree = {
+        enable = true;
+        package = unstable-pkgs.erdtree;
+      };
       bat.enable = true;
       tools = {
         enable = true;

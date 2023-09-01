@@ -35,7 +35,7 @@ in
 
     programs.waybar = {
       enable = true;
-      package = pkgs.waybar;
+      package = pkgs.waybar-hyprland;
       systemd = {
         enable = true;
         target = "hyprland-session.target";
@@ -91,7 +91,7 @@ in
             format = "{}";
           };
 
-          "hyprland/workspaces" = {
+          "wlr/workspaces" = {
             disable-scroll = true;
             all-outputs = false;
             on-click = "activate";

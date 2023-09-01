@@ -16,7 +16,7 @@
     grub2-themes.url = "github:/vinceliuice/grub2-themes";
     nix-alien.url = "github:thiagokokada/nix-alien";
     zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.url = "github:hyprwm/Hyprland/v0.27.2";
     anyrun.url = "github:Kirottu/anyrun";
     hyprland-contrib.url = "github:hyprwm/contrib";
     sddm-sugar-candy-nix.url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
@@ -44,6 +44,7 @@
         ];
         overlays = [
           nix-alien.overlays.default
+          hyprland.overlays.default
           hyprland-contrib.overlays.default
           sddm-sugar-candy-nix.overlays.default
           (final: prev: import ./overlay { inherit final prev; })

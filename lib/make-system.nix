@@ -15,6 +15,9 @@
       specialArgs = {
         inherit hostname system inputs;
         theme = theme-set;
+        unstable-pkgs = import inputs.nixpkgs-unstable {
+          inherit overlays system;
+        };
       };
       modules = [
         ../hosts/${hostname}
@@ -60,6 +63,9 @@
       extraSpecialArgs = {
         inherit system hostname inputs;
         theme = theme-set;
+        unstable-pkgs = import inputs.nixpkgs-unstable {
+          inherit overlays system;
+        };
         osConfig = inputs.self.nixosConfigurations.${hostname}.config;
       };
 

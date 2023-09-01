@@ -24,6 +24,12 @@ in
       description = "Primary screen resolution.";
     };
 
+    package = mkOption {
+      type = types.package;
+      default = pkgs.hyprland;
+      description = "Override default Hyprland package";
+    };
+
     input = {
       kbLayout = mkOption {
         type = types.str;
@@ -89,6 +95,7 @@ in
 
     wayland.windowManager.hyprland = {
       enable = true;
+      package = cfg.package;
       xwayland = {
         enable = true;
       };
@@ -187,12 +194,10 @@ in
 
           rounding = 10
 
-          blur {
-              enabled = true
-              size = 3
-              passes = 1
-              new_optimizations = true
-          }
+          blur = true
+          blur_size = 3
+          blur_passes = 1
+          blur_new_optimizations = true
 
           drop_shadow = true
           shadow_range = 4
