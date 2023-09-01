@@ -1,10 +1,9 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
 let
   cfg = config.hellebore.network;
-  mkMergeTopLevel = (import ../../lib/default.nix { inherit inputs; }).mkMergeTopLevel;
 in
 {
   options.hellebore.network = {
@@ -40,7 +39,7 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertions = cfg.enable -> (builtins.length cfg.interfaces) > 0;
+        assertion = cfg.enable -> (builtins.length cfg.interfaces) > 0;
         message = "You have to define at least one interface.";
       }
     ];

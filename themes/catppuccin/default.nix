@@ -46,9 +46,9 @@ in
 
   starship = rec {
     package = theme-packages.starship-palette;
-    paletteName = "macchiato";
+    paletteName = "catppuccin_macchiato";
     palette = builtins.fromTOML (builtins.readFile (package +
-    /palettes/${paletteName}.toml));
+    /palettes/macchiato.toml));
   };
 
   hyprland = rec {

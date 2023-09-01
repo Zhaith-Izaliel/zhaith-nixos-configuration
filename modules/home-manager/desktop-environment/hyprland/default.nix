@@ -111,7 +111,7 @@ in
       # See https://wiki.hyprland.org/Configuring/Keywords/ for more
 
       # Execute your favorite apps at launch
-      exec-once = ${getExe pkgs.swayosd} --max-volume 150
+      exec-once = ${pkgs.swayosd}/bin/swayosd --max-volume 150
       exec-once = ${getExe pkgs.swww} init
       ''
 
@@ -126,13 +126,13 @@ in
       # --- #
 
       (strings.optionalString config.hellebore.desktop-environment.mail.enable
-      "exec-once = [workspace 3] ${getExe
+      "exec-once = [workspace 3] ${getBin
       config.hellebore.desktop-environment.mail.package}")
 
       # --- #
 
       (strings.optionalString config.hellebore.shell.emulator.enable
-      "exec-once = [workspace 1] ${getExe config.hellebore.shell.emulator.package}")
+      "exec-once = [workspace 1] ${getBin config.hellebore.shell.emulator.package}")
 
       # --- #
 
