@@ -105,34 +105,33 @@ in
       # See https://wiki.hyprland.org/Configuring/Keywords/ for more
 
       # Execute your favorite apps at launch
-      exec-once = ${pkgs.swayosd}/bin/swayosd --max-volume 150
-      exec-once = ${getExe pkgs.swww} init
+      exec-once = swayosd --max-volume 150
+      exec-once = swww init
       ''
 
       # --- #
 
       (strings.optionalString config.hellebore.tools.discord.enable
       ''
-      exec-once = ${getExe config.hellebore.tools.discord.package}"
+      exec-once = ${getExe config.hellebore.tools.discord.package}
       ${mkWindowrulev2 "class:(discord)" [ "workspace 2" ]}
       '')
 
       # --- #
 
       (strings.optionalString config.hellebore.desktop-environment.mail.enable
-      "exec-once = [workspace 3] ${getBin
-      config.hellebore.desktop-environment.mail.package}")
+      "exec-once = [workspace 3] ${config.hellebore.desktop-environment.mail.package}/bin/evolution")
 
       # --- #
 
       (strings.optionalString config.hellebore.shell.emulator.enable
-      "exec-once = [workspace 1] ${getBin config.hellebore.shell.emulator.package}")
+      "exec-once = [workspace 1] ${config.hellebore.shell.emulator.package}/bin/kitty")
 
       # --- #
 
       ''
-      exec-once = ${pkgs.wl-clipboard}/bin/wl-paste -p --watch ${pkgs.wl-clipboard}/bin/wl-copy -pc
-      exec-once = ${pkgs.hyprland}/bin/hyprctl setcursor ${theme.gtk.cursorTheme.name} 24
+      exec-once = wl-paste -p --watch wl-copy -pc
+      exec-once = hyprctl setcursor ${theme.gtk.cursorTheme.name} 24
 
       # Palette
       source = ${theme.hyprland.palette}
@@ -142,12 +141,12 @@ in
 
       (strings.optionalString osConfig.hellebore.vm.enable
         ''
-        "${mkWindowrulev2 "title:(Luminous-Rafflesia)class:(looking-glass-client)" [
+        ${mkWindowrulev2 "title:(Luminous-Rafflesia)class:(looking-glass-client)" [
           "fullscreen"
         ]}
         ${mkWindowrulev2 "title:(Luminous-Rafflesia),class:(looking-glass-client)"[
           "idleinhibit always"
-        ]}"
+        ]}
         ''
       )
 
@@ -155,7 +154,6 @@ in
       ''
       # Some default env vars.
       env = XCURSOR_SIZE,24
-      env = XDG_CURRENT_DESKTOP,sway
 
       # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
       input {

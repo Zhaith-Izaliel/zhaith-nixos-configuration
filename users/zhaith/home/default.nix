@@ -5,6 +5,9 @@
     desktop-environment = {
       hyprland = {
         enable = true;
+        resolution = "2560x1440";
+
+
         lockscreen.enable = true;
         logout.enable = true;
         applications-launcher.enable = true;

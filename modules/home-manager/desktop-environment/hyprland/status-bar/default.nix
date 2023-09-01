@@ -91,7 +91,7 @@ in
             format = "{}";
           };
 
-          "wlr/workspaces" = {
+          "hyprland/workspaces" = {
             disable-scroll = true;
             all-outputs = false;
             on-click = "activate";

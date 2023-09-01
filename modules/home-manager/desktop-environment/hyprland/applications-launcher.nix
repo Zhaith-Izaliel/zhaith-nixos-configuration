@@ -44,14 +44,16 @@ in
       }
       '';
 
-      extraConfigFiles."applications.ron".text = strings.optionalString cfg.plugins.enable ''
-      Config(
-        desktop_actions = true,
-        max_entries = 5,
-        terminal: Some("kitty"),
-      )
-      '';
+      extraConfigFiles."applications.ron" = mkIf cfg.plugins.enable {
+        text = ''
+        Config(
+          desktop_actions = true,
+          max_entries = 5,
+          terminal: Some("kitty"),
+          )
+          '';
+        };
+      };
     };
-  };
-}
+  }
 
