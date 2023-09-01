@@ -16,7 +16,7 @@ in
     printing = {
       enable = mkEnableOption "Printing support";
       drivers = mkOption {
-        type = types.listOf type.package;
+        type = types.listOf types.package;
         default = [];
         description = "Drivers packages in case your printer doesn't support the
         IPP everywhere protocol";
@@ -45,7 +45,7 @@ in
     services = {
       printing = mkIf cfg.printing.enable {
         enable = true;
-        drivers = true;
+        drivers = cfg.printing.drivers;
       };
 
       avahi = mkIf cfg.printing.enable {

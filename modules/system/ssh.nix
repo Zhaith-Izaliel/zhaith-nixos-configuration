@@ -13,7 +13,7 @@ in
       enable = mkEnableOption "OpenSSH daemon";
 
       ports = mkOption {
-        type = types.listOf types.integer;
+        type = types.listOf types.int;
         default = [ 22 ];
         description = "Ports used by OpenSSH.";
       };

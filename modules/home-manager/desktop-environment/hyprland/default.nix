@@ -62,11 +62,6 @@ in
         assertion = cfg.enable -> osConfig.programs.hyprland.xwayland.enable;
         message = "Hyprland XWayland must be enabled in your system configuration";
       }
-      {
-        assertion = cfg.enable -> osConfig.programs.hyprland.xwayland.hidpi;
-        message = "Hyprland XWayland HiDPI must be enabled in your system
-        configuration";
-      }
     ];
 
     home.packages = with pkgs; [
@@ -96,7 +91,6 @@ in
       enable = true;
       xwayland = {
         enable = true;
-        hidpi = true;
       };
       systemdIntegration = true;
       recommendedEnvironment = true;

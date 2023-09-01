@@ -28,6 +28,7 @@ in
         terminus_font
         font-awesome
       ];
+
       fontconfig = {
         enable = true;
         antialias = true;
@@ -39,6 +40,7 @@ in
           emoji = [ "Twitter Color Emoji" ];
         };
       };
+
       fontDir.enable = true;
     };
   };

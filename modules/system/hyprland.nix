@@ -21,7 +21,7 @@ in
 
     services.gnome.gnome-settings-daemon.enable = true;
 
-    security.pam.services.swaylock.text = strings.optional cfg.enableSwaylockPam ''
+    security.pam.services.swaylock.text = strings.optionalString cfg.enableSwaylockPam ''
     # PAM configuration file for the swaylock screen locker. By default, it includes
     # the 'login' configuration file (see /etc/pam.d/login)
     auth include login
@@ -45,7 +45,6 @@ in
       enable = true;
       xwayland = {
         enable = true;
-        hidpi = true;
       };
     };
   };

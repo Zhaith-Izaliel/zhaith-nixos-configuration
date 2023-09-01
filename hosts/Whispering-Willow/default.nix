@@ -68,6 +68,8 @@
 
     kernel.enable = true;
 
+    locale.enable = true;
+
     development = {
       enable = true;
       enableDocker = true;

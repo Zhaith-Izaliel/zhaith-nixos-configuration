@@ -24,13 +24,13 @@ in
     };
 
     allowedTCPPorts = mkOption {
-      type = types.listOf types.integer;
+      type = types.listOf types.int;
       default = [];
       description = "Allowed TCP ports in the firewall.";
     };
 
     allowedUDPPorts = mkOption {
-      type = types.listOf types.integer;
+      type = types.listOf types.int;
       default = [];
       description = "Allowed UDP ports in the firewall.";
     };

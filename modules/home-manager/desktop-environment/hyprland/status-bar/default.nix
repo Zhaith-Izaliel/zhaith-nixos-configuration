@@ -35,7 +35,7 @@ in
 
     programs.waybar = {
       enable = true;
-      package = pkgs.waybar-hyprland;
+      package = pkgs.waybar;
       systemd = {
         enable = true;
         target = "hyprland-session.target";
