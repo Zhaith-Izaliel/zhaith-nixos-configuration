@@ -25,6 +25,11 @@ in
         "en_US.UTF-8/UTF-8"
         "fr_FR.UTF-8/UTF-8"
       ];
+
+      inputMethod = {
+        enabled = "ibus";
+        ibus.engines = with pkgs.ibus-engines; [ anthy ];
+      };
     };
 
     console = {

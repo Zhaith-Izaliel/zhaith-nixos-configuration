@@ -42,14 +42,12 @@
         hostname = "Whispering-Willow";
         users = [ "zhaith" ];
         extraModules = [
-          hyprland.nixosModules.default
           grub2-themes.nixosModules.default
           sddm-sugar-candy-nix.nixosModules.default
           modules.system
         ];
         overlays = [
           nix-alien.overlays.default
-          hyprland.overlays.default
           hyprland-contrib.overlays.default
           sddm-sugar-candy-nix.overlays.default
           (final: prev: import ./overlay { inherit final prev; })

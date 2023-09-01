@@ -5,7 +5,7 @@
     desktop-environment = {
       hyprland = {
         enable = true;
-        resolution = "2560x1440";
+        # resolution = "2560x1440";
 
 
         lockscreen.enable = true;
