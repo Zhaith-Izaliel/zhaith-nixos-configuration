@@ -40,19 +40,13 @@ in
         TimeoutStopSec = 10;
       };
     };
-  };
 
-
-
-
-
-
-
-  programs.hyprland = {
-    enable = true;
-    xwayland = {
+    programs.hyprland = {
       enable = true;
-      hidpi = true;
+      xwayland = {
+        enable = true;
+        hidpi = true;
+      };
     };
   };
 }

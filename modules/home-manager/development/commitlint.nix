@@ -23,7 +23,7 @@ let
 
 in
   {
-  options.hellebore.development.commitlint = {
+  options.hellebore.development.git.commitlint = {
     enable = mkEnableOption "Enable Commitlint with the Hellebore
     configuration";
 

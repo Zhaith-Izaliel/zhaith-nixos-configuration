@@ -1,9 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 with lib;
 
 let
   cfg = config.hellebore.network;
+  mkMergeTopLevel = (import ../../lib/default.nix { inherit inputs; }).mkMergeTopLevel;
 in
 {
   options.hellebore.network = {
@@ -36,7 +37,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable (mkMerge [
+  config = mkIf cfg.enable (mkMergeTopLevel [
     {
       assertions = [
         {
@@ -71,7 +72,10 @@ in
         };
       };
     }
-  ] ++ (builtins.map (item: { networking.interfaces.${item}.useDHCP = true; }) cfg.interfaces));
+    (mkMerge (builtins.map (item:
+      { networking.interfaces.${item}.useDHCP = true; }
+    ) cfg.interfaces))
+  ]);
 
   # networking.interfaces.enp46s0.useDHCP = true;
   # networking.interfaces.wlp47s0.useDHCP = true;

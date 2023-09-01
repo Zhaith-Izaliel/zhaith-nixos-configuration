@@ -32,12 +32,12 @@
   let
     system = "x86_64-linux";
     theme = "catppuccin";
-    lib = import ./lib { inputs = attrs; };
+    customHelpers = import ./lib { inputs = attrs; };
     modules = import ./modules {};
   in
   {
     nixosConfigurations = {
-      Whispering-Willow = lib.mkSystem {
+      Whispering-Willow = customHelpers.mkSystem {
         inherit system theme;
         hostname = "Whispering-Willow";
         users = [ "zhaith" ];
@@ -55,7 +55,7 @@
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };
-      Ethereal-Edelweiss = lib.mkSystem {
+      Ethereal-Edelweiss = customHelpers.mkSystem {
         inherit system theme;
         nixpkgs = nixpkgs-stable;
         hostname = "Ethereal-Edelweiss";
@@ -67,7 +67,7 @@
       };
     };
     homeConfigurations = {
-      "zhaith@Whispering-Willow" = lib.mkHome {
+      "zhaith@Whispering-Willow" = customHelpers.mkHome {
         inherit system theme;
         username = "zhaith";
         hostname = "Whispering-Willow";
@@ -85,7 +85,7 @@
         ];
       };
 
-      "lilith@Ethereal-Edelweiss" = lib.mkHome {
+      "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
         inherit system theme;
         home-manager = home-manager-stable;
         nixpkgs = nixpkgs-stable;
