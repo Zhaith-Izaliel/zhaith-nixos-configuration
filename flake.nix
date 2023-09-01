@@ -2,15 +2,11 @@
   description = "Zhaith's NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    home-manager-stable = {
       url = "github:nix-community/home-manager/release-23.05";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
     flake-compat = {
@@ -26,7 +22,7 @@
     sddm-sugar-candy-nix.url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
   };
 
-  outputs = {nixpkgs, nixpkgs-stable, home-manager-stable, flake-utils,
+  outputs = {nixpkgs, nixpkgs-unstable, flake-utils,
   grub2-themes, nix-alien, zhaith-neovim, hyprland, anyrun, hyprland-contrib,
   sddm-sugar-candy-nix, ...}@attrs:
   let
@@ -55,7 +51,6 @@
       };
       Ethereal-Edelweiss = customHelpers.mkSystem {
         inherit system theme;
-        nixpkgs = nixpkgs-stable;
         hostname = "Ethereal-Edelweiss";
         users = [ "lilith" ];
         extraModules = [
@@ -85,8 +80,6 @@
 
       "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
         inherit system theme;
-        home-manager = home-manager-stable;
-        nixpkgs = nixpkgs-stable;
         username = "lilith";
         hostname = "Ethereal-Edelweiss";
         stateVersion = "21.05";
