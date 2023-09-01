@@ -1,22 +1,22 @@
-diff --git a/src/libexpr/flake/flake.cc b/src/libexpr/flake/flake.cc
-index 60bb6a7..13e517b 100644
 --- a/src/libexpr/flake/flake.cc
 +++ b/src/libexpr/flake/flake.cc
-@@ -74,7 +74,7 @@ static std::tuple<fetchers::Tree, FlakeRef, FlakeRef> fetchOrSubstituteTree(
+@@ -74,7 +74,7 @@
 
  static void forceTrivialValue(EvalState & state, Value & value, const PosIdx pos)
  {
 -    if (value.isThunk() && value.isTrivial())
-+    if (value.isThunk()) // HACK: always forceValue, even if not trivial
++    if (value.isThunk()) // HACK: Evaluate even if it's not trivial
          state.forceValue(value, pos);
  }
 
-@@ -222,7 +222,7 @@ static Flake getFlake(
+@@ -218,7 +218,7 @@
          throw Error("source tree referenced by '%s' does not contain a '%s/flake.nix' file", lockedRef, lockedRef.subdir);
 
      Value vInfo;
--    state.evalFile(CanonPath(flakeFile), vInfo, true); // FIXME: symlink attack
-+    state.evalFile(CanonPath(flakeFile), vInfo, false); // FIXME: symlink attack
+-    state.evalFile(flakeFile, vInfo, true); // FIXME: symlink attack
++    state.evalFile(flakeFile, vInfo, false); // FIXME: symlink attack
 
-     expectType(state, nAttrs, vInfo, state.positions.add({CanonPath(flakeFile)}, 1, 1));
+     expectType(state, nAttrs, vInfo, state.positions.add({flakeFile}, 1, 1));
+
++
 
