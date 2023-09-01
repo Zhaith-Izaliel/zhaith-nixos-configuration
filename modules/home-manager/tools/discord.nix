@@ -27,8 +27,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = cfg.package ++ (if cfg.betterdiscord.enable then
-    cfg.betterdiscord.package else []);
+    home.packages = [ cfg.package ]
+    ++ (lists.optional cfg.betterdiscord.enable cfg.betterdiscord.package);
   };
 }
 

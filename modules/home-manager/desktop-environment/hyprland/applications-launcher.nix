@@ -3,11 +3,11 @@
 with lib;
 
 let
-  cfg = config.hellebore.desktop-environment.hyprland.anyrun;
+  cfg = config.hellebore.desktop-environment.hyprland.applications-launcher;
   anyrun-plugins = inputs.anyrun.packages.${pkgs.system};
 in
 {
-  options.hellebore.desktop-environment.hyprland.anyrun = {
+  options.hellebore.desktop-environment.hyprland.applications-launcher = {
     enable = mkEnableOption "Hellebore Anyrun configuration";
 
     plugins.enable = mkEnableOption "Enable Anyrun plugins";
@@ -44,7 +44,7 @@ in
       }
       '';
 
-      extraConfigFiles."applications.ron".text = strings.optional cfg.plugins.enable ''
+      extraConfigFiles."applications.ron".text = strings.optionalString cfg.plugins.enable ''
       Config(
         desktop_actions = true,
         max_entries = 5,

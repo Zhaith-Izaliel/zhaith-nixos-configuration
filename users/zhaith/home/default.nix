@@ -5,11 +5,11 @@
     desktop-environment = {
       hyprland = {
         enable = true;
-        swaylock.enable = true;
-        wlogout.enable = true;
-        anyrun.enable = true;
-        dunst.enable = true;
-        waybar.enable = true;
+        lockscreen.enable = true;
+        logout.enable = true;
+        applications-launcher.enable = true;
+        notifications.enable = true;
+        status-bar.enable = true;
       };
       bluetooth.enable = true;
       network.enable = true;

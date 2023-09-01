@@ -4,10 +4,10 @@ with lib;
 
 let
   mkBig = icon: "<big>${icon}</big>";
-  cfg = config.hellebore.desktop-environment.hyprland.waybar;
+  cfg = config.hellebore.desktop-environment.hyprland.status-bar;
 in
 {
-  options.hellebore.desktop-environment.hyprland.waybar = {
+  options.hellebore.desktop-environment.hyprland.status-bar = {
     enable = mkEnableOption "Hellebore Waybar configuration";
   };
 
@@ -66,7 +66,7 @@ in
             "custom/shutdown"
           ];
 
-          bluetooth = mkIf config.hellebore.desktop-environment.bluetooth {
+          bluetooth = mkIf config.hellebore.desktop-environment.bluetooth.enable {
             format = "󰂯 {status}";
             format-off = "󰂲 off";
             format-disabled = "󰂳 off";

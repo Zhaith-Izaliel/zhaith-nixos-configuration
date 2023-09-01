@@ -17,7 +17,7 @@ in
       qalculate-gtk
       calibre
       obsidian
-      gnome.simples-scan
+      gnome.simple-scan
     ];
   };
 }

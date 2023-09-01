@@ -14,7 +14,7 @@ in
     enableDocumentation = mkEnableOption "Documentations and MAN pages";
   };
 
-  config = cfg.enable {
+  config = mkIf cfg.enable {
     virtualisation.docker.enable = cfg.enableDocker;
     documentation.dev.enable = cfg.enableDocumentation;
 

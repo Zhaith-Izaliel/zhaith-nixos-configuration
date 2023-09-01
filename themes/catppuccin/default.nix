@@ -46,7 +46,7 @@ in
 
   starship = rec {
     package = theme-packages.starship-palette;
-    paletteName = "catppuccin_macchiato";
+    paletteName = "macchiato";
     palette = builtins.fromTOML (builtins.readFile (package +
     /palettes/${paletteName}.toml));
   };

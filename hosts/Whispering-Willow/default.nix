@@ -46,7 +46,6 @@
 
       printing = {
         enable = true;
-        oldPrinter = true;
         drivers = with pkgs; [ epson-escpr epson-escpr2 ];
       };
 

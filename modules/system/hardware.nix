@@ -15,7 +15,6 @@ in
 
     printing = {
       enable = mkEnableOption "Printing support";
-      oldPrinter = mkEnableOption "Printing support for an old printer";
       drivers = mkOption {
         type = types.listOf type.package;
         default = [];
@@ -42,53 +41,38 @@ in
     };
   };
 
-  config = mkMerge [
-    (mkIf cfg.printing.enable {
-      services = {
-        printing = {
-          enable = true;
-          drivers = true;
-        };
-
-        avahi = {
-          enable = true;
-
-          nssmdns = true;
-
-          openFirewall = true;
-        };
-      };
-    })
-
-    (mkIf cfg.numerization.enable {
-      hardware.sane.enable = true;
-    })
-
-    (mkIf cfg.integratedCamera.disable {
-      services.systemd.services.disable-integrated-camera = {
+  config = {
+    services = {
+      printing = mkIf cfg.printing.enable {
         enable = true;
-        script = ''
-        echo 0 > "${usbBusDevices}/${cfg.integratedCamera.cameraBus}/bConfigurationValue"
-        '';
-        wantedBy = [ "multi-user.target" ];
+        drivers = true;
       };
-    })
 
-    (mkIf cfg.printing.oldPrinter {
-      system.nssModules = with pkgs.lib; optional (!config.services.avahi.nssmdns) pkgs.nssmdns;
-      system.nssDatabases.hosts = with pkgs.lib; optionals (!config.services.avahi.nssmdns) (mkMerge [
-        (mkOrder 900 [ "mdns4_minimal [NOTFOUND=return]" ]) # must be before resolve
-        (mkOrder 1501 [ "mdns4" ]) # 1501 to ensure it's after dns
-      ]);
-    })
-
-    (mkIf cfg.bluetooth.enable {
-      services.blueman.enable = true;
-      hardware.bluetooth = {
+      avahi = mkIf cfg.printing.enable {
         enable = true;
-        package = pkgs.bluez.override { withExperimental = cfg.bluetooth.enablePowerSupport; };
+
+        nssmdns = true;
+
+        openFirewall = true;
       };
-    })
-  ];
+
+      blueman.enable = cfg.bluetooth.enable;
+    };
+
+    hardware.sane.enable = cfg.numerization.enable;
+
+    systemd.services.disable-integrated-camera = mkIf cfg.integratedCamera.disable {
+      enable = true;
+      script = ''
+      echo 0 > "${usbBusDevices}/${cfg.integratedCamera.cameraBus}/bConfigurationValue"
+      '';
+      wantedBy = [ "multi-user.target" ];
+    };
+
+    hardware.bluetooth = mkIf cfg.bluetooth.enable {
+      enable = true;
+      package = pkgs.bluez.override { withExperimental = cfg.bluetooth.enablePowerSupport; };
+    };
+  };
 }
 

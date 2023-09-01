@@ -14,7 +14,7 @@ in
 
     programs.obs-studio = {
       enable = true;
-      plugins = lists.optionals osConfig.hellebore.kvm.enable [
+      plugins = lists.optionals osConfig.hellebore.vm.enable [
         pkgs.obs-studio-plugins.looking-glass-obs
       ];
     };

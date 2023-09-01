@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.hellebore.desktop-environment.hyprland.dunst;
+  cfg = config.hellebore.desktop-environment.hyprland.notifications;
 in
 {
 
-  options.hellebore.desktop-environment.hyprland.dunst = {
+  options.hellebore.desktop-environment.hyprland.notifications = {
     enable = mkEnableOption "Hellebore Dunst configuration";
   };
 

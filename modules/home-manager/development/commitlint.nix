@@ -40,7 +40,7 @@ in
     };
 
     conventionalConfigPackage = mkOption {
-      type = types.packages;
+      type = types.package;
       default = pkgs.commitlint-config-conventional;
       description = "The Commitlint Config Conventional package.";
     };
@@ -52,7 +52,7 @@ in
       cfg.conventionalConfigPackage
     ];
 
-    home.file.".commitlintrc" = cfg.commitlintrc;
+    home.file.".commitlintrc".text = cfg.commitlintrc;
   };
 }
 

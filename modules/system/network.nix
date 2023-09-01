@@ -10,7 +10,7 @@ in
   options.hellebore.network = {
     enable = mkEnableOption "Hellebore network configuration";
 
-    enableNetworManager = mkEnableOption "Hellebore NetworkManager configuration";
+    enableNetworkManager = mkEnableOption "Hellebore NetworkManager configuration";
 
     domain = mkOption {
       type = types.str;
@@ -37,47 +37,41 @@ in
     };
   };
 
-  config = mkIf cfg.enable (mkMergeTopLevel [
-    {
-      assertions = [
-        {
-          assertions = cfg.enable -> (builtins.length cfg.interfaces) > 0;
-          message = "You have to define at least one interface.";
-        }
+  config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertions = cfg.enable -> (builtins.length cfg.interfaces) > 0;
+        message = "You have to define at least one interface.";
+      }
+    ];
+
+    networking.networkmanager = mkIf cfg.enableNetworkManager {
+      enable = true;
+      plugins = with pkgs; [
+        networkmanager-openvpn
       ];
-    }
-    (mkIf cfg.enableNetworManager {
-      networking.networkmanager = {
-        enable = true;
-        plugins = with pkgs; [
-          networkmanager-openvpn
-        ];
+    };
+
+    programs.nm-applet = mkIf cfg.enableNetworkManager {
+      enable = true;
+      indicator = false;
+    };
+
+    environment.systemPackages = lists.optional cfg.enableNetworkManager
+    pkgs.openvpn;
+
+    networking = {
+      inherit (cfg) domain;
+
+      firewall = {
+        inherit (cfg) allowedTCPPorts allowedUDPPorts;
       };
 
-      programs.nm-applet = {
-        enable = true;
-        indicator = false;
-      };
-
-      environment.systemPackages = with pkgs; [
-        openvpn
-      ];
-    })
-    {
-      networking = {
-        inherit (cfg) domain;
-
-        firewall = {
-          inherit (cfg) allowedTCPPorts allowedUDPPorts;
-        };
-      };
-    }
-    (mkMerge (builtins.map (item:
-      { networking.interfaces.${item}.useDHCP = true; }
-    ) cfg.interfaces))
-  ]);
-
-  # networking.interfaces.enp46s0.useDHCP = true;
-  # networking.interfaces.wlp47s0.useDHCP = true;
+      interfaces = mkMerge (builtins.map
+        (item: { ${item}.useDHCP = true; })
+        cfg.interfaces
+      );
+    };
+  };
 }
 

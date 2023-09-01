@@ -6,10 +6,10 @@ let
   converted-colors = attrsets.mapAttrs
   (name: value: strings.removePrefix "#" value)
   theme.colors;
-  cfg = config.hellebore.desktop-environment.hyprland.swaylock;
+  cfg = config.hellebore.desktop-environment.hyprland.lockscreen;
 in
   {
-    options.hellebore.desktop-environment.hyprland.swaylock = {
+    options.hellebore.desktop-environment.hyprland.lockscreen = {
       enable = mkEnableOption "Hellebore Swaylock and Swayidle configuration";
     };
 
@@ -61,8 +61,8 @@ in
           text-caps-lock-color = converted-colors.peach;
           text-ver-color = converted-colors.blue;
           text-wrong-color = converted-colors.maroon;
-          font-size = gtk-theme.font.size + 10;
-          font = gtk-theme.font.name;
+          font-size = theme.gtk.font.size + 10;
+          font = theme.gtk.font.name;
           indicator-caps-lock = true;
           clock = true;
           indicator = true;

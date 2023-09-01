@@ -2,7 +2,7 @@
 
 {
   mkMergeTopLevel = attrs: (
-    lib.attrset.mapAttrs (k: v: lib.mkMerge v) (lib.attrset.foldAttrs (n: a: [n] ++ a) [] attrs)
+    lib.attrsets.mapAttrs (k: v: lib.mkMerge v) (lib.attrsets.foldAttrs (n: a: [n] ++ a) [] attrs)
   );
 }
 

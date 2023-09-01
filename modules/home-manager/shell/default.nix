@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, theme, pkgs, ... }:
 
 with lib;
 
@@ -26,7 +26,7 @@ in
     };
 
     dirHashes = mkOption {
-      type = types.attr;
+      type = types.attrs;
       default = {
         dev = "$HOME/Development";
         templates = "$HOME/Templates";
@@ -82,7 +82,7 @@ in
         export VISUAL="nvim"
         export EDITOR="nvim"
 
-        ${strings.optional (!cfg.enableDirenvLogs)
+        ${strings.optionalString (!cfg.enableDirenvLogs)
         ''# Remove log from direnv
         export DIRENV_LOG_FORMAT=""''
         }
@@ -92,7 +92,7 @@ in
         '';
 
         initExtra = ''
-        ${strings.optional cfg.motd.enable (if config.programs.kitty.enable then ''
+        ${strings.optionalString cfg.motd.enable (if config.programs.kitty.enable then ''
           # Neofetch MOTD
           if [ "$KITTY_WINDOW_ID" = "1" ]; then
             ${lib.getExe pkgs.neofetch} --kitty ${image}
@@ -107,7 +107,7 @@ in
 
 
         # Special functions
-        ${strings.optional config.programs.kitty.enable
+        ${strings.optionalString config.programs.kitty.enable
           ''kitty_ssh() {
             if [ "$TERM" = "xterm-kitty" ]; then
               ${pkgs.kitty}/bin/kitty +kitten ssh $*

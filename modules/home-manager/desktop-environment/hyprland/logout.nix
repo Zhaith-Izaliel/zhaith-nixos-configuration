@@ -30,10 +30,10 @@ let
       hover = getImage "suspend-hover.png";
     };
   };
-  cfg = config.hellebore.desktop-environment.hyprland.wlogout;
+  cfg = config.hellebore.desktop-environment.hyprland.logout;
 in
 {
-  options.hellebore.desktop-environment.hyprland.wlogout = {
+  options.hellebore.desktop-environment.hyprland.logout = {
     enable = mkEnableOption "Hellebore WLogout configuration";
   };
 

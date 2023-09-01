@@ -48,25 +48,26 @@ in
             Font = theme.gtk.font.name;
           };
         };
-      };
 
-      sugarCandyNix = {
-        enable = true;
-        settings = {
-          ScreenWidth = cfg.screenWidth;
-          ScreenHeight = cfg.screenHeight;
-          FormPosition = "left";
-          HaveFormBackground = true;
-          PartialBlur = true;
-          AccentColor = theme.colors.mauve;
-          BackgroundColor = theme.colors.base;
-          Font = theme.gtk.font.name;
-          FontSize = toString theme.gtk.font.size;
-          MainColor = theme.colors.text;
-          ForceHideCompletePassword = true;
-          Background = lib.cleanSource ../../../assets/images/sddm/greeter.png;
+        sugarCandyNix = {
+          enable = true;
+          settings = {
+            ScreenWidth = cfg.screenWidth;
+            ScreenHeight = cfg.screenHeight;
+            FormPosition = "left";
+            HaveFormBackground = true;
+            PartialBlur = true;
+            AccentColor = theme.colors.mauve;
+            BackgroundColor = theme.colors.base;
+            Font = theme.gtk.font.name;
+            FontSize = toString theme.gtk.font.size;
+            MainColor = theme.colors.text;
+            ForceHideCompletePassword = true;
+            Background = ../../../assets/images/sddm/greeter.png;
+          };
         };
       };
+
     };
   };
 }
