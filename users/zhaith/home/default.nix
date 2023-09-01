@@ -66,5 +66,7 @@
       emulator.enable = true;
     };
   };
+
+  programs.neovim.zhaith-config.enable = true;
 }
 

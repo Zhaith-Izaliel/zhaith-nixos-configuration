@@ -51,10 +51,10 @@ in
       TrayFont="${theme.gtk.font.name} Bold ${toString theme.gtk.font.size}"
 
       # Tray Label Outline Color
-      TrayOutlineColor=${colors.mantle}
+      TrayOutlineColor=${theme.colors.mantle}
 
       # Tray Label Text Color
-      TrayTextColor=${colors.text}
+      TrayTextColor=${theme.colors.text}
 
       # Prefer Text Icon
       PreferTextIcon=False
