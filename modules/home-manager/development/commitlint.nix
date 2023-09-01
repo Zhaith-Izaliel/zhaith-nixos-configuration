@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.hellebore.development.commitlint;
+  cfg = config.hellebore.development.git.commitlint;
   commitlintrc = ''
     module.exports = {
       extends:

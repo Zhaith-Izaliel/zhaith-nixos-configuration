@@ -3,13 +3,6 @@
 with lib;
 
 let
-  totalCores = "0-15";
-  hostCores = "0-3,8-11";
-  vmName = "Luminous-Rafflesia";
-  isolateCpuVariableName = "ISOLATE_CPUS";
-  # IMPORTANT: Change these pcis for your vm GPU
-  # (https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF#Ensuring_that_the_groups_are_valid)
-  pcis = "0000:01:00.0 0000:01:00.1";
   cfg = config.hellebore.vm;
 in
 {

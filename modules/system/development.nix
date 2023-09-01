@@ -7,7 +7,7 @@ let
 in
 {
   options.hellebore.development = {
-    enable = mkEnableOption "Hellebore development configuration";
+    enable = mkEnableOption "Hellebore development packages";
 
     enableDocker = mkEnableOption "Docker service and tools";
 

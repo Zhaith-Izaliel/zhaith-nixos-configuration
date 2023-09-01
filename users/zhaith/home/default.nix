@@ -47,14 +47,17 @@
     };
 
     development = {
-      commitlint.enable = true;
       git = {
         enable = true;
         gitui.enable = true;
+        commitlint.enable = true;
       };
       erdtree.enable = true;
       bat.enable = true;
-      lorri.enable = true;
+      tools = {
+        enable = true;
+        enableLorri = true;
+      };
     };
 
     shell = {

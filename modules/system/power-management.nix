@@ -4,8 +4,6 @@ with lib;
 
 let
   cfg = config.hellebore.power-management;
-  shutdownDate = "+10";
-  cronTemplate = "50 2 * * *";
 in
 {
   options.hellebore.power-management = {

@@ -19,8 +19,8 @@ in
       universal-ctags
     ];
 
-    services.lorri = {
-      enable = cfg.enableLorri;
+    services.lorri = mkIf cfg.enableLorri {
+      enable = true;
       enableNotifications = true;
     };
   };
