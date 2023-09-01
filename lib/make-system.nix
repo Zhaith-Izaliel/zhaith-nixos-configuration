@@ -31,17 +31,16 @@
           };
 
           nix = {
-            # package = pkgs.nixFlakes.overrideAttrs (old: {
-            #   patches =
-            #     (old.patches or [])
-            #     ++ (
-            #       map
-            #       (file: ../nix-patches/${file})
-            #       (lib.attrNames (lib.filterAttrs (_: type: type == "regular")
-            #       (builtins.readDir ../nix-patches)))
-            #       );
-            #     });
-                package = pkgs.nixFlakes;
+            package = pkgs.nixFlakes.overrideAttrs (old: {
+              patches =
+                (old.patches or [])
+                ++ (
+                  map
+                  (file: ../nix-patches/${file})
+                  (lib.attrNames (lib.filterAttrs (_: type: type == "regular")
+                  (builtins.readDir ../nix-patches)))
+                  );
+                });
 
                 extraOptions = ''
                 experimental-features = nix-command flakes

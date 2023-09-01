@@ -15,8 +15,7 @@
     };
     grub2-themes.url = "github:/vinceliuice/grub2-themes";
     nix-alien.url = "github:thiagokokada/nix-alien";
-    zhaith-neovim.url =
-      "gitlab:Zhaith-Izaliel/neovim-config/feature/flake-inputs";
+    zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
     hyprland.url = "github:hyprwm/Hyprland/v0.27.2";
     anyrun.url = "github:Kirottu/anyrun";
     hyprland-contrib.url = "github:hyprwm/contrib";
