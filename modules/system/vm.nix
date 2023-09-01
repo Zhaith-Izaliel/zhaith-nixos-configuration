@@ -1,63 +1,158 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
+
+with lib;
 
 let
-  # IMPORTANT: Update these values for your vms and your wanting core isolation
   totalCores = "0-15";
   hostCores = "0-3,8-11";
-  vmCores = "4-7,12-15"; # NOTE: This variable isn't used, but help defining isolated cores
   vmName = "Luminous-Rafflesia";
-  # NOTE: This variable is used in the script start-vm
   isolateCpuVariableName = "ISOLATE_CPUS";
+  # IMPORTANT: Change these pcis for your vm GPU
+  # (https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF#Ensuring_that_the_groups_are_valid)
+  pcis = "0000:01:00.0 0000:01:00.1";
+  cfg = config.hellebore.vm;
 in
 {
-  environment.systemPackages = with pkgs; [
-    virtmanager
-    start-vm
-  ];
+  options.hellebore.vm = {
+    enable = mkEnableOption "Hellebore KVM VM (*Works only with an Intel CPU and
+    Nvidia GPU)";
 
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu = {
-      ovmf.enable = true;
-      runAsRoot = true;
-      verbatimConfig = ''
-        user = "zhaith"
-      '';
+    cpuIsolation = {
+      enable = mkEnableOption "CPU isolation";
+
+      totalCores = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "Total CPU cores in the form `n-m`";
+      };
+
+      hostCores = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "Host CPU when the vm runs.";
+      };
+
+      variableName = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "Name of the variable used in your starting VM script to
+        allow CPU isolation";
+      };
     };
-    onBoot = "ignore";
-    onShutdown = "shutdown";
+
+    vmName = mkOption {
+      type = types.nonEmptyStr;
+      default = "";
+      description = "Name of the VM in virt-manager";
+    };
+
+    pcis = mkOption {
+      type = types.listOf types.nonEmptyStr;
+      default = [];
+      description = "List of the PCIs to isolate the GPU.";
+    };
+
+    username = mkOption {
+      type = types.nonEmptyStr;
+      default = "";
+      description = "Username for sound passthrough with pipewire.";
+    };
   };
 
-  #Looking Glass
-  systemd.tmpfiles.rules = [
-    "f /dev/shm/looking-glass 0660 zhaith qemu-libvirtd -"
-  ];
+  config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.enable -> (builtins.length cfg.pcis) > 0;
+        message = "You need at least one PCI to allow GPU passthrough.";
+      }
+    ];
 
-  systemd.services.libvirtd.preStart = let
-    qemuHook = pkgs.writeScript "qemu-hook" ''
+    environment.systemPackages = with pkgs; [
+      virtmanager
+      start-vm
+    ];
+
+    virtualisation.libvirtd = {
+      enable = true;
+      qemu = {
+        ovmf.enable = true;
+        runAsRoot = true;
+        verbatimConfig = ''
+        user = "zhaith"
+        '';
+      };
+      onBoot = "ignore";
+      onShutdown = "shutdown";
+    };
+
+    systemd.tmpfiles.rules = [
+      "f /dev/shm/looking-glass 0660 ${cfg.username} qemu-libvirtd -"
+    ];
+
+    systemd.services.libvirtd.preStart = let
+      qemuHook = pkgs.writeScript "qemu-hook" ''
       #!${pkgs.stdenv.shell}
 
       VM_NAME="$1"
       VM_ACTION="$2/$3"
-      if [ "$VM_NAME" = "${vmName}" ] && [ "${isolateCpuVariableName}" = "true" ]; then
-        if [[ "$VM_ACTION" == "prepare/begin" ]]; then
-            systemctl set-property --runtime -- user.slice AllowedCPUs="${hostCores}"
-            systemctl set-property --runtime -- system.slice AllowedCPUs="${hostCores}"
-            systemctl set-property --runtime -- init.scope AllowedCPUs="${hostCores}"
-        elif [[ "$VM_ACTION" == "release/end" ]]; then
-            systemctl set-property --runtime -- user.slice AllowedCPUs="${totalCores}"
-            systemctl set-property --runtime -- system.slice AllowedCPUs="${totalCores}"
-            systemctl set-property --runtime -- init.scope AllowedCPUs="${totalCores}"
-        fi
+      if [ "$VM_NAME" = "${cfg.vmName}" ] && [ "${cfg.cpuIsolation.variableName}" = "true" ]; then
+      if [[ "$VM_ACTION" == "prepare/begin" ]]; then
+      systemctl set-property --runtime -- user.slice AllowedCPUs="${cfg.cpuIsolation.hostCores}"
+      systemctl set-property --runtime -- system.slice AllowedCPUs="${cfg.cpuIsolation.hostCores}"
+      systemctl set-property --runtime -- init.scope AllowedCPUs="${cfg.cpuIsolation.hostCores}"
+      elif [[ "$VM_ACTION" == "release/end" ]]; then
+      systemctl set-property --runtime -- user.slice AllowedCPUs="${cfg.cpuIsolation.totalCores}"
+      systemctl set-property --runtime -- system.slice AllowedCPUs="${cfg.cpuIsolation.totalCores}"
+      systemctl set-property --runtime -- init.scope AllowedCPUs="${cfg.cpuIsolation.totalCores}"
       fi
-    '';
-    libvirtHooks = "/var/lib/libvirt/hooks";
-  in ''
+      fi
+      '';
+      libvirtHooks = "/var/lib/libvirt/hooks";
+    in ''
     mkdir -p "${libvirtHooks}"
     chmod 755 "${libvirtHooks}"
 
     # Copy hook files
     ln -sf ${qemuHook} "${libvirtHooks}/qemu"
-  '';
+    '';
+
+    boot = {
+      kernelModules = [
+        "kvm-intel"
+        "vfio"
+        "vfio_iommu_type1"
+        "vfio_pci"
+        "vfio_virqfd"
+        "vhost-net"
+      ];
+      kernelParams = [
+        "intel_iommu=on"
+        "iommu=pt"
+      ];
+      initrd = {
+        availableKernelModules = [
+          "vfio"
+          "vfio_iommu_type1"
+          "vfio_pci"
+          "vfio_virqfd"
+          "vhost-net"
+        ];
+
+
+        preDeviceCommands = ''
+          for DEV in ${strings.concatStringsSep " " cfg.pcis}; do
+          echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
+          done
+          modprobe -i vfio-pci
+        '';
+      };
+
+      extraModprobeConfig = ''
+        blacklist nouveau
+        blacklist xpad
+        options nouveau modeset=0
+      '';
+    };
+  };
 }
 

@@ -1,14 +1,42 @@
-{ config, ... }:
+{ config, lib, ... }:
 
+with lib;
+
+let
+  cfg = config.hellebore.ssh;
+in
 {
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-     enable = true;
-     enableSSHSupport = true;
+  options.hellebore.ssh = {
+    enable = mkEnableOption "Hellebore SSH configuration";
+
+    openssh = {
+      enable = mkEnableOption "OpenSSH daemon";
+
+      ports = mkOption {
+        type = types.listOf types.integer;
+        default = [ 22 ];
+        description = "Ports used by OpenSSH.";
+      };
+    };
   };
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  config = mkMerge [
+    (mkIf cfg.enable {
+      programs.gnupg.agent = {
+        enable = true;
+        enableSSHSupport = true;
+      };
+    })
+    (mkIf cfg.openssh.enable {
+      services.openssh = {
+        inherit (cfg.openssh) ports;
+        enable = true;
+        openFirewall = true;
+        settings.PasswordAuthentication = false;
+        allowSFTP = true;
+        sftpServerExecutable = "internal-sftp";
+      };
+    })
+  ];
 }
+

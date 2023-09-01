@@ -29,7 +29,7 @@ in
     services.cron = {
       enable = true;
       systemCronJobs = [
-        "${cfg.cronTemplate} root ${pkgs.power-management}/bin/power-management ${cfg.shutdownDate}"
+        "${cfg.cronTemplate} root ${getExe pkgs.power-management} ${cfg.shutdownDate}"
       ];
     };
   };

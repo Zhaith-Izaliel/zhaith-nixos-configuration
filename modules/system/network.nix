@@ -9,10 +9,30 @@ in
   options.hellebore.network = {
     enable = mkEnableOption "Hellebore network configuration";
 
+    enableNetworManager = mkEnableOption "Hellebore NetworkManager configuration";
+
+    domain = mkOption {
+      type = types.str;
+      default = "";
+      description = "The domain hostname.";
+    };
+
     interfaces = mkOption {
       type = types.listOf types.nonEmptyStr;
       default = [];
       description = "Network interfaces to enable.";
+    };
+
+    allowedTCPPorts = mkOption {
+      type = types.listOf types.integer;
+      default = [];
+      description = "Allowed TCP ports in the firewall.";
+    };
+
+    allowedUDPPorts = mkOption {
+      type = types.listOf types.integer;
+      default = [];
+      description = "Allowed UDP ports in the firewall.";
     };
   };
 
@@ -25,7 +45,7 @@ in
         }
       ];
     }
-    {
+    (mkIf cfg.enableNetworManager {
       networking.networkmanager = {
         enable = true;
         plugins = with pkgs; [
@@ -41,6 +61,15 @@ in
       environment.systemPackages = with pkgs; [
         openvpn
       ];
+    })
+    {
+      networking = {
+        inherit (cfg) domain;
+
+        firewall = {
+          inherit (cfg) allowedTCPPorts allowedUDPPorts;
+        };
+      };
     }
   ] ++ (builtins.map (item: { networking.interfaces.${item}.useDHCP = true; }) cfg.interfaces));
 
