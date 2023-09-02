@@ -2,16 +2,28 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ ... }:
 
 {
+  # Set your time zone.
+  time.timeZone = "Europe/Paris";
+
+  # Optimize Nix Store storage consumption
+  nix.settings.auto-optimise-store = true;
+
+  # Run Nix garbage collector every week
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
   imports = [
     ./hardware-configuration.nix
     # -------------------------------------------------------------------------- #
     #                                Custom Config                               #
     # -------------------------------------------------------------------------- #
     # --------------------------------- Config --------------------------------- #
-    ./config/base.nix
     ./config/bootloader.nix
     ./config/fonts.nix
     ./config/locale.nix

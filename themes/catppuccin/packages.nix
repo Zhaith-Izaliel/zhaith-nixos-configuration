@@ -1,24 +1,24 @@
 { pkgs, lib }:
 
-let
-  default = {
-    starship-palette = pkgs.stdenv.mkDerivation {
-      pname = "starship-palette";
-      version = "3e3e544";
-      src = pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "starship";
-        rev = "3e3e544"; # Replace with the latest commit hash
-        sha256 = "sha256-soEBVlq3ULeiZFAdQYMRFuswIIhI9bclIU8WXjxd7oY=";
-      };
-
-      installPhase = ''
-      mkdir -p $out
-      cp -r palettes $out
-      '';
+{
+  starship-palette = pkgs.stdenv.mkDerivation {
+    pname = "starship-palette";
+    version = "3e3e544";
+    src = pkgs.fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "starship";
+      rev = "3e3e544"; # Replace with the latest commit hash
+      sha256 = "sha256-soEBVlq3ULeiZFAdQYMRFuswIIhI9bclIU8WXjxd7oY=";
     };
 
-    gtk = pkgs.catppuccin-gtk.override {
+    installPhase = ''
+    mkdir -p $out
+    cp -r palettes $out
+    '';
+  };
+
+  gtk = {
+    theme = pkgs.catppuccin-gtk.override {
       accents = [ "blue" "flamingo" "green" "lavender" "maroon" "mauve" "peach"
       "pink" "red" "rosewater" "sapphire" "sky" "teal" "yellow" ];
       size = "standard";
@@ -30,25 +30,26 @@ let
     icons = pkgs.papirus-icon-theme;
 
     font = pkgs.cantarell-fonts;
+  };
 
-    hyprland-palette = pkgs.stdenv.mkDerivation rec {
-      name = "catppucin-hyprland";
-      version = "1.2";
+  hyprland-palette = pkgs.stdenv.mkDerivation rec {
+    name = "catppucin-hyprland";
+    version = "1.2";
 
-      src = pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "hyprland";
-        rev  = "v${version}";
-        sha256 = "sha256-07B5QmQmsUKYf38oWU3+2C6KO4JvinuTwmW1Pfk8CT8=";
-      };
-
-      installPhase = ''
-      mkdir -p $out
-      cp -r themes $out
-      '';
+    src = pkgs.fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "hyprland";
+      rev  = "v${version}";
+      sha256 = "sha256-07B5QmQmsUKYf38oWU3+2C6KO4JvinuTwmW1Pfk8CT8=";
     };
 
-    bat-theme = pkgs.stdenv.mkDerivation rec {
+    installPhase = ''
+    mkdir -p $out
+    cp -r themes $out
+    '';
+  };
+
+  bat-theme = pkgs.stdenv.mkDerivation rec {
       pname = "bat-catppuccin";
       version  = "ba4d168";
 
@@ -65,42 +66,38 @@ let
       '';
     };
 
-    gitui-theme = pkgs.stdenv.mkDerivation rec {
-      pname = "gitui-catppuccin";
-      version  = "3c97c7a";
+  gitui-theme = pkgs.stdenv.mkDerivation rec {
+    pname = "gitui-catppuccin";
+    version  = "3c97c7a";
 
-      src = pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "gitui"; # Bat uses sublime syntax for its themes
-        rev = version;
-        sha256 = "sha256-m6Tjch6A2ZPZ3/muvb/9sEAQUZfjnWqcwyhNVeqPS2c=";
-      };
-
-      installPhase = ''
-      mkdir -p $out
-      cp -r theme $out
-      '';
+    src = pkgs.fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "gitui"; # Bat uses sublime syntax for its themes
+      rev = version;
+      sha256 = "sha256-m6Tjch6A2ZPZ3/muvb/9sEAQUZfjnWqcwyhNVeqPS2c=";
     };
 
-    fcitx5-theme = pkgs.stdenv.mkDerivation rec {
-      pname = "catppuccin-fcitx5";
-      version = "ce244cf";
-      src = pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "fcitx5";
-        rev = version;
-        sha256 = "sha256-uFaCbyrEjv4oiKUzLVFzw+UY54/h7wh2cntqeyYwGps=";
-      };
-
-      installPhase = ''
-        local themeDir=$out/share/fcitx5/themes
-        mkdir -p $themeDir
-        cp -aR ./src/* $themeDir
-      '';
-    };
+    installPhase = ''
+    mkdir -p $out
+    cp -r theme $out
+    '';
   };
-in
-  default // {
-    all = lib.attrsets.mapAttrsToList (name: value: value) default;
-  }
+
+  fcitx5-theme = pkgs.stdenv.mkDerivation rec {
+    pname = "catppuccin-fcitx5";
+    version = "ce244cf";
+    src = pkgs.fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "fcitx5";
+      rev = version;
+      sha256 = "sha256-uFaCbyrEjv4oiKUzLVFzw+UY54/h7wh2cntqeyYwGps=";
+    };
+
+    installPhase = ''
+    local themeDir=$out/share/fcitx5/themes
+    mkdir -p $themeDir
+    cp -aR ./src/* $themeDir
+    '';
+  };
+}
 

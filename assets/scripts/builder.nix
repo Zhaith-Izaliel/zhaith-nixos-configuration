@@ -29,5 +29,7 @@ stdenv.mkDerivation rec {
 
   dontUseCmakeBuild = true;
   dontUseCmakeConfigure = true;
+
+  meta.mainProgram = pname;
 }
 
