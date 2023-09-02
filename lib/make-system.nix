@@ -32,20 +32,10 @@
 
           nix = {
             enable = true;
-            package = pkgs.nix.overrideAttrs (old: {
-              patches =
-                (old.patches or [])
-                ++ (
-                  map
-                  (file: ../nix-patches/${file})
-                  (lib.attrNames (lib.filterAttrs (_: type: type == "regular")
-                  (builtins.readDir ../nix-patches)))
-                  );
-                });
 
-                extraOptions = ''
-                experimental-features = nix-command flakes
-                '';
+            extraOptions = ''
+            experimental-features = nix-command flakes
+            '';
 
             # Add each input as a registry
             registry = inputs.nixpkgs.lib.mapAttrs'
