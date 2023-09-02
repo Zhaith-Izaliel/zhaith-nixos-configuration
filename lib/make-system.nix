@@ -31,7 +31,8 @@
           };
 
           nix = {
-            package = pkgs.nixFlakes.overrideAttrs (old: {
+            enable = true;
+            package = pkgs.nix.overrideAttrs (old: {
               patches =
                 (old.patches or [])
                 ++ (

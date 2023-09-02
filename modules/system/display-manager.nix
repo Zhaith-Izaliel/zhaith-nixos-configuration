@@ -63,7 +63,7 @@ in
             FontSize = toString theme.gtk.font.size;
             MainColor = theme.colors.text;
             ForceHideCompletePassword = true;
-            Background = ../../../assets/images/sddm/greeter.png;
+            Background = ../../assets/images/sddm/greeter.png;
           };
         };
       };
