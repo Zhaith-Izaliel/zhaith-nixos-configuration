@@ -27,7 +27,10 @@
       i18n.enable = true;
       files-manager.enable = true;
       disks.enable = true;
-      mail.enable = true;
+      mail = {
+        enable = true;
+        protonmail.enable = true;
+      };
       browsers = {
         enable = true;
         profiles.zhaith.enable = true;
@@ -75,6 +78,7 @@
 
     shell = {
       enable = true;
+      motd.enable = true;
       prompt.enable = true;
       emulator.enable = true;
     };
