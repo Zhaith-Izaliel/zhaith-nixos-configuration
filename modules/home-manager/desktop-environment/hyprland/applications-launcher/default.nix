@@ -11,7 +11,7 @@ in
 
     blurBackground = mkOption {
       type = types.path;
-      default = ../../../../../assets/images/rofi/blur.wall.png;
+      default = ../../../../../assets/images/rofi/blur-wall.png;
       description = "Blurred background used in the applications-launcher theme.";
     };
 
@@ -48,10 +48,10 @@ in
       extraConfig = {
         modi = "drun,filebrowser,run,ssh";
         show-icons = true;
-        display-drun = " ";
-        display-run = " ";
-        display-filebrowser = " ";
-        display-ssh = "󰒍 ";
+        display-drun = "";
+        display-run = "";
+        display-filebrowser = "";
+        display-ssh = "󰒍";
         drun-display-format = "{name}";
         window-format = "{w}{t}";
         icon-theme = theme.gtk.iconTheme.name;
