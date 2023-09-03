@@ -5,6 +5,30 @@ with lib;
 let
   cfg = config.hellebore.desktop-environment.hyprland;
   mkWindowrulev2 = window: rules: (builtins.concatStringsSep "\n" (map (rule: "windowrulev2=${rule},${window}") rules));
+  monitorType = types.submodule {
+    options = {
+      name = mkOption { type = types.str; };
+      width = mkOption { type =  types.int; };
+      height = mkOption { type = types.int; };
+      refreshRate = mkOption { type = types.int; };
+      xOffset = mkOption { type = types.int; };
+      yOffset = mkOption { type = types.int; };
+      scaling = mkOption { type = types.float; };
+    };
+  };
+  mkMonitor = monitor:
+  let
+    inherit (monitor) name;
+    width = toString monitor.width;
+    height = toString monitor.height;
+    xOffset = toString monitor.xOffset;
+    yOffset = toString monitor.yOffset;
+    refreshRate = toString monitor.refreshRate;
+    scaling = toString monitor.scaling;
+  in
+  "monitor=${name},${width}x${height}@${refreshRate},${xOffset}x${yOffset},${scaling}";
+  mkMonitors = monitors: strings.concatStringsSep "\n" (builtins.map mkMonitor monitors);
+
 in
 {
   imports = [
@@ -18,8 +42,8 @@ in
   options.hellebore.desktop-environment.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
-    resolution = mkOption {
-      type = types.str;
+    monitors = mkOption {
+      type = types.listOf monitorType;
       default = "1920x1080";
       description = "Primary screen resolution.";
     };
@@ -105,11 +129,18 @@ in
       ''
       # Palette
       source = ${theme.hyprland.palette}
+      ''
 
-      $resolution = ${cfg.resolution}
+      # --- #
 
+      ''
       # See https://wiki.hyprland.org/Configuring/Monitors/
-      monitor=eDP-1,$resolution@165,0x0,1
+      ${mkMonitors cfg.monitors}
+      ''
+
+      # --- #
+
+      ''
 
       $mainMod = SUPER
       $mainModKey = SUPER_L

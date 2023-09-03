@@ -5,7 +5,17 @@
     desktop-environment = {
       hyprland = {
         enable = true;
-        # resolution = "2560x1440";
+        monitors = [
+          {
+            name = "eDP-1";
+            width = 1920;
+            height = 1080;
+            refreshRate = 165;
+            xOffset = 0;
+            yOffset = 0;
+            scaling = 1.0;
+          }
+        ];
         lockscreen.enable = true;
         logout.enable = true;
         applications-launcher = {

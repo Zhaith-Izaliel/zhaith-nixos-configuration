@@ -1,4 +1,4 @@
-{ config, theme, lib, ... }:
+{ config, theme, ... }:
 
 let
   inherit (config.lib.formats.rasi) mkLiteral;
@@ -65,7 +65,7 @@ in
       orientation = mkLiteral "horizontal";
       children =  [  "inputbar"  "listbox" ];
       background-color = mkLiteral "transparent";
-      background-image =  mkLiteral ''url("${cfg.blurBackground}")'';
+      background-image =  mkLiteral ''url("${cfg.blurBackground}", height)'';
     };
 
     inputbar = {
@@ -79,7 +79,6 @@ in
     entry = {
       enabled = false;
     };
-
 
     mode-switcher = {
       orientation = mkLiteral "vertical";
