@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, theme, ... }:
 
 with lib;
 
@@ -32,21 +32,21 @@ in
 
       package = pkgs.rofi-wayland;
 
+      font = "NotoMono Nerd Font 12";
+
       terminal = strings.optionalString
       config.hellebore.shell.emulator.enable
       "${config.hellebore.shell.emulator.package}/bin/kitty";
 
       extraConfig = {
-        modi = "drun,filebrowser,window,run";
+        modi = "drun,filebrowser,run,combi";
         show-icons = true;
         display-drun = "";
         display-run = "";
         display-filebrowser = "";
-        display-window = "";
         drun-display-format = "{name}";
         window-format = "{w}{t}";
-        font = "NotoMono Nerd Font 12";
-        icon-theme = "Tela-circle-dracula";
+        icon-theme = theme.gtk.iconTheme.name;
       };
     };
   };
