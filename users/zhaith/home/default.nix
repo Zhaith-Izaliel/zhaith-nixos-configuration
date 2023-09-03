@@ -25,6 +25,7 @@
           images = true;
           torrents = true;
           archives = true;
+          fonts-viewer = true;
         };
       };
       disks.enable = true;
