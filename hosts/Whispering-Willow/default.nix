@@ -114,8 +114,8 @@
 
     power-management = {
       enable = true;
-      cronTemplate = "50 2 * * *";
-      shutdownDate = "+10";
+      cronTemplate = "0 2 * * *";
+      shutdownDate = "+60";
     };
   };
 
