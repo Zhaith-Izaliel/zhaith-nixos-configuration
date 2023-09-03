@@ -8,6 +8,18 @@ in
 {
   options.hellebore.desktop-environment.hyprland.applications-launcher = {
     enable = mkEnableOption "Hellebore Anyrun configuration";
+
+    blurBackground = mkOption {
+      type = types.path;
+      default = ;
+      description = "Blurred background used in the applications-launcher theme.";
+    };
+
+    background = mkOption {
+      type = types.path;
+      default = ;
+      description = "Background used in the applications-launcher theme.";
+    };
   };
 
   imports = [
