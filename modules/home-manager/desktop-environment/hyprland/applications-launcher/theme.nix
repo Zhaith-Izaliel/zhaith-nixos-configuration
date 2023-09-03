@@ -1,6 +1,7 @@
 { config, theme, lib, ... }:
 
 let
+  inherit (config.lib.formats.rasi) mkLiteral;
   colors = theme.colors;
   cfg = config.hellebore.desktop-environment.hyprland.applications-launcher;
   blurBackground = lib.cleanSource cfg.blurBackground;
@@ -9,40 +10,41 @@ in
 {
   programs.rofi.theme = {
     "*" = {
-      foreground = colors.text;
-      normal-foreground = "@foreground";
-      urgent-foreground = colors.crust;
-      active-foreground = colors.crust;
+      foreground = mkLiteral colors.text;
+      normal-foreground = mkLiteral "@foreground";
+      urgent-foreground = mkLiteral colors.crust;
+      active-foreground = mkLiteral colors.crust;
 
-      alternate-normal-foreground = "@normal-foreground";
-      alternate-urgent-foreground = "@urgent-foreground";
-      alternate-active-foreground = "@active-foreground";
+      alternate-normal-foreground = mkLiteral "@normal-foreground";
+      alternate-urgent-foreground = mkLiteral "@urgent-foreground";
+      alternate-active-foreground = mkLiteral "@active-foreground";
 
-      selected-normal-foreground = colors.crust;
-      selected-urgent-foreground = colors.crust;
-      selected-active-foreground = colors.crust;
+      selected-normal-foreground = mkLiteral colors.crust;
+      selected-urgent-foreground = mkLiteral colors.crust;
+      selected-active-foreground = mkLiteral colors.crust;
 
       background = colors.crust;
-      normal-background = "@background";
-      urgent-background = colors.maroon;
-      active-background = colors.teal;
+      normal-background = mkLiteral "@background";
+      urgent-background = mkLiteral colors.maroon;
+      active-background = mkLiteral colors.teal;
 
-      alternate-normal-background = colors.flamingo;
-      alternate-urgent-background = "@urgent-background";
-      alternate-active-background = "@active-background";
+      alternate-normal-background = mkLiteral colors.flamingo;
+      alternate-urgent-background = mkLiteral "@urgent-background";
+      alternate-active-background = mkLiteral "@active-background";
 
-      selected-normal-background =  colors.lavender;
-      selected-urgent-background =  colors.teal;
-      selected-active-background =  colors.maroon;
+      selected-normal-background = mkLiteral colors.lavender;
+      selected-urgent-background = mkLiteral colors.teal;
+      selected-active-background = mkLiteral colors.maroon;
 
-      separatorcolor = "transparent";
-      border-color = "transparent";
-      border-radius = "0px";
-      border = "0px";
-      spacing = "0px";
-      padding = "0px";
+      separatorcolor = mkLiteral "transparent";
+      border-color = mkLiteral "transparent";
+      border-radius = mkLiteral "0px";
+      border = mkLiteral "0px";
+      spacing = mkLiteral "0px";
+      padding = mkLiteral "0px";
     };
 
+    # FIXME: set literal values where needed
     window = {
       height = "590px";
       width = "1140px";
