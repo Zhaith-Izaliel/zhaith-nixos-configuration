@@ -1,16 +1,10 @@
-{ pkgs, unstable-pkgs, ... }:
+{ unstable-pkgs, ... }:
 
 {
   hellebore = {
     desktop-environment = {
       hyprland = {
         enable = true;
-        # package = pkgs.hyprland.override {
-        #   wayland-protocols = unstable-pkgs.wayland-protocols;
-        #   wlroots = pkgs.wlroots-hyprland.override {
-        #     wlroots = pkgs.wlroots.override { wayland-protocols = unstable-pkgs.wayland-protocols; };
-        #   };
-        # };
         # resolution = "2560x1440";
         lockscreen.enable = true;
         logout.enable = true;
@@ -25,9 +19,19 @@
       network.enable = true;
       cloud.enable = true;
       i18n.enable = true;
-      files-manager.enable = true;
+      files-manager = {
+        enable = true;
+        supports = {
+          images = true;
+          torrents = true;
+          archives = true;
+        };
+      };
       disks.enable = true;
-      mail.enable = true;
+      mail = {
+        enable = true;
+        protonmail.enable = true;
+      };
       browsers = {
         enable = true;
         profiles.zhaith.enable = true;
