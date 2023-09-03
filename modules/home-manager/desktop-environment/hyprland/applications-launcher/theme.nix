@@ -4,8 +4,8 @@ let
   inherit (config.lib.formats.rasi) mkLiteral;
   colors = theme.colors;
   cfg = config.hellebore.desktop-environment.hyprland.applications-launcher;
-  blurBackground = toString (lib.cleanSource cfg.blurBackground);
-  background = toString (lib.cleanSource cfg.background);
+  # blurBackground = toString (lib.cleanSource cfg.blurBackground);
+  # background = toString (lib.cleanSource cfg.background);
 in
 {
   programs.rofi.theme = {
@@ -44,7 +44,6 @@ in
       padding = mkLiteral "0px";
     };
 
-    # FIXME: set literal values where needed
     window = {
       height = mkLiteral "590px";
       width = mkLiteral "1140px";
@@ -66,7 +65,7 @@ in
       orientation = mkLiteral "horizontal";
       children =  [  "inputbar"  "listbox" ];
       background-color = mkLiteral "transparent";
-      background-image =  mkLiteral ''url("${blurBackground}", height)'';
+      background-image =  mkLiteral ''url("${cfg.blurBackground}")'';
     };
 
     inputbar = {
@@ -74,7 +73,7 @@ in
       width = mkLiteral "25%";
       children = [ "mode-switcher" "entry" ];
       background-color = mkLiteral "transparent";
-      background-image = mkLiteral (toString ''url("${background}", height)'');
+      background-image = mkLiteral ''url("${cfg.background}", height)'';
     };
 
     entry = {
@@ -89,7 +88,7 @@ in
       padding = mkLiteral "160px 10px 160px 10px";
       spacing = mkLiteral "25px";
       background-color = mkLiteral "transparent";
-      background-image = mkLiteral (toString ''url("${blurBackground}", height)'');
+      background-image = mkLiteral ''url("${cfg.blurBackground}", height)'';
     };
 
     button = {
@@ -100,7 +99,7 @@ in
     };
 
     "button selected" = {
-      background-color = mkLiteral "@foreground";
+      background-color = mkLiteral "@background";
       text-color = mkLiteral "@background";
     };
 

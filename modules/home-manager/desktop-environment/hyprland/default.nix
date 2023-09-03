@@ -103,10 +103,16 @@ in
       recommendedEnvironment = true;
       extraConfig = strings.concatStringsSep "\n" [
       ''
+      # Palette
+      source = ${theme.hyprland.palette}
+
       $resolution = ${cfg.resolution}
 
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor=eDP-1,$resolution@165,0x0,1
+
+      $mainMod = SUPER
+      $mainModKey = SUPER_L
 
 
       # See https://wiki.hyprland.org/Configuring/Keywords/ for more
@@ -114,6 +120,8 @@ in
       # Execute your favorite apps at launch
       exec-once = swayosd --max-volume 150
       exec-once = swww init
+
+      exec-once = hyprctl setcursor ${theme.gtk.cursorTheme.name} 24
       ''
 
       # --- #
@@ -127,22 +135,15 @@ in
       # --- #
 
       (strings.optionalString config.hellebore.desktop-environment.mail.enable
-      "exec-once = [workspace 3] ${config.hellebore.desktop-environment.mail.package}/bin/evolution")
+      "exec-once = [workspace 3] ${config.hellebore.desktop-environment.mail.bin}")
 
       # --- #
 
       (strings.optionalString config.hellebore.shell.emulator.enable
-      "exec-once = [workspace 1] ${config.hellebore.shell.emulator.package}/bin/kitty")
-
-      # --- #
-
       ''
-      exec-once = wl-paste -p --watch wl-copy -pc
-      exec-once = hyprctl setcursor ${theme.gtk.cursorTheme.name} 24
-
-      # Palette
-      source = ${theme.hyprland.palette}
-      ''
+      exec-once = [workspace 1] ${config.hellebore.shell.emulator.bin}
+      bind = $mainMod, Q, exec, ${config.hellebore.shell.emulator.bin}
+      '')
 
       # --- #
 
@@ -154,8 +155,17 @@ in
         ${mkWindowrulev2 "title:(Luminous-Rafflesia),class:(looking-glass-client)"[
           "idleinhibit always"
         ]}
+        bind = $mainMod, W, exec, [workspace empty] start-vm --resolution=$resolution -Fi
         ''
       )
+      # --- #
+
+      (strings.optionalString config.hellebore.desktop-environment.hyprland.applications-launcher.enable
+        ''
+        bind = $mainMod, R, exec, ${config.hellebore.desktop-environment.hyprland.applications-launcher.command}
+        ''
+      )
+
 
       # --- #
       ''
@@ -234,8 +244,6 @@ in
       }
 
       # See https://wiki.hyprland.org/Configuring/Keywords/ for more
-      $mainMod = SUPER
-      $mainModKey = SUPER_L
 
       # Multimedia Keys
       bindle =, XF86AudioRaiseVolume, exec, volume-brightness -v 1.5 @DEFAULT_AUDIO_SINK@ 5%+
@@ -249,13 +257,10 @@ in
       bind = $mainMod, code:107, exec, grimblast --notify copysave screen ~/Pictures/Screenshots/$(date +%F:%H:%M:%S).png
 
       # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-      bind = $mainMod, Q, exec, kitty
       bind = $mainMod, C, killactive,
       bind = $mainMod, E, exec, nemo
       bind = $mainMod, V, togglefloating,
       bind = $mainMod, R, exec, anyrun
-      bind = $mainMod, W, exec, [workspace empty] start-vm --resolution=$resolution -Fi
-      bind = $mainMod SHIFT, W, exec, [workspace empty] start-vm --resolution=$resolution -Fi
       bind = $mainMod, L, exec, wlogout-blur --protocol layer-shell -b 5 -T 400 -B 400
       bind = $mainMod, I, exec, fcitx5-remote -t
       bind = $mainMod, P, exec, hyprpicker -a

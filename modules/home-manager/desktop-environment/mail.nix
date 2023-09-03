@@ -8,11 +8,13 @@ in
 {
   options.hellebore.desktop-environment.mail = {
     enable = mkEnableOption "Hellebore Mail clients";
-    package = mkOption {
-      default = pkgs.evolution;
-      type = types.package;
-      description = "Override default mail client.";
+    bin = mkOption {
+      default = "${pkgs.evolution}/bin/evolution";
+      type = types.str;
+      description = "Get the package binary";
+      readOnly = true;
     };
+
     protonmail.enable = mkEnableOption "Protonmail support";
   };
 
@@ -26,7 +28,7 @@ in
     ];
 
     home.packages = [
-      cfg.package
+      pkgs.evolution
     ] ++ lists.optional cfg.protonmail.enable pkgs.protonmail-bridge;
 
     systemd.user.services.protonmail-bridge = mkIf cfg.protonmail.enable {
