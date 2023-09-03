@@ -10,7 +10,6 @@
         logout.enable = true;
         applications-launcher = {
           enable = true;
-          plugins.enable = true;
         };
         notifications.enable = true;
         status-bar.enable = true;

@@ -45,7 +45,7 @@ in
         display-window = "";
         drun-display-format = "{name}";
         window-format = "{w}{t}";
-        font = "NotoMono Nerd Font 10";
+        font = "NotoMono Nerd Font 12";
         icon-theme = "Tela-circle-dracula";
       };
     };
