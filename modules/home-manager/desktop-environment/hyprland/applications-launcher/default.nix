@@ -34,6 +34,10 @@ in
   ];
 
   config = mkIf cfg.enable {
+    home.packages = with pkgs; [
+      rofi-mpd
+    ];
+
     programs.rofi = {
       enable = true;
 
