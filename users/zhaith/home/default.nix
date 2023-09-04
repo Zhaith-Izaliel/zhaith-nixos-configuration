@@ -5,12 +5,21 @@
     desktop-environment = {
       hyprland = {
         enable = true;
-        # resolution = "2560x1440";
+        monitors = [
+          {
+            name = "eDP-1";
+            width = 1920;
+            height = 1080;
+            refreshRate = 165;
+            xOffset = 0;
+            yOffset = 0;
+            scaling = 1.0;
+          }
+        ];
         lockscreen.enable = true;
         logout.enable = true;
         applications-launcher = {
           enable = true;
-          plugins.enable = true;
         };
         notifications.enable = true;
         status-bar.enable = true;
@@ -18,7 +27,10 @@
       bluetooth.enable = true;
       network.enable = true;
       cloud.enable = true;
-      i18n.enable = true;
+      i18n = {
+        enable = true;
+        enableAnthy = true;
+      };
       files-manager = {
         enable = true;
         supports = {
@@ -80,6 +92,7 @@
 
     shell = {
       enable = true;
+      motd.enable = true;
       prompt.enable = true;
       emulator.enable = true;
     };

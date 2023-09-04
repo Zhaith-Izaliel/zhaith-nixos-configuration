@@ -5,21 +5,45 @@ with lib;
 let
   cfg = config.hellebore.desktop-environment.hyprland;
   mkWindowrulev2 = window: rules: (builtins.concatStringsSep "\n" (map (rule: "windowrulev2=${rule},${window}") rules));
+  monitorType = types.submodule {
+    options = {
+      name = mkOption { type = types.str; };
+      width = mkOption { type =  types.int; };
+      height = mkOption { type = types.int; };
+      refreshRate = mkOption { type = types.int; };
+      xOffset = mkOption { type = types.int; };
+      yOffset = mkOption { type = types.int; };
+      scaling = mkOption { type = types.float; };
+    };
+  };
+  mkMonitor = monitor:
+  let
+    inherit (monitor) name;
+    width = toString monitor.width;
+    height = toString monitor.height;
+    xOffset = toString monitor.xOffset;
+    yOffset = toString monitor.yOffset;
+    refreshRate = toString monitor.refreshRate;
+    scaling = toString monitor.scaling;
+  in
+  "monitor=${name},${width}x${height}@${refreshRate},${xOffset}x${yOffset},${scaling}";
+  mkMonitors = monitors: strings.concatStringsSep "\n" (builtins.map mkMonitor monitors);
+
 in
 {
   imports = [
     ./logout.nix
     ./lockscreen.nix
     ./notifications.nix
-    ./applications-launcher.nix
+    ./applications-launcher
     ./status-bar
   ];
 
   options.hellebore.desktop-environment.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
-    resolution = mkOption {
-      type = types.str;
+    monitors = mkOption {
+      type = types.listOf monitorType;
       default = "1920x1080";
       description = "Primary screen resolution.";
     };
@@ -103,10 +127,23 @@ in
       recommendedEnvironment = true;
       extraConfig = strings.concatStringsSep "\n" [
       ''
-      $resolution = ${cfg.resolution}
+      # Palette
+      source = ${theme.hyprland.palette}
+      ''
 
+      # --- #
+
+      ''
       # See https://wiki.hyprland.org/Configuring/Monitors/
-      monitor=eDP-1,$resolution@165,0x0,1
+      ${mkMonitors cfg.monitors}
+      ''
+
+      # --- #
+
+      ''
+
+      $mainMod = SUPER
+      $mainModKey = SUPER_L
 
 
       # See https://wiki.hyprland.org/Configuring/Keywords/ for more
@@ -114,6 +151,8 @@ in
       # Execute your favorite apps at launch
       exec-once = swayosd --max-volume 150
       exec-once = swww init
+
+      exec-once = hyprctl setcursor ${theme.gtk.cursorTheme.name} 24
       ''
 
       # --- #
@@ -127,22 +166,15 @@ in
       # --- #
 
       (strings.optionalString config.hellebore.desktop-environment.mail.enable
-      "exec-once = [workspace 3] ${config.hellebore.desktop-environment.mail.package}/bin/evolution")
+      "exec-once = [workspace 3] ${config.hellebore.desktop-environment.mail.bin}")
 
       # --- #
 
       (strings.optionalString config.hellebore.shell.emulator.enable
-      "exec-once = [workspace 1] ${config.hellebore.shell.emulator.package}/bin/kitty")
-
-      # --- #
-
       ''
-      exec-once = wl-paste -p --watch wl-copy -pc
-      exec-once = hyprctl setcursor ${theme.gtk.cursorTheme.name} 24
-
-      # Palette
-      source = ${theme.hyprland.palette}
-      ''
+      exec-once = [workspace 1] ${config.hellebore.shell.emulator.bin}
+      bind = $mainMod, Q, exec, ${config.hellebore.shell.emulator.bin}
+      '')
 
       # --- #
 
@@ -154,8 +186,17 @@ in
         ${mkWindowrulev2 "title:(Luminous-Rafflesia),class:(looking-glass-client)"[
           "idleinhibit always"
         ]}
+        bind = $mainMod, W, exec, [workspace empty] start-vm --resolution=1920x1080 -Fi
         ''
       )
+      # --- #
+
+      (strings.optionalString config.hellebore.desktop-environment.hyprland.applications-launcher.enable
+        ''
+        bind = $mainMod, R, exec, ${config.hellebore.desktop-environment.hyprland.applications-launcher.command}
+        ''
+      )
+
 
       # --- #
       ''
@@ -234,8 +275,6 @@ in
       }
 
       # See https://wiki.hyprland.org/Configuring/Keywords/ for more
-      $mainMod = SUPER
-      $mainModKey = SUPER_L
 
       # Multimedia Keys
       bindle =, XF86AudioRaiseVolume, exec, volume-brightness -v 1.5 @DEFAULT_AUDIO_SINK@ 5%+
@@ -249,13 +288,10 @@ in
       bind = $mainMod, code:107, exec, grimblast --notify copysave screen ~/Pictures/Screenshots/$(date +%F:%H:%M:%S).png
 
       # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-      bind = $mainMod, Q, exec, kitty
       bind = $mainMod, C, killactive,
       bind = $mainMod, E, exec, nemo
       bind = $mainMod, V, togglefloating,
       bind = $mainMod, R, exec, anyrun
-      bind = $mainMod, W, exec, [workspace empty] start-vm --resolution=$resolution -Fi
-      bind = $mainMod SHIFT, W, exec, [workspace empty] start-vm --resolution=$resolution -Fi
       bind = $mainMod, L, exec, wlogout-blur --protocol layer-shell -b 5 -T 400 -B 400
       bind = $mainMod, I, exec, fcitx5-remote -t
       bind = $mainMod, P, exec, hyprpicker -a

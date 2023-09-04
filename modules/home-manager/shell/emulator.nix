@@ -9,17 +9,17 @@ in
   options.hellebore.shell.emulator = {
     enable = mkEnableOption "Hellebore terminal emulator configuration";
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.kitty;
-      description = "Override default Kitty package.";
+    bin = mkOption {
+      type = types.str;
+      default = "${pkgs.kitty}/bin/kitty";
+      description = "Get the Kitty binary.";
+      readOnly = true;
     };
   };
 
   config = mkIf cfg.enable ({
     programs.kitty = {
       enable = true;
-      inherit (cfg) package;
       inherit (theme.kitty) theme;
 
       font = {
