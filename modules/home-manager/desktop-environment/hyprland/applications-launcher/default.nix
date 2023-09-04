@@ -27,6 +27,18 @@ in
       readOnly = true;
       description = "The command to show the applications launcher.";
     };
+
+    width = mkOption {
+      type = types.str;
+      default = "1600px";
+      description = "Width of the default Rofi window.";
+    };
+
+    height = mkOption {
+      type = types.str;
+      default = "700px";
+      description = "Height of the default Rofi window.";
+    };
   };
 
   imports = [

@@ -15,8 +15,8 @@ in
       location = mkLiteral "center";
       anchor = mkLiteral "center";
       fullscreen = false;
-      width = mkLiteral "1600px";
-      height = mkLiteral "700px";
+      width = mkLiteral cfg.width;
+      height = mkLiteral cfg.height;
       x-offset = mkLiteral "0px";
       y-offset = mkLiteral "0px";
 
@@ -39,7 +39,7 @@ in
 
     imagebox = {
       enabled = true;
-      padding = mkLiteral "20px";
+      padding = mkLiteral "1.25em";
       background-color = mkLiteral "transparent";
       background-image = mkLiteral ''url("${cfg.background}", height)'';
       orientation = mkLiteral "vertical";
@@ -48,8 +48,8 @@ in
 
     listbox = {
       enabled = true;
-      spacing = mkLiteral "20px";
-      padding = mkLiteral "20px";
+      spacing = mkLiteral "1.25em";
+      padding = mkLiteral "1.25em";
       children = [ "message" "listview" ];
       orientation = mkLiteral "vertical";
       background-color = mkLiteral "transparent";
@@ -66,6 +66,8 @@ in
       spacing = mkLiteral "10px";
       border-radius = mkLiteral "10px";
       background-color = mkLiteral colors.mantle;
+      border-color = mkLiteral colors.blue;
+      border = mkLiteral "2px";
       text-color = mkLiteral colors.text;
       children = [ "textbox-prompt-colon" "entry" ];
     };
@@ -78,7 +80,6 @@ in
       text-color = mkLiteral "inherit";
     };
 
-    # TODO: Rest of classes
     entry = {
       enabled = true;
       background-color = mkLiteral "inherit";
@@ -92,14 +93,16 @@ in
       enabled = true;
       background-color = mkLiteral "transparent";
       text-color = mkLiteral colors.text;
-      spacing = mkLiteral "20px";
+      spacing = mkLiteral "1.25em";
     };
 
     button = {
-      padding = mkLiteral "15px";
+      padding = mkLiteral "0.95em";
       cursor = mkLiteral "pointer";
       font-style = mkLiteral "bold";
       border-radius = mkLiteral "10px";
+      border = mkLiteral "2px";
+      border-color = mkLiteral colors.blue;
       background-color = mkLiteral colors.mantle;
       text-color = mkLiteral "inherit";
     };
@@ -120,7 +123,7 @@ in
       reverse = false;
       fixed-height = true;
       fixed-columns = true;
-      spacing = mkLiteral "10px";
+      spacing = mkLiteral "0.625em";
       cursor = "default";
       background-color = mkLiteral "transparent";
       text-color = mkLiteral colors.text;
@@ -128,8 +131,8 @@ in
 
     element = {
       enabled = true;
-      spacing = mkLiteral "15px";
-      padding = mkLiteral "8px";
+      spacing = mkLiteral "0.95em";
+      padding = mkLiteral "0.5em";
       border-radius = mkLiteral "10px";
       cursor = mkLiteral "pointer";
       background-color = mkLiteral "transparent";
@@ -186,7 +189,7 @@ in
     };
 
     textbox = {
-      padding = mkLiteral "15px";
+      padding = mkLiteral "0.95em";
       border-radius = mkLiteral "10px";
       background-color = mkLiteral colors.mantle;
       text-color = mkLiteral colors.text;
