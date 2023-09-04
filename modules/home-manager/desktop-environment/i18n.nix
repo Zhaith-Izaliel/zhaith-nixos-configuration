@@ -9,12 +9,6 @@ in
   options.hellebore.desktop-environment.i18n = {
     enable = mkEnableOption "Hellebore's Fcitx5 configuration";
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.fcitx5;
-      description = "The fcitx5 package.";
-    };
-
     enableAnthy = mkEnableOption "Anthy input method";
   };
 
@@ -28,7 +22,7 @@ in
       fcitx5.addons = [
         pkgs.fcitx5-gtk
         pkgs.libsForQt5.fcitx5-qt
-      ] ++ (if cfg.enableAnthy then pkgs.fcitx5-anthy else []);
+      ] ++ lists.optional cfg.enableAnthy pkgs.fcitx5-anthy;
     };
 
     xdg.configFile."fcitx5/conf/classicui.conf".text = ''

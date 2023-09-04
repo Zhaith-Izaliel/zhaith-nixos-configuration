@@ -4,38 +4,10 @@ let
   inherit (config.lib.formats.rasi) mkLiteral;
   colors = theme.colors;
   cfg = config.hellebore.desktop-environment.hyprland.applications-launcher;
-  # blurBackground = toString (lib.cleanSource cfg.blurBackground);
-  # background = toString (lib.cleanSource cfg.background);
 in
 {
   programs.rofi.theme = {
     "*" = {
-      foreground = mkLiteral colors.text;
-      normal-foreground = mkLiteral "@foreground";
-      urgent-foreground = mkLiteral colors.crust;
-      active-foreground = mkLiteral colors.crust;
-
-      alternate-normal-foreground = mkLiteral "@normal-foreground";
-      alternate-urgent-foreground = mkLiteral "@urgent-foreground";
-      alternate-active-foreground = mkLiteral "@active-foreground";
-
-      selected-normal-foreground = mkLiteral colors.crust;
-      selected-urgent-foreground = mkLiteral colors.crust;
-      selected-active-foreground = mkLiteral colors.crust;
-
-      background = colors.crust;
-      normal-background = mkLiteral "@background";
-      urgent-background = mkLiteral colors.maroon;
-      active-background = mkLiteral colors.teal;
-
-      alternate-normal-background = mkLiteral colors.flamingo;
-      alternate-urgent-background = mkLiteral "@urgent-background";
-      alternate-active-background = mkLiteral "@active-background";
-
-      selected-normal-background = mkLiteral colors.lavender;
-      selected-urgent-background = mkLiteral colors.teal;
-      selected-active-background = mkLiteral colors.maroon;
-
       separatorcolor = mkLiteral "transparent";
       border-color = mkLiteral "transparent";
       border-radius = mkLiteral "0px";
@@ -55,8 +27,7 @@ in
       padding = mkLiteral "0px";
       border = mkLiteral "2px";
       border-radius = mkLiteral "40px";
-      border-color = mkLiteral "@alternate-normal-background";
-      background-color = mkLiteral "transparent";
+      border-color = mkLiteral colors.crust;
     };
 
     mainbox = {
@@ -64,16 +35,15 @@ in
       spacing = mkLiteral "0px";
       orientation = mkLiteral "horizontal";
       children =  [  "inputbar"  "listbox" ];
-      background-color = mkLiteral "transparent";
-      background-image =  mkLiteral ''url("${cfg.blurBackground}", height)'';
+      background-image = mkLiteral ''url("${cfg.blurBackground}", height)'';
     };
 
     inputbar = {
+      padding-top = mkLiteral "10px";
       enabled = true;
       width = mkLiteral "25%";
-      children = [ "mode-switcher" "entry" ];
       background-color = mkLiteral "transparent";
-      background-image = mkLiteral ''url("${cfg.background}", height)'';
+      children = [ "mode-switcher" "entry" ];
     };
 
     entry = {
@@ -83,30 +53,31 @@ in
     mode-switcher = {
       orientation = mkLiteral "vertical";
       enabled = true;
-      width = mkLiteral "68px";
+      background-color = mkLiteral "transparent";
+      width = mkLiteral "66px";
       padding = mkLiteral "160px 10px 160px 10px";
       spacing = mkLiteral "25px";
-      background-color = mkLiteral "transparent";
-      background-image = mkLiteral ''url("${cfg.blurBackground}", height)'';
     };
 
     button = {
       cursor = mkLiteral "pointer";
+      font-style = mkLiteral "bold";
       border-radius = mkLiteral "50px";
-      background-color = mkLiteral "@background";
-      text-color = mkLiteral "@foreground";
+      background-color = mkLiteral colors.base;
+      text-color = mkLiteral colors.surface1;
     };
 
     "button selected" = {
-      background-color = mkLiteral "@background";
-      text-color = mkLiteral "@background";
+      background-color = mkLiteral colors.base;
+      text-color = mkLiteral colors.text;
     };
 
     listbox = {
       spacing = mkLiteral "10px";
       padding = mkLiteral "30px";
       children = [ "listview" ];
-      background-color = mkLiteral "@background";
+      # background-color = mkLiteral (colors.crust + "e1");
+      background-color = mkLiteral "transparent";
     };
 
     listview = {
@@ -121,7 +92,7 @@ in
       fixed-columns = true;
       cursor = "default";
       background-color = mkLiteral "transparent";
-      text-color = mkLiteral "@foreground";
+      text-color = mkLiteral colors.text;
     };
 
     element = {
@@ -131,27 +102,27 @@ in
       border-radius = mkLiteral "20px";
       cursor = mkLiteral "pointer";
       background-color = mkLiteral "transparent";
-      text-color = mkLiteral "@foreground";
+      text-color = mkLiteral colors.text;
     };
 
     "element normal.normal" = {
       background-color = mkLiteral "transparent";
-      text-color = mkLiteral "@normal-foreground";
+      text-color = mkLiteral colors.text;
     };
 
     "element normal.urgent" = {
-      background-color = mkLiteral "@urgent-background";
-      text-color = mkLiteral "@urgent-foreground";
+      background-color = mkLiteral colors.mauve;
+      text-color = mkLiteral colors.base;
     };
 
     "element normal.active" = {
-      background-color = mkLiteral "@active-background";
-      text-color = mkLiteral "@active-foreground";
+      background-color = mkLiteral colors.green;
+      text-color = mkLiteral colors.base;
     };
 
     "element selected.normal" = {
-      background-color = mkLiteral "@selected-normal-background";
-      text-color = mkLiteral "@selected-normal-foreground";
+      background-color = mkLiteral colors.lavender;
+      text-color = mkLiteral colors.base;
     };
 
     "element selected.urgent" = {

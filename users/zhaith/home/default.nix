@@ -27,7 +27,10 @@
       bluetooth.enable = true;
       network.enable = true;
       cloud.enable = true;
-      i18n.enable = true;
+      i18n = {
+        enable = true;
+        enableAnthy = true;
+      };
       files-manager = {
         enable = true;
         supports = {

@@ -186,7 +186,7 @@ in
         ${mkWindowrulev2 "title:(Luminous-Rafflesia),class:(looking-glass-client)"[
           "idleinhibit always"
         ]}
-        bind = $mainMod, W, exec, [workspace empty] start-vm --resolution=$resolution -Fi
+        bind = $mainMod, W, exec, [workspace empty] start-vm --resolution=1920x1080 -Fi
         ''
       )
       # --- #

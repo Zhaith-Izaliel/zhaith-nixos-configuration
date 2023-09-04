@@ -27,6 +27,7 @@ in
       unrar
       erdtree
       nix-alien
+      file
     ];
 
     programs.nix-ld.enable = true;

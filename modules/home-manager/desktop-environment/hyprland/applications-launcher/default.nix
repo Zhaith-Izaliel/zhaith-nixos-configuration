@@ -46,14 +46,13 @@ in
       config.hellebore.shell.emulator.bin;
 
       extraConfig = {
-        modi = "drun,filebrowser,run,ssh";
+        modi = "drun,filebrowser,ssh,keys";
         show-icons = true;
         display-drun = "";
-        display-run = "";
         display-filebrowser = "";
+        display-keys = "";
         display-ssh = "󰒍";
         drun-display-format = "{name}";
-        window-format = "{w}{t}";
         icon-theme = theme.gtk.iconTheme.name;
       };
     };
