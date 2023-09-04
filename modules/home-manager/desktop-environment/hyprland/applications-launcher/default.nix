@@ -23,7 +23,7 @@ in
 
     command = mkOption {
       type = types.str;
-      default = "${pkgs.rofi-wayland}/bin/rofi -show drun";
+      default = "${config.programs.rofi.finalPackage}/bin/rofi -show drun";
       readOnly = true;
       description = "The command to show the applications launcher.";
     };
@@ -51,16 +51,15 @@ in
       ];
 
       extraConfig = {
-        modi = "drun,filebrowser,ssh";
+        modi = "drun,filebrowser,ssh,calc,top";
         show-icons = true;
-        display-drun = "";
-        display-filebrowser = "";
-        display-keys = "";
-        display-ssh = "󰒍";
+        display-drun = " Apps";
+        display-filebrowser = " Files";
+        display-ssh = "󰒍 SSH";
+        display-calc = "󰲒 Calc";
+        display-top = " Top";
         drun-display-format = "{name}";
         icon-theme = theme.gtk.iconTheme.name;
-        kb-mode-next = "Shift+Down";
-        kb-mode-previous = "Shift+Up";
       };
     };
   };

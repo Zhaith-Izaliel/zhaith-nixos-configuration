@@ -7,81 +7,112 @@ let
 in
 {
   programs.rofi.theme = {
-    "*" = {
-      separatorcolor = mkLiteral "transparent";
-      border-color = mkLiteral "transparent";
-      border-radius = mkLiteral "0px";
-      border = mkLiteral "0px";
-      spacing = mkLiteral "0px";
-      padding = mkLiteral "0px";
-    };
+
 
     window = {
-      height = mkLiteral "590px";
-      width = mkLiteral "1140px";
+      # properties for window widget
       transparency = "real";
+      location = mkLiteral "center";
+      anchor = mkLiteral "center";
       fullscreen = false;
+      width = mkLiteral "1600px";
+      height = mkLiteral "700px";
+      x-offset = mkLiteral "0px";
+      y-offset = mkLiteral "0px";
+
+      # properties for all widgets
       enabled = true;
+      border-radius = mkLiteral "15px";
       cursor = "default";
-      spacing = mkLiteral "0px";
-      padding = mkLiteral "0px";
-      border = mkLiteral "2px";
-      border-radius = mkLiteral "40px";
-      border-color = mkLiteral colors.crust;
+      background-color = mkLiteral colors.base;
+      border = mkLiteral "3px";
+      border-color = mkLiteral colors.mauve;
     };
 
     mainbox = {
       enabled = true;
       spacing = mkLiteral "0px";
       orientation = mkLiteral "horizontal";
-      children =  [  "inputbar"  "listbox" ];
-      background-image = mkLiteral ''url("${cfg.blurBackground}", height)'';
-    };
-
-    inputbar = {
-      padding-top = mkLiteral "10px";
-      enabled = true;
-      width = mkLiteral "25%";
+      children =  [  "imagebox"  "listbox" ];
       background-color = mkLiteral "transparent";
-      children = [ "mode-switcher" "entry" ];
     };
 
-    entry = {
-      enabled = false;
-    };
-
-    mode-switcher = {
+    imagebox = {
+      enabled = true;
+      padding = mkLiteral "20px";
+      background-color = mkLiteral "transparent";
+      background-image = mkLiteral ''url("${cfg.background}", height)'';
       orientation = mkLiteral "vertical";
-      enabled = true;
-      background-color = mkLiteral "transparent";
-      width = mkLiteral "66px";
-      padding = mkLiteral "160px 10px 160px 10px";
-      spacing = mkLiteral "25px";
-    };
-
-    button = {
-      cursor = mkLiteral "pointer";
-      font-style = mkLiteral "bold";
-      border-radius = mkLiteral "50px";
-      background-color = mkLiteral (colors.mantle + "88");
-      text-color = mkLiteral colors.surface1;
-    };
-
-    "button selected" = {
-      background-color = mkLiteral (colors.mantle + "88");
-      text-color = mkLiteral colors.text;
+      children = [ "inputbar" "dummy" "mode-switcher" ];
     };
 
     listbox = {
+      enabled = true;
+      spacing = mkLiteral "20px";
+      padding = mkLiteral "20px";
+      children = [ "message" "listview" ];
+      orientation = mkLiteral "vertical";
+      background-color = mkLiteral "transparent";
+    };
+
+    dummy = {
+      enabled = true;
+      background-color = mkLiteral "transparent";
+    };
+
+    inputbar = {
+      enabled = true;
+      padding = mkLiteral "15px";
       spacing = mkLiteral "10px";
-      padding = mkLiteral "30px";
-      children = [ "listview" ];
-      background-color = mkLiteral (colors.mantle + "e1");
+      border-radius = mkLiteral "10px";
+      background-color = mkLiteral colors.mantle;
+      text-color = mkLiteral colors.text;
+      children = [ "textbox-prompt-colon" "entry" ];
+    };
+
+    textbox-prompt-colon = {
+      enabled = true;
+      expand = false;
+      str = "";
+      background-color = mkLiteral "inherit";
+      text-color = mkLiteral "inherit";
+    };
+
+    # TODO: Rest of classes
+    entry = {
+      enabled = true;
+      background-color = mkLiteral "inherit";
+      text-color = mkLiteral "inherit";
+      cursor = mkLiteral "text";
+      placeholder = "Search";
+      placeholder-color = mkLiteral "inherit";
+    };
+
+    mode-switcher = {
+      enabled = true;
+      background-color = mkLiteral "transparent";
+      text-color = mkLiteral colors.text;
+      spacing = mkLiteral "20px";
+    };
+
+    button = {
+      padding = mkLiteral "15px";
+      cursor = mkLiteral "pointer";
+      font-style = mkLiteral "bold";
+      border-radius = mkLiteral "10px";
+      background-color = mkLiteral colors.mantle;
+      text-color = mkLiteral "inherit";
+    };
+
+    "button selected" = {
+      background-color = mkLiteral colors.lavender;
+      text-color = mkLiteral colors.base;
     };
 
     listview = {
       enabled = true;
       columns = 1;
+      lines = 8;
       cycle = true;
       dynamic = true;
       scrollbar = false;
@@ -89,6 +120,7 @@ in
       reverse = false;
       fixed-height = true;
       fixed-columns = true;
+      spacing = mkLiteral "10px";
       cursor = "default";
       background-color = mkLiteral "transparent";
       text-color = mkLiteral colors.text;
@@ -96,26 +128,26 @@ in
 
     element = {
       enabled = true;
-      spacing = mkLiteral "30px";
+      spacing = mkLiteral "15px";
       padding = mkLiteral "8px";
-      border-radius = mkLiteral "20px";
+      border-radius = mkLiteral "10px";
       cursor = mkLiteral "pointer";
       background-color = mkLiteral "transparent";
       text-color = mkLiteral colors.text;
     };
 
     "element normal.normal" = {
-      background-color = mkLiteral "transparent";
-      text-color = mkLiteral colors.text;
+      background-color = mkLiteral "inherit";
+      text-color = mkLiteral "inherit";
     };
 
     "element normal.urgent" = {
-      text-color = mkLiteral colors.mauve;
+      text-color = mkLiteral colors.green;
       background-color = mkLiteral "transparent";
     };
 
     "element normal.active" = {
-      text-color = mkLiteral colors.green;
+      text-color = mkLiteral colors.mauve;
       background-color = mkLiteral "transparent";
     };
 
@@ -135,7 +167,7 @@ in
     };
 
     "element-icon" = {
-      size = mkLiteral "48px";
+      size = mkLiteral "32px";
       cursor = mkLiteral "inherit";
       background-color = mkLiteral "transparent";
       text-color = mkLiteral "inherit";
@@ -147,6 +179,26 @@ in
       cursor = mkLiteral "inherit";
       background-color = mkLiteral "transparent";
       text-color = mkLiteral "inherit";
+    };
+
+    message = {
+      background-color = mkLiteral "transparent";
+    };
+
+    textbox = {
+      padding = mkLiteral "15px";
+      border-radius = mkLiteral "10px";
+      background-color = mkLiteral colors.mantle;
+      text-color = mkLiteral colors.text;
+      vertical-align = mkLiteral "0.5";
+      horizontal-align = mkLiteral "0.0";
+    };
+
+    error-message = {
+      padding = mkLiteral "15px";
+      border-radius = mkLiteral "20px";
+      background-color = mkLiteral colors.base;
+      text-color = mkLiteral colors.text;
     };
   };
 }
