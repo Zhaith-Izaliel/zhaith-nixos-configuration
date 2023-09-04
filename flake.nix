@@ -17,13 +17,12 @@
     nix-alien.url = "github:thiagokokada/nix-alien";
     zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
     hyprland.url = "github:hyprwm/Hyprland/v0.25.0";
-    anyrun.url = "github:Kirottu/anyrun";
     hyprland-contrib.url = "github:hyprwm/contrib";
     sddm-sugar-candy-nix.url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
   };
 
   outputs = {nixpkgs, nixpkgs-unstable, flake-utils,
-  grub2-themes, nix-alien, zhaith-neovim, hyprland, anyrun, hyprland-contrib,
+  grub2-themes, nix-alien, zhaith-neovim, hyprland, hyprland-contrib,
   sddm-sugar-candy-nix, ...}@attrs:
   let
     system = "x86_64-linux";
@@ -69,7 +68,6 @@
         extraModules = [
           zhaith-neovim.nixosModules.default
           hyprland.homeManagerModules.default
-          anyrun.homeManagerModules.default
           modules.home-manager
         ];
         overlays = [
