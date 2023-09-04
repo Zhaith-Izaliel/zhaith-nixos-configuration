@@ -45,8 +45,13 @@ in
       config.hellebore.shell.emulator.enable
       config.hellebore.shell.emulator.bin;
 
+      plugins = with pkgs; [
+        rofi-top
+        rofi-calc
+      ];
+
       extraConfig = {
-        modi = "drun,filebrowser,ssh,keys";
+        modi = "drun,filebrowser,ssh";
         show-icons = true;
         display-drun = "";
         display-filebrowser = "";
@@ -54,6 +59,8 @@ in
         display-ssh = "󰒍";
         drun-display-format = "{name}";
         icon-theme = theme.gtk.iconTheme.name;
+        kb-mode-next = "Shift+Down";
+        kb-mode-previous = "Shift+Up";
       };
     };
   };

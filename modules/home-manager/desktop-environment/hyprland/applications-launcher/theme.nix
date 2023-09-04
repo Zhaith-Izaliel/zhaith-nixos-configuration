@@ -63,12 +63,12 @@ in
       cursor = mkLiteral "pointer";
       font-style = mkLiteral "bold";
       border-radius = mkLiteral "50px";
-      background-color = mkLiteral colors.base;
+      background-color = mkLiteral (colors.mantle + "88");
       text-color = mkLiteral colors.surface1;
     };
 
     "button selected" = {
-      background-color = mkLiteral colors.base;
+      background-color = mkLiteral (colors.mantle + "88");
       text-color = mkLiteral colors.text;
     };
 
@@ -76,8 +76,7 @@ in
       spacing = mkLiteral "10px";
       padding = mkLiteral "30px";
       children = [ "listview" ];
-      # background-color = mkLiteral (colors.crust + "e1");
-      background-color = mkLiteral "transparent";
+      background-color = mkLiteral (colors.mantle + "e1");
     };
 
     listview = {
@@ -111,13 +110,13 @@ in
     };
 
     "element normal.urgent" = {
-      background-color = mkLiteral colors.mauve;
-      text-color = mkLiteral colors.base;
+      text-color = mkLiteral colors.mauve;
+      background-color = mkLiteral "transparent";
     };
 
     "element normal.active" = {
-      background-color = mkLiteral colors.green;
-      text-color = mkLiteral colors.base;
+      text-color = mkLiteral colors.green;
+      background-color = mkLiteral "transparent";
     };
 
     "element selected.normal" = {
@@ -126,13 +125,13 @@ in
     };
 
     "element selected.urgent" = {
-      background-color = mkLiteral "@selected-urgent-background";
-      text-color = mkLiteral "@selected-urgent-foreground";
+      background-color = mkLiteral colors.green;
+      text-color = mkLiteral colors.base;
     };
 
     "element selected.active" = {
-      background-color = mkLiteral "@selected-active-background";
-      text-color = mkLiteral "@selected-active-foreground";
+      background-color = mkLiteral colors.mauve;
+      text-color = mkLiteral colors.base;
     };
 
     "element-icon" = {
