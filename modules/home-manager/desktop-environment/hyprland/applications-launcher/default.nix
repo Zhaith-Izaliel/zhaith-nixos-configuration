@@ -7,12 +7,12 @@ let
 in
 {
   options.hellebore.desktop-environment.hyprland.applications-launcher = {
-    enable = mkEnableOption "Hellebore Anyrun configuration";
+    enable = mkEnableOption "Hellebore Applications Launcher configuration";
 
-    blurBackground = mkOption {
-      type = types.path;
-      default = ../../../../../assets/images/rofi/blur-wall.png;
-      description = "Blurred background used in the applications-launcher theme.";
+    fontSize = mkOption {
+      type = types.int;
+      default = 12;
+      description = "Set the font size to manage the UI size.";
     };
 
     background = mkOption {
@@ -51,7 +51,7 @@ in
 
       package = pkgs.rofi-wayland;
 
-      font = "NotoMono Nerd Font 12";
+      font = "NotoMono Nerd Font ${toString cfg.fontSize}";
 
       terminal = strings.optionalString
       config.hellebore.shell.emulator.enable
