@@ -528,11 +528,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1693864867,
-        "narHash": "sha256-hw0SLLELZ7DjSF/bXJ8aImem6QDAmZq85LqF97Df8Lg=",
+        "lastModified": 1693867897,
+        "narHash": "sha256-bjpH3X4hkgd7bWkVzTfTWUgy9EDI96cv8ZiBg9BhdMo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ff5ffad72b51658840f9ab26252fd1a6ee7c7785",
+        "rev": "4c160598a8af79291085a6172a6d349c4cd46460",
         "type": "github"
       },
       "original": {
@@ -1875,16 +1875,16 @@
         "nvim-yanky": "nvim-yanky"
       },
       "locked": {
-        "lastModified": 1693873882,
-        "narHash": "sha256-TQMLp7UtWc3ap8E2ncM/Y9hCf4M4D/oinXC/okeNpHY=",
+        "lastModified": 1693873998,
+        "narHash": "sha256-oT+QtJaYWeATr9BG+IugGMPwPmgPtSH3doB98dZjoI4=",
         "owner": "Zhaith-Izaliel",
         "repo": "neovim-config",
-        "rev": "fb865c4fde005c52f83ae2cb5c181ef4f8e4b911",
+        "rev": "e6565cba3895c15a1d80dfbf33c390db9e5ec6a6",
         "type": "gitlab"
       },
       "original": {
         "owner": "Zhaith-Izaliel",
-        "ref": "feature/plugins-flake-inputs",
+        "ref": "develop",
         "repo": "neovim-config",
         "type": "gitlab"
       }

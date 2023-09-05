@@ -15,8 +15,7 @@
     };
     grub2-themes.url = "github:/vinceliuice/grub2-themes";
     nix-alien.url = "github:thiagokokada/nix-alien";
-    zhaith-neovim.url =
-      "gitlab:Zhaith-Izaliel/neovim-config/feature/plugins-flake-inputs";
+    zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
     hyprland.url = "github:hyprwm/Hyprland/v0.25.0";
     hyprland-contrib.url = "github:hyprwm/contrib";
     sddm-sugar-candy-nix.url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
