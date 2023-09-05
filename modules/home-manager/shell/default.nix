@@ -15,6 +15,16 @@ in
   options.hellebore.shell = {
     enable = mkEnableOption "Hellebore Shell configuration";
 
+    h = {
+      codeDirectory = mkOption {
+        type = types.nonEmptyStr;
+        default = "~/Development";
+        description = "Code directory used to manage projects.";
+      };
+
+      enable = mkEnableOption "h, a utility for faster shell navigation of projects";
+    };
+
     motd = {
       enable = mkEnableOption "Neofetch MOTD";
       image = mkOption {
@@ -46,7 +56,7 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       any-nix-shell
-    ];
+    ] ++ lists.optional cfg.h.enable pkgs.h;
 
     programs = {
       command-not-found.enable = true;
@@ -74,49 +84,62 @@ in
 
         inherit (cfg) dirHashes;
 
-        envExtra = ''
+        envExtra = strings.concatStringsSep "\n" [
+        ''
         # Language
         export LANG="en_US.UTF-8"
 
         # EDITOR and VISUAL
         export VISUAL="nvim"
         export EDITOR="nvim"
+        ''
 
-        ${strings.optionalString (!cfg.enableDirenvLogs)
-        ''# Remove log from direnv
-        export DIRENV_LOG_FORMAT=""''
-        }
+        (strings.optionalString (!cfg.enableDirenvLogs)
+        ''
+        # Remove log from direnv
+        export DIRENV_LOG_FORMAT=""
+        '')
 
+        ''
         # Zsh autosuggestions
         export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=${theme.colors.subtext0}"
-        '';
+        ''
+        ];
 
-        initExtra = ''
-        ${strings.optionalString cfg.motd.enable (if config.programs.kitty.enable then ''
+        initExtra = strings.concatStringsSep "\n" [
+          (strings.optionalString cfg.motd.enable (if config.programs.kitty.enable then ''
           # Neofetch MOTD
           if [ "$KITTY_WINDOW_ID" = "1" ]; then
             ${lib.getExe pkgs.neofetch} --kitty ${image}
           fi
-        '' else "${getExe pkgs.neofetch}")}
+          '' else "${getExe pkgs.neofetch}"))
 
-        # Nix shell integration
-        ${lib.getExe pkgs.any-nix-shell} zsh | source /dev/stdin
+          ''
+          # Nix shell integration
+          ${lib.getExe pkgs.any-nix-shell} zsh | source /dev/stdin
+          # Auto use direnv
+          eval "$(direnv hook zsh)"
+          ''
 
-        # Auto use direnv
-        eval "$(direnv hook zsh)"
 
-
-        # Special functions
-        ${strings.optionalString config.programs.kitty.enable
-          ''kitty_ssh() {
+          (strings.optionalString config.programs.kitty.enable
+          ''
+          # Special functions
+          kitty_ssh() {
             if [ "$TERM" = "xterm-kitty" ]; then
               ${pkgs.kitty}/bin/kitty +kitten ssh $*
               return $!
             fi
             ${pkgs.openssh}/bin/ssh $*
-          }''
-        }
-        '';
+          }
+          '')
+
+          (strings.optionalString cfg.h.enable
+          ''
+          eval "$(h --setup ${cfg.h.codeDirectory})"
+          eval "$(up --setup ${cfg.h.codeDirectory})"
+          '')
+        ];
 
         oh-my-zsh = {
           enable = true;

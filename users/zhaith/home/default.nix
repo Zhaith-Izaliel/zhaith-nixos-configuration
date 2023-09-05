@@ -91,6 +91,7 @@
     };
 
     shell = {
+      h.enable = true;
       enable = true;
       motd.enable = true;
       prompt.enable = true;

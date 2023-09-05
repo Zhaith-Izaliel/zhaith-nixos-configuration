@@ -17,7 +17,6 @@ in
       direnv
       onefetch
       universal-ctags
-      h
     ];
 
     services.lorri = mkIf cfg.enableLorri {
