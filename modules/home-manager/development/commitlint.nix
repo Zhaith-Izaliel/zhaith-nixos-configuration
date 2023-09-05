@@ -52,7 +52,7 @@ in
       cfg.conventionalConfigPackage
     ];
 
-    home.file.".commitlintrc".text = cfg.commitlintrc;
+    home.file.".commitlintrc.js".text = cfg.commitlintrc;
   };
 }
 

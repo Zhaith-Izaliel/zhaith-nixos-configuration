@@ -66,7 +66,7 @@
         hostname = "Whispering-Willow";
         stateVersion = "22.05";
         extraModules = [
-          zhaith-neovim.nixosModules.default
+          zhaith-neovim.homeManagerModules.default
           hyprland.homeManagerModules.default
           modules.home-manager
         ];
