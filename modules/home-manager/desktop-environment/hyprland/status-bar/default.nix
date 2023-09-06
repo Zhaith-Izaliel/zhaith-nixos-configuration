@@ -1,4 +1,4 @@
-{ config, lib, pkgs, theme, ... }:
+{ config, lib, pkgs, unstable-pkgs, theme, ... }:
 
 with lib;
 
@@ -35,7 +35,7 @@ in
 
     programs.waybar = {
       enable = true;
-      package = pkgs.waybar-hyprland;
+      package = unstable-pkgs.waybar;
       systemd = {
         enable = true;
         target = "hyprland-session.target";
@@ -50,7 +50,7 @@ in
           modules-left = [
             "clock"
             "mpd"
-            "wlr/workspaces"
+            "hyprland/workspaces"
           ];
           modules-center = [
             "hyprland/window"
@@ -91,10 +91,9 @@ in
             format = "{}";
           };
 
-          "wlr/workspaces" = {
+          "hyprland/workspaces" = {
             disable-scroll = true;
-            all-outputs = false;
-            on-click = "activate";
+            all-outputs = true;
             sort-by-number =  true;
             format = mkBig "{icon}";
             format-icons = {
@@ -110,11 +109,7 @@ in
               "10" = "󰿬";
             };
             persistent_workspaces =  {
-              "1" = [];
-              "2" = [];
-              "3" = [];
-              "4" = [];
-              "5" = [];
+              "*" = 5;
             };
           };
 
