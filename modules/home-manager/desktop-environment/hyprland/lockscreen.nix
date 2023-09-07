@@ -11,6 +11,12 @@ in
   {
     options.hellebore.desktop-environment.hyprland.lockscreen = {
       enable = mkEnableOption "Hellebore Swaylock and Swayidle configuration";
+
+      fontSize = mkOption {
+        type = types.int;
+        default = config.hellebore.fontSize;
+        description = "Set lockscreen font size.";
+      };
     };
 
     config = mkIf cfg.enable {
@@ -61,7 +67,7 @@ in
           text-caps-lock-color = converted-colors.peach;
           text-ver-color = converted-colors.blue;
           text-wrong-color = converted-colors.maroon;
-          font-size = theme.gtk.font.size + 10;
+          font-size = cfg.fontSize;
           font = theme.gtk.font.name;
           indicator-caps-lock = true;
           clock = true;

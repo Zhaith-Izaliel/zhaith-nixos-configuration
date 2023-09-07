@@ -15,26 +15,7 @@ in
   };
 
   gtk = rec {
-    theme = {
-      name = "Catppuccin-Macchiato-Standard-Sapphire-Dark";
-      package = theme-packages.gtk.theme;
-    };
-
-    cursorTheme = {
-      name = "Catppuccin-Macchiato-Dark-Cursors";
-      package = theme-packages.gtk.cursors;
-    };
-
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = theme-packages.gtk.icons;
-    };
-
-    font = {
-      package = theme-packages.gtk.font;
-      name = "Cantarell";
-      size = 14;
-    };
+    inherit (theme-packages.gtk) theme cursorTheme iconTheme font;
 
     packages = [
       theme.package

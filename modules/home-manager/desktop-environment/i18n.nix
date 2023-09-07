@@ -10,6 +10,12 @@ in
     enable = mkEnableOption "Hellebore's Fcitx5 configuration";
 
     enableAnthy = mkEnableOption "Anthy input method";
+
+    fontSize = mkOption {
+      type = types.int;
+      default = config.hellebore.fontSize;
+      description = "Set Fcitx5 client font size.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -36,13 +42,13 @@ in
       WheelForPaging=True
 
       # Font
-      Font="${theme.gtk.font.name} ${toString theme.gtk.font.size}"
+      Font="${theme.gtk.font.name} ${toString cfg.fontSize}"
 
       # Menu Font
-      MenuFont="${theme.gtk.font.name} ${toString theme.gtk.font.size}"
+      MenuFont="${theme.gtk.font.name} ${toString cfg.fontSize}"
 
       # Tray Font
-      TrayFont="${theme.gtk.font.name} Bold ${toString theme.gtk.font.size}"
+      TrayFont="${theme.gtk.font.name} Bold ${toString cfg.fontSize}"
 
       # Tray Label Outline Color
       TrayOutlineColor=${theme.colors.mantle}

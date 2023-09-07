@@ -34,6 +34,8 @@ in
       default = [];
       description = "Allowed UDP ports in the firewall.";
     };
+
+    enableSambaMounting = mkEnableOption "mounting samba filesystems";
   };
 
   config = mkIf cfg.enable {
@@ -56,8 +58,10 @@ in
       indicator = false;
     };
 
-    environment.systemPackages = lists.optional cfg.enableNetworkManager
-    pkgs.openvpn;
+    environment.systemPackages = []
+      ++ lists.optional cfg.enableNetworkManager pkgs.openvpn
+      ++ lists.optional cfg.enableSambaMounting pkgs.cifs-utils
+    ;
 
     networking = {
       inherit (cfg) domain;

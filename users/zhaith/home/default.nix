@@ -2,14 +2,17 @@
 
 {
   hellebore = {
+
+    fontSize = 14;
+
     desktop-environment = {
       hyprland = {
         enable = true;
         monitors = [
           {
             name = "eDP-1";
-            width = 1920;
-            height = 1080;
+            width = 2560;
+            height = 1440;
             refreshRate = 165;
             xOffset = 0;
             yOffset = 0;

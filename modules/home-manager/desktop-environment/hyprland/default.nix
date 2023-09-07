@@ -95,6 +95,7 @@ in
     ];
 
     home.packages = with pkgs; [
+      glib
       swww
       swayosd
       wl-clipboard
@@ -106,7 +107,12 @@ in
 
     gtk = {
       enable = true;
-      inherit (theme.gtk) theme cursorTheme iconTheme font;
+      inherit (theme.gtk) theme cursorTheme iconTheme;
+
+      font = {
+        inherit (theme.gtk.font) name package;
+        size = config.hellebore.fontSize;
+      };
 
       gtk3.extraConfig = {
         gtk-application-prefer-dark-theme = 1;
@@ -120,9 +126,7 @@ in
     wayland.windowManager.hyprland = {
       enable = true;
       package = cfg.package;
-      xwayland = {
-        enable = true;
-      };
+      xwayland.enable = true;
       systemdIntegration = true;
       recommendedEnvironment = true;
       extraConfig = strings.concatStringsSep "\n" [
@@ -136,6 +140,15 @@ in
       ''
       # See https://wiki.hyprland.org/Configuring/Monitors/
       ${mkMonitors cfg.monitors}
+      ''
+
+      # --- #
+
+      ''
+      exec-once = gsettings set $gnome-schema gtk-theme '${theme.gtk.theme.name}'
+      exec-once = gsettings set $gnome-schema icon-theme '${theme.gtk.iconTheme.name}'
+      exec-once = gsettings set $gnome-schema cursor-theme '${theme.gtk.cursorTheme.name}'
+      exec-once = gsettings set $gnome-schema font-name '${theme.gtk.font.name}'
       ''
 
       # --- #
@@ -160,13 +173,18 @@ in
       (strings.optionalString config.hellebore.tools.discord.enable
       ''
       exec-once = ${getExe config.hellebore.tools.discord.package}
-      ${mkWindowrulev2 "class:(discord)" [ "workspace 2" ]}
+      ${mkWindowrulev2 "class:(discord)" [ "workspace 3" ]}
       '')
 
       # --- #
 
       (strings.optionalString config.hellebore.desktop-environment.mail.enable
-      "exec-once = [workspace 3] ${config.hellebore.desktop-environment.mail.bin}")
+      "exec-once = [workspace 4] ${config.hellebore.desktop-environment.mail.bin}")
+
+      # --- #
+
+      (strings.optionalString config.hellebore.tools.office.enable
+      "exec-once = [workspace 2] obsidian")
 
       # --- #
 
@@ -186,7 +204,7 @@ in
         ${mkWindowrulev2 "title:(Luminous-Rafflesia),class:(looking-glass-client)"[
           "idleinhibit always"
         ]}
-        bind = $mainMod, W, exec, [workspace empty] start-vm --resolution=1920x1080 -Fi
+        bind = $mainMod, W, exec, [workspace empty] start-vm --resolution=2560x1440 -Fi
         ''
       )
       # --- #

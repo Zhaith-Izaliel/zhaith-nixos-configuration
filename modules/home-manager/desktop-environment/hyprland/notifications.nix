@@ -8,6 +8,12 @@ in
 
   options.hellebore.desktop-environment.hyprland.notifications = {
     enable = mkEnableOption "Hellebore Dunst configuration";
+
+    fontSize = mkOption {
+      type = types.int;
+      default = config.hellebore.fontSize;
+      description = "Set the notifications client font size.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -18,7 +24,7 @@ in
       settings = {
         global = {
           corner_radius = 15;
-          font = "${theme.gtk.font.name} ${toString theme.gtk.font.size}";
+          font = "${theme.gtk.font.name} ${toString cfg.fontSize}";
           frame_color = theme.colors.mauve;
           highlight = theme.colors.mauve;
           separator_color = "frame";

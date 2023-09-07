@@ -9,6 +9,12 @@ in
   options.hellebore.shell.emulator = {
     enable = mkEnableOption "Hellebore terminal emulator configuration";
 
+    fontSize = mkOption {
+      type = types.int;
+      default = config.hellebore.fontSize;
+      description = "Set the emulator font size.";
+    };
+
     bin = mkOption {
       type = types.str;
       default = "${pkgs.kitty}/bin/kitty";
@@ -25,7 +31,7 @@ in
       font = {
         package = pkgs.fira-code;
         name = "Fira Code";
-        size = 12;
+        size = cfg.fontSize;
       };
 
       settings = {

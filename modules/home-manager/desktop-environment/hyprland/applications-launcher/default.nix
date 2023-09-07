@@ -11,7 +11,7 @@ in
 
     fontSize = mkOption {
       type = types.int;
-      default = 12;
+      default = config.hellebore.fontSize;
       description = "Set the font size to manage the UI size.";
     };
 

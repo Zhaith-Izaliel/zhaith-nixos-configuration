@@ -18,18 +18,30 @@
   };
 
   gtk = {
-    theme = pkgs.catppuccin-gtk.override {
-      accents = [ "blue" "flamingo" "green" "lavender" "maroon" "mauve" "peach"
-      "pink" "red" "rosewater" "sapphire" "sky" "teal" "yellow" ];
-      size = "standard";
-      variant = "macchiato";
+    theme = {
+      package = pkgs.catppuccin-gtk.override {
+        accents = [ "blue" "flamingo" "green" "lavender" "maroon" "mauve" "peach"
+        "pink" "red" "rosewater" "sapphire" "sky" "teal" "yellow" ];
+        size = "standard";
+        variant = "macchiato";
+      };
+      name = "Catppuccin-Macchiato-Standard-Sapphire-Dark";
     };
 
-    cursors = pkgs.catppuccin-cursors.macchiatoDark;
+    cursorTheme = {
+      package = pkgs.catppuccin-cursors.macchiatoDark;
+      name = "Catppuccin-Macchiato-Dark-Cursors";
+    };
 
-    icons = pkgs.papirus-icon-theme;
+    iconTheme = {
+      package = pkgs.papirus-icon-theme;
+      name = "Papirus-Dark";
+    };
 
-    font = pkgs.cantarell-fonts;
+    font = {
+      package = pkgs.cantarell-fonts;
+      name = "Cantarell";
+    };
   };
 
   hyprland-palette = pkgs.stdenv.mkDerivation rec {
@@ -50,21 +62,21 @@
   };
 
   bat-theme = pkgs.stdenv.mkDerivation rec {
-      pname = "bat-catppuccin";
-      version  = "ba4d168";
+    pname = "bat-catppuccin";
+    version  = "ba4d168";
 
-      src = pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "bat"; # Bat uses sublime syntax for its themes
-        rev = version;
-        sha256 = "sha256-6WVKQErGdaqb++oaXnY3i6/GuH2FhTgK0v4TN4Y0Wbw=";
-      };
-
-      installPhase = ''
-      mkdir -p $out
-      cp -r *.tmTheme $out
-      '';
+    src = pkgs.fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "bat"; # Bat uses sublime syntax for its themes
+      rev = version;
+      sha256 = "sha256-6WVKQErGdaqb++oaXnY3i6/GuH2FhTgK0v4TN4Y0Wbw=";
     };
+
+    installPhase = ''
+    mkdir -p $out
+    cp -r *.tmTheme $out
+    '';
+  };
 
   gitui-theme = pkgs.stdenv.mkDerivation rec {
     pname = "gitui-catppuccin";
