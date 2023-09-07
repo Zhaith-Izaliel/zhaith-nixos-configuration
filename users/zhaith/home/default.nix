@@ -21,7 +21,6 @@
         ];
         lockscreen = {
           enable = true;
-          indicatorRadius = 200;
           fontSize = config.hellebore.fontSize + 10;
         };
         logout = {

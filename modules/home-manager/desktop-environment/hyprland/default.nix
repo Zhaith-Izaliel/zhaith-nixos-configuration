@@ -54,6 +54,12 @@ in
       description = "Override default Hyprland package";
     };
 
+    wallpaper = mkOption {
+      type = types.path;
+      default = ../../../../assets/images/wallpaper/wallpaper.png;
+      description = "Set the wallpaper.";
+    };
+
     input = {
       kbLayout = mkOption {
         type = types.str;
@@ -154,6 +160,13 @@ in
       # --- #
 
       ''
+      exec-once = swww init
+      exec-once = swww img ${cfg.wallpaper}
+      ''
+
+      # --- #
+
+      ''
 
       $mainMod = SUPER
       $mainModKey = SUPER_L
@@ -163,7 +176,6 @@ in
 
       # Execute your favorite apps at launch
       exec-once = swayosd --max-volume 150
-      exec-once = swww init
 
       exec-once = hyprctl setcursor ${theme.gtk.cursorTheme.name} 24
       ''

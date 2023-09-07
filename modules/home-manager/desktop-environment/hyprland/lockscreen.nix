@@ -20,7 +20,7 @@ in
 
       indicatorRadius = mkOption {
         type = types.int;
-        default = 200;
+        default = 100;
         description = "Set the indicator radius";
       };
     };
