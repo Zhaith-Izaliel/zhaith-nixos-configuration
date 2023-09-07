@@ -6,6 +6,10 @@ let
   cfg = config.hellebore.development.git;
 in
 {
+  imports = [
+    ./commitlint.nix
+  ];
+
   options.hellebore.development.git = {
     enable = mkEnableOption "Hellebore's Git configuration";
 
@@ -36,7 +40,6 @@ in
     home.packages = with pkgs; [
       gitAndTools.gitflow
       git-ignore
-      glab
     ];
 
     programs.git = {
@@ -49,8 +52,8 @@ in
       };
     };
 
-    programs.gitui = {
-      enable = cfg.gitui.enable;
+    programs.gitui = mkIf cfg.gitui.enable {
+      enable = true;
       package = cfg.gitui.package;
       theme = builtins.readFile theme.gitui.file;
     };

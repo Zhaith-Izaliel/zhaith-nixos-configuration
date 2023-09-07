@@ -2,9 +2,8 @@
 
 {
   imports = [
-    ./commitlint.nix
     ./bat.nix
-    ./git.nix
+    ./git
     ./erd.nix
     ./tools.nix
   ];
