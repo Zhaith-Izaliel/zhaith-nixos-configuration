@@ -1,35 +1,49 @@
 { pkgs, lib }:
-
 let
-  theme-packages = import ./packages.nix { inherit lib pkgs; };
+  theme-packages = import ./packages.nix { inherit pkgs lib; };
 in
-rec {
-  packages = theme-packages.all;
+{
+  bat = rec {
+    package = theme-packages.bat-theme;
+    name = "catppuccin-macchiato";
+    file = "${package}/Catppuccin-macchiato.tmTheme";
+  };
+
+  gitui = rec {
+    package = theme-packages.gitui-theme;
+    file = "${package}/theme/macchiato.ron";
+  };
+
+  gtk = rec {
+    inherit (theme-packages.gtk) theme cursorTheme iconTheme font;
+
+    packages = [
+      theme.package
+      cursorTheme.package
+      iconTheme.package
+      font.package
+    ];
+  };
+
+  starship = rec {
+    package = theme-packages.starship-palette;
+    paletteName = "catppuccin_macchiato";
+    palette = builtins.fromTOML (builtins.readFile (package +
+    /palettes/macchiato.toml));
+  };
+
+  hyprland = rec {
+    package = theme-packages.hyprland-palette;
+    palette = "${package}/themes/macchiato.conf";
+  };
+
+  fcitx5 = {
+    package = theme-packages.fcitx5-theme;
+    name = "catppuccin-macchiato";
+  };
+
+  kitty.theme = "Catppuccin-Macchiato";
 
   colors = import ./colors.nix {};
-
-  gtk-theme = import ./gtk { inherit theme-packages; };
-
-  swaylock-theme = import ./swaylock { inherit colors gtk-theme theme-packages lib; };
-
-  dunst-theme = import ./dunst { inherit colors gtk-theme lib; };
-
-  starship-theme = import ./starship { inherit colors theme-packages lib; };
-
-  sddm-theme = import ./sddm { inherit gtk-theme colors lib; };
-
-  hyprland-theme = import ./hyprland { inherit gtk-theme theme-packages; };
-
-  bat-theme = import ./bat { inherit theme-packages; };
-
-  gitui-theme = import ./gitui { inherit theme-packages; };
-
-  waybar-theme = import ./waybar { inherit pkgs lib colors; };
-
-  fcitx5-theme = import ./fcitx5 { inherit theme-packages colors; };
-
-  wlogout-theme = import ./wlogout { inherit colors lib; };
-
-  kitty-theme = import ./kitty { inherit colors pkgs; };
 }
 

@@ -1,18 +1,113 @@
-{ ... }:
+{ config, ... }:
 
 {
-  # Importing configuration
-  imports = [
-    ./config/browser.nix
-    ./config/development.nix
-    ./config/mail.nix
-    ./config/mpd.nix
-    ./config/neovim.nix
-    ./config/nextcloud.nix
-    ./config/shell
-    ./config/tools
-    ./config/hyprland.nix
-    ./config/i18n.nix
-  ];
+  hellebore = {
+
+    fontSize = 14;
+
+    desktop-environment = {
+      hyprland = {
+        enable = true;
+        monitors = [
+          {
+            name = "eDP-1";
+            width = 2560;
+            height = 1440;
+            refreshRate = 165;
+            xOffset = 0;
+            yOffset = 0;
+            scaling = 1.0;
+          }
+        ];
+        lockscreen = {
+          enable = true;
+          indicatorRadius = 200;
+          fontSize = config.hellebore.fontSize + 10;
+        };
+        logout = {
+          enable = true;
+          fontSize = 20;
+        };
+        applications-launcher = {
+          enable = true;
+        };
+        notifications.enable = true;
+        status-bar.enable = true;
+      };
+      bluetooth.enable = true;
+      network.enable = true;
+      cloud.enable = true;
+      i18n = {
+        enable = true;
+        enableAnthy = true;
+      };
+      files-manager = {
+        enable = true;
+        supports = {
+          images = true;
+          torrents = true;
+          archives = true;
+          fonts-viewer = true;
+        };
+      };
+      disks.enable = true;
+      mail = {
+        enable = true;
+        protonmail.enable = true;
+      };
+      browsers = {
+        enable = true;
+        profiles.zhaith.enable = true;
+      };
+    };
+
+    tools = {
+      discord = {
+        enable = true;
+        betterdiscord.enable = true;
+      };
+      office.enable = true;
+    };
+
+    multimedia = {
+      enable = true;
+      art.enable = true;
+      obs.enable = true;
+      mpd = {
+        enable = true;
+        enableDiscordRPC = true;
+        visualizer = {
+          enable = true;
+          spectrumSmoothLook = true;
+        };
+      };
+    };
+
+    development = {
+      git = {
+        enable = true;
+        gitui.enable = true;
+        commitlint.enable = true;
+      };
+      erdtree = {
+        enable = true;
+      };
+      bat.enable = true;
+      tools = {
+        enable = true;
+        enableLorri = true;
+      };
+    };
+
+    shell = {
+      h.enable = true;
+      enable = true;
+      motd.enable = true;
+      prompt.enable = true;
+      emulator.enable = true;
+    };
+  };
+
+  programs.neovim.zhaith-config.enable = true;
 }
 

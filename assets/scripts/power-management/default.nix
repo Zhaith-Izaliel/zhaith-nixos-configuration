@@ -3,13 +3,13 @@
 pkgs.callPackage ../builder.nix rec {
   pname = "power-management";
 
-  version = "v2.2.1";
+  version = "v2.2.2";
 
   src = pkgs.fetchFromGitLab {
     repo = pname;
     owner = "Zhaith-Izaliel";
     rev = version;
-    sha256 = "sha256-Jmk/cRGVzpCnQrtzzNw+KDgGxE2vgQ5WYmGRqSHzbvw=";
+    sha256 = "sha256-celAGElQzhaapBWrMmK+9Fy03CoRHEosdGTrk8NUEUw=";
   };
 
   buildInputs = with pkgs; [
@@ -20,7 +20,6 @@ pkgs.callPackage ../builder.nix rec {
     libnotify
     gnugrep
     sudo
-    gawk
     coreutils
   ];
 }
