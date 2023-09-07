@@ -87,7 +87,7 @@ in
 
           "custom/shutdown" = mkIf config.programs.wlogout.enable {
             format = mkBig "";
-            on-click = "${lib.getExe pkgs.wlogout-blur} --protocol layer-shell -b 5 -T 400 -B 400";
+            on-click = config.hellebore.desktop-environment.hyprland.logout.bin;
             tooltip = false;
             interval = "once";
           };
