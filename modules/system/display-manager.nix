@@ -15,6 +15,12 @@ in
       description = "Width of the screen.";
     };
 
+    fontSize = mkOption {
+      type = types.int;
+      default = config.hellebore.fontSize;
+      description = "Set SDDM font size";
+    };
+
     screenHeight = mkOption {
       type = types.int;
       default = 1080;
@@ -45,7 +51,7 @@ in
           Theme = {
             CursorTheme = theme.gtk.cursorTheme.name;
             CursorSize = 24;
-            Font = theme.gtk.font.name;
+            Font = cfg.fontSize;
           };
         };
 
@@ -60,7 +66,7 @@ in
             AccentColor = theme.colors.mauve;
             BackgroundColor = theme.colors.base;
             Font = theme.gtk.font.name;
-            FontSize = toString theme.gtk.font.size;
+            FontSize = toString cfg.fontSize;
             MainColor = theme.colors.text;
             ForceHideCompletePassword = true;
             Background = ../../assets/images/sddm/greeter.png;

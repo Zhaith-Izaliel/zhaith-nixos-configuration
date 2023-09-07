@@ -1,4 +1,4 @@
-{ config, lib, pkgs, unstable-pkgs, theme, ... }:
+{ config, lib, pkgs, theme, ... }:
 
 with lib;
 
@@ -35,7 +35,6 @@ in
 
     programs.waybar = {
       enable = true;
-      package = unstable-pkgs.waybar;
       systemd = {
         enable = true;
         target = "hyprland-session.target";

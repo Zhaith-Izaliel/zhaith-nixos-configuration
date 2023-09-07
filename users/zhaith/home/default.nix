@@ -1,4 +1,4 @@
-{ unstable-pkgs, ... }:
+{ config, ... }:
 
 {
   hellebore = {
@@ -19,8 +19,15 @@
             scaling = 1.0;
           }
         ];
-        lockscreen.enable = true;
-        logout.enable = true;
+        lockscreen = {
+          enable = true;
+          indicatorRadius = 200;
+          fontSize = config.hellebore.fontSize + 10;
+        };
+        logout = {
+          enable = true;
+          fontSize = 20;
+        };
         applications-launcher = {
           enable = true;
         };
@@ -84,7 +91,6 @@
       };
       erdtree = {
         enable = true;
-        package = unstable-pkgs.erdtree;
       };
       bat.enable = true;
       tools = {

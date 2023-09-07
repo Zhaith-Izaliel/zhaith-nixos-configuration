@@ -35,6 +35,12 @@ in
 {
   options.hellebore.desktop-environment.hyprland.logout = {
     enable = mkEnableOption "Hellebore WLogout configuration";
+
+    fontSize = mkOption {
+      type = types.int;
+      default = config.hellebore.fontSize;
+      description = "Set the font size of the logout menu.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -94,7 +100,7 @@ in
       style = ''
       window {
         font-family: "Fira Code";
-        font-size: 14pt;
+        font-size: ${toString cfg.fontSize}pt;
         color: ${theme.colors.text};
         background-repeat: no-repeat;
         background-image: image(url("/tmp/wlogout-blur.png"));

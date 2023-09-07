@@ -25,7 +25,7 @@
         size = "standard";
         variant = "macchiato";
       };
-      name = "Catppuccin-Macchiato-Standard-Sapphire-Dark";
+      name = "Catppuccin-Macchiato-Standard-Sapphire-dark";
     };
 
     cursorTheme = {

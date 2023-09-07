@@ -17,6 +17,12 @@ in
         default = config.hellebore.fontSize;
         description = "Set lockscreen font size.";
       };
+
+      indicatorRadius = mkOption {
+        type = types.int;
+        default = 200;
+        description = "Set the indicator radius";
+      };
     };
 
     config = mkIf cfg.enable {
@@ -37,7 +43,7 @@ in
         enable = true;
         package = pkgs.swaylock-effects;
         settings = {
-          indicator-radius = 100;
+          indicator-radius = cfg.indicatorRadius;
           color = converted-colors.base;
           bs-hl-color = converted-colors.rosewater;
           caps-lock-bs-hl-color = converted-colors.rosewater;

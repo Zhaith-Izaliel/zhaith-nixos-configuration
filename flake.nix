@@ -2,10 +2,10 @@
   description = "Zhaith's NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
@@ -16,12 +16,12 @@
     grub2-themes.url = "github:/vinceliuice/grub2-themes";
     nix-alien.url = "github:thiagokokada/nix-alien";
     zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
-    hyprland.url = "github:hyprwm/Hyprland/v0.25.0";
+    hyprland.url = "github:hyprwm/Hyprland";
     hyprland-contrib.url = "github:hyprwm/contrib";
     sddm-sugar-candy-nix.url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
   };
 
-  outputs = {nixpkgs, nixpkgs-unstable, flake-utils,
+  outputs = {nixpkgs, nixpkgs-stable, flake-utils,
   grub2-themes, nix-alien, zhaith-neovim, hyprland, hyprland-contrib,
   sddm-sugar-candy-nix, ...}@attrs:
   let
@@ -53,6 +53,7 @@
         inherit system theme;
         hostname = "Ethereal-Edelweiss";
         users = [ "lilith" ];
+        nixpkgs = nixpkgs-stable;
         extraModules = [
           grub2-themes.nixosModules.default
           modules.system
@@ -82,6 +83,7 @@
         username = "lilith";
         hostname = "Ethereal-Edelweiss";
         stateVersion = "21.05";
+        nixpkgs = nixpkgs-stable;
       };
     };
   } // flake-utils.lib.eachDefaultSystem

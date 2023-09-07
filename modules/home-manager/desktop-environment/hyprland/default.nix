@@ -145,10 +145,10 @@ in
       # --- #
 
       ''
-      exec-once = gsettings set $gnome-schema gtk-theme '${theme.gtk.theme.name}'
-      exec-once = gsettings set $gnome-schema icon-theme '${theme.gtk.iconTheme.name}'
-      exec-once = gsettings set $gnome-schema cursor-theme '${theme.gtk.cursorTheme.name}'
-      exec-once = gsettings set $gnome-schema font-name '${theme.gtk.font.name}'
+      exec-once = gsettings set org.gnome.desktop.interface gtk-theme '${theme.gtk.theme.name}'
+      exec-once = gsettings set org.gnome.desktop.interface icon-theme '${theme.gtk.iconTheme.name}'
+      exec-once = gsettings set org.gnome.desktop.interface cursor-theme '${theme.gtk.cursorTheme.name}'
+      exec-once = gsettings set org.gnome.desktop.interface font-name '${theme.gtk.font.name}'
       ''
 
       # --- #
@@ -253,10 +253,12 @@ in
 
           rounding = 10
 
-          blur = true
-          blur_size = 3
-          blur_passes = 1
-          blur_new_optimizations = true
+          blur {
+            enabled = true
+            size = 3
+            passes = 1
+            new_optimizations = true
+          }
 
           drop_shadow = true
           shadow_range = 4

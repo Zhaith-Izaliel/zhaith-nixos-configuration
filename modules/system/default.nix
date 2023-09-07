@@ -1,6 +1,14 @@
-{ ... }:
+{ lib, ... }:
 
 {
+  options.hellebore = {
+    fontSize = lib.mkOption {
+      type = lib.types.int;
+      default = 12;
+      description = "Hellebore global applications font size";
+    };
+  };
+
   imports = [
     ./bootloader.nix
     ./development.nix

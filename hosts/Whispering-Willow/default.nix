@@ -27,6 +27,8 @@
   ];
 
   hellebore = {
+    fontSize = 14;
+
     network = {
       enable = true;
       enableNetworkManager = true;
@@ -110,6 +112,8 @@
 
     display-manager = {
       enable = true;
+      screenWidth = 2560;
+      screenHeight = 1440;
     };
 
     power-management = {
