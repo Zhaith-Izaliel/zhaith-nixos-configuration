@@ -32,7 +32,10 @@
           enable = true;
         };
         notifications.enable = true;
-        status-bar.enable = true;
+        status-bar = {
+          enable = true;
+          fontSize = 12;
+        };
       };
       bluetooth.enable = true;
       network.enable = true;

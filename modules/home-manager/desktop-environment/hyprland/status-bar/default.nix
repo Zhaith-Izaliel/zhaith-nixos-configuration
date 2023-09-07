@@ -9,6 +9,12 @@ in
 {
   options.hellebore.desktop-environment.hyprland.status-bar = {
     enable = mkEnableOption "Hellebore Waybar configuration";
+
+    fontSize = mkOption {
+      type = types.int;
+      default = config.hellebore.fontSize;
+      description = "Set the status bar font size.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -227,6 +233,10 @@ in
       @define-color pink      ${theme.colors.pink};
       @define-color flamingo  ${theme.colors.flamingo};
       @define-color rosewater ${theme.colors.rosewater};
+
+      * {
+        font-size: ${toString cfg.fontSize}pt;
+      }
 
       '' + builtins.readFile ./style.css;
     };
