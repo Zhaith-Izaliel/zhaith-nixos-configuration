@@ -19,7 +19,7 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> programs.git.enable;
+        assertion = cfg.enable -> config.programs.git.enable;
         message = "You need to enable git for GHQ to work.";
       }
     ];

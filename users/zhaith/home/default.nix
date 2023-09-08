@@ -90,6 +90,8 @@
         enable = true;
         gitui.enable = true;
         commitlint.enable = true;
+        ghq.enable = true;
+        h.enable = true;
       };
       erdtree = {
         enable = true;
@@ -102,7 +104,6 @@
     };
 
     shell = {
-      h.enable = true;
       enable = true;
       motd.enable = true;
       prompt.enable = true;

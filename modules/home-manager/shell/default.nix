@@ -46,7 +46,7 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       any-nix-shell
-    ] ++ lists.optional cfg.h.enable pkgs.h;
+    ];
 
     programs = {
       command-not-found.enable = true;
