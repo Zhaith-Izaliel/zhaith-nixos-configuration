@@ -161,7 +161,7 @@ in
 
       ''
       exec-once = swww init
-      exec-once = swww img ${cfg.wallpaper}
+      exec-once = sleep 5; swww img ${cfg.wallpaper}
       ''
 
       # --- #
