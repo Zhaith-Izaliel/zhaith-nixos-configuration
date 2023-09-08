@@ -8,6 +8,8 @@ in
 {
   imports = [
     ./commitlint.nix
+    ./h.nix
+    ./ghq.nix
   ];
 
   options.hellebore.development.git = {
