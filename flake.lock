@@ -2084,11 +2084,11 @@
         "nvim-yanky": "nvim-yanky"
       },
       "locked": {
-        "lastModified": 1694124553,
-        "narHash": "sha256-8DrSel3Bg0nPz7kfS3/tbot+1UoK5LjCC2xp7pMYD+I=",
+        "lastModified": 1694211992,
+        "narHash": "sha256-TLEMCURoTgY16Y4XdLgrfxorCjo+IMzjYnwEf9zJ4XU=",
         "owner": "Zhaith-Izaliel",
         "repo": "neovim-config",
-        "rev": "cef56339c7e7ebfba0c3c3e914509b9ff77e880d",
+        "rev": "43eed0b3c850aa8bf227ffb160e9aaa14a4177ee",
         "type": "gitlab"
       },
       "original": {
