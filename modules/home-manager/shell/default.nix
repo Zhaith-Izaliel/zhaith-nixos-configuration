@@ -15,16 +15,6 @@ in
   options.hellebore.shell = {
     enable = mkEnableOption "Hellebore Shell configuration";
 
-    h = {
-      codeDirectory = mkOption {
-        type = types.nonEmptyStr;
-        default = "~/Development";
-        description = "Code directory used to manage projects.";
-      };
-
-      enable = mkEnableOption "h, a utility for faster shell navigation of projects";
-    };
-
     motd = {
       enable = mkEnableOption "Neofetch MOTD";
       image = mkOption {
@@ -56,7 +46,7 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       any-nix-shell
-    ] ++ lists.optional cfg.h.enable pkgs.h;
+    ];
 
     programs = {
       command-not-found.enable = true;
@@ -132,12 +122,6 @@ in
             fi
             ${pkgs.openssh}/bin/ssh $*
           }
-          '')
-
-          (strings.optionalString cfg.h.enable
-          ''
-          eval "$(h --setup ${cfg.h.codeDirectory})"
-          eval "$(up --setup ${cfg.h.codeDirectory})"
           '')
         ];
 

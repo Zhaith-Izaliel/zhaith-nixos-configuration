@@ -69,6 +69,7 @@ tooltip {
 #idle_inhibitor,
 #window,
 #clock,
+#custom-weather,
 #battery,
 #wireplumber,
 #network,
@@ -161,6 +162,12 @@ tooltip {
   color: @yellow;
   border-radius: 10px;
   margin-left: .75em;
+}
+
+#custom-weather {
+  color: @text;
+  border-radius: 10px;
+  margin-left: .75rem;
 }
 
 #network {

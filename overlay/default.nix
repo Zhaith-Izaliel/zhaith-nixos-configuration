@@ -5,12 +5,9 @@ let
     nodejs = prev.nodejs;
     stdenv = prev.stdenv;
   };
-  scripts = import ../assets/scripts { pkgs = prev; };
 in
 {
   inherit (nodejs-packages) commitlint-format-json;
-
-  tape = import ../assets/packages/tape { pkgs = prev; };
 
   commitlint = nodejs-packages."@commitlint/cli".overrideAttrs (final:
     prev: {
@@ -25,5 +22,5 @@ in
 
   commitlint-config-conventional =
     nodejs-packages."@commitlint/config-conventional";
-} // scripts
+}
 

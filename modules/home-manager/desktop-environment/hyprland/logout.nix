@@ -41,6 +41,13 @@ in
       default = config.hellebore.fontSize;
       description = "Set the font size of the logout menu.";
     };
+
+    bin = mkOption {
+      type = types.str;
+      default = "${getExe pkgs.wlogout-blur} --protocol layer-shell -b 5 -T 400 -B 400";
+      readOnly = true;
+      description  = "Define the command to run the logout program.";
+    };
   };
 
   config = mkIf cfg.enable {

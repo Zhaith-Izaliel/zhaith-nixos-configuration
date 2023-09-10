@@ -54,6 +54,12 @@ in
       description = "Override default Hyprland package";
     };
 
+    wallpaper = mkOption {
+      type = types.path;
+      default = ../../../../assets/images/wallpaper/wallpaper.png;
+      description = "Set the wallpaper.";
+    };
+
     input = {
       kbLayout = mkOption {
         type = types.str;
@@ -154,6 +160,13 @@ in
       # --- #
 
       ''
+      exec-once = swww init
+      exec-once = sleep 5; swww img ${cfg.wallpaper}
+      ''
+
+      # --- #
+
+      ''
 
       $mainMod = SUPER
       $mainModKey = SUPER_L
@@ -163,7 +176,6 @@ in
 
       # Execute your favorite apps at launch
       exec-once = swayosd --max-volume 150
-      exec-once = swww init
 
       exec-once = hyprctl setcursor ${theme.gtk.cursorTheme.name} 24
       ''
@@ -174,6 +186,13 @@ in
       ''
       exec-once = ${getExe config.hellebore.tools.discord.package}
       ${mkWindowrulev2 "class:(discord)" [ "workspace 3" ]}
+      '')
+
+      # --- #
+
+      (strings.optionalString config.hellebore.desktop-environment.hyprland.logout.enable
+      ''
+      bind = $mainMod, L, exec, ${config.hellebore.desktop-environment.hyprland.logout.bin}
       '')
 
       # --- #
@@ -311,8 +330,6 @@ in
       bind = $mainMod, C, killactive,
       bind = $mainMod, E, exec, nemo
       bind = $mainMod, V, togglefloating,
-      bind = $mainMod, R, exec, anyrun
-      bind = $mainMod, L, exec, wlogout-blur --protocol layer-shell -b 5 -T 400 -B 400
       bind = $mainMod, I, exec, fcitx5-remote -t
       bind = $mainMod, P, exec, hyprpicker -a
 

@@ -30,6 +30,7 @@ in
       sutils
       libappindicator-gtk3
       brightnessctl
+      wttrbar
     ];
 
     systemd.user.targets.tray = {
@@ -54,6 +55,7 @@ in
           height = 0;
           modules-left = [
             "clock"
+            "custom/weather"
             "mpd"
             "hyprland/workspaces"
           ];
@@ -71,13 +73,21 @@ in
             "custom/shutdown"
           ];
 
+          "custom/weather" = {
+            format = "{} °C";
+            tooltip = true;
+            interva = 3600;
+            exec = "${getExe pkgs.wttrbar}";
+            return-type = "json";
+          };
+
           bluetooth = mkIf config.hellebore.desktop-environment.bluetooth.enable {
             format = "󰂯 {status}";
             format-off = "󰂲 off";
             format-disabled = "󰂳 off";
             format-connected = "${mkBig "󰂱"} {device_alias}";
             format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
-            on-click = "${lib.getExe pkgs.toggle-bluetooth}";
+            on-click = "${getExe pkgs.toggle-bluetooth}";
             on-click-right = "${pkgs.blueberry}/bin/blueberry";
             tooltip-format = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
             tooltip-format-connected = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected\n\n{device_enumerate}";
@@ -87,7 +97,7 @@ in
 
           "custom/shutdown" = mkIf config.programs.wlogout.enable {
             format = mkBig "";
-            on-click = "${lib.getExe pkgs.wlogout-blur} --protocol layer-shell -b 5 -T 400 -B 400";
+            on-click = config.hellebore.desktop-environment.hyprland.logout.bin;
             tooltip = false;
             interval = "once";
           };
@@ -156,18 +166,25 @@ in
           };
 
           clock = {
-            format = "{:${mkBig ""} %R  ${mkBig ""} %a. %d, %b.}";
-            tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+            format = "${mkBig ""} {:%H:%M}";
+            tooltip-format = "<tt><small>{calendar}</small></tt>";
             calendar = {
               mode = "month";
               mode-mon-col = 3;
               weeks-pos = "right";
+              on-scroll = 1;
+              on-click = "mode";
               format = {
                 months = "<span color='${theme.colors.mauve}'><b>{}</b></span>";
                 days = "<span color='${theme.colors.lavender}'><b>{}</b></span>";
                 weeks = "<span color='${theme.colors.teal}'><b>W{}</b></span>";
                 weekdays = "<span color='${theme.colors.blue}'><b>{}</b></span>";
                 today = "<span color='${theme.colors.red}'><b><u>{}</u></b></span>";
+              };
+              actions = {
+                on-click = "mode";
+                on-scroll-up = "shift_up";
+                on-scroll-down = "shift_down";
               };
             };
           };
