@@ -51,10 +51,10 @@
         drivers = with pkgs; [ epson-escpr epson-escpr2 ];
       };
 
-      # integratedCamera = {
-      #   disable = true;
-      #   cameraBus = "3-13";
-      # };
+      integratedCamera = {
+        disable = true;
+        cameraBus = "3-13";
+      };
     };
 
     bootloader = {
@@ -118,7 +118,7 @@
 
     power-management = {
       enable = true;
-      cronTemplate = "0 2 * * *";
+      cronTemplate = "15 3 * * *";
       shutdownDate = "+60";
     };
   };

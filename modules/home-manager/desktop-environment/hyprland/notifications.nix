@@ -49,8 +49,8 @@ in
         urgency_critical = {
           background = theme.colors.base;
           foreground = theme.colors.text;
-          frame_color = theme.colors.maroon;
-          highlight = theme.colors.maroon;
+          frame_color = theme.colors.red;
+          highlight = theme.colors.red;
         };
 
         volume_brightness = {
