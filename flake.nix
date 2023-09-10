@@ -19,7 +19,7 @@
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-contrib.url = "github:hyprwm/contrib";
     sddm-sugar-candy-nix.url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
-    virgutils.url = "gitlab:Zhaith-Izaliel/virgutils";
+    virgutils.url = "gitlab:Zhaith-Izaliel/virgutils/develop"; # TEMP: switch to master
   };
 
   outputs = {nixpkgs, nixpkgs-stable, flake-utils,
