@@ -19,11 +19,12 @@
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-contrib.url = "github:hyprwm/contrib";
     sddm-sugar-candy-nix.url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
+    virgutils.url = "gitlab:Zhaith-Izaliel/virgutils";
   };
 
   outputs = {nixpkgs, nixpkgs-stable, flake-utils,
   grub2-themes, nix-alien, zhaith-neovim, hyprland, hyprland-contrib,
-  sddm-sugar-candy-nix, ...}@attrs:
+  sddm-sugar-candy-nix, virgutils, ...}@attrs:
   let
     system = "x86_64-linux";
     theme = "catppuccin";
@@ -46,6 +47,7 @@
           hyprland.overlays.default
           hyprland-contrib.overlays.default
           sddm-sugar-candy-nix.overlays.default
+          virgutils.overlays.default
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };
@@ -54,6 +56,9 @@
         hostname = "Ethereal-Edelweiss";
         users = [ "lilith" ];
         nixpkgs = nixpkgs-stable;
+        overlays = [
+          virgutils.overlays.default
+        ];
         extraModules = [
           grub2-themes.nixosModules.default
           modules.system
@@ -74,6 +79,7 @@
         overlays = [
           hyprland.overlays.default
           hyprland-contrib.overlays.default
+          virgutils.overlays.default
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };
