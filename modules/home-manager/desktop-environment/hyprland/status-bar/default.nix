@@ -76,7 +76,7 @@ in
           "custom/weather" = {
             format = "{} °C";
             tooltip = true;
-            interva = 3600;
+            interval = 3600;
             exec = "${getExe pkgs.wttrbar}";
             return-type = "json";
           };
