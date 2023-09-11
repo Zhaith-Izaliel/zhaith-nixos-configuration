@@ -47,7 +47,7 @@
           hyprland.overlays.default
           hyprland-contrib.overlays.default
           sddm-sugar-candy-nix.overlays.default
-          virgutils.overlays.default
+          virgutils.overlays.${system}.default
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };
@@ -57,7 +57,9 @@
         users = [ "lilith" ];
         nixpkgs = nixpkgs-stable;
         overlays = [
-          virgutils.overlays.default
+          (final: prev: {
+            power-management = virgutils.packages.${system}.power-management;
+          })
         ];
         extraModules = [
           grub2-themes.nixosModules.default
@@ -79,7 +81,7 @@
         overlays = [
           hyprland.overlays.default
           hyprland-contrib.overlays.default
-          virgutils.overlays.default
+          virgutils.overlays.${system}.default
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };
