@@ -8,6 +8,8 @@ let
 in
 {
   options.hellebore.hardware = {
+    ntfs.enable = mkEnableOption "NTFS support";
+
     bluetooth = {
       enable = mkEnableOption "Bluetooth support";
       enablePowerSupport = mkEnableOption "Bluetooth power visualization support";
@@ -42,6 +44,9 @@ in
   };
 
   config = {
+    environment.systemPackages = lists.optional cfg.ntfs.enable pkgs.ntfs3g;
+    boot.supportedFilesystems = lists.optional cfg.ntfs.enable "ntfs";
+
     services = {
       printing = mkIf cfg.printing.enable {
         enable = true;

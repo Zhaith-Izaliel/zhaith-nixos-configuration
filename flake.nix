@@ -20,11 +20,12 @@
     hyprland-contrib.url = "github:hyprwm/contrib";
     sddm-sugar-candy-nix.url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
     virgutils.url = "gitlab:Zhaith-Izaliel/virgutils";
+    rofi-applets.url = "gitlab:Zhaith-Izaliel/rofi-applets/develop";
   };
 
   outputs = {nixpkgs, nixpkgs-stable, flake-utils,
   grub2-themes, nix-alien, zhaith-neovim, hyprland, hyprland-contrib,
-  sddm-sugar-candy-nix, virgutils, ...}@attrs:
+  sddm-sugar-candy-nix, virgutils, rofi-applets, ...}@attrs:
   let
     system = "x86_64-linux";
     theme = "catppuccin";
@@ -77,11 +78,12 @@
           zhaith-neovim.homeManagerModules.default
           hyprland.homeManagerModules.default
           modules.home-manager
-        ];
+        ] ++ rofi-applets.homeManagerModules.all;
         overlays = [
           hyprland.overlays.default
           hyprland-contrib.overlays.default
           virgutils.overlays.${system}.default
+          rofi-applets.overlays.default
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };

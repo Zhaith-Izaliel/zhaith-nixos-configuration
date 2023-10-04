@@ -73,6 +73,15 @@ in
         drun-display-format = "{name}";
         icon-theme = theme.gtk.iconTheme.name;
       };
+
+      applets = {
+        bluetooth = {
+          enable = true;
+          settings = {
+            divider = "―BITE-BITE-BITE-BITE―";
+          };
+        };
+      };
     };
   };
 }

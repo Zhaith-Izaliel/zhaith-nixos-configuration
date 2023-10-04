@@ -18,15 +18,15 @@
       fsType = "ext4";
     };
 
-  fileSystems."/mnt/windows-vm" =
-    { device = "/dev/disk/by-uuid/ddae6099-5aec-42a9-a073-2964fcda4f1d";
-      fsType = "ext4";
-    };
-
-  fileSystems."/mnt/games" =
-    { device = "/dev/disk/by-uuid/1be740f8-ed1b-439b-8f96-f1835e1fbf22";
-      fsType = "ext4";
-    };
+  # fileSystems."/mnt/windows" =
+  #   { device = "/dev/disk/by-uuid/ddae6099-5aec-42a9-a073-2964fcda4f1d";
+  #     fsType = "ntfs";
+  #   };
+  #
+  # fileSystems."/mnt/games" =
+  #   { device = "/dev/disk/by-uuid/1be740f8-ed1b-439b-8f96-f1835e1fbf22";
+  #     fsType = "ntfs";
+  #   };
 
   fileSystems."/home" =
     { device = "/dev/disk/by-uuid/9f181965-f48e-4e6e-8dcf-e00695fda38c";
@@ -46,3 +46,4 @@
   # high-resolution display
   # hardware.video.hidpi.enable = lib.mkDefault true;
 }
+

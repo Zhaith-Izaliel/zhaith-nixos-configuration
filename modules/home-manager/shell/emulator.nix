@@ -54,7 +54,7 @@ in
         bell_on_tab = false;
         tab_bar_margin_width = "0.0";
         tab_bar_margin_height = "0.0 0.0";
-        tab_title_template = "{f'{title[:30]}…' if title.rindex(title[-1]) + 1 > 30 else (title.center(6) if (title.rindex(title[-1]) + 1) % 2 == 0 else title.center(5))}";
+        tab_title_template = "{f'{title[:20]}…' if title.rindex(title[-1]) + 1 > 30 else (title.center(6) if (title.rindex(title[-1]) + 1) % 2 == 0 else title.center(5))}";
         active_tab_font_style = "bold";
         active_tab_foreground = "black";
         active_tab_background = theme.colors.blue;

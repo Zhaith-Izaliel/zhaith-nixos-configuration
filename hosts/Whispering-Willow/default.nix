@@ -24,6 +24,7 @@
 
   nixpkgs.config.permittedInsecurePackages = [
     "nodejs-14.21.3"
+    "electron-12.2.3" # Etcher
   ];
 
   hellebore = {
@@ -39,6 +40,8 @@
     };
 
     hardware = {
+      ntfs.enable = true;
+
       bluetooth = {
         enable = true;
         enablePowerSupport = true;
@@ -64,7 +67,10 @@
 
     fonts.enable = true;
 
-    tools.enable = true;
+    tools = {
+      enable = true;
+      etcher.enable = true;
+    };
 
     shell.enable = true;
 
@@ -83,7 +89,7 @@
     tex.enable = true;
 
     vm = {
-      enable = true;
+      enable = false;
 
       cpuIsolation = {
         totalCores = "0-15";
@@ -120,6 +126,9 @@
       enable = true;
       cronTemplate = "0 2 * * *";
       shutdownDate = "+60";
+      reminders = [
+        "50 2 * * *"
+      ];
     };
   };
 

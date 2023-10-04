@@ -41,6 +41,12 @@ in
       };
     };
 
+    boot.extraModprobeConfig = ''
+      blacklist nouveau
+      options nouveau modeset=0
+    '';
+
+
     programs.hyprland = {
       enable = true;
       xwayland = {

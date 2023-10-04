@@ -16,6 +16,13 @@ in
       shutdown occurs.";
     };
 
+    reminders = mkOption {
+      type = types.listOf types.nonEmptyStr;
+      default = [];
+      description = "A list of Cron templates to show a reminder of the
+      scheduled shutdown";
+    };
+
     shutdownDate = mkOption {
       type = types.nonEmptyStr;
       default = "";
@@ -28,7 +35,9 @@ in
       enable = true;
       systemCronJobs = [
         "${cfg.cronTemplate} root ${getExe pkgs.power-management} ${cfg.shutdownDate}"
-      ];
+      ] ++ builtins.map
+      (template: "${template} root ${getExe pkgs.power-management} --show" )
+      cfg.reminders;
     };
   };
 }
