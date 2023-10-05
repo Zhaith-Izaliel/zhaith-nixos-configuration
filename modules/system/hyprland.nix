@@ -52,6 +52,7 @@ in
       xwayland = {
         enable = true;
       };
+      enableNvidiaPatches = config.hardware.nvidia.enable;
     };
   };
 }

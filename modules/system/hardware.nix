@@ -5,6 +5,13 @@ with lib;
 let
   usbBusDevices = "/sys/bus/usb/devices";
   cfg = config.hellebore.hardware;
+  nvidia-offload = pkgs.writeScriptBin "nvidia-offload" ''
+    export __NV_PRIME_RENDER_OFFLOAD=1
+    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+    export __GLX_VENDOR_LIBRARY_NAME=nvidia
+    export __VK_LAYER_NV_optimus=NVIDIA_only
+    exec "$@"
+  '';
 in
 {
   options.hellebore.hardware = {
@@ -27,6 +34,24 @@ in
 
     numerization.enable = mkEnableOption "Numerization support";
 
+    nvidia = {
+      enable = mkEnableOption "Nvidia Support";
+      prime = {
+        enable = mkEnableOption "Nvidia PRIME offload support (laptop only)";
+        intelBusId = mkOption {
+          type = types.nonEmptyStr;
+          default = "";
+          description = "The intel GPU bus ID.";
+        };
+
+        nvidiaBusId =mkOption {
+          type = types.nonEmptyStr;
+          default = "";
+          description = "The Nvidia GPU bus ID.";
+        };
+      }
+    };
+
     integratedCamera = {
       disable = mkOption {
         type = types.bool;
@@ -44,7 +69,18 @@ in
   };
 
   config = {
-    environment.systemPackages = lists.optional cfg.ntfs.enable pkgs.ntfs3g;
+    assertions = [
+      {
+        assertion = cfg.nvidia.enable -> config.hardware.opengl.enable &&
+        config.hardware.opengl.driSupport &&
+        config.hardware.opengl.driSupport32Bit;
+        message = "You must enable OpenGL with DRI support (64 bits and 32 bits)
+        to support Nvidia";
+      }
+    ];
+
+    environment.systemPackages = lists.optional cfg.ntfs.enable pkgs.ntfs3g ++
+    lists.optional cfg.nvidia.prime.enable nvidia-offload;
     boot.supportedFilesystems = lists.optional cfg.ntfs.enable "ntfs";
 
     services = {
@@ -77,6 +113,27 @@ in
     hardware.bluetooth = mkIf cfg.bluetooth.enable {
       enable = true;
       package = pkgs.bluez.override { withExperimental = cfg.bluetooth.enablePowerSupport; };
+    };
+
+    hardware.nvidia = mkIf cfg.nvidia.enable {
+      modesetting.enable = true;
+
+      powerManagement = {
+        enable = false;
+        finegrained = false;
+      };
+
+      open = true;
+
+      nvidiaSettings = true;
+
+      prime = mkIf cfg.nvidia.prime.enable {
+        inherit (cfg.nvidia.prime) intelBusId nvidiaBusId;
+        offload = {
+          enable = true;
+          enableOffloadCmd = true;
+        };
+      };
     };
   };
 }
