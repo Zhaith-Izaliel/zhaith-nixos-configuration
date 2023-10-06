@@ -49,7 +49,7 @@ in
           default = "";
           description = "The Nvidia GPU bus ID.";
         };
-      }
+      };
     };
 
     integratedCamera = {
@@ -114,6 +114,8 @@ in
       enable = true;
       package = pkgs.bluez.override { withExperimental = cfg.bluetooth.enablePowerSupport; };
     };
+
+    services.xserver.videoDrivers = lists.optional cfg.nvidia.enable "nvidia";
 
     hardware.nvidia = mkIf cfg.nvidia.enable {
       modesetting.enable = true;

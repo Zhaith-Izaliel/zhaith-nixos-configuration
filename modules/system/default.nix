@@ -14,6 +14,7 @@
     ./development.nix
     ./display-manager.nix
     ./fonts.nix
+    ./games.nix
     ./hardware.nix
     ./hyprland.nix
     ./kernel.nix
@@ -21,8 +22,8 @@
     ./network.nix
     ./opengl.nix
     ./power-management.nix
-    ./shell.nix
     ./server/inadyn.nix
+    ./shell.nix
     ./sound.nix
     ./ssh.nix
     ./tex.nix
