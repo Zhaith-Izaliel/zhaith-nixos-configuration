@@ -39,6 +39,8 @@
       ];
     };
 
+    games.enable = true;
+
     hardware = {
       nvidia = {
         enable = true;

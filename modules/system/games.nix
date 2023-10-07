@@ -3,10 +3,10 @@
 with lib;
 
 let
-  cfg = config.hellebore.multimedia.games;
+  cfg = config.hellebore.games;
 in
 {
-  options.hellebore.multimedia.games = {
+  options.hellebore.games = {
     enable = mkEnableOption "Hellebore's games support";
   };
 
@@ -22,7 +22,7 @@ in
     ];
 
     programs.steam.enable = true;
-    system.environmentPackages = with pkgs; [
+    environment.systemPackages = with pkgs; [
       lutris
       wineWowPackages.stable
       wine
