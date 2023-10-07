@@ -210,10 +210,10 @@ in
           mpd = mkIf config.services.mpd.enable {
             format = "${mkBig "{stateIcon}"} {title}";
             tooltip-format = "{albumArtist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})";
-            format-stopped = "${mkBig "󰙧"} Stopped";
+            format-stopped = "${mkBig ""} Stopped";
             state-icons = {
-              playing = "󰫔";
-              paused = "󰏦";
+              playing = "󰎈";
+              paused = "";
             };
           };
         };

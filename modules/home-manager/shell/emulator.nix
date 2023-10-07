@@ -4,6 +4,11 @@ with lib;
 
 let
   cfg = config.hellebore.shell.emulator;
+  kitty-bin = strings.concatStringsSep " " [
+    (strings.optionalString cfg.integratedGPU.enable
+    "MESA_LOADER_DRIVER_OVERRIDE=${cfg.integratedGPU.driver} __EGL_VENDOR_LIBRARY_FILENAMES=${pkgs.mesa.drivers}/share/glvnd/egl_vendor.d/50_mesa.json")
+    "${pkgs.kitty}/bin/kitty"
+  ];
 in
 {
   options.hellebore.shell.emulator = {
@@ -15,9 +20,21 @@ in
       description = "Set the emulator font size.";
     };
 
+    integratedGPU = {
+      enable = mkEnableOption null // {
+        description = "Enable Kitty to run on the integrated GPU on a multi GPU
+        setup.";
+      };
+      driver = mkOption {
+        type = types.enum [ "i915" "radeonsi" ];
+        default = "i915";
+        description = "Defines the driver to run kitty on a multi GPU setup.";
+      };
+    };
+
     bin = mkOption {
       type = types.str;
-      default = "${pkgs.kitty}/bin/kitty";
+      default = kitty-bin;
       description = "Get the Kitty binary.";
       readOnly = true;
     };

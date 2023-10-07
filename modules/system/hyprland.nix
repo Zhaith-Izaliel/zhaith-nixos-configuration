@@ -52,8 +52,7 @@ in
       xwayland = {
         enable = true;
       };
-      enableNvidiaPatches = config.hardware.nvidia.modesetting.enable &&
-      !config.hardware.nvidia.prime.offload.enable;
+      enableNvidiaPatches = config.hardware.nvidia.modesetting.enable;
     };
   };
 }

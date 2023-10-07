@@ -33,6 +33,12 @@
       fsType = "ext4";
     };
 
+  fileSystems."/mnt/games" =
+    { device = "/dev/disk/by-uuid/3DC7196A3AF67751";
+      fsType = "ntfs-3g";
+      options = [ "rw" "uid=1000"];
+    };
+
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/37C9-C571";
       fsType = "vfat";

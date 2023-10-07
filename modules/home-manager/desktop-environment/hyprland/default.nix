@@ -133,8 +133,7 @@ in
       enable = true;
       package = cfg.package;
       xwayland.enable = true;
-      enableNvidiaPatches = osConfig.hardware.nvidia.modesetting.enable &&
-      !osConfig.hardware.nvidia.prime.offload.enable;
+      enableNvidiaPatches = osConfig.hardware.nvidia.modesetting.enable;
       systemdIntegration = true;
       recommendedEnvironment = true;
       extraConfig = strings.concatStringsSep "\n" [

@@ -107,7 +107,13 @@
       enable = true;
       motd.enable = true;
       prompt.enable = true;
-      emulator.enable = true;
+      emulator = {
+        enable = true;
+        integratedGPU = {
+          enable = true;
+          driver = "i915";
+        };
+      };
     };
   };
 
