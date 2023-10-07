@@ -14,6 +14,7 @@
     ./development.nix
     ./display-manager.nix
     ./fonts.nix
+    ./games.nix
     ./hardware
     ./hyprland.nix
     ./kernel.nix
