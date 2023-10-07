@@ -142,7 +142,7 @@ in
 
       extraModprobeConfig = ''
         blacklist nouveau
-        blacklist xpad
+        # blacklist xpad
         options nouveau modeset=0
       '';
     };

@@ -29,6 +29,7 @@ in
     };
     environment.systemPackages = with pkgs; [
       lutris
+      protontricks
       wineWowPackages.stable
       wine
       (wine.override { wineBuild = "wine64"; })
