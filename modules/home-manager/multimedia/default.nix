@@ -7,6 +7,7 @@ in
 {
   imports = [
     ./art.nix
+    ./games.nix
     ./mpd.nix
     ./obs.nix
   ];

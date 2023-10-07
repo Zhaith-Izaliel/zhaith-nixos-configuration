@@ -83,6 +83,7 @@
           spectrumSmoothLook = true;
         };
       };
+      games.enable = true;
     };
 
     development = {
