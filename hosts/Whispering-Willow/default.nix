@@ -42,6 +42,16 @@
     games.enable = true;
 
     hardware = {
+      # TEMP: testing for Wine support
+      nvidia = {
+        enable = true;
+        prime = {
+          enable = true;
+          intelBusId = "PCI:0:2:0";
+          nvidiaBusId = "PCI:1:0:0";
+        };
+      };
+
       ntfs.enable = true;
 
       bluetooth = {
@@ -112,16 +122,6 @@
     sound.enable = true;
 
     opengl.enable = true;
-
-    # TEMP: testing for Wine support
-    nvidia = {
-      enable = true;
-      prime = {
-        enable = true;
-        intelBusId = "PCI:0:2:0";
-        nvidiaBusId = "PCI:1:0:0";
-      };
-    };
 
     hyprland = {
       enable = true;
