@@ -20,7 +20,7 @@ in
       type = types.nonEmptyStr;
       default = "";
       description = "Defines the backlight device to use.";
-    }
+    };
   };
 
   config = mkIf cfg.enable {
@@ -165,7 +165,7 @@ in
           };
 
           backlight = {
-            device = "intel_backlight";
+            device = cfg.backlight-device;
             format = "${mkBig "{icon}"} {percent}%";
             format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖙"];
             on-scroll-up = "${lib.getExe pkgs.volume-brightness} -b 1%+";

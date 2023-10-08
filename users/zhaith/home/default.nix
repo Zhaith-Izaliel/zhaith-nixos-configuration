@@ -34,6 +34,7 @@
         status-bar = {
           enable = true;
           fontSize = 12;
+          backlight-device = "intel_backlight";
         };
       };
       bluetooth.enable = true;
