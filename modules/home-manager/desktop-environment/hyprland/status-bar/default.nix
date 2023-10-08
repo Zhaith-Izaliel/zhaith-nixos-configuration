@@ -1,4 +1,4 @@
-{ config, lib, pkgs, theme, ... }:
+{ osConfig, config, lib, pkgs, theme, ... }:
 
 with lib;
 
@@ -15,6 +15,12 @@ in
       default = config.hellebore.fontSize;
       description = "Set the status bar font size.";
     };
+
+    backlight-device = mkOption {
+      type = types.nonEmptyStr;
+      default = "";
+      description = "Defines the backlight device to use.";
+    }
   };
 
   config = mkIf cfg.enable {
@@ -56,7 +62,9 @@ in
           modules-left = [
             "clock"
             "custom/weather"
-            "mpd"
+          ]
+          ++ lists.optional config.services.mpd.enable "mpd"
+          ++ [
             "hyprland/workspaces"
           ];
           modules-center = [
@@ -65,13 +73,26 @@ in
           modules-right = [
             "tray"
             "idle_inhibitor"
-            "bluetooth"
+          ]
+          ++ lists.optional osConfig.programs.gamemode.enable "gamemode"
+          ++ lists.optional config.hellebore.desktop-environment.bluetooth.enable "bluetooth"
+          ++ [
             "network"
             "backlight"
             "wireplumber"
             "battery"
-            "custom/shutdown"
-          ];
+          ]
+          ++ lists.optional config.programs.wlogout.enable "custom/shutdown";
+
+          gamemode = mkIf osConfig.programs.gamemode.enable {
+            format = "{glyph}";
+            format-alt =  "{glyph} {count}";
+            glyph = mkBig "";
+            hide-not-running =  true;
+            use-icon =  false;
+            tooltip =  true;
+            tooltip-format =  "Games running: {count}";
+          };
 
           "custom/weather" = {
             format = "{} °C";

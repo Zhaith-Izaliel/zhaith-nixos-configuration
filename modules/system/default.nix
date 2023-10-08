@@ -28,6 +28,7 @@
     ./ssh.nix
     ./tex.nix
     ./tools.nix
+    ./users.nix
     ./vm.nix
   ];
 }

@@ -4,6 +4,9 @@ with lib;
 
 let
   cfg = config.hellebore.games;
+  gamemode-icon = cleanSource ../../assets/images/icons/gamemode.svg;
+  notify-send-gamemode = message:
+    "${pkgs.libnotify}/bin/notify-send -u critical -i ${gamemode-icon} -t 4000 '${message}'";
 in
 {
   options.hellebore.games = {
@@ -21,12 +24,39 @@ in
       }
     ];
 
-    programs.gamescope.enable = true;
+    programs = {
+      gamescope = {
+        enable = true;
+        args = lists.optional config.programs.hyprland.enable "--expose-wayland";
+      };
 
-    programs.steam = {
-      enable = true;
-      gamescopeSession.enable = true;
+      steam = {
+        enable = true;
+        gamescopeSession = {
+          enable = true;
+          args = lists.optional config.programs.hyprland.enable "--expose-wayland";
+        };
+      };
+
+      gamemode = {
+        enable = true;
+
+        settings = {
+          general = {
+            renice = 10;
+            inhibit_screensaver = 1;
+            reaper_freq = 5;
+            igpu_desiredgov = "powersave";
+          };
+
+          custom = {
+            start = notify-send-gamemode "GameMode started";
+            end = notify-send-gamemode "GameMode stopped";
+          };
+        };
+      };
     };
+
     environment.systemPackages = with pkgs; [
       lutris
       protontricks
