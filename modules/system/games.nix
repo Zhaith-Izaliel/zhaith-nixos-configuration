@@ -24,15 +24,18 @@ in
       }
     ];
 
+    boot.kernelParams = lists.optional config.hardware.nvidia.modesetting.enable
+    "nvidia-drm.modeset=1";
+
     programs = {
-      gamescope = {
+      gamescope = mkIf (!config.programs.hyprland.xwayland.enable) {
         enable = true;
         args = lists.optional config.programs.hyprland.enable "--expose-wayland";
       };
 
       steam = {
         enable = true;
-        gamescopeSession = {
+        gamescopeSession = mkIf (!config.programs.hyprland.xwayland.enable) {
           enable = true;
           args = lists.optional config.programs.hyprland.enable "--expose-wayland";
         };

@@ -85,13 +85,12 @@ in
           ++ lists.optional config.programs.wlogout.enable "custom/shutdown";
 
           gamemode = mkIf osConfig.programs.gamemode.enable {
-            format = "{glyph}";
-            format-alt =  "{glyph} {count}";
-            glyph = mkBig "";
-            hide-not-running =  true;
-            use-icon =  false;
-            tooltip =  true;
-            tooltip-format =  "Games running: {count}";
+            format = "{glyph} GameMode On";
+            hide-not-running = true;
+            use-icon = true;
+            tooltip = true;
+            tooltip-format = "Processes running: {count}";
+            icon-spacing = 0;
           };
 
           "custom/weather" = {

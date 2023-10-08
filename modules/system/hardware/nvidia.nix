@@ -62,8 +62,8 @@ in
       modesetting.enable = true;
 
       powerManagement = {
-        enable = false;
-        finegrained = false;
+        enable = true;
+        finegrained = true;
       };
 
       open = true;
