@@ -27,8 +27,8 @@ let
     scaling = toString monitor.scaling;
   in
   "monitor=${name},${width}x${height}@${refreshRate},${xOffset}x${yOffset},${scaling}";
-  mkMonitors = monitors: strings.concatStringsSep "\n" (builtins.map mkMonitor monitors);
 
+  mkMonitors = monitors: strings.concatStringsSep "\n" (builtins.map mkMonitor monitors);
 in
 {
   imports = [
@@ -101,7 +101,6 @@ in
     ];
 
     home.packages = with pkgs; [
-      glib
       swww
       swayosd
       wl-clipboard
@@ -109,7 +108,7 @@ in
       hyprpicker
       grimblast
       volume-brightness
-    ];
+    ] ++ theme.gtk.packages;
 
     gtk = {
       enable = true;
@@ -133,7 +132,8 @@ in
       enable = true;
       package = cfg.package;
       xwayland.enable = true;
-      enableNvidiaPatches = osConfig.hardware.nvidia.modesetting.enable;
+      enableNvidiaPatches = config.hardware.nvidia.modesetting.enable &&
+      !config.hardware.nvidia.prime.offload.enable;
       systemdIntegration = true;
       recommendedEnvironment = true;
       extraConfig = strings.concatStringsSep "\n" [
@@ -152,17 +152,8 @@ in
       # --- #
 
       ''
-      exec-once = gsettings set org.gnome.desktop.interface gtk-theme '${theme.gtk.theme.name}'
-      exec-once = gsettings set org.gnome.desktop.interface icon-theme '${theme.gtk.iconTheme.name}'
-      exec-once = gsettings set org.gnome.desktop.interface cursor-theme '${theme.gtk.cursorTheme.name}'
-      exec-once = gsettings set org.gnome.desktop.interface font-name '${theme.gtk.font.name}'
-      ''
-
-      # --- #
-
-      ''
-      exec-once = swww init
-      exec-once = sleep 5; swww img ${cfg.wallpaper}
+      exec-once = ${getExe pkgs.swww} init
+      exec-once = sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}
       ''
 
       # --- #
@@ -218,10 +209,10 @@ in
 
       (strings.optionalString osConfig.hellebore.vm.enable
         ''
-        ${mkWindowrulev2 "title:(Luminous-Rafflesia)class:(looking-glass-client)" [
+        ${mkWindowrulev2 "title:(${osConfig.hellebore.vm.name})class:(looking-glass-client)" [
           "fullscreen"
         ]}
-        ${mkWindowrulev2 "title:(Luminous-Rafflesia),class:(looking-glass-client)"[
+        ${mkWindowrulev2 "title:(${osConfig.hellebore.vm.name}),class:(looking-glass-client)"[
           "idleinhibit always"
         ]}
         bind = $mainMod, W, exec, [workspace empty] start-vm --resolution=2560x1440 -Fi

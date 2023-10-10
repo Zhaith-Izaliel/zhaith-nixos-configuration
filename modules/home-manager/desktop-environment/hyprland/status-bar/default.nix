@@ -85,7 +85,8 @@ in
           ++ lists.optional config.programs.wlogout.enable "custom/shutdown";
 
           gamemode = mkIf osConfig.programs.gamemode.enable {
-            format = "{glyph} GameMode On";
+            format = "{glyph}";
+            format-alt = "{glyph}";
             hide-not-running = true;
             use-icon = true;
             tooltip = true;

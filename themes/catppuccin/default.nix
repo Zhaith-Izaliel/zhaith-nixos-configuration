@@ -3,10 +3,11 @@ let
   theme-packages = import ./packages.nix { inherit pkgs lib; };
 in
 {
-  bat = rec {
+  bat = {
     package = theme-packages.bat-theme;
+    src = theme-packages.bat-theme.src;
     name = "catppuccin-macchiato";
-    file = "${package}/Catppuccin-macchiato.tmTheme";
+    file = "Catppuccin-macchiato.tmTheme";
   };
 
   gitui = rec {

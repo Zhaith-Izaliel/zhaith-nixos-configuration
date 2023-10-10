@@ -21,6 +21,8 @@ in
 
     services.gnome.gnome-settings-daemon.enable = true;
 
+    programs.dconf.enable = true;
+
     security.pam.services.swaylock.text = strings.optionalString cfg.enableSwaylockPam ''
     # PAM configuration file for the swaylock screen locker. By default, it includes
     # the 'login' configuration file (see /etc/pam.d/login)
@@ -52,7 +54,8 @@ in
       xwayland = {
         enable = true;
       };
-      enableNvidiaPatches = config.hardware.nvidia.modesetting.enable;
+      enableNvidiaPatches = config.hardware.nvidia.modesetting.enable &&
+      !config.hardware.nvidia.prime.offload.enable;
     };
   };
 }

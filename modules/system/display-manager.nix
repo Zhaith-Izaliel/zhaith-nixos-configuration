@@ -1,4 +1,4 @@
-{ config, lib, theme, ... }:
+{ config, lib, pkgs, theme, ... }:
 
 with lib;
 
@@ -38,6 +38,20 @@ in
       default = "oss_latin9";
       description = "Keyboard variant used in the Display Manager.";
     };
+
+    background = {
+      path  = mkOption {
+        type = types.oneOf [ types.path types.str ];
+        default = "";
+        description = "The path to the background image to use in the greeter.";
+      };
+      fit = mkOption {
+        type = types.enum [ "Fill" "Contain" "Cover" "ScaleDown" ];
+        default = "Contain";
+        description = "How the background image covers the screen if the aspect
+        ratio doesn't match";
+      };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -47,6 +61,7 @@ in
       xkbVariant = cfg.keyboardVariant;
       displayManager.sddm = {
         enable = true;
+        wayland.enable = true;
         settings = {
           Theme = {
             CursorTheme = theme.gtk.cursorTheme.name;
@@ -69,7 +84,7 @@ in
             FontSize = toString cfg.fontSize;
             MainColor = theme.colors.text;
             ForceHideCompletePassword = true;
-            Background = ../../assets/images/sddm/greeter.png;
+            Background = cfg.background.path;
           };
         };
       };

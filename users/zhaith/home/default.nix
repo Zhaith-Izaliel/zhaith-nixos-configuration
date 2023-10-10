@@ -70,6 +70,7 @@
         betterdiscord.enable = true;
       };
       office.enable = true;
+      tasks.enable = true;
     };
 
     multimedia = {
@@ -112,7 +113,7 @@
         enable = true;
         integratedGPU = {
           enable = true;
-          driver = "i915";
+          driver = "iris";
         };
       };
     };

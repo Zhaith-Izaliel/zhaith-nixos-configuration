@@ -25,6 +25,7 @@
   nixpkgs.config.permittedInsecurePackages = [
     "nodejs-14.21.3" # FileVirtuelle
     "electron-12.2.3" # Etcher
+    "electron-19.1.9" # TODO: Needs to fine which package depends on it
   ];
 
   hellebore = {
@@ -48,6 +49,7 @@
           enable = true;
           offload.enable = true;
           intelBusId = "PCI:0:2:0";
+          intelDeviceId = "9a60";
           nvidiaBusId = "PCI:1:0:0";
         };
       };
@@ -130,8 +132,7 @@
 
     display-manager = {
       enable = true;
-      screenWidth = 2560;
-      screenHeight = 1440;
+      background.path = ../../assets/images/sddm/greeter.png;
     };
 
     power-management = {

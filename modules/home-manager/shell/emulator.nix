@@ -26,8 +26,8 @@ in
         setup.";
       };
       driver = mkOption {
-        type = types.enum [ "i915" "radeonsi" ];
-        default = "i915";
+        type = types.enum [ "i965" "iris" "radeonsi" ];
+        default = "";
         description = "Defines the driver to run kitty on a multi GPU setup.";
       };
     };
