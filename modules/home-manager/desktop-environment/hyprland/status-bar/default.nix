@@ -85,8 +85,8 @@ in
           ++ lists.optional config.programs.wlogout.enable "custom/shutdown";
 
           gamemode = mkIf osConfig.programs.gamemode.enable {
-            format = "{glyph}";
-            format-alt = "{glyph}";
+            format = "{glyph} GameMode On";
+            format-alt = "{glyph} GameMode Off";
             hide-not-running = true;
             use-icon = true;
             tooltip = true;
@@ -133,19 +133,16 @@ in
             sort-by-number =  true;
             format = mkBig "{icon}";
             format-icons = {
-              "1" = "󰲠";
-              "2" = "󰲢";
-              "3" = "󰲤";
-              "4" = "󰲦";
-              "5" = "󰲨";
-              "6" = "󰲪";
+              "1" = "";
+              "2" = "󰹕";
+              "3" = "󰙯";
+              "4" = "󰇮";
+              "5" = "";
+              "6" = "";
               "7" = "󰲬";
               "8" = "󰲮";
               "9" = "󰲰";
               "10" = "󰿬";
-            };
-            persistent_workspaces =  {
-              "*" = 5;
             };
           };
 

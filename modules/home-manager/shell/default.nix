@@ -38,9 +38,6 @@ in
       };
       description = "Set ZSH custom directory hashes.";
     };
-
-    enableDirenvLogs = mkEnableOption "Direnv Logs when getting in a Direnv
-    directory";
   };
 
   config = mkIf cfg.enable {
@@ -88,12 +85,6 @@ in
         export VI_MODE_SET_CURSOR=true
         ''
 
-        (strings.optionalString (!cfg.enableDirenvLogs)
-        ''
-        # Remove log from direnv
-        export DIRENV_LOG_FORMAT=""
-        '')
-
         ''
         # Zsh autosuggestions
         export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=${theme.colors.subtext0}"
@@ -103,16 +94,18 @@ in
         initExtra = strings.concatStringsSep "\n" [
           (strings.optionalString cfg.motd.enable (if config.programs.kitty.enable then ''
           # Neofetch MOTD
-          if [ "$KITTY_WINDOW_ID" = "1" ]; then
+          if [ "$KITTY_WINDOW_ID" = "1" ] && [ -z $IN_NIX_SHELL ]; then
             ${lib.getExe pkgs.neofetch} --kitty ${image}
           fi
-          '' else "${getExe pkgs.neofetch}"))
+          '' else ''
+          if [ -z $IN_NIX_SHELL ]; then
+            ${getExe pkgs.neofetch}
+          fi
+          ''))
 
           ''
           # Nix shell integration
           ${lib.getExe pkgs.any-nix-shell} zsh | source /dev/stdin
-          # Auto use direnv
-          eval "$(direnv hook zsh)"
           ''
 
 

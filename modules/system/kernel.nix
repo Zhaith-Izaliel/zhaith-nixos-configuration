@@ -11,7 +11,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    # boot.initrd.kernelModules = [ "i915" ];
+    boot.initrd.kernelModules = [ "i915" ];
   };
 }
 

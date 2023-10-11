@@ -101,7 +101,9 @@
       bat.enable = true;
       tools = {
         enable = true;
-        enableLorri = true;
+        direnv = {
+          enable = true;
+        };
       };
     };
 

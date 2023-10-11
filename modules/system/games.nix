@@ -24,21 +24,20 @@ in
       }
     ];
 
-    boot.kernelParams = lists.optional config.hardware.nvidia.modesetting.enable
-    "nvidia-drm.modeset=1";
-
     programs = {
-      gamescope = mkIf (!config.programs.hyprland.xwayland.enable) {
+      gamescope = {
         enable = true;
         args = lists.optional config.programs.hyprland.enable "--expose-wayland";
       };
 
       steam = {
         enable = true;
-        gamescopeSession = mkIf (!config.programs.hyprland.xwayland.enable) {
+        gamescopeSession = {
           enable = true;
           args = lists.optional config.programs.hyprland.enable "--expose-wayland";
         };
+        remotePlay.openFirewall = true;
+        dedicatedServer.openFirewall = true;
       };
 
       gamemode = {
@@ -47,7 +46,7 @@ in
         settings = {
           general = {
             renice = 10;
-            inhibit_screensaver = 1;
+            inhibit_screensaver = 0;
             reaper_freq = 5;
             igpu_desiredgov = "powersave";
           };
@@ -68,6 +67,7 @@ in
       (wine.override { wineBuild = "wine64"; })
       wineWowPackages.staging
       winetricks
+      steamtinkerlaunch
     ] ++ lists.optional config.programs.hyprland.enable
     wineWowPackages.waylandFull;
   };

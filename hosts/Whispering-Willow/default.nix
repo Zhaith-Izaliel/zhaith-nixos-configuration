@@ -49,7 +49,6 @@
           enable = true;
           offload.enable = true;
           intelBusId = "PCI:0:2:0";
-          intelDeviceId = "9a60";
           nvidiaBusId = "PCI:1:0:0";
         };
       };
