@@ -112,10 +112,12 @@
 
       vmName = "Luminous-Rafflesia";
 
-      pcis = [
-        "0000:01:00.0"
-        "0000:01:00.1"
-      ];
+      pcisBinding = {
+        pcis = [
+          "0000:01:00.0"
+          "0000:01:00.1"
+        ];
+      };
 
       username = "zhaith";
     };

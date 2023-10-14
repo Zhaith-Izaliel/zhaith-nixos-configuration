@@ -43,6 +43,7 @@ in
         enable = true;
         package = pkgs.swaylock-effects;
         settings = {
+          grace = 15;
           indicator-radius = cfg.indicatorRadius;
           color = converted-colors.base;
           bs-hl-color = converted-colors.rosewater;

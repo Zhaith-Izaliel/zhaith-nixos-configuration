@@ -12,6 +12,8 @@ in
     profiles.zhaith = {
       enable = mkEnableOption "Zhaith's Firefox profile";
     };
+
+    firefoxDev.enable = mkEnableOption "Firefox developper edition";
   };
 
   config = mkIf cfg.enable {
@@ -19,6 +21,8 @@ in
 
     programs.firefox = {
       enable = true;
+      # package = if cfg.firefoxDev.enable then pkgs.firefox-devedition else
+      # pkgs.firefox;
       profiles."zhaith" = mkIf cfg.profiles.zhaith.enable {
         isDefault = true;
         search = {

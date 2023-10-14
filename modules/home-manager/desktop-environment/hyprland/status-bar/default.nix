@@ -86,7 +86,6 @@ in
 
           gamemode = mkIf osConfig.programs.gamemode.enable {
             format = "{glyph} GameMode On";
-            format-alt = "{glyph} GameMode Off";
             hide-not-running = true;
             use-icon = true;
             tooltip = true;

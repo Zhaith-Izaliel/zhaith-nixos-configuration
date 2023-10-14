@@ -39,11 +39,17 @@ in
       description = "Name of the VM in virt-manager";
     };
 
-    pcis = mkOption {
-      type = types.listOf types.nonEmptyStr;
-      default = [];
-      description = "List of the PCIs to isolate the GPU.";
+    pcisBinding = {
+      enableOnBoot = mkEnableOption "PCIs binding on Boot";
+
+      pcis = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "List of the PCIs to isolate the GPU.";
+      };
     };
+
+
 
     username = mkOption {
       type = types.nonEmptyStr;
@@ -55,7 +61,7 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> (builtins.length cfg.pcis) > 0;
+        assertion = cfg.enable -> (builtins.length cfg.pcisBinding.pcis) > 0;
         message = "You need at least one PCI to allow GPU passthrough.";
       }
     ];
@@ -132,20 +138,20 @@ in
         ];
 
 
-        preDeviceCommands = ''
-          for DEV in ${strings.concatStringsSep " " cfg.pcis}; do
-          echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
-          done
-          modprobe -i vfio-pci
+        preDeviceCommands = strings.optionalString cfg.pcisBinding.enableOnBoot ''
+        for DEV in ${strings.concatStringsSep " " cfg.pcisBinding.pcis}; do
+        echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
+        done
+        modprobe -i vfio-pci
         '';
       };
 
       extraModprobeConfig = ''
-        blacklist nouveau
+      blacklist nouveau
         # blacklist xpad
         options nouveau modeset=0
-      '';
+        '';
+      };
     };
-  };
-}
+  }
 

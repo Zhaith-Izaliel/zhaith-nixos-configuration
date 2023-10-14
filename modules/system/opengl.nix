@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.hellebore.opengl;
+  isNvidia = builtins.elem "nvidia" config.services.xserver.videoDrivers;
 in
 {
   options.hellebore.opengl = {
@@ -22,7 +23,7 @@ in
         vaapiVdpau
         libvdpau-va-gl
         mesa
-      ];
+      ] ++ lists.optional isNvidia pkgs.nvidia-vaapi-driver;
     };
   };
 }

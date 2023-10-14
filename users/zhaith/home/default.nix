@@ -61,6 +61,7 @@
       browsers = {
         enable = true;
         profiles.zhaith.enable = true;
+        firefoxDev.enable = true;
       };
     };
 

@@ -58,15 +58,15 @@ in
         modesetting.enable = true;
 
         powerManagement = {
-          enable = true;
-          finegrained = true;
+          enable = false;
+          finegrained = false;
         };
 
         open = true;
 
         nvidiaSettings = true;
 
-        nvidiaPersistenced = true;
+        # nvidiaPersistenced = true;
 
         prime = mkIf cfg.prime.enable {
           inherit (cfg.prime) intelBusId nvidiaBusId;

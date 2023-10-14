@@ -238,11 +238,11 @@ tooltip {
   border-right: 0px;
 }
 
-#gamemode.running {
-  animation-name: gamemode-activated;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-}
+/* #gamemode.running { */
+/*   animation-name: gamemode-activated; */
+/*   animation-duration: 4s; */
+/*   animation-iteration-count: infinite; */
+/* } */
 
 #bluetooth.disabled {
   color: @maroon;

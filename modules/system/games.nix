@@ -24,18 +24,32 @@ in
       }
     ];
 
+    nixpkgs.overlays = [
+      (final: prev: {
+        steam = prev.steam.override ({ extraPkgs ? pkgs': [], ... }: {
+          extraPkgs = pkgs': (extraPkgs pkgs') ++ (with pkgs'; [
+            libgdiplus
+            gamemode
+            glib
+            gvfs
+            dconf
+          ]);
+        });
+      })
+    ];
+
     programs = {
-      gamescope = {
-        enable = true;
-        args = lists.optional config.programs.hyprland.enable "--expose-wayland";
-      };
+      # gamescope = {
+      #   enable = true;
+      #   args = lists.optional config.programs.hyprland.enable "--expose-wayland";
+      # };
 
       steam = {
         enable = true;
-        gamescopeSession = {
-          enable = true;
-          args = lists.optional config.programs.hyprland.enable "--expose-wayland";
-        };
+        # gamescopeSession = {
+        #   enable = true;
+        #   args = lists.optional config.programs.hyprland.enable "--expose-wayland";
+        # };
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
       };
@@ -46,7 +60,7 @@ in
         settings = {
           general = {
             renice = 10;
-            inhibit_screensaver = 0;
+            inhibit_screensaver = 1;
             reaper_freq = 5;
             igpu_desiredgov = "powersave";
           };
