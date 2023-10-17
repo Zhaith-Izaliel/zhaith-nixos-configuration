@@ -38,6 +38,7 @@ in
     ./notifications.nix
     ./applications-launcher
     ./status-bar
+    ./widget
   ];
 
   options.hellebore.desktop-environment.hyprland = {
