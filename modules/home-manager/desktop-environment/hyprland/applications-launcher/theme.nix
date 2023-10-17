@@ -7,8 +7,6 @@ let
 in
 {
   programs.rofi.theme = {
-
-
     window = {
       # properties for window widget
       transparency = "real";
