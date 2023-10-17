@@ -133,9 +133,8 @@ in
       enable = true;
       package = cfg.package;
       xwayland.enable = true;
-      enableNvidiaPatches = config.hardware.nvidia.modesetting.enable;
-      systemdIntegration = true;
-      recommendedEnvironment = true;
+      enableNvidiaPatches = false;
+      systemd.enable = true;
       extraConfig = strings.concatStringsSep "\n" [
       ''
       # Palette
@@ -242,7 +241,7 @@ in
         "workspace 6"
       ]}
 
-      bind = $mainMod, W, exec, start-vm --resolution=${firstMonitor.width}x${firstMonitor.height} -Fi
+      bind = $mainMod, W, exec, start-vm --resolution=${toString firstMonitor.width}x${toString firstMonitor.height} -Fi
       ''
       )
 
@@ -255,6 +254,10 @@ in
         ''
       )
 
+      (strings.optionalString config.hellebore.desktop-environment.i18n.enable
+      ''
+      bind = $mainMod, I, exec, fcitx5-remote -t
+      '')
 
       # --- #
       ''
@@ -351,7 +354,6 @@ in
       bind = $mainMod, C, killactive,
       bind = $mainMod, E, exec, nemo
       bind = $mainMod, V, togglefloating,
-      bind = $mainMod, I, exec, fcitx5-remote -t
       bind = $mainMod, P, exec, hyprpicker -a
 
       # Window manipulations

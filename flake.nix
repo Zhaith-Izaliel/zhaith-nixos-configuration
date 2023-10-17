@@ -76,7 +76,6 @@
         stateVersion = "22.05";
         extraModules = [
           zhaith-neovim.homeManagerModules.default
-          hyprland.homeManagerModules.default
           modules.home-manager
         ] ++ rofi-applets.homeManagerModules.all;
         overlays = [

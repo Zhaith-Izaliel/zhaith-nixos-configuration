@@ -15,6 +15,12 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = theme.gtk.packages;
 
+    qt.enable = true;
+
+    qt.platformTheme = "gtk2";
+
+    qt.style = "gtk2";
+
     services.gvfs.enable = true;
 
     services.gnome.gnome-keyring.enable = true;
@@ -54,7 +60,7 @@ in
       xwayland = {
         enable = true;
       };
-      enableNvidiaPatches = config.hardware.nvidia.modesetting.enable;
+      enableNvidiaPatches = false;
     };
   };
 }

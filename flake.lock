@@ -2222,11 +2222,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1694419584,
-        "narHash": "sha256-Z16XwLU1wXpjwAQ8YTLJeavaQgD5WReRmwzWyQCsoMg=",
+        "lastModified": 1697434239,
+        "narHash": "sha256-oQ26zqAn6dGxyOq6sC+Fw52uAF7YAR9avq4VERB5z3o=",
         "owner": "Zhaith-Izaliel",
         "repo": "virgutils",
-        "rev": "99b9917965699a22ef7324441e54cfe36ee3854e",
+        "rev": "fd68c8f36eba7ae2ba4c9add61e0c48e14bbd003",
         "type": "gitlab"
       },
       "original": {

@@ -20,7 +20,6 @@ in
       vlc
       kid3
       ffmpeg
-      input-remapper
       pavucontrol
       blueberry
       power-management

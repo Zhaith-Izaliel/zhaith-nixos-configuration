@@ -102,7 +102,7 @@
     tex.enable = true;
 
     vm = {
-      enable = false;
+      enable = true;
 
       cpuIsolation = {
         totalCores = "0-15";
@@ -110,9 +110,10 @@
         variableName = "ISOLATE_CPUS";
       };
 
-      vmName = "Luminous-Rafflesia";
+      name = "Luminous-Rafflesia";
 
       pcisBinding = {
+        enableDynamicBinding = true;
         pcis = [
           "0000:01:00.0"
           "0000:01:00.1"

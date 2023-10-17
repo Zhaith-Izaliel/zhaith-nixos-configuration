@@ -33,7 +33,7 @@ in
       };
     };
 
-    vmName = mkOption {
+    name = mkOption {
       type = types.nonEmptyStr;
       default = "";
       description = "Name of the VM in virt-manager";
@@ -41,6 +41,9 @@ in
 
     pcisBinding = {
       enableOnBoot = mkEnableOption "PCIs binding on Boot";
+
+      enableDynamicBinding = mkEnableOption "PCIs dynamic binding on VM run
+      (Nvidia only)";
 
       pcis = mkOption {
         type = types.listOf types.nonEmptyStr;
@@ -64,10 +67,22 @@ in
         assertion = cfg.enable -> (builtins.length cfg.pcisBinding.pcis) > 0;
         message = "You need at least one PCI to allow GPU passthrough.";
       }
+      {
+        assertion = cfg.pcisBinding.enableOnBoot ->
+        !cfg.pcisBinding.enableDynamicBinding;
+        message = "You can't enable dynamic PCIs binding and binding on boot at the
+        same time.";
+      }
+      {
+        assertion = !cfg.pcisBinding.enableOnBoot ->
+        cfg.pcisBinding.enableDynamicBinding;
+        message = "You can't enable dynamic PCIs binding and binding on boot at the
+        same time.";
+      }
     ];
 
     environment.systemPackages = with pkgs; [
-      virtmanager
+      virt-manager
       start-vm
     ];
 
@@ -77,7 +92,7 @@ in
         ovmf.enable = true;
         runAsRoot = true;
         verbatimConfig = ''
-        user = "zhaith"
+          user = "zhaith"
         '';
       };
       onBoot = "ignore";
@@ -90,29 +105,34 @@ in
 
     systemd.services.libvirtd.preStart = let
       qemuHook = pkgs.writeScript "qemu-hook" ''
-      #!${pkgs.stdenv.shell}
-
-      VM_NAME="$1"
-      VM_ACTION="$2/$3"
-      if [ "$VM_NAME" = "${cfg.vmName}" ] && [ "${cfg.cpuIsolation.variableName}" = "true" ]; then
-      if [[ "$VM_ACTION" == "prepare/begin" ]]; then
-      systemctl set-property --runtime -- user.slice AllowedCPUs="${cfg.cpuIsolation.hostCores}"
-      systemctl set-property --runtime -- system.slice AllowedCPUs="${cfg.cpuIsolation.hostCores}"
-      systemctl set-property --runtime -- init.scope AllowedCPUs="${cfg.cpuIsolation.hostCores}"
-      elif [[ "$VM_ACTION" == "release/end" ]]; then
-      systemctl set-property --runtime -- user.slice AllowedCPUs="${cfg.cpuIsolation.totalCores}"
-      systemctl set-property --runtime -- system.slice AllowedCPUs="${cfg.cpuIsolation.totalCores}"
-      systemctl set-property --runtime -- init.scope AllowedCPUs="${cfg.cpuIsolation.totalCores}"
-      fi
-      fi
+        #!${pkgs.stdenv.shell}
+        VM_NAME="$1"
+        VM_ACTION="$2/$3"
+        if [ "$VM_NAME" = "${cfg.name}" ] && [ "${cfg.cpuIsolation.variableName}" = "true" ]; then
+          if [[ "$VM_ACTION" == "prepare/begin" ]]; then
+            systemctl set-property --runtime -- user.slice AllowedCPUs="${cfg.cpuIsolation.hostCores}"
+            systemctl set-property --runtime -- system.slice AllowedCPUs="${cfg.cpuIsolation.hostCores}"
+            systemctl set-property --runtime -- init.scope AllowedCPUs="${cfg.cpuIsolation.hostCores}"
+            ${strings.optionalString cfg.pcisBinding.enableDynamicBinding ''
+            # TODO: pci binding to vfio_pci and unbind from nvidia
+            ''}
+          elif [[ "$VM_ACTION" == "release/end" ]]; then
+            systemctl set-property --runtime -- user.slice AllowedCPUs="${cfg.cpuIsolation.totalCores}"
+            systemctl set-property --runtime -- system.slice AllowedCPUs="${cfg.cpuIsolation.totalCores}"
+            systemctl set-property --runtime -- init.scope AllowedCPUs="${cfg.cpuIsolation.totalCores}"
+            ${strings.optionalString cfg.pcisBinding.enableDynamicBinding ''
+            # TODO: pci binding to nvidia and unbind from vfio_pci
+            ''}
+          fi
+        fi
       '';
       libvirtHooks = "/var/lib/libvirt/hooks";
     in ''
-    mkdir -p "${libvirtHooks}"
-    chmod 755 "${libvirtHooks}"
+      mkdir -p "${libvirtHooks}"
+      chmod 755 "${libvirtHooks}"
 
-    # Copy hook files
-    ln -sf ${qemuHook} "${libvirtHooks}/qemu"
+      # Copy hook files
+      ln -sf ${qemuHook} "${libvirtHooks}/qemu"
     '';
 
     boot = {
@@ -128,7 +148,7 @@ in
         "intel_iommu=on"
         "iommu=pt"
       ];
-      initrd = {
+      initrd = mkIf cfg.pcisBinding.enableOnBoot {
         availableKernelModules = [
           "vfio"
           "vfio_iommu_type1"
@@ -138,20 +158,20 @@ in
         ];
 
 
-        preDeviceCommands = strings.optionalString cfg.pcisBinding.enableOnBoot ''
-        for DEV in ${strings.concatStringsSep " " cfg.pcisBinding.pcis}; do
-        echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
-        done
-        modprobe -i vfio-pci
+        preDeviceCommands = ''
+          for DEV in ${strings.concatStringsSep " " cfg.pcisBinding.pcis}; do
+          echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
+          done
+          modprobe -i vfio-pci
         '';
       };
 
       extraModprobeConfig = ''
-      blacklist nouveau
+        blacklist nouveau
         # blacklist xpad
-        options nouveau modeset=0
-        '';
-      };
+        ${strings.optionalString cfg.pcisBinding.enableOnBoot "options nouveau modeset=0"}
+      '';
     };
-  }
+  };
+}
 

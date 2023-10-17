@@ -66,7 +66,7 @@ in
 
         nvidiaSettings = true;
 
-        # nvidiaPersistenced = true;
+        nvidiaPersistenced = false;
 
         prime = mkIf cfg.prime.enable {
           inherit (cfg.prime) intelBusId nvidiaBusId;
