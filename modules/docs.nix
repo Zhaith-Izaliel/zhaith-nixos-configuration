@@ -7,7 +7,7 @@ let
   eval = lib.evalModules {
     modules = [
       modules.system
-      modules.home-manager
+      # modules.home-manager
     ];
 
     check = false;

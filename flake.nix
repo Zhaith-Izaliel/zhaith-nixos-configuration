@@ -112,7 +112,7 @@
       NIX_CONFIG = "experimental-features = nix-command flakes";
     };
     packages = {
-      docs = import ./generate-docs.nix { inherit pkgs; };
+      docs = import ./docs.nix { inherit pkgs; };
     };
   });
 }
