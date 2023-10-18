@@ -20,7 +20,8 @@ stdenv.mkDerivation {
 
   # symlink our generated docs into the correct folder before generating
   buildPhase = ''
-    ln -s ${options-doc} "./docs/nixos-options.md"
+    mkdir "docs"
+    ln -s ${options-doc} "./docs/system-options.md"
     # generate the site
     mkdocs build
   '';

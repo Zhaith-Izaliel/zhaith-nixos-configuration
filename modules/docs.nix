@@ -20,7 +20,7 @@ let
 in
 
 # create a derivation for capturing the markdown output
-runCommand "options-doc.md" {} ''
+runCommand "system-options-doc.md" {} ''
   cat ${optionsDoc.optionsCommonMark} >> $out
 ''
 
