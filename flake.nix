@@ -111,6 +111,9 @@
       buildInputs = with pkgs; [ home-manager git ];
       NIX_CONFIG = "experimental-features = nix-command flakes";
     };
+    packages = {
+      docs = import ./generate-docs.nix { inherit pkgs; };
+    };
   });
 }
 
