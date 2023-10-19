@@ -209,7 +209,10 @@ in
       ''
       workspace = 3,persistent:true
       exec-once = ${getExe config.hellebore.tools.discord.package}
-      ${mkWindowrulev2 "class:(discord)" [ "workspace 3" ]}
+      ${mkWindowrulev2 "class:(discord)" [
+        "workspace 3"
+        "noinitialfocus"
+      ]}
       '')
 
       (strings.optionalString config.hellebore.desktop-environment.mail.enable
@@ -222,8 +225,15 @@ in
       (strings.optionalString osConfig.hellebore.games.enable
       ''
       workspace = 5,persistent:true
-      ${mkWindowrulev2 "class:(steam)" [ "workspace 5" ]}
-      ${mkWindowrulev2 "class:(lutris)" [ "workspace 5" ]}
+      ${mkWindowrulev2 "class:(steam)" [
+        "workspace 5"
+        "noinitialfocus"
+        "tile"
+      ]}
+      ${mkWindowrulev2 "class:(lutris)" [
+        "workspace 5"
+        "noinitialfocus"
+      ]}
       exec-once = lutris
       exec-once = steam
       ''
@@ -234,11 +244,7 @@ in
       workspace = 6,persistent:true
       ${mkWindowrulev2 "title:(${osConfig.hellebore.vm.name})class:(looking-glass-client)" [
         "fullscreen"
-      ]}
-      ${mkWindowrulev2 "title:(${osConfig.hellebore.vm.name}),class:(looking-glass-client)"[
         "idleinhibit always"
-      ]}
-      ${mkWindowrulev2 "title:(${osConfig.hellebore.vm.name}),class:(looking-glass-client)"[
         "workspace 6"
       ]}
 
