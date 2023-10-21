@@ -123,7 +123,16 @@
       username = "zhaith";
     };
 
-    sound.enable = true;
+    sound = {
+      enable = true;
+      lowLatency = {
+        enable = true;
+        rate = 48000;
+        quantum = 32;
+        minQuantum = 32;
+        maxQuantum = 32;
+      };
+    };
 
     opengl.enable = true;
 

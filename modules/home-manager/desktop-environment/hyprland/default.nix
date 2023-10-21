@@ -134,7 +134,7 @@ in
       enable = true;
       package = cfg.package;
       xwayland.enable = true;
-      enableNvidiaPatches = false;
+      enableNvidiaPatches = elem "nvidia" osConfig.services.xserver.videoDrivers;
       systemd.enable = true;
       extraConfig = strings.concatStringsSep "\n" [
       ''
@@ -210,7 +210,7 @@ in
       workspace = 3,persistent:true
       exec-once = ${getExe config.hellebore.tools.discord.package}
       ${mkWindowrulev2 "class:(discord)" [
-        "workspace 3"
+        "workspace 3 silent"
         "noinitialfocus"
       ]}
       '')
@@ -218,7 +218,10 @@ in
       (strings.optionalString config.hellebore.desktop-environment.mail.enable
       ''
       workspace = 4,persistent:true
-      exec-once = [workspace 4] ${config.hellebore.desktop-environment.mail.bin}
+      ${mkWindowrulev2 "class:(evolution)" [
+        "workspace 4 silent"
+      ]}
+      exec-once = ${config.hellebore.desktop-environment.mail.bin}
       ''
       )
 
@@ -226,13 +229,15 @@ in
       ''
       workspace = 5,persistent:true
       ${mkWindowrulev2 "class:(steam)" [
-        "workspace 5"
-        "noinitialfocus"
+        "workspace 5 silent"
         "tile"
       ]}
       ${mkWindowrulev2 "class:(lutris)" [
+        "workspace 5 silent"
+      ]}
+      ${mkWindowrulev2 "class:(gw2-64)(.*)" [
         "workspace 5"
-        "noinitialfocus"
+        "tile"
       ]}
       exec-once = lutris
       exec-once = steam
@@ -386,29 +391,21 @@ in
       bind = $mainMod CTRL, right, movetoworkspace, +1
       bind = $mainMod CTRL, left, movetoworkspace, -1
 
-      # Switch workspaces with mainMod + [0-9]
-      bind = $mainMod, F1, workspace, 1
-      bind = $mainMod, F2, workspace, 2
-      bind = $mainMod, F3, workspace, 3
-      bind = $mainMod, F4, workspace, 4
-      bind = $mainMod, F5, workspace, 5
-      bind = $mainMod, F6, workspace, 6
-      bind = $mainMod, F7, workspace, 7
-      bind = $mainMod, F8, workspace, 8
-      bind = $mainMod, F9, workspace, 9
-      bind = $mainMod, F10, workspace, 10
+      # Switch workspaces with mainMod + F[1-10]
+      ${strings.concatStringsSep "\n" (
+          lists.map
+          (item: "bind = $mainMod, F${toString item}, workspace, ${toString item}")
+          (range 1 10)
+        )
+      }
 
-      # Move active window to a workspace with mainMod + SHIFT + [0-9]
-      bind = $mainMod CONTROL, F1, movetoworkspace, 1
-      bind = $mainMod CONTROL, F2, movetoworkspace, 2
-      bind = $mainMod CONTROL, F3, movetoworkspace, 3
-      bind = $mainMod CONTROL, F4, movetoworkspace, 4
-      bind = $mainMod CONTROL, F5, movetoworkspace, 5
-      bind = $mainMod CONTROL, F6, movetoworkspace, 6
-      bind = $mainMod CONTROL, F7, movetoworkspace, 7
-      bind = $mainMod CONTROL, F8, movetoworkspace, 8
-      bind = $mainMod CONTROL, F9, movetoworkspace, 9
-      bind = $mainMod CONTROL, F10, movetoworkspace, 10
+      # Move active window to a workspace with mainMod + CONTROL + F[1-10]
+      ${strings.concatStringsSep "\n" (
+          lists.map
+          (item: "bind = $mainMod CONTROL, F${toString item}, movetoworkspace, ${toString item}")
+          (range 1 10)
+        )
+      }
 
       # Scroll through existing workspaces with mainMod + scroll
       bind = $mainMod, mouse_down, workspace, e+1
