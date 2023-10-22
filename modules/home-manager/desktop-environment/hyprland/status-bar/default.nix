@@ -57,6 +57,8 @@ in
         mainBar = {
           layer = "top";
           position = "top";
+          output = with config.hellebore.desktop-environment.hyprland;
+          strings.optionalString enable (elemAt monitors 0).name;
           spacing = 0;
           height = 0;
           modules-left = [

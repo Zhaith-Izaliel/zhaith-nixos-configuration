@@ -3,6 +3,7 @@
 {
   imports = [
     ./bluetooth.nix
+    ./graphics-tablet.nix
     ./integrated-camera.nix
     ./ntfs.nix
     ./numerization.nix
