@@ -70,6 +70,13 @@ in
           ../../../../assets/images/other/volume.png);
         };
 
+        volume_onehundred = {
+          msg_urgency = "low";
+          summary = "Volume";
+          highlight = theme.colors.sapphire;
+          frame_color = theme.colors.sapphire;
+        };
+
         volume_overamplified = {
           msg_urgency = "critical";
           summary = "Volume";

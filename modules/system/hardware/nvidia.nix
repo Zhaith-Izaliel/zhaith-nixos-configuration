@@ -8,6 +8,9 @@ in
 {
   options.hellebore.hardware.nvidia = {
       enable = mkEnableOption "Nvidia Support";
+
+      power-profiles.enable = mkEnableOption "power-profiles-daemon support";
+
       prime = {
         enable = mkEnableOption "Nvidia PRIME support (laptop only)";
 
@@ -47,6 +50,8 @@ in
           message = "You can't enable both offload and sync at the same time.";
         }
       ];
+
+      services.power-profiles-daemon.enable = cfg.power-profiles.enable;
 
       environment.systemPackages = with pkgs; [
         mesa-demos

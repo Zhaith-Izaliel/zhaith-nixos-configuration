@@ -7,10 +7,21 @@ let
   gamemode-icon = cleanSource ../../assets/images/icons/gamemode.svg;
   notify-send-gamemode = message:
     "${pkgs.libnotify}/bin/notify-send -u critical -i ${gamemode-icon} -t 4000 '${message}'";
+
+  # Gamemode Start/Stop scripts
+  gamemode-start-script = pkgs.writeShellScriptBin "gamemode-start" ''
+  ${notify-send-gamemode "GameMode Started"}
+  '';
+
+  gamemode-stop-script = pkgs.writeShellScriptBin "gamemode-stop" ''
+  ${notify-send-gamemode "GameMode Stopped"}
+  '';
 in
 {
   options.hellebore.games = {
     enable = mkEnableOption "Hellebore's games support";
+
+    gamescope.enable = mkEnableOption "Gamescope support";
   };
 
   config = mkIf cfg.enable {
@@ -39,17 +50,17 @@ in
     ];
 
     programs = {
-      # gamescope = {
-      #   enable = true;
-      #   args = lists.optional config.programs.hyprland.enable "--expose-wayland";
-      # };
+      gamescope = mkIf cfg.gamescope.enable {
+        enable = true;
+        args = lists.optional config.programs.hyprland.enable "--expose-wayland";
+      };
 
       steam = {
         enable = true;
-        # gamescopeSession = {
-        #   enable = true;
-        #   args = lists.optional config.programs.hyprland.enable "--expose-wayland";
-        # };
+        gamescopeSession = mkIf cfg.gamescope.enable {
+          enable = true;
+          args = lists.optional config.programs.hyprland.enable "--expose-wayland";
+        };
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
       };
@@ -66,8 +77,8 @@ in
           };
 
           custom = {
-            start = notify-send-gamemode "GameMode started";
-            end = notify-send-gamemode "GameMode stopped";
+            start = "${gamemode-start-script}";
+            end = "${gamemode-stop-script}";
           };
         };
       };

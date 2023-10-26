@@ -23,7 +23,6 @@
   };
 
   nixpkgs.config.permittedInsecurePackages = [
-    "nodejs-14.21.3" # FileVirtuelle
     "electron-12.2.3" # Etcher
     "electron-19.1.9" # TODO: Needs to fine which package depends on it
   ];
@@ -45,6 +44,7 @@
     hardware = {
       nvidia = {
         enable = true;
+        power-profiles.enable = true;
         prime = {
           enable = true;
           offload.enable = true;
@@ -70,6 +70,11 @@
       integratedCamera = {
         disable = true;
         cameraBus = "3-13";
+      };
+
+      graphics-tablet = {
+        enable = true;
+        isWacom = true;
       };
     };
 
@@ -126,11 +131,11 @@
     sound = {
       enable = true;
       lowLatency = {
-        enable = true;
+        enable = false;
         rate = 48000;
-        quantum = 32;
-        minQuantum = 32;
-        maxQuantum = 32;
+        quantum = 64;
+        minQuantum = 64;
+        maxQuantum = 64;
       };
     };
 
@@ -148,11 +153,21 @@
 
     power-management = {
       enable = true;
-      cronTemplate = "0 2 * * *";
-      shutdownDate = "+60";
-      reminders = [
-        "50 2 * * *"
-      ];
+      autoShutdown = {
+        enable = true;
+        cronTemplate = "0 2 * * *";
+        shutdownDate = "+60";
+        reminders = [
+          "50 2 * * *"
+        ];
+      };
+
+      upower = {
+        enable = true;
+        percentageLow = 15;
+        percentageCritical = 10;
+        percentageAction = 5;
+      };
     };
   };
 

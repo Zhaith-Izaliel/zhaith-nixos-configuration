@@ -2254,11 +2254,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1697434239,
-        "narHash": "sha256-oQ26zqAn6dGxyOq6sC+Fw52uAF7YAR9avq4VERB5z3o=",
+        "lastModified": 1698196371,
+        "narHash": "sha256-ozFwBVDj3cNXaOF7zEveRzoz3nYCMq/ypqiYpd63aKc=",
         "owner": "Zhaith-Izaliel",
         "repo": "virgutils",
-        "rev": "fd68c8f36eba7ae2ba4c9add61e0c48e14bbd003",
+        "rev": "00a3b3599b3fb1693a4934245a9cb5d00f7cd063",
         "type": "gitlab"
       },
       "original": {
@@ -2385,11 +2385,11 @@
         "nvim-yuck": "nvim-yuck"
       },
       "locked": {
-        "lastModified": 1697581866,
-        "narHash": "sha256-eGhJuUrzcX7CDXkF022Ytltd52Az6ihIvAgeiZskBS0=",
+        "lastModified": 1698136696,
+        "narHash": "sha256-TaDYnfnPTOgpS2ItykowgC6bIaaN2MzaKrztECLkYB0=",
         "owner": "Zhaith-Izaliel",
         "repo": "neovim-config",
-        "rev": "943383b5d2bbdf46f03df4c1bd84d140414cef1c",
+        "rev": "c8c57ebe976ea1e5902ac2c044af6da635a7f3d2",
         "type": "gitlab"
       },
       "original": {

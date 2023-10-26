@@ -19,6 +19,7 @@
             scaling = 1.0;
           }
         ];
+        mirrorFirstMonitor = true;
         lockscreen = {
           enable = true;
           fontSize = config.hellebore.fontSize + 10;
@@ -68,7 +69,8 @@
     tools = {
       discord = {
         enable = true;
-        betterdiscord.enable = true;
+        openASAR.enable = true;
+        tts.enable = true;
       };
       office.enable = true;
       tasks.enable = true;

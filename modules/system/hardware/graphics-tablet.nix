@@ -17,13 +17,17 @@ in
   };
 
   config = mkMerge [
-    (mkIf cfg.enable {
-      hardware.opentabletdriver.enable = !cfg.isWacom;
+    (mkIf (cfg.enable && !cfg.isWacom) {
+      hardware.opentabletdriver = {
+        enable = true;
+        daemon.enable = true;
+      };
     })
 
-    (mkIf cfg.enable && cfg.isWacom {
+    (mkIf (cfg.enable && cfg.isWacom) {
       boot.kernelModules = [ "wacom" ];
-      environment.systemPackage = with pkgs; [ wacomtablet ];
+      environment.systemPackages = with pkgs; [ wacomtablet ];
+      services.xserver.wacom.enable = true;
     })
   ];
 }

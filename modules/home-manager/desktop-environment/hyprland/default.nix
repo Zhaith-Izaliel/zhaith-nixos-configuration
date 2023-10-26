@@ -14,6 +14,7 @@ let
       xOffset = mkOption { type = types.int; };
       yOffset = mkOption { type = types.int; };
       scaling = mkOption { type = types.float; };
+      extraArgs = mkOption { type = types.str; };
     };
   };
   mkMonitor = monitor:
@@ -48,6 +49,11 @@ in
       type = types.listOf monitorType;
       default = [];
       description = "Primary screen resolution.";
+    };
+
+    mirrorFirstMonitor = mkEnableOption null // {
+      description = "Allow Hyprland to mirror the first monitor defined in its
+      monitors list when connecting an unknown monitor.";
     };
 
     package = mkOption {
@@ -149,6 +155,12 @@ in
       ${mkMonitors cfg.monitors}
       ''
 
+      (strings.optionalString cfg.mirrorFirstMonitor
+      ''
+      monitor=,preferred,auto,1,mirror,${(elemAt cfg.monitors 0).name}
+      ''
+      )
+
       # --- #
 
       ''
@@ -208,7 +220,7 @@ in
       (strings.optionalString config.hellebore.tools.discord.enable
       ''
       workspace = 3,persistent:true
-      exec-once = ${getExe config.hellebore.tools.discord.package}
+      exec-once = ${getExe config.hellebore.tools.discord.finalPackage}
       ${mkWindowrulev2 "class:(discord)" [
         "workspace 3 silent"
         "noinitialfocus"
