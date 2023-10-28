@@ -11,6 +11,8 @@ in
 
       power-profiles.enable = mkEnableOption "power-profiles-daemon support";
 
+      modesetting.enable = mkEnableOption "Nvidia Kernel Modesetting";
+
       prime = {
         enable = mkEnableOption "Nvidia PRIME support (laptop only)";
 
@@ -29,6 +31,8 @@ in
         offload.enable = mkEnableOption "Nvidia PRIME offload mode";
 
         sync.enable = mkEnableOption "Nvidia PRIME sync mode";
+
+        reverseSync.enable = mkEnableOption "Nvidia PRIME reverse-sync mode";
       };
     };
 
@@ -41,14 +45,6 @@ in
           message = "You must enable OpenGL with DRI support (64 bits and 32 bits)
           to support Nvidia.";
         }
-        {
-          assertion = cfg.prime.offload.enable -> !cfg.prime.sync.enable;
-          message = "You can't enable both offload and sync at the same time.";
-        }
-        {
-          assertion = cfg.prime.sync.enable -> !cfg.prime.offload.enable;
-          message = "You can't enable both offload and sync at the same time.";
-        }
       ];
 
       services.power-profiles-daemon.enable = cfg.power-profiles.enable;
@@ -57,10 +53,11 @@ in
         mesa-demos
       ];
 
-      services.xserver.videoDrivers = [ "nvidia" ];
+      services.xserver.videoDrivers = [ "nvidia" ]; # IMPORTANT: this activates
+                                                    # the hardware.nvidia module
 
       hardware.nvidia = {
-        modesetting.enable = true;
+        inherit (cfg) modesetting;
 
         powerManagement = {
           enable = true;
@@ -76,9 +73,13 @@ in
         prime = mkIf cfg.prime.enable {
           inherit (cfg.prime) intelBusId nvidiaBusId;
 
-          offload = mkIf cfg.prime.offload.enable {
+          offload = mkIf (cfg.prime.offload.enable || cfg.prime.reverseSync.enable) {
             enable = true;
             enableOffloadCmd = true;
+          };
+
+          reverseSync = mkIf cfg.prime.reverseSync.enable {
+            enable = true;
           };
 
           sync = mkIf cfg.prime.sync.enable {
