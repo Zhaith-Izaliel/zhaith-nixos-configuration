@@ -22,6 +22,8 @@ in
     enable = mkEnableOption "Hellebore's games support";
 
     gamescope.enable = mkEnableOption "Gamescope support";
+
+    minecraft.enable = mkEnableOption "Minecraft Prismlauncher";
   };
 
   config = mkIf cfg.enable {
@@ -94,7 +96,8 @@ in
       winetricks
       steamtinkerlaunch
     ] ++ lists.optional config.programs.hyprland.enable
-    wineWowPackages.waylandFull;
+    wineWowPackages.waylandFull
+    ++ lists.optional cfg.minecraft.enable prismlauncher;
   };
 }
 

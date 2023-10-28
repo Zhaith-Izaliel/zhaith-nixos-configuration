@@ -39,7 +39,10 @@
       ];
     };
 
-    games.enable = true;
+    games = {
+      enable = true;
+      minecraft.enable = true;
+    };
 
     hardware = {
       nvidia = {
