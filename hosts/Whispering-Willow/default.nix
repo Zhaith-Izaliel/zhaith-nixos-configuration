@@ -88,7 +88,7 @@
 
     tools = {
       enable = true;
-      etcher.enable = true;
+      # etcher.enable = true;
     };
 
     shell.enable = true;

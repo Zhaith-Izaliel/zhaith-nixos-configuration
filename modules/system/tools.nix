@@ -53,7 +53,7 @@ in
       rar
       unrar
       erdtree
-      nix-alien
+      # nix-alien
       file
     ] ++ lists.optional cfg.etcher.enable pkgs.etcher;
 
