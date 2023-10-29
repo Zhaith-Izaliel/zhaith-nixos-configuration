@@ -108,7 +108,11 @@
     # Enable a `nix develop` shell with home-manager and git to
     # only load your home configuration.
     devShells.default = pkgs.mkShell {
-      buildInputs = with pkgs; [ home-manager git ];
+      buildInputs = with pkgs; [
+        home-manager
+        git
+        mkdocs
+      ];
       NIX_CONFIG = "experimental-features = nix-command flakes";
     };
     packages = {

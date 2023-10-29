@@ -186,6 +186,7 @@ in
 
           clock = {
             format = "${mkBig ""} {:%H:%M}";
+            timezone = osConfig.time.timeZone;
             tooltip-format = "<tt><small>{calendar}</small></tt>";
             calendar = {
               mode = "month";
