@@ -1,34 +1,23 @@
-{ pkgs }:
+{ stdenv, system-options-doc }:
 
-let
-  inherit (pkgs) stdenv mkdocs python310Packages;
-  options-doc = pkgs.callPackage ./modules/docs.nix {};
-in
 stdenv.mkDerivation {
   src = ./.;
   name = "docs";
 
-  # depend on our options doc derivation
-  buildInput = [options-doc];
-
-  # mkdocs dependencies
-  nativeBuildInputs = [
-    mkdocs
-    python310Packages.mkdocs-material
-    python310Packages.pygments
-  ];
-
-  # symlink our generated docs into the correct folder before generating
   buildPhase = ''
-    mkdir "docs"
-    ln -s ${options-doc} "./docs/system-options.md"
-    # generate the site
-    mkdocs build
+    mkdir -p $out
+    touch "$out/system-options.md"
+    cat ${system-options-doc.optionsCommonMark} >> "$out/system-options.md"
   '';
 
-  # copy the resulting output to the derivation's $out directory
+  # symlink our generated docs into the correct folder before generating
   installPhase = ''
-    mv site $out
+    if [ -d "docs" ]; then
+      rm -r "docs"
+    fi
+    mkdir "docs"
+
+    ln -s $out "./docs"
   '';
 }
 

@@ -99,6 +99,7 @@
   (system:
   let
     pkgs = nixpkgs.legacyPackages.${system};
+    docs = pkgs.callPackage ./modules/docs.nix {};
   in
   {
     # If you're not using NixOS and only want to load your home
@@ -111,12 +112,11 @@
       buildInputs = with pkgs; [
         home-manager
         git
-        mkdocs
       ];
       NIX_CONFIG = "experimental-features = nix-command flakes";
     };
     packages = {
-      docs = import ./mkDocs.nix { inherit pkgs; };
+      docs = pkgs.callPackage ./mkDocs.nix { system-options-doc = docs; };
     };
   });
 }
