@@ -135,7 +135,7 @@
     sound = {
       enable = true;
       lowLatency = {
-        enable = false;
+        enable = true;
         rate = 48000;
         quantum = 64;
         minQuantum = 64;

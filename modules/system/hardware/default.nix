@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./asus.nix
     ./bluetooth.nix
     ./graphics-tablet.nix
     ./integrated-camera.nix

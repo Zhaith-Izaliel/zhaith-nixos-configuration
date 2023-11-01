@@ -165,7 +165,7 @@ in
           backlight = {
             device = cfg.backlight-device;
             format = "${mkBig "{icon}"} {percent}%";
-            format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖙"];
+            format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖨"];
             on-scroll-up = "${lib.getExe pkgs.volume-brightness} -b 1%+";
             on-scroll-down = "${lib.getExe pkgs.volume-brightness} -b 1%-";
             min-length = 6;
