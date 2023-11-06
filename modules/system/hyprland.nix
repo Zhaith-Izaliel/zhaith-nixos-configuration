@@ -13,7 +13,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = theme.gtk.packages;
+    environment.systemPackages = with pkgs; [
+      gtk3
+    ] ++ theme.gtk.packages;
 
     qt.enable = true;
 

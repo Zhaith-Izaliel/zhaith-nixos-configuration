@@ -247,11 +247,14 @@ in
       ${mkWindowrulev2 "class:(lutris)" [
         "workspace 5 silent"
       ]}
+      ${mkWindowrulev2 "class:(hu.kramo.Cartridges)" [
+        "workspace 5 silent"
+      ]}
       ${mkWindowrulev2 "class:(gw2-64)(.*)" [
         "workspace 5"
         "tile"
       ]}
-      exec-once = lutris
+      exec-once = cartridges
       exec-once = steam
       ''
       )

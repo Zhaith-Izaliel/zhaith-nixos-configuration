@@ -88,13 +88,13 @@ in
 
     environment.systemPackages = with pkgs; [
       lutris
+      cartridges
       protontricks
       wineWowPackages.stable
       wine
       (wine.override { wineBuild = "wine64"; })
       wineWowPackages.staging
       winetricks
-      steamtinkerlaunch
     ] ++ lists.optional config.programs.hyprland.enable
     wineWowPackages.waylandFull
     ++ lists.optional cfg.minecraft.enable prismlauncher;
