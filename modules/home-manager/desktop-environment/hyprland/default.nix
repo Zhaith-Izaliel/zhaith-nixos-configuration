@@ -247,15 +247,19 @@ in
       ${mkWindowrulev2 "class:(lutris)" [
         "workspace 5 silent"
       ]}
-      ${mkWindowrulev2 "class:(hu.kramo.Cartridges)" [
+      ${mkWindowrulev2 "class:^.*(Cartridges).*$" [
         "workspace 5 silent"
       ]}
-      ${mkWindowrulev2 "class:(gw2-64)(.*)" [
+      ${mkWindowrulev2 "class:(gw2-64).*" [
         "workspace 5"
         "tile"
       ]}
+      ${mkWindowrulev2 "class:(steam_app_).*" [
+        "workspace 5"
+        "idleinhibit"
+      ]}
       exec-once = cartridges
-      exec-once = steam
+      exec-once = steam -silent
       ''
       )
 
