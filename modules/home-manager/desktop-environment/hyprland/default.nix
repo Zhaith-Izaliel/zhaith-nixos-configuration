@@ -140,7 +140,7 @@ in
       enable = true;
       package = cfg.package;
       xwayland.enable = true;
-      enableNvidiaPatches = elem "nvidia" osConfig.services.xserver.videoDrivers;
+      # enableNvidiaPatches = elem "nvidia" osConfig.services.xserver.videoDrivers;
       systemd.enable = true;
       extraConfig = strings.concatStringsSep "\n" [
       ''

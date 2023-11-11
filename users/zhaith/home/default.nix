@@ -117,7 +117,7 @@
       emulator = {
         enable = true;
         integratedGPU = {
-          enable = true;
+          enable = false;
           driver = "iris";
         };
       };

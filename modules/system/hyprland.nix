@@ -62,7 +62,7 @@ in
       xwayland = {
         enable = true;
       };
-      enableNvidiaPatches = elem "nvidia" config.services.xserver.videoDrivers;
+      # enableNvidiaPatches = elem "nvidia" config.services.xserver.videoDrivers;
     };
   };
 }
