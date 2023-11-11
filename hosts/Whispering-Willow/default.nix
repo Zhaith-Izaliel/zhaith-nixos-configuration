@@ -80,6 +80,8 @@
         enable = true;
         isWacom = true;
       };
+
+      logitech.enable = true;
     };
 
     bootloader = {
@@ -111,7 +113,7 @@
     tex.enable = true;
 
     vm = {
-      enable = true;
+      enable = false;
 
       cpuIsolation = {
         totalCores = "0-15";
@@ -122,7 +124,7 @@
       name = "Luminous-Rafflesia";
 
       pcisBinding = {
-        enableDynamicBinding = true;
+        enableDynamicBinding = false;
         pcis = [
           "0000:01:00.0"
           "0000:01:00.1"
