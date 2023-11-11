@@ -2,6 +2,11 @@
 
 {
   # Define user accounts. Don't forget to set a password with ‘passwd’.
+
+  users.groups.zhaith = {
+    name = "zhaith";
+  };
+
   users.users.zhaith = {
     isNormalUser = true;
     extraGroups = [

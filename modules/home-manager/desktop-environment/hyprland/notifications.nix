@@ -49,8 +49,8 @@ in
         urgency_critical = {
           background = theme.colors.base;
           foreground = theme.colors.text;
-          frame_color = theme.colors.maroon;
-          highlight = theme.colors.maroon;
+          frame_color = theme.colors.red;
+          highlight = theme.colors.red;
         };
 
         volume_brightness = {
@@ -68,6 +68,13 @@ in
           summary = "Volume";
           default_icon = toString (cleanSource
           ../../../../assets/images/other/volume.png);
+        };
+
+        volume_onehundred = {
+          msg_urgency = "low";
+          summary = "Volume";
+          highlight = theme.colors.sapphire;
+          frame_color = theme.colors.sapphire;
         };
 
         volume_overamplified = {

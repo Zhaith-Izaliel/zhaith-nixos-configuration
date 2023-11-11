@@ -14,19 +14,21 @@
     ./development.nix
     ./display-manager.nix
     ./fonts.nix
-    ./hardware.nix
+    ./games.nix
+    ./hardware
     ./hyprland.nix
     ./kernel.nix
     ./locale.nix
     ./network.nix
     ./opengl.nix
     ./power-management.nix
-    ./shell.nix
     ./server/inadyn.nix
+    ./shell.nix
     ./sound.nix
     ./ssh.nix
     ./tex.nix
     ./tools.nix
+    ./users.nix
     ./vm.nix
   ];
 }

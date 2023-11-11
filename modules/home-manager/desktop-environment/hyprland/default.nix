@@ -14,6 +14,7 @@ let
       xOffset = mkOption { type = types.int; };
       yOffset = mkOption { type = types.int; };
       scaling = mkOption { type = types.float; };
+      extraArgs = mkOption { type = types.str; };
     };
   };
   mkMonitor = monitor:
@@ -27,8 +28,9 @@ let
     scaling = toString monitor.scaling;
   in
   "monitor=${name},${width}x${height}@${refreshRate},${xOffset}x${yOffset},${scaling}";
-  mkMonitors = monitors: strings.concatStringsSep "\n" (builtins.map mkMonitor monitors);
 
+  mkMonitors = monitors: strings.concatStringsSep "\n" (builtins.map mkMonitor monitors);
+  firstMonitor = builtins.elemAt cfg.monitors 0;
 in
 {
   imports = [
@@ -37,6 +39,7 @@ in
     ./notifications.nix
     ./applications-launcher
     ./status-bar
+    ./widget
   ];
 
   options.hellebore.desktop-environment.hyprland = {
@@ -44,8 +47,13 @@ in
 
     monitors = mkOption {
       type = types.listOf monitorType;
-      default = "1920x1080";
+      default = [];
       description = "Primary screen resolution.";
+    };
+
+    mirrorFirstMonitor = mkEnableOption null // {
+      description = "Allow Hyprland to mirror the first monitor defined in its
+      monitors list when connecting an unknown monitor.";
     };
 
     package = mkOption {
@@ -101,7 +109,6 @@ in
     ];
 
     home.packages = with pkgs; [
-      glib
       swww
       swayosd
       wl-clipboard
@@ -109,7 +116,7 @@ in
       hyprpicker
       grimblast
       volume-brightness
-    ];
+    ] ++ theme.gtk.packages;
 
     gtk = {
       enable = true;
@@ -133,8 +140,8 @@ in
       enable = true;
       package = cfg.package;
       xwayland.enable = true;
-      systemdIntegration = true;
-      recommendedEnvironment = true;
+      # enableNvidiaPatches = elem "nvidia" osConfig.services.xserver.videoDrivers;
+      systemd.enable = true;
       extraConfig = strings.concatStringsSep "\n" [
       ''
       # Palette
@@ -148,20 +155,17 @@ in
       ${mkMonitors cfg.monitors}
       ''
 
-      # --- #
-
+      (strings.optionalString cfg.mirrorFirstMonitor
       ''
-      exec-once = gsettings set org.gnome.desktop.interface gtk-theme '${theme.gtk.theme.name}'
-      exec-once = gsettings set org.gnome.desktop.interface icon-theme '${theme.gtk.iconTheme.name}'
-      exec-once = gsettings set org.gnome.desktop.interface cursor-theme '${theme.gtk.cursorTheme.name}'
-      exec-once = gsettings set org.gnome.desktop.interface font-name '${theme.gtk.font.name}'
+      monitor=,preferred,auto,1,mirror,${(elemAt cfg.monitors 0).name}
       ''
+      )
 
       # --- #
 
       ''
-      exec-once = swww init
-      exec-once = sleep 5; swww img ${cfg.wallpaper}
+      exec-once = ${getExe pkgs.swww} init
+      exec-once = sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}
       ''
 
       # --- #
@@ -182,30 +186,23 @@ in
 
       # --- #
 
-      (strings.optionalString config.hellebore.tools.discord.enable
-      ''
-      exec-once = ${getExe config.hellebore.tools.discord.package}
-      ${mkWindowrulev2 "class:(discord)" [ "workspace 3" ]}
-      '')
-
-      # --- #
-
       (strings.optionalString config.hellebore.desktop-environment.hyprland.logout.enable
       ''
       bind = $mainMod, L, exec, ${config.hellebore.desktop-environment.hyprland.logout.bin}
       '')
 
-      # --- #
+      # ----------------
+      # ---Workspaces---
+      # ----------------
+      ''
+      workspace = 1,default:true,persistent:true
+      ''
 
-      (strings.optionalString config.hellebore.desktop-environment.mail.enable
-      "exec-once = [workspace 4] ${config.hellebore.desktop-environment.mail.bin}")
-
-      # --- #
-
-      (strings.optionalString config.hellebore.tools.office.enable
-      "exec-once = [workspace 2] obsidian")
-
-      # --- #
+      (strings.optionalString config.hellebore.desktop-environment.browsers.enable
+      ''
+      exec-once = [workspace 1] ${getExe pkgs.firefox}
+      ''
+      )
 
       (strings.optionalString config.hellebore.shell.emulator.enable
       ''
@@ -213,20 +210,74 @@ in
       bind = $mainMod, Q, exec, ${config.hellebore.shell.emulator.bin}
       '')
 
-      # --- #
+      (strings.optionalString config.hellebore.tools.office.enable
+      ''
+      workspace = 2,persistent:true
+      exec-once = [workspace 2] obsidian
+      ''
+      )
+
+      (strings.optionalString config.hellebore.tools.discord.enable
+      ''
+      workspace = 3,persistent:true
+      exec-once = ${getExe config.hellebore.tools.discord.finalPackage}
+      ${mkWindowrulev2 "class:(discord)" [
+        "workspace 3 silent"
+        "noinitialfocus"
+      ]}
+      '')
+
+      (strings.optionalString config.hellebore.desktop-environment.mail.enable
+      ''
+      workspace = 4,persistent:true
+      ${mkWindowrulev2 "class:(evolution)" [
+        "workspace 4 silent"
+      ]}
+      exec-once = ${config.hellebore.desktop-environment.mail.bin}
+      ''
+      )
+
+      (strings.optionalString osConfig.hellebore.games.enable
+      ''
+      workspace = 5,persistent:true
+      ${mkWindowrulev2 "class:(steam)" [
+        "workspace 5 silent"
+        "tile"
+      ]}
+      ${mkWindowrulev2 "class:(lutris)" [
+        "workspace 5 silent"
+      ]}
+      ${mkWindowrulev2 "class:^.*(Cartridges).*$" [
+        "workspace 5 silent"
+      ]}
+      ${mkWindowrulev2 "class:(gw2-64).*" [
+        "workspace 5"
+        "tile"
+      ]}
+      ${mkWindowrulev2 "class:(steam_app_).*" [
+        "workspace 5"
+        "idleinhibit"
+      ]}
+      exec-once = cartridges
+      exec-once = steam -silent
+      ''
+      )
 
       (strings.optionalString osConfig.hellebore.vm.enable
-        ''
-        ${mkWindowrulev2 "title:(Luminous-Rafflesia)class:(looking-glass-client)" [
-          "fullscreen"
-        ]}
-        ${mkWindowrulev2 "title:(Luminous-Rafflesia),class:(looking-glass-client)"[
-          "idleinhibit always"
-        ]}
-        bind = $mainMod, W, exec, [workspace empty] start-vm --resolution=2560x1440 -Fi
-        ''
+      ''
+      workspace = 6,persistent:true
+      ${mkWindowrulev2 "title:(${osConfig.hellebore.vm.name})class:(looking-glass-client)" [
+        "fullscreen"
+        "idleinhibit always"
+        "workspace 6"
+      ]}
+
+      bind = $mainMod, W, exec, start-vm --resolution=${toString firstMonitor.width}x${toString firstMonitor.height} -Fi
+      ''
       )
-      # --- #
+
+
+      # ----------------
 
       (strings.optionalString config.hellebore.desktop-environment.hyprland.applications-launcher.enable
         ''
@@ -234,6 +285,10 @@ in
         ''
       )
 
+      (strings.optionalString config.hellebore.desktop-environment.i18n.enable
+      ''
+      bind = $mainMod, I, exec, fcitx5-remote -t
+      '')
 
       # --- #
       ''
@@ -330,7 +385,6 @@ in
       bind = $mainMod, C, killactive,
       bind = $mainMod, E, exec, nemo
       bind = $mainMod, V, togglefloating,
-      bind = $mainMod, I, exec, fcitx5-remote -t
       bind = $mainMod, P, exec, hyprpicker -a
 
       # Window manipulations
@@ -356,29 +410,21 @@ in
       bind = $mainMod CTRL, right, movetoworkspace, +1
       bind = $mainMod CTRL, left, movetoworkspace, -1
 
-      # Switch workspaces with mainMod + [0-9]
-      bind = $mainMod, F1, workspace, 1
-      bind = $mainMod, F2, workspace, 2
-      bind = $mainMod, F3, workspace, 3
-      bind = $mainMod, F4, workspace, 4
-      bind = $mainMod, F5, workspace, 5
-      bind = $mainMod, F6, workspace, 6
-      bind = $mainMod, F7, workspace, 7
-      bind = $mainMod, F8, workspace, 8
-      bind = $mainMod, F9, workspace, 9
-      bind = $mainMod, F10, workspace, 10
+      # Switch workspaces with mainMod + F[1-10]
+      ${strings.concatStringsSep "\n" (
+          lists.map
+          (item: "bind = $mainMod, F${toString item}, workspace, ${toString item}")
+          (range 1 10)
+        )
+      }
 
-      # Move active window to a workspace with mainMod + SHIFT + [0-9]
-      bind = $mainMod SHIFT, F1, movetoworkspace, 1
-      bind = $mainMod SHIFT, F2, movetoworkspace, 2
-      bind = $mainMod SHIFT, F3, movetoworkspace, 3
-      bind = $mainMod SHIFT, F4, movetoworkspace, 4
-      bind = $mainMod SHIFT, F5, movetoworkspace, 5
-      bind = $mainMod SHIFT, F6, movetoworkspace, 6
-      bind = $mainMod SHIFT, F7, movetoworkspace, 7
-      bind = $mainMod SHIFT, F8, movetoworkspace, 8
-      bind = $mainMod SHIFT, F9, movetoworkspace, 9
-      bind = $mainMod SHIFT, F10, movetoworkspace, 10
+      # Move active window to a workspace with mainMod + CONTROL + F[1-10]
+      ${strings.concatStringsSep "\n" (
+          lists.map
+          (item: "bind = $mainMod CONTROL, F${toString item}, movetoworkspace, ${toString item}")
+          (range 1 10)
+        )
+      }
 
       # Scroll through existing workspaces with mainMod + scroll
       bind = $mainMod, mouse_down, workspace, e+1

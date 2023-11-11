@@ -137,20 +137,20 @@ def _redraw_tab_bar(_):
     if tm is not None:
         tm.mark_tab_bar_dirty()
 
-def get_mpd_current_song() -> list:
-    try:
-    # Using subprocess since we can't use external packages
-        output = subprocess.check_output(['ncmpcpp', '-q', '--current-song', "%t - %a"]).decode('utf-8')
-        if not output:
-            return []
-        text = shorten(output, width=ELLIPSIS_LENGTH, placeholder=ELLIPSIS)
-        return [
-            (music_icon_color, MUSIC_ICON),
-            (music_color, text),
-            (music_separator_color,SOFT_SEPARATOR_SYMBOL)
-        ]
-    except subprocess.CalledProcessError:
-        return []
+# def get_mpd_current_song() -> list:
+#     try:
+#     # Using subprocess since we can't use external packages
+#         output = subprocess.check_output(['ncmpcpp', '-q', '--current-song', "%t - %a"]).decode('utf-8')
+#         if not output:
+#             return []
+#         text = shorten(output, width=ELLIPSIS_LENGTH, placeholder=ELLIPSIS)
+#         return [
+#             (music_icon_color, MUSIC_ICON),
+#             (music_color, text),
+#             (music_separator_color,SOFT_SEPARATOR_SYMBOL)
+#         ]
+#     except subprocess.CalledProcessError:
+#         return []
 
 def get_uptime() -> list:
     with open('/proc/uptime', 'r') as f:
@@ -211,8 +211,8 @@ def draw_tab(
     global right_status_length
     if timer_id is None:
         timer_id = add_timer(_redraw_tab_bar, REFRESH_TIME, True)
-    cells = get_mpd_current_song()
-    cells += get_battery_cells()
+    # cells = get_mpd_current_song()
+    cells = get_battery_cells()
     cells += get_uptime()
     right_status_length = RIGHT_MARGIN
     for cell in cells:

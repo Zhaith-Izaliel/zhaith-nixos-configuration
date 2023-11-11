@@ -9,19 +9,26 @@ in
   options.hellebore.development.tools = {
     enable = mkEnableOption "Hellebore development tools";
 
-    enableLorri = mkEnableOption "Lorri Nix Shell service";
+    direnv = {
+      enable = mkEnableOption "Direnv and Nix-Direnv integrations";
+      enableLogs = mkEnableOption "Direnv Logs when getting in a Direnv
+    directory";
+    };
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      direnv
       onefetch
       universal-ctags
     ];
 
-    services.lorri = mkIf cfg.enableLorri {
+    home.sessionVariables = mkIf (!cfg.direnv.enableLogs) {
+      DIRENV_LOG_FORMAT = "";
+    };
+
+    programs.direnv = mkIf cfg.direnv.enable {
       enable = true;
-      enableNotifications = true;
+      nix-direnv.enable = true;
     };
   };
 }

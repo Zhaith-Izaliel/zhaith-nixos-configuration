@@ -72,6 +72,15 @@ in
         display-top = " Top";
         drun-display-format = "{name}";
         icon-theme = theme.gtk.iconTheme.name;
+        window-format = "{w} · {c} · {t}";
+      };
+
+      applets = {
+        bluetooth = {
+          enable = true;
+          settings = {
+          };
+        };
       };
     };
   };

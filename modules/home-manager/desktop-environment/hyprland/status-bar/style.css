@@ -12,6 +12,12 @@
   100% { color: @red; }
 }
 
+@keyframes gamemode-activated {
+  0% { color: @mauve; }
+  50% { color: @blue; }
+  100% { color: @mauve; }
+}
+
 @keyframes workspace-blink {
   0% { background-color: @base; }
   50% { background-color: @green; }
@@ -50,6 +56,15 @@ tooltip {
   transition: all .5s ease-in-out;
 }
 
+#workspaces button:hover {
+  background: @mauve;
+  color: @base;
+}
+
+#workspaces button.empty {
+  color: @overlay0;
+}
+
 #workspaces button.active {
   color: @subtext1;
 }
@@ -60,10 +75,6 @@ tooltip {
   animation-iteration-count: infinite;
 }
 
-#workspaces button:hover {
-  background: @mauve;
-  color: @base;
-}
 
 #custom-language,
 #idle_inhibitor,
@@ -78,6 +89,7 @@ tooltip {
 #mpd,
 #custom-shutdown,
 #bluetooth,
+#gamemode,
 #backlight {
   background: @base;
   padding: 0px .6em;
@@ -219,6 +231,18 @@ tooltip {
   border-left: 0px;
   border-right: 0px;
 }
+
+#gamemode {
+  color: @lavender;
+  border-left: 0px;
+  border-right: 0px;
+}
+
+/* #gamemode.running { */
+/*   animation-name: gamemode-activated; */
+/*   animation-duration: 4s; */
+/*   animation-iteration-count: infinite; */
+/* } */
 
 #bluetooth.disabled {
   color: @maroon;

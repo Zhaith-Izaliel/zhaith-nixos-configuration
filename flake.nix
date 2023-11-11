@@ -20,11 +20,12 @@
     hyprland-contrib.url = "github:hyprwm/contrib";
     sddm-sugar-candy-nix.url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
     virgutils.url = "gitlab:Zhaith-Izaliel/virgutils";
+    rofi-applets.url = "gitlab:Zhaith-Izaliel/rofi-applets/develop";
   };
 
   outputs = {nixpkgs, nixpkgs-stable, flake-utils,
   grub2-themes, nix-alien, zhaith-neovim, hyprland, hyprland-contrib,
-  sddm-sugar-candy-nix, virgutils, ...}@attrs:
+  sddm-sugar-candy-nix, virgutils, rofi-applets, ...}@attrs:
   let
     system = "x86_64-linux";
     theme = "catppuccin";
@@ -47,7 +48,7 @@
           hyprland.overlays.default
           hyprland-contrib.overlays.default
           sddm-sugar-candy-nix.overlays.default
-          virgutils.overlays.default
+          virgutils.overlays.${system}.default
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };
@@ -57,7 +58,9 @@
         users = [ "lilith" ];
         nixpkgs = nixpkgs-stable;
         overlays = [
-          virgutils.overlays.default
+          (final: prev: {
+            power-management = virgutils.packages.${system}.power-management;
+          })
         ];
         extraModules = [
           grub2-themes.nixosModules.default
@@ -73,13 +76,13 @@
         stateVersion = "22.05";
         extraModules = [
           zhaith-neovim.homeManagerModules.default
-          hyprland.homeManagerModules.default
           modules.home-manager
-        ];
+        ] ++ rofi-applets.homeManagerModules.all;
         overlays = [
           hyprland.overlays.default
           hyprland-contrib.overlays.default
-          virgutils.overlays.default
+          virgutils.overlays.${system}.default
+          rofi-applets.overlays.default
           (final: prev: import ./overlay { inherit final prev; })
         ];
       };
@@ -96,6 +99,7 @@
   (system:
   let
     pkgs = nixpkgs.legacyPackages.${system};
+    docs = pkgs.callPackage ./modules/docs.nix {};
   in
   {
     # If you're not using NixOS and only want to load your home
@@ -105,8 +109,14 @@
     # Enable a `nix develop` shell with home-manager and git to
     # only load your home configuration.
     devShells.default = pkgs.mkShell {
-      buildInputs = with pkgs; [ home-manager git ];
+      buildInputs = with pkgs; [
+        home-manager
+        git
+      ];
       NIX_CONFIG = "experimental-features = nix-command flakes";
+    };
+    packages = {
+      docs = pkgs.callPackage ./mkDocs.nix { system-options-doc = docs; };
     };
   });
 }

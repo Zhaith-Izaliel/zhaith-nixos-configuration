@@ -28,7 +28,6 @@ in
     };
 
     console = {
-      font = "Lat2-Terminus32";
       keyMap = cfg.consoleKeymap;
     };
 

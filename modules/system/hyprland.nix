@@ -13,13 +13,23 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = theme.gtk.packages;
+    environment.systemPackages = with pkgs; [
+      gtk3
+    ] ++ theme.gtk.packages;
+
+    qt.enable = true;
+
+    qt.platformTheme = "gtk2";
+
+    qt.style = "gtk2";
 
     services.gvfs.enable = true;
 
     services.gnome.gnome-keyring.enable = true;
 
     services.gnome.gnome-settings-daemon.enable = true;
+
+    programs.dconf.enable = true;
 
     security.pam.services.swaylock.text = strings.optionalString cfg.enableSwaylockPam ''
     # PAM configuration file for the swaylock screen locker. By default, it includes
@@ -41,11 +51,18 @@ in
       };
     };
 
+    boot.extraModprobeConfig = ''
+      blacklist nouveau
+      options nouveau modeset=0
+    '';
+
+
     programs.hyprland = {
       enable = true;
       xwayland = {
         enable = true;
       };
+      # enableNvidiaPatches = elem "nvidia" config.services.xserver.videoDrivers;
     };
   };
 }

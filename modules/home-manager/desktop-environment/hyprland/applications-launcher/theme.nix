@@ -7,8 +7,6 @@ let
 in
 {
   programs.rofi.theme = {
-
-
     window = {
       # properties for window widget
       transparency = "real";
@@ -153,6 +151,22 @@ in
       text-color = mkLiteral colors.mauve;
       background-color = mkLiteral "transparent";
     };
+
+    "element alternate.normal" = {
+      background-color = mkLiteral "inherit";
+      text-color = mkLiteral "inherit";
+    };
+
+    "element alternate.urgent" = {
+      text-color = mkLiteral colors.green;
+      background-color = mkLiteral "transparent";
+    };
+
+    "element alternate.active" = {
+      text-color = mkLiteral colors.mauve;
+      background-color = mkLiteral "transparent";
+    };
+
 
     "element selected.normal" = {
       background-color = mkLiteral colors.lavender;

@@ -19,6 +19,7 @@ in
         enable = true;
         inherit (cfg) efiSupport;
         # efiInstallAsRemovable = true; # in case canTouchEfiVariables doesn't work for your system
+        useOSProber = true;
         device = "nodev";
         copyKernels = true;
         extraEntries = ''

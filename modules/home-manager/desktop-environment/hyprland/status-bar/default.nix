@@ -1,4 +1,4 @@
-{ config, lib, pkgs, theme, ... }:
+{ osConfig, config, lib, pkgs, theme, ... }:
 
 with lib;
 
@@ -14,6 +14,12 @@ in
       type = types.int;
       default = config.hellebore.fontSize;
       description = "Set the status bar font size.";
+    };
+
+    backlight-device = mkOption {
+      type = types.nonEmptyStr;
+      default = "";
+      description = "Defines the backlight device to use.";
     };
   };
 
@@ -51,12 +57,16 @@ in
         mainBar = {
           layer = "top";
           position = "top";
+          output = with config.hellebore.desktop-environment.hyprland;
+          strings.optionalString enable (elemAt monitors 0).name;
           spacing = 0;
           height = 0;
           modules-left = [
             "clock"
             "custom/weather"
-            "mpd"
+          ]
+          ++ lists.optional config.services.mpd.enable "mpd"
+          ++ [
             "hyprland/workspaces"
           ];
           modules-center = [
@@ -65,18 +75,30 @@ in
           modules-right = [
             "tray"
             "idle_inhibitor"
-            "bluetooth"
+          ]
+          ++ lists.optional osConfig.programs.gamemode.enable "gamemode"
+          ++ lists.optional config.hellebore.desktop-environment.bluetooth.enable "bluetooth"
+          ++ [
             "network"
             "backlight"
             "wireplumber"
             "battery"
-            "custom/shutdown"
-          ];
+          ]
+          ++ lists.optional config.programs.wlogout.enable "custom/shutdown";
+
+          gamemode = mkIf osConfig.programs.gamemode.enable {
+            format = "{glyph} GameMode On";
+            hide-not-running = true;
+            use-icon = true;
+            tooltip = true;
+            tooltip-format = "Processes running: {count}";
+            icon-spacing = 0;
+          };
 
           "custom/weather" = {
             format = "{} °C";
             tooltip = true;
-            interva = 3600;
+            interval = 3600;
             exec = "${getExe pkgs.wttrbar}";
             return-type = "json";
           };
@@ -112,19 +134,16 @@ in
             sort-by-number =  true;
             format = mkBig "{icon}";
             format-icons = {
-              "1" = "󰲠";
-              "2" = "󰲢";
-              "3" = "󰲤";
-              "4" = "󰲦";
-              "5" = "󰲨";
-              "6" = "󰲪";
+              "1" = "";
+              "2" = "󰹕";
+              "3" = "󰙯";
+              "4" = "󰇮";
+              "5" = "";
+              "6" = "";
               "7" = "󰲬";
               "8" = "󰲮";
               "9" = "󰲰";
               "10" = "󰿬";
-            };
-            persistent_workspaces =  {
-              "*" = 5;
             };
           };
 
@@ -144,9 +163,9 @@ in
           };
 
           backlight = {
-            device = "intel_backlight";
+            device = cfg.backlight-device;
             format = "${mkBig "{icon}"} {percent}%";
-            format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖙"];
+            format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖨"];
             on-scroll-up = "${lib.getExe pkgs.volume-brightness} -b 1%+";
             on-scroll-down = "${lib.getExe pkgs.volume-brightness} -b 1%-";
             min-length = 6;
@@ -167,6 +186,7 @@ in
 
           clock = {
             format = "${mkBig ""} {:%H:%M}";
+            timezone = osConfig.time.timeZone;
             tooltip-format = "<tt><small>{calendar}</small></tt>";
             calendar = {
               mode = "month";
@@ -210,10 +230,10 @@ in
           mpd = mkIf config.services.mpd.enable {
             format = "${mkBig "{stateIcon}"} {title}";
             tooltip-format = "{albumArtist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})";
-            format-stopped = "${mkBig "󰙧"} Stopped";
+            format-stopped = "${mkBig ""} Stopped";
             state-icons = {
-              playing = "󰫔";
-              paused = "󰏦";
+              playing = "󰎈";
+              paused = "";
             };
           };
         };

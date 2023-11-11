@@ -23,7 +23,8 @@
   };
 
   nixpkgs.config.permittedInsecurePackages = [
-    "nodejs-14.21.3"
+    "electron-12.2.3" # Etcher
+    "electron-19.1.9" # TODO: Needs to fine which package depends on it
   ];
 
   hellebore = {
@@ -38,7 +39,26 @@
       ];
     };
 
+    games = {
+      enable = true;
+      minecraft.enable = true;
+    };
+
     hardware = {
+      nvidia = {
+        enable = true;
+        power-profiles.enable = true;
+        prime = {
+          enable = true;
+          offload.enable = true;
+          reverseSync.enable = true;
+          intelBusId = "PCI:0:2:0";
+          nvidiaBusId = "PCI:1:0:0";
+        };
+      };
+
+      ntfs.enable = true;
+
       bluetooth = {
         enable = true;
         enablePowerSupport = true;
@@ -51,10 +71,22 @@
         drivers = with pkgs; [ epson-escpr epson-escpr2 ];
       };
 
-      # integratedCamera = {
-      #   disable = true;
-      #   cameraBus = "3-13";
-      # };
+      integratedCamera = {
+        disable = true;
+        cameraBus = "3-13";
+      };
+
+      graphics-tablet = {
+        enable = true;
+        isWacom = true;
+      };
+
+      logitech = {
+        enable = true;
+        wireless.enable = true;
+      };
+
+      gaming.enable = true;
     };
 
     bootloader = {
@@ -64,7 +96,10 @@
 
     fonts.enable = true;
 
-    tools.enable = true;
+    tools = {
+      enable = true;
+      # etcher.enable = true;
+    };
 
     shell.enable = true;
 
@@ -83,7 +118,7 @@
     tex.enable = true;
 
     vm = {
-      enable = true;
+      enable = false;
 
       cpuIsolation = {
         totalCores = "0-15";
@@ -91,17 +126,29 @@
         variableName = "ISOLATE_CPUS";
       };
 
-      vmName = "Luminous-Rafflesia";
+      name = "Luminous-Rafflesia";
 
-      pcis = [
-        "0000:01:00.0"
-        "0000:01:00.1"
-      ];
+      pcisBinding = {
+        enableDynamicBinding = false;
+        pcis = [
+          "0000:01:00.0"
+          "0000:01:00.1"
+        ];
+      };
 
       username = "zhaith";
     };
 
-    sound.enable = true;
+    sound = {
+      enable = true;
+      lowLatency = {
+        enable = true;
+        rate = 48000;
+        quantum = 64;
+        minQuantum = 64;
+        maxQuantum = 64;
+      };
+    };
 
     opengl.enable = true;
 
@@ -112,14 +159,26 @@
 
     display-manager = {
       enable = true;
-      screenWidth = 2560;
-      screenHeight = 1440;
+      background.path = ../../assets/images/sddm/greeter.png;
     };
 
     power-management = {
       enable = true;
-      cronTemplate = "0 2 * * *";
-      shutdownDate = "+60";
+      autoShutdown = {
+        enable = true;
+        cronTemplate = "0 2 * * *";
+        shutdownDate = "+60";
+        reminders = [
+          "50 2 * * *"
+        ];
+      };
+
+      upower = {
+        enable = true;
+        percentageLow = 15;
+        percentageCritical = 10;
+        percentageAction = 5;
+      };
     };
   };
 

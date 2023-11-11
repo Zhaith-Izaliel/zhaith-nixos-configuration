@@ -27,7 +27,9 @@ in
       enable = true;
 
       themes = {
-        "${theme.bat.name}" = builtins.readFile theme.bat.file;
+        "${theme.bat.name}" = {
+          inherit (theme.bat) src file;
+        };
       };
 
       extraPackages = with pkgs.bat-extras; [

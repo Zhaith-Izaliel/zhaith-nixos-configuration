@@ -19,6 +19,7 @@
             scaling = 1.0;
           }
         ];
+        mirrorFirstMonitor = true;
         lockscreen = {
           enable = true;
           fontSize = config.hellebore.fontSize + 10;
@@ -34,6 +35,7 @@
         status-bar = {
           enable = true;
           fontSize = 12;
+          backlight-device = "intel_backlight";
         };
       };
       bluetooth.enable = true;
@@ -60,15 +62,18 @@
       browsers = {
         enable = true;
         profiles.zhaith.enable = true;
+        firefoxDev.enable = true;
       };
     };
 
     tools = {
       discord = {
         enable = true;
-        betterdiscord.enable = true;
+        openASAR.enable = true;
+        tts.enable = true;
       };
       office.enable = true;
+      tasks.enable = true;
     };
 
     multimedia = {
@@ -99,7 +104,9 @@
       bat.enable = true;
       tools = {
         enable = true;
-        enableLorri = true;
+        direnv = {
+          enable = true;
+        };
       };
     };
 
@@ -107,7 +114,13 @@
       enable = true;
       motd.enable = true;
       prompt.enable = true;
-      emulator.enable = true;
+      emulator = {
+        enable = true;
+        integratedGPU = {
+          enable = false;
+          driver = "iris";
+        };
+      };
     };
   };
 
