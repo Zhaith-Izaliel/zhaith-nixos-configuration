@@ -56,6 +56,13 @@ in
       services.xserver.videoDrivers = [ "nvidia" ]; # IMPORTANT: this activates
                                                     # the hardware.nvidia module
 
+      # NOTE: This forces Libglvnd to use Mesa instead of Nvidia.
+      environment.variables = {
+        "__EGL_VENDOR_LIBRARY_FILENAMES" =
+          "${pkgs.mesa.drivers}/share/glvnd/egl_vendor.d/50_mesa.json";
+        "__GLX_VENDOR_LIBRARY_NAME" = "mesa";
+      };
+
       hardware.nvidia = {
         inherit (cfg) modesetting;
 

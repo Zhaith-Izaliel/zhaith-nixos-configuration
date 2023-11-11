@@ -81,7 +81,10 @@
         isWacom = true;
       };
 
-      logitech.enable = true;
+      logitech = {
+        enable = true;
+        wireless.enable = true;
+      };
 
       gaming.enable = true;
     };

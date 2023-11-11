@@ -1,24 +1,29 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
-with lib;
 
 let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.hellebore.hardware.logitech;
 in
 
 {
   options.hellebore.hardware.logitech = {
-    enable = mkEnableOption "Logitech hardware support with Solaar";
+    enable = mkEnableOption "Logitech hardware support";
+    lcd.enable = mkEnableOption "Logitech LCD hardware support";
+    wireless.enable = mkEnableOption "Logitech wireless hardware support";
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      solaar
-    ];
+    hardware.logitech = {
+      wireless = mkIf cfg.wireless.enable {
+        enable = true;
+        enableGraphical = true;
+      };
 
-    services.udev = {
-      enable = true;
-      packages = with pkgs; [ logitech-udev-rules ];
+      lcd = mkIf cfg.lcd.enable {
+        enable = true;
+        startWhenNeeded = true;
+      };
     };
   };
 }
