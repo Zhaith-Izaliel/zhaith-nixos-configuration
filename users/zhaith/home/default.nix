@@ -74,6 +74,7 @@
       };
       office.enable = true;
       tasks.enable = true;
+      docs.enable = true;
     };
 
     multimedia = {
