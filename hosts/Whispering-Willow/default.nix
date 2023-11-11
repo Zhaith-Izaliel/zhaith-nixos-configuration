@@ -82,6 +82,8 @@
       };
 
       logitech.enable = true;
+
+      gaming.enable = true;
     };
 
     bootloader = {
