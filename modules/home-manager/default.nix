@@ -15,6 +15,7 @@
     ./development
     ./shell
     ./desktop-environment
+    ./games.nix
     ./tools
     ./multimedia
   ];

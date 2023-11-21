@@ -57,7 +57,8 @@ in
                                                     # the hardware.nvidia module
 
       # NOTE: This forces Libglvnd to use Mesa instead of Nvidia.
-      environment.variables = {
+      environment.variables = mkIf (cfg.prime.offload.enable ||
+      cfg.prime.reverseSync.enable) {
         "__EGL_VENDOR_LIBRARY_FILENAMES" =
           "${pkgs.mesa.drivers}/share/glvnd/egl_vendor.d/50_mesa.json";
         "__GLX_VENDOR_LIBRARY_NAME" = "mesa";

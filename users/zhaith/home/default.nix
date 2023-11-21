@@ -91,6 +91,16 @@
       };
     };
 
+    games = {
+      dxvk = {
+        enable = true;
+        config = ''
+          [HuntGame.exe]
+          dxvk.graphicsPipelineLibrary = True
+        '';
+      };
+    };
+
     development = {
       git = {
         enable = true;

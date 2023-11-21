@@ -31,6 +31,11 @@ let
 
   mkMonitors = monitors: strings.concatStringsSep "\n" (builtins.map mkMonitor monitors);
   firstMonitor = builtins.elemAt cfg.monitors 0;
+
+  isNvidia =
+    elem "nvidia" osConfig.services.xserver.videoDrivers
+    && osConfig.hardware.nvidia.prime.offload.enable
+      || osConfig.hardware.nvidia.prime.reverseSync.enable;
 in
 {
   imports = [
@@ -140,7 +145,7 @@ in
       enable = true;
       package = cfg.package;
       xwayland.enable = true;
-      # enableNvidiaPatches = elem "nvidia" osConfig.services.xserver.videoDrivers;
+      enableNvidiaPatches = isNvidia;
       systemd.enable = true;
       extraConfig = strings.concatStringsSep "\n" [
       ''
@@ -241,18 +246,13 @@ in
       ''
       workspace = 5,persistent:true
       ${mkWindowrulev2 "class:(steam)" [
-        "workspace 5 silent"
-        "tile"
+        "workspace 5"
       ]}
       ${mkWindowrulev2 "class:(lutris)" [
-        "workspace 5 silent"
+        "workspace 5"
       ]}
       ${mkWindowrulev2 "class:^.*(Cartridges).*$" [
         "workspace 5 silent"
-      ]}
-      ${mkWindowrulev2 "class:(gw2-64).*" [
-        "workspace 5"
-        "tile"
       ]}
       ${mkWindowrulev2 "class:(steam_app_).*" [
         "workspace 5"
@@ -378,8 +378,8 @@ in
       bindr = CAPS, Caps_Lock, exec, swayosd --caps-lock
       bindle =, XF86MonBrightnessUp, exec, volume-brightness -b 5%+
       bindle =, XF86MonBrightnessDown, exec, volume-brightness -b 5%-
-      bind = , code:107, exec, grimblast --notify copysave area ~/Pictures/Screenshots/$(date +%F:%H:%M:%S).png
-      bind = $mainMod, code:107, exec, grimblast --notify copysave screen ~/Pictures/Screenshots/$(date +%F:%H:%M:%S).png
+      bind = , code:107, exec, pkill grimblast; grimblast --notify copysave area ~/Pictures/Screenshots/$(date +%F:%H:%M:%S).png
+      bind = $mainMod, code:107, exec, pkill grimblast; grimblast --notify copysave screen ~/Pictures/Screenshots/$(date +%F:%H:%M:%S).png
 
       # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
       bind = $mainMod, C, killactive,
