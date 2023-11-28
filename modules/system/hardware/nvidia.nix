@@ -68,8 +68,8 @@ in
         inherit (cfg) modesetting;
 
         powerManagement = {
-          enable = true;
-          finegrained = true;
+          enable = false;
+          finegrained = false;
         };
 
         open = true;

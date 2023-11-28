@@ -96,7 +96,7 @@
         enable = true;
         config = ''
           [HuntGame.exe]
-          dxvk.graphicsPipelineLibrary = True
+          dxvk.enableGraphicsPipelineLibrary = True
         '';
       };
     };

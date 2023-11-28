@@ -1,4 +1,4 @@
-{ config, lib, pkgs, theme, ... }:
+{ config, lib, theme, ... }:
 
 with lib;
 
@@ -29,13 +29,13 @@ in
 
     keyboardLayout = mkOption {
       type = types.str;
-      default = "fr";
+      default = config.hellebore.locale.keyboard.defaultLayout;
       description = "Keyboard layout used in the Display Manager.";
     };
 
     keyboardVariant = mkOption {
       type = types.str;
-      default = "oss_latin9";
+      default = config.hellebore.locale.keyboard.defaultVariant;
       description = "Keyboard variant used in the Display Manager.";
     };
 

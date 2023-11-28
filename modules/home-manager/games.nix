@@ -19,7 +19,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.dxvk.enable {
-      home.file."dxvk.conf".text = cfg.dxvk.config;
+      home.file."${config.xdg.configHome}/dxvk/dxvk.conf".text = cfg.dxvk.config;
     })
   ];
 }

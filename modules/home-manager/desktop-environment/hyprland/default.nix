@@ -76,12 +76,12 @@ in
     input = {
       kbLayout = mkOption {
         type = types.str;
-        default = "fr";
+        default = osConfig.hellebore.locale.keyboard.defaultLayout;
         description = "Keyboard layout for Hyprland.";
       };
       kbVariant = mkOption {
         type = types.str;
-        default = "oss_latin9";
+        default = osConfig.hellebore.locale.keyboard.defaultVariant;
         description = "Keyboard variant for Hyprland.";
       };
 
@@ -112,6 +112,18 @@ in
         message = "Hyprland XWayland must be enabled in your system configuration";
       }
     ];
+
+    home.sessionVariables = {
+      GDK_BACKEND = "wayland,x11";
+      QT_QPA_PLATFORM = "wayland;xcb";
+      #SDL_VIDEODRIVER = "x11";
+      CLUTTER_BACKEND = "wayland";
+      XDG_CURRENT_DESKTOP = "Hyprland";
+      XDG_SESSION_TYPE = "wayland";
+      XDG_SESSION_DESKTOP = "Hyprland";
+      WLR_NO_HARDWARE_CURSORS = "1";
+    };
+
 
     home.packages = with pkgs; [
       swww
@@ -246,7 +258,11 @@ in
       ''
       workspace = 5,persistent:true
       ${mkWindowrulev2 "class:(steam)" [
+        "workspace 5 silent"
+      ]}
+      ${mkWindowrulev2 "class:(.gamescope-wrapped)" [
         "workspace 5"
+        "idleinhibit"
       ]}
       ${mkWindowrulev2 "class:(lutris)" [
         "workspace 5"

@@ -42,6 +42,7 @@
     games = {
       enable = true;
       minecraft.enable = true;
+      gamescope.enable = true;
     };
 
     hardware = {
