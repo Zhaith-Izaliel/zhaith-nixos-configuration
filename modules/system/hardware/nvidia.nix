@@ -11,6 +11,11 @@ in
 
       power-profiles.enable = mkEnableOption "power-profiles-daemon support";
 
+      power-management.enable = mkEnableOption "Nvidia power management
+      capabilities";
+
+      persistenced.enable = mkEnableOption "Nvidia Persistence Daemon";
+
       modesetting.enable = mkEnableOption "Nvidia Kernel Modesetting";
 
       prime = {
@@ -67,16 +72,16 @@ in
       hardware.nvidia = {
         inherit (cfg) modesetting;
 
-        powerManagement = {
-          enable = false;
-          finegrained = false;
+        powerManagement = mkIf cfg.power-management.enable {
+          enable = true;
+          finegrained = true;
         };
 
         open = true;
 
         nvidiaSettings = true;
 
-        nvidiaPersistenced = false;
+        nvidiaPersistenced = cfg.persistenced.enable;
 
         prime = mkIf cfg.prime.enable {
           inherit (cfg.prime) intelBusId nvidiaBusId;

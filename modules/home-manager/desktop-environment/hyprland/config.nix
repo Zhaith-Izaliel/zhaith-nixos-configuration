@@ -1,21 +1,12 @@
 { lib, config, osConfig, theme, pkgs, ... }:
 
 let
-  inherit (lib) mkOption types strings getExe lists range mkIf;
-  cfg = config.hellebore.hyprland;
+  inherit (lib) strings getExe lists range mkIf;
+
+  cfg = config.hellebore.desktop-environment.hyprland;
+
   mkWindowrulev2 = window: rules: (builtins.concatStringsSep "\n" (map (rule: "windowrulev2=${rule},${window}") rules));
-  monitorType = types.submodule {
-    options = {
-      name = mkOption { type = types.str; };
-      width = mkOption { type =  types.int; };
-      height = mkOption { type = types.int; };
-      refreshRate = mkOption { type = types.int; };
-      xOffset = mkOption { type = types.int; };
-      yOffset = mkOption { type = types.int; };
-      scaling = mkOption { type = types.float; };
-      extraArgs = mkOption { type = types.str; };
-    };
-  };
+
   mkMonitor = monitor:
   let
     inherit (monitor) name;

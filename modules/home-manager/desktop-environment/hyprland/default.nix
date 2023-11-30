@@ -1,14 +1,28 @@
 { osConfig, config, theme, lib, pkgs, ... }:
 
-with lib;
-
 let
+  inherit (lib) types mkOption mkEnableOption mkIf elem;
+
   cfg = config.hellebore.desktop-environment.hyprland;
+
+  monitorType = types.submodule {
+    options = {
+      name = mkOption { type = types.str; };
+      width = mkOption { type =  types.int; };
+      height = mkOption { type = types.int; };
+      refreshRate = mkOption { type = types.int; };
+      xOffset = mkOption { type = types.int; };
+      yOffset = mkOption { type = types.int; };
+      scaling = mkOption { type = types.float; };
+      extraArgs = mkOption { type = types.str; };
+    };
+  };
+
 
   isNvidia =
     elem "nvidia" osConfig.services.xserver.videoDrivers
-    && osConfig.hardware.nvidia.prime.offload.enable
-      || osConfig.hardware.nvidia.prime.reverseSync.enable;
+    && !osConfig.hardware.nvidia.prime.offload.enable
+    && !osConfig.hardware.nvidia.prime.reverseSync.enable;
 in
 {
   imports = [
@@ -61,7 +75,7 @@ in
 
       mouse = {
         sensitivity = mkOption {
-          type = types.numbers.between -1.0 1.0;
+          type = types.numbers.between (-1.0) 1.0;
           default = 0;
           description = "Defines the mouse sensitivity in Hyprland (between -1.0
           and 1.0 inclusive)";
@@ -99,7 +113,6 @@ in
     home.sessionVariables = {
       GDK_BACKEND = "wayland,x11";
       QT_QPA_PLATFORM = "wayland;xcb";
-      #SDL_VIDEODRIVER = "x11";
       CLUTTER_BACKEND = "wayland";
       XDG_CURRENT_DESKTOP = "Hyprland";
       XDG_SESSION_TYPE = "wayland";
