@@ -131,7 +131,7 @@ in
       enable = true;
       package = cfg.package;
       xwayland.enable = true;
-      enableNvidiaPatches = osConfig.programs.hyprland.enableNvidiaPatches;
+      # enableNvidiaPatches = osConfig.programs.hyprland.enableNvidiaPatches;
       systemd.enable = true;
     };
   };
