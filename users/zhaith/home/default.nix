@@ -5,18 +5,6 @@
 
     fontSize = 14;
 
-    monitors = [
-      {
-        name = "eDP-1";
-        width = 2560;
-        height = 1440;
-        refreshRate = 165;
-        xOffset = 0;
-        yOffset = 0;
-        scaling = 1.0;
-      }
-    ];
-
     desktop-environment = {
       hyprland = {
         enable = true;

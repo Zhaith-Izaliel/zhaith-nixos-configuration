@@ -1,8 +1,14 @@
-{ extraTypes, ... }:
+{ extraTypes, osConfig, ... }:
 
 {
   options.hellebore = {
-    inherit (extraTypes) fontSize monitors;
+    fontSize = extraTypes.fontSize // {
+      default = osConfig.hellebore.fontSize;
+    };
+
+    monitors = extraTypes.monitors // {
+      default = osConfig.hellebore.monitors;
+    };
   };
 
   imports = [
