@@ -21,7 +21,7 @@ let
   let
     nvidia-command = strings.optionalString
       config.hardware.nvidia.prime.offload.enableOffloadCmd
-      "nvidia-offload"
+      ''DXVK_FILTER_DEVICE_NAME="${config.hellebore.hardware.nvidia.deviceFilterName}" nvidia-offload''
     ;
   in
   pkgs.writeShellScriptBin "game-run"

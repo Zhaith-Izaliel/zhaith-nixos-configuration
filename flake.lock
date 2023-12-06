@@ -2319,11 +2319,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1701901622,
-        "narHash": "sha256-sr3E9P9HyBiKPtIaAVO9UpQtbySnqP3OtiG31jjjfuE=",
+        "lastModified": 1701902047,
+        "narHash": "sha256-zUowsw9IdcLyRU8RTchH9VOsRYeIg2lqU8OFTCgpX8Y=",
         "owner": "Zhaith-Izaliel",
         "repo": "virgutils",
-        "rev": "59e351e2e7ca98905f52ac0adcf97f231a6396ef",
+        "rev": "03a090b9adeef20a4c0e61f187e57b6c18113b84",
         "type": "gitlab"
       },
       "original": {
