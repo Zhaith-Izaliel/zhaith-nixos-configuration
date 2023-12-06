@@ -54,13 +54,13 @@
     games = {
       enable = true;
       minecraft.enable = true;
-      gamescope.enable = true;
     };
 
     hardware = {
       nvidia = {
         enable = true;
         power-profiles.enable = true;
+        deviceFilterName = "RTX 3060";
         prime = {
           enable = true;
           offload.enable = true;

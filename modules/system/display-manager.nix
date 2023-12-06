@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.hellebore.display-manager;
+  defaultMonitor = builtins.elemAt config.hellebore.monitors 0;
 in
 {
   options.hellebore.display-manager = {
@@ -11,7 +12,7 @@ in
 
     screenWidth = mkOption {
       type = types.int;
-      default = 1920;
+      default = defaultMonitor.width;
       description = "Width of the screen.";
     };
 
@@ -23,7 +24,7 @@ in
 
     screenHeight = mkOption {
       type = types.int;
-      default = 1080;
+      default = defaultMonitor.height;
       description = "Height of the screen.";
     };
 
