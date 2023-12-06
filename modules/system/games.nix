@@ -31,11 +31,11 @@ let
   main() {
     case "$1" in
       --gamescope)
-        ${nvidia-command} gamemoderun gamescope "$\{@:2\}"
+        ${nvidia-command} gamemoderun gamescope "''${@:2}"
       ;;
 
       --gamescope-steam)
-        ${nvidia-command} gamemoderun gamescope -e "$\{@:2\}"
+        ${nvidia-command} gamemoderun gamescope -e "''${@:2}"
       ;;
 
       *)
@@ -89,6 +89,7 @@ in
           Environmental variables to be passed to GameScope for the session.
         '';
       };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -137,7 +138,7 @@ in
       steam = {
         enable = true;
         gamescopeSession = {
-          inherit (cfg.gamescope.session) enable args;
+          inherit (cfg.gamescope.session) enable args env;
         };
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
