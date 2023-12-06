@@ -1,9 +1,10 @@
-{ config, lib, pkgs, theme, ... }:
+{ config, lib, theme, ... }:
 
 with lib;
 
 let
   cfg = config.hellebore.display-manager;
+  defaultMonitor = builtins.elemAt config.hellebore.monitors 0;
 in
 {
   options.hellebore.display-manager = {
@@ -11,7 +12,7 @@ in
 
     screenWidth = mkOption {
       type = types.int;
-      default = 1920;
+      default = defaultMonitor.width;
       description = "Width of the screen.";
     };
 
@@ -23,19 +24,19 @@ in
 
     screenHeight = mkOption {
       type = types.int;
-      default = 1080;
+      default = defaultMonitor.height;
       description = "Height of the screen.";
     };
 
     keyboardLayout = mkOption {
       type = types.str;
-      default = "fr";
+      default = config.hellebore.locale.keyboard.defaultLayout;
       description = "Keyboard layout used in the Display Manager.";
     };
 
     keyboardVariant = mkOption {
       type = types.str;
-      default = "oss_latin9";
+      default = config.hellebore.locale.keyboard.defaultVariant;
       description = "Keyboard variant used in the Display Manager.";
     };
 

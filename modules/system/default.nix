@@ -1,12 +1,8 @@
-{ lib, ... }:
+{ extraTypes, ... }:
 
 {
   options.hellebore = {
-    fontSize = lib.mkOption {
-      type = lib.types.int;
-      default = 12;
-      description = "Hellebore global applications font size";
-    };
+    inherit (extraTypes) fontSize monitors;
   };
 
   imports = [

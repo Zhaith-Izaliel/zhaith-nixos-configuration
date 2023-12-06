@@ -11,7 +11,18 @@ in
 
       power-profiles.enable = mkEnableOption "power-profiles-daemon support";
 
+      power-management.enable = mkEnableOption "Nvidia power management
+      capabilities";
+
+      persistenced.enable = mkEnableOption "Nvidia Persistence Daemon";
+
       modesetting.enable = mkEnableOption "Nvidia Kernel Modesetting";
+
+      deviceFilterName = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "Defines the device filter name for DXVK for Nvidia.";
+      };
 
       prime = {
         enable = mkEnableOption "Nvidia PRIME support (laptop only)";
@@ -57,7 +68,8 @@ in
                                                     # the hardware.nvidia module
 
       # NOTE: This forces Libglvnd to use Mesa instead of Nvidia.
-      environment.variables = {
+      environment.variables = mkIf (cfg.prime.offload.enable ||
+      cfg.prime.reverseSync.enable) {
         "__EGL_VENDOR_LIBRARY_FILENAMES" =
           "${pkgs.mesa.drivers}/share/glvnd/egl_vendor.d/50_mesa.json";
         "__GLX_VENDOR_LIBRARY_NAME" = "mesa";
@@ -66,7 +78,7 @@ in
       hardware.nvidia = {
         inherit (cfg) modesetting;
 
-        powerManagement = {
+        powerManagement = mkIf cfg.power-management.enable {
           enable = true;
           finegrained = true;
         };
@@ -75,7 +87,7 @@ in
 
         nvidiaSettings = true;
 
-        nvidiaPersistenced = false;
+        nvidiaPersistenced = cfg.persistenced.enable;
 
         prime = mkIf cfg.prime.enable {
           inherit (cfg.prime) intelBusId nvidiaBusId;

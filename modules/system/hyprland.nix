@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.hellebore.hyprland;
+  # isNvidia = elem "nvidia" config.services.xserver.videoDrivers;
 in
 {
   options.hellebore.hyprland = {
@@ -62,7 +63,7 @@ in
       xwayland = {
         enable = true;
       };
-      # enableNvidiaPatches = elem "nvidia" config.services.xserver.videoDrivers;
+      # enableNvidiaPatches = isNvidia;
     };
   };
 }
