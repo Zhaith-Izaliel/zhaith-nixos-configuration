@@ -16,13 +16,15 @@ in
   };
 
   gtk = rec {
-    inherit (theme-packages.gtk) theme cursorTheme iconTheme font;
+    inherit (theme-packages.gtk) configure-gtk theme cursorTheme iconTheme font;
 
     packages = [
       theme.package
       cursorTheme.package
       iconTheme.package
       font.package
+      configure-gtk
+      pkgs.gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
     ];
   };
 

@@ -52,6 +52,12 @@ in
 
       # --- #
 
+      (strings.optionalString config.gtk.enable ''
+      exec-once = ${getExe theme.gtk.configure-gtk}
+      '')
+
+      # --- #
+
       ''
 
       $mainMod = SUPER
@@ -259,8 +265,8 @@ in
       bindr = CAPS, Caps_Lock, exec, swayosd --caps-lock
       bindle =, XF86MonBrightnessUp, exec, ${getExe pkgs.volume-brightness} -b 5%+
       bindle =, XF86MonBrightnessDown, exec, ${getExe pkgs.volume-brightness} -b 5%-
-      bind = , code:107, exec, pkill grimblast; grimblast --notify copysave area ~/Pictures/Screenshots/$(date +%F:%H:%M:%S).png
-      bind = $mainMod, code:107, exec, pkill grimblast; grimblast --notify copysave screen ~/Pictures/Screenshots/$(date +%F:%H:%M:%S).png
+      bind = , code:107, exec, ${getExe pkgs.screenshot} area
+      bind = $mainMod, code:107, exec, ${getExe pkgs.screenshot} screen
 
       # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
       bind = $mainMod, C, killactive,

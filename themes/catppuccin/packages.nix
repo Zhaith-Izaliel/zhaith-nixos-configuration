@@ -17,7 +17,21 @@
     '';
   };
 
-  gtk = {
+  gtk = rec {
+    configure-gtk = let
+      schema = pkgs.gsettings-desktop-schemas;
+      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+    in
+    pkgs.writeShellScriptBin "configure-gtk" ''
+      #!/usr/bin/env bash
+      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+      local gnome_schema=org.gnome.desktop.interface
+      gsettings set $gnome_schema gtk-theme ${theme.name}
+      gsettings set $gnome_schema icon-theme ${iconTheme.name}
+      gsettings set $gnome_schema cursor-theme ${cursorTheme.name}
+      gsettings set $gnome_schema font-name ${font.name}
+    '';
+
     theme = {
       package = pkgs.catppuccin-gtk.override {
         accents = [ "blue" "flamingo" "green" "lavender" "maroon" "mauve" "peach"

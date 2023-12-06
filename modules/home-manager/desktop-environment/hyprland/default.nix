@@ -96,6 +96,7 @@ in
       XDG_SESSION_TYPE = "wayland";
       XDG_SESSION_DESKTOP = "Hyprland";
       WLR_NO_HARDWARE_CURSORS = "1";
+      ADW_DISABLE_PORTAL = "1";
     };
 
 
@@ -107,6 +108,7 @@ in
       hyprpicker
       grimblast
       volume-brightness
+      screenshot
     ] ++ theme.gtk.packages;
 
     gtk = {
