@@ -252,13 +252,13 @@ in
       # See https://wiki.hyprland.org/Configuring/Keywords/ for more
 
       # Multimedia Keys
-      bindle =, XF86AudioRaiseVolume, exec, volume-brightness -v 1.5 @DEFAULT_AUDIO_SINK@ 5%+
-      bindle =, XF86AudioLowerVolume, exec, volume-brightness -v 1.5 @DEFAULT_AUDIO_SINK@ 5%-
+      bindle =, XF86AudioRaiseVolume, exec, ${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+      bindle =, XF86AudioLowerVolume, exec, ${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 5%-
       bindl =, XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
       bindl =, XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
       bindr = CAPS, Caps_Lock, exec, swayosd --caps-lock
-      bindle =, XF86MonBrightnessUp, exec, volume-brightness -b 5%+
-      bindle =, XF86MonBrightnessDown, exec, volume-brightness -b 5%-
+      bindle =, XF86MonBrightnessUp, exec, ${getExe pkgs.volume-brightness} -b 5%+
+      bindle =, XF86MonBrightnessDown, exec, ${getExe pkgs.volume-brightness} -b 5%-
       bind = , code:107, exec, pkill grimblast; grimblast --notify copysave area ~/Pictures/Screenshots/$(date +%F:%H:%M:%S).png
       bind = $mainMod, code:107, exec, pkill grimblast; grimblast --notify copysave screen ~/Pictures/Screenshots/$(date +%F:%H:%M:%S).png
 

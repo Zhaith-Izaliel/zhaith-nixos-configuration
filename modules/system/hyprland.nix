@@ -4,10 +4,7 @@ with lib;
 
 let
   cfg = config.hellebore.hyprland;
-  isNvidia =
-    elem "nvidia" config.services.xserver.videoDrivers
-    && !config.hardware.nvidia.prime.offload.enable
-    && !config.hardware.nvidia.prime.reverseSync.enable;
+  isNvidia = elem "nvidia" config.services.xserver.videoDrivers;
 in
 {
   options.hellebore.hyprland = {

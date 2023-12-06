@@ -18,6 +18,12 @@ in
 
       modesetting.enable = mkEnableOption "Nvidia Kernel Modesetting";
 
+      deviceFilterName = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "Defines the device filter name for DXVK for Nvidia.";
+      };
+
       prime = {
         enable = mkEnableOption "Nvidia PRIME support (laptop only)";
 

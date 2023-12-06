@@ -1,5 +1,9 @@
 { inputs }:
 
+let
+  types = import ./types.nix { inherit lib; };
+  lib = inputs.nixpkgs.lib;
+in
 {
   mkSystem = { hostname, system, users ? [ ], extraModules ? [ ], overlays ? [
   ], theme ? "", nixpkgs ? inputs.nixpkgs }:
@@ -7,13 +11,13 @@
       pkgs = import nixpkgs {
         inherit overlays system;
       };
-      lib = nixpkgs.lib;
       theme-set = (import ../themes { inherit lib pkgs; }).${theme};
     in
     lib.nixosSystem {
       inherit system;
       specialArgs = {
         inherit hostname system inputs;
+        extraTypes = types;
         theme = theme-set;
         stable-pkgs = import inputs.nixpkgs-stable {
           inherit overlays system;
@@ -57,7 +61,6 @@
       pkgs = import nixpkgs {
         inherit overlays system;
       };
-      lib = nixpkgs.lib;
       theme-set = (import ../themes { inherit pkgs lib; }).${theme};
     in
     home-manager.lib.homeManagerConfiguration {
@@ -66,6 +69,7 @@
       extraSpecialArgs = {
         inherit system hostname inputs;
         theme = theme-set;
+        extraTypes = types;
         stable-pkgs = import inputs.nixpkgs-stable {
           inherit overlays system;
         };

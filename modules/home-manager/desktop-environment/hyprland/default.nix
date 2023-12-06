@@ -1,28 +1,8 @@
-{ osConfig, config, theme, lib, pkgs, ... }:
+{ osConfig, config, theme, lib, pkgs, extraTypes, ... }:
 
 let
-  inherit (lib) types mkOption mkEnableOption mkIf elem;
-
+  inherit (lib) types mkOption mkEnableOption mkIf;
   cfg = config.hellebore.desktop-environment.hyprland;
-
-  monitorType = types.submodule {
-    options = {
-      name = mkOption { type = types.str; };
-      width = mkOption { type =  types.int; };
-      height = mkOption { type = types.int; };
-      refreshRate = mkOption { type = types.int; };
-      xOffset = mkOption { type = types.int; };
-      yOffset = mkOption { type = types.int; };
-      scaling = mkOption { type = types.float; };
-      extraArgs = mkOption { type = types.str; };
-    };
-  };
-
-
-  isNvidia =
-    elem "nvidia" osConfig.services.xserver.videoDrivers
-    && !osConfig.hardware.nvidia.prime.offload.enable
-    && !osConfig.hardware.nvidia.prime.reverseSync.enable;
 in
 {
   imports = [
@@ -38,10 +18,8 @@ in
   options.hellebore.desktop-environment.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
-    monitors = mkOption {
-      type = types.listOf monitorType;
-      default = [];
-      description = "Primary screen resolution.";
+    monitors = extraTypes.monitors // {
+      default = config.hellebore.monitors;
     };
 
     mirrorFirstMonitor = mkEnableOption null // {
@@ -153,7 +131,7 @@ in
       enable = true;
       package = cfg.package;
       xwayland.enable = true;
-      enableNvidiaPatches = isNvidia;
+      enableNvidiaPatches = osConfig.programs.hyprland.enableNvidiaPatches;
       systemd.enable = true;
     };
   };

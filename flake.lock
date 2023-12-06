@@ -2452,11 +2452,11 @@
         "nvim-yuck": "nvim-yuck"
       },
       "locked": {
-        "lastModified": 1701155061,
-        "narHash": "sha256-nxN8uAN9NwrQaY3b7CBBOvnV8v6luh8iCa+MLUZY7Gg=",
+        "lastModified": 1701699816,
+        "narHash": "sha256-nB28Aq2W9OOHYwDMG/qVUcjsVMzZtmFS3nnq8ZMRyag=",
         "owner": "Zhaith-Izaliel",
         "repo": "neovim-config",
-        "rev": "dae5d4a8fa1cbd587c286acc4b4ce594ae0894b3",
+        "rev": "bdd9f0dbd7cd965df0747aff4ab41bcf55ce6e96",
         "type": "gitlab"
       },
       "original": {
