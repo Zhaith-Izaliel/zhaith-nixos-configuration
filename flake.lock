@@ -668,11 +668,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1701890111,
-        "narHash": "sha256-NzUmwlvXaYY4MLPgxWKuZ+cMPo6IDo1Evtps4O3HWM0=",
+        "lastModified": 1701892658,
+        "narHash": "sha256-9EMr2FzUDBJSWw9QvmSh3LEsd9Gy0nwPQO3ExxhmEP4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "44522d8478969867e555528f2cc555d5b4f58d6f",
+        "rev": "c40f706dc41332d20b8d320b9fee0b5666e334fc",
         "type": "github"
       },
       "original": {
@@ -860,11 +860,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1694183432,
-        "narHash": "sha256-YyPGNapgZNNj51ylQMw9lAgvxtM2ai1HZVUu3GS8Fng=",
+        "lastModified": 1701436327,
+        "narHash": "sha256-tRHbnoNI8SIM5O5xuxOmtSLnswEByzmnQcGGyNRjxsE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "db9208ab987cdeeedf78ad9b4cf3c55f5ebd269b",
+        "rev": "91050ea1e57e50388fa87a3302ba12d188ef723a",
         "type": "github"
       },
       "original": {
@@ -2086,11 +2086,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1694308021,
-        "narHash": "sha256-QWVuVjs7yXm5yJUBneI4cst9NtP7RtdGcUiFPEGGcs4=",
+        "lastModified": 1701892631,
+        "narHash": "sha256-V/37ABrXwpApy0/SlDXPn8ROi7YhEHaFDOsxN4i3+ng=",
         "owner": "Zhaith-Izaliel",
         "repo": "sddm-sugar-candy-nix",
-        "rev": "786f6ee143be32b2dd27193d12d543a34dc0c8db",
+        "rev": "115439a74247d780d56bdf1f6d89ade6a840bae8",
         "type": "gitlab"
       },
       "original": {
