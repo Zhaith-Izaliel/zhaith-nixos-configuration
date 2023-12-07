@@ -27,7 +27,7 @@
     "electron-19.1.9" # TODO: Needs to fine which package depends on it
   ];
 
-  hellebore = {
+  hellebore = rec {
     fontSize = 14;
 
     monitors = [
@@ -39,6 +39,19 @@
         xOffset = 0;
         yOffset = 0;
         scaling = 1.0;
+      }
+      {
+        name = "";
+        width = 1920;
+        height = 1080;
+        refreshRate = 60;
+        xOffset = 0;
+        yOffset = 0;
+        scaling = 1.0;
+        extraArgs = [
+          "mirror"
+          (builtins.elemAt monitors 1).name
+        ];
       }
     ];
 

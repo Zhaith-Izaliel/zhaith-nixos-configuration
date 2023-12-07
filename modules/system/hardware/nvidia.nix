@@ -83,7 +83,7 @@ in
           finegrained = true;
         };
 
-        open = true;
+        open = false;
 
         nvidiaSettings = true;
 

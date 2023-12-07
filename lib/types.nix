@@ -38,10 +38,10 @@ rec {
         default = 1.0;
       };
       extraArgs = mkOption {
-        type = types.str;
+        type = types.listOf types.str;
         description = "Extra arguments used to describe the monitor. These
         arguments are used with Hyprland.";
-        default = "";
+        default = [];
       };
     };
   };

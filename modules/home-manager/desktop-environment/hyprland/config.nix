@@ -16,8 +16,9 @@ let
     yOffset = toString monitor.yOffset;
     refreshRate = toString monitor.refreshRate;
     scaling = toString monitor.scaling;
+    extraArgs = strings.concatStringsSep "," monitor.extraArgs;
   in
-  "monitor=${name},${width}x${height}@${refreshRate},${xOffset}x${yOffset},${scaling}";
+  "monitor=${name},${width}x${height}@${refreshRate},${xOffset}x${yOffset},${scaling},${extraArgs}";
 
   mkMonitors = monitors: strings.concatStringsSep "\n" (builtins.map mkMonitor monitors);
   firstMonitor = builtins.elemAt cfg.monitors 0;
@@ -36,12 +37,6 @@ in
       # See https://wiki.hyprland.org/Configuring/Monitors/
       ${mkMonitors cfg.monitors}
       ''
-
-      (strings.optionalString cfg.mirrorFirstMonitor
-      ''
-      monitor=,preferred,auto,1,mirror,${(builtins.elemAt cfg.monitors 0).name}
-      ''
-      )
 
       # --- #
 
