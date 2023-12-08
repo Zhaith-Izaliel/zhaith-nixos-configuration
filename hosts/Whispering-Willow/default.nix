@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports = [
@@ -73,11 +73,12 @@
       nvidia = {
         enable = true;
         power-profiles.enable = true;
+        modesetting.enable = true;
+        forceWaylandOnMesa = true;
         deviceFilterName = "RTX 3060";
+        open = false;
         prime = {
-          enable = true;
           offload.enable = true;
-          reverseSync.enable = true;
           intelBusId = "PCI:0:2:0";
           nvidiaBusId = "PCI:1:0:0";
         };
@@ -100,11 +101,6 @@
       integratedCamera = {
         disable = true;
         cameraBus = "3-13";
-      };
-
-      graphics-tablet = {
-        enable = true;
-        isWacom = true;
       };
 
       logitech = {
@@ -142,28 +138,6 @@
     ssh.enable = true;
 
     tex.enable = true;
-
-    vm = {
-      enable = false;
-
-      cpuIsolation = {
-        totalCores = "0-15";
-        hostCores = "0-3,8-11";
-        variableName = "ISOLATE_CPUS";
-      };
-
-      name = "Luminous-Rafflesia";
-
-      pcisBinding = {
-        enableDynamicBinding = false;
-        pcis = [
-          "0000:01:00.0"
-          "0000:01:00.1"
-        ];
-      };
-
-      username = "zhaith";
-    };
 
     sound = {
       enable = true;
@@ -204,6 +178,46 @@
         percentageLow = 15;
         percentageCritical = 10;
         percentageAction = 5;
+      };
+    };
+  };
+
+  specialisation = {
+    vm.configuration = {
+      hellebore = {
+        hardware.nvidia.enable = lib.mkForce false;
+
+        vm = {
+          enable = true;
+
+          cpuIsolation = {
+            totalCores = "0-15";
+            hostCores = "0-3,8-11";
+            variableName = "ISOLATE_CPUS";
+          };
+
+          name = "Luminous-Rafflesia";
+
+          pcisBinding = {
+            enableDynamicBinding = false;
+            pcis = [
+              "0000:01:00.0"
+              "0000:01:00.1"
+            ];
+          };
+
+          username = "zhaith";
+        };
+      };
+    };
+
+    wacom.configuration = {
+      hellebore.hardware = {
+        nvidia.forceWaylandOnMesa = lib.mkForce false;
+        graphics-tablet = {
+          enable = true;
+          isWacom = true;
+        };
       };
     };
   };

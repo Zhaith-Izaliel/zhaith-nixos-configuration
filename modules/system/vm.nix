@@ -70,14 +70,7 @@ in
       {
         assertion = cfg.pcisBinding.enableOnBoot ->
         !cfg.pcisBinding.enableDynamicBinding;
-        message = "You can't enable dynamic PCIs binding and binding on boot at the
-        same time.";
-      }
-      {
-        assertion = !cfg.pcisBinding.enableOnBoot ->
-        cfg.pcisBinding.enableDynamicBinding;
-        message = "You can't enable dynamic PCIs binding and binding on boot at the
-        same time.";
+        message = "You can't enable dynamic PCIs binding and binding on boot at the same time.";
       }
     ];
 
