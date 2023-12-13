@@ -24,7 +24,7 @@
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3" # Etcher
-    "electron-19.1.9" # TODO: Needs to fine which package depends on it
+    "electron-19.1.9" # TODO: Find the corresponding package
   ];
 
   hellebore = rec {
@@ -95,7 +95,16 @@
 
       printing = {
         enable = true;
-        drivers = with pkgs; [ epson-escpr epson-escpr2 ];
+        drivers = with pkgs; [
+          epson-escpr
+          (epson-escpr2.overrideAttrs (final: prev: {
+            nativeBuildInputs = with pkgs; [
+              coreutils # HACK: fixes `stat` missing some common arguments
+                        # (like `--printf`)
+              busybox
+            ];
+          }))
+        ];
       };
 
       integratedCamera = {

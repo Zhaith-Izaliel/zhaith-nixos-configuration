@@ -58,18 +58,14 @@ in
       config.hellebore.shell.emulator.bin;
 
       plugins = with pkgs; [
-        rofi-top
         rofi-calc
       ];
 
       extraConfig = {
-        modi = "drun,filebrowser,ssh,calc,top";
+        modi = "drun,calc";
         show-icons = true;
         display-drun = " Apps";
-        display-filebrowser = " Files";
-        display-ssh = "󰒍 SSH";
         display-calc = "󰲒 Calc";
-        display-top = " Top";
         drun-display-format = "{name}";
         icon-theme = theme.gtk.iconTheme.name;
         window-format = "{w} · {c} · {t}";
@@ -80,6 +76,20 @@ in
           enable = true;
           settings = {
           };
+        };
+
+        quicklinks = {
+          enable = true;
+          settings = {
+            quicklinks = {
+              " Reddit" = "https://www.reddit.com/";
+              " Gitlab" = "https://gitlab.com/";
+            };
+          };
+        };
+
+        favorites = {
+          enable = true;
         };
       };
     };

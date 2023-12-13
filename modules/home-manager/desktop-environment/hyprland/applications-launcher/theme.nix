@@ -21,7 +21,7 @@ in
       # properties for all widgets
       enabled = true;
       border-radius = mkLiteral "15px";
-      cursor = "default";
+      cursor = theme.gtk.cursorTheme.name;
       background-color = mkLiteral colors.base;
       border = mkLiteral "3px";
       border-color = mkLiteral colors.mauve;

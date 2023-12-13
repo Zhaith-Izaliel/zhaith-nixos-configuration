@@ -1,6 +1,11 @@
 { config, ... }:
 
 {
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-25.9.0" # Obsidian
+  ];
+
   hellebore = {
 
     fontSize = 14;
