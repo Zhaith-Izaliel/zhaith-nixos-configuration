@@ -1,4 +1,4 @@
-{ osConfig, config, lib, pkgs, ... }:
+{ os-config, config, lib, pkgs, ... }:
 
 with lib;
 
@@ -13,7 +13,7 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> osConfig.hardware.bluetooth.enable;
+        assertion = cfg.enable -> os-config.hardware.bluetooth.enable;
         message = "Bluetooth needs to be enabled in your system configuration
         for Hellebore's bluetooth support to work.";
       }

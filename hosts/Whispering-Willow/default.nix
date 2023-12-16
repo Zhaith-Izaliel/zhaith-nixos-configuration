@@ -24,11 +24,10 @@
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3" # Etcher
-    "electron-19.1.9" # TODO: Find the corresponding package
   ];
 
   hellebore = rec {
-    fontSize = 14;
+    font.size = 14;
 
     monitors = [
       {

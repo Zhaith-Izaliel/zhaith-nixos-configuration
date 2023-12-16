@@ -1,4 +1,4 @@
-{ osConfig, config, lib, ... }:
+{ os-config, config, lib, ... }:
 
 with lib;
 
@@ -14,7 +14,7 @@ in
     assertions = [
       {
         assertion = cfg.enable ->
-        osConfig.services.gnome.gnome-keyring.enable;
+        os-config.services.gnome.gnome-keyring.enable;
         message = "Gnome Keyring should be enabled to store passwords for
         Nextcloud client.";
       }

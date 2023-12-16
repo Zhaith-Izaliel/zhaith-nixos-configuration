@@ -1,4 +1,4 @@
-{ config, lib, pkgs, theme, ... }:
+{ config, lib, pkgs, theme, extra-types, ... }:
 
 with lib;
 
@@ -9,9 +9,8 @@ in
   options.hellebore.desktop-environment.hyprland.applications-launcher = {
     enable = mkEnableOption "Hellebore Applications Launcher configuration";
 
-    fontSize = mkOption {
-      type = types.int;
-      default = config.hellebore.fontSize;
+    fontSize = extra-types.fontSize {
+      default = config.hellebore.font.size;
       description = "Set the font size to manage the UI size.";
     };
 

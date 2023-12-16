@@ -17,7 +17,7 @@ in
       inherit system;
       specialArgs = {
         inherit hostname system inputs;
-        extraTypes = types;
+        extra-types = types;
         theme = theme-set;
         stable-pkgs = import inputs.nixpkgs-stable {
           inherit overlays system;
@@ -69,14 +69,14 @@ in
       extraSpecialArgs = {
         inherit system hostname inputs;
         theme = theme-set;
-        extraTypes = types;
+        extra-types = types;
         stable-pkgs = import inputs.nixpkgs-stable {
           inherit overlays system;
         };
         unstable-pkgs = import inputs.nixpkgs {
           inherit overlays system;
         };
-        osConfig = inputs.self.nixosConfigurations.${hostname}.config;
+        os-config = inputs.self.nixosConfigurations.${hostname}.config;
       };
 
       modules = [

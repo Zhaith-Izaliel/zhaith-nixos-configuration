@@ -1,4 +1,4 @@
-{ config, lib, theme, ... }:
+{ config, lib, theme, extra-types, ... }:
 
 with lib;
 let
@@ -9,9 +9,8 @@ in
   options.hellebore.desktop-environment.hyprland.notifications = {
     enable = mkEnableOption "Hellebore Dunst configuration";
 
-    fontSize = mkOption {
-      type = types.int;
-      default = config.hellebore.fontSize;
+    fontSize = extra-types.fontSize {
+      default = config.hellebore.font.size;
       description = "Set the notifications client font size.";
     };
   };

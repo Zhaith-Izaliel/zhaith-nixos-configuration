@@ -1,4 +1,4 @@
-{ osConfig, config, lib, pkgs, theme, ... }:
+{ os-config, config, lib, pkgs, theme, extra-types, ... }:
 
 with lib;
 
@@ -10,9 +10,8 @@ in
   options.hellebore.desktop-environment.hyprland.status-bar = {
     enable = mkEnableOption "Hellebore Waybar configuration";
 
-    fontSize = mkOption {
-      type = types.int;
-      default = config.hellebore.fontSize;
+    fontSize = extra-types.fontSize {
+      default = config.hellebore.font.size;
       description = "Set the status bar font size.";
     };
 
@@ -76,7 +75,7 @@ in
             "tray"
             "idle_inhibitor"
           ]
-          ++ lists.optional osConfig.programs.gamemode.enable "gamemode"
+          ++ lists.optional os-config.programs.gamemode.enable "gamemode"
           ++ lists.optional config.hellebore.desktop-environment.bluetooth.enable "bluetooth"
           ++ [
             "network"
@@ -86,7 +85,7 @@ in
           ]
           ++ lists.optional config.programs.wlogout.enable "custom/shutdown";
 
-          gamemode = mkIf osConfig.programs.gamemode.enable {
+          gamemode = mkIf os-config.programs.gamemode.enable {
             format = "{glyph} GameMode On";
             hide-not-running = true;
             use-icon = true;
@@ -186,7 +185,7 @@ in
 
           clock = {
             format = "${mkBig ""} {:%H:%M}";
-            timezone = osConfig.time.timeZone;
+            timezone = os-config.time.timeZone;
             tooltip-format = "<tt><small>{calendar}</small></tt>";
             calendar = {
               mode = "month";

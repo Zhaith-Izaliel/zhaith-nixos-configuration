@@ -1,4 +1,4 @@
-{ config, lib, theme, pkgs, ... }:
+{ config, lib, theme, pkgs, extra-types, ... }:
 
 with lib;
 
@@ -36,9 +36,8 @@ in
   options.hellebore.desktop-environment.hyprland.logout = {
     enable = mkEnableOption "Hellebore WLogout configuration";
 
-    fontSize = mkOption {
-      type = types.int;
-      default = config.hellebore.fontSize;
+    fontSize = extra-types.fontSize {
+      default = config.hellebore.font.size;
       description = "Set the font size of the logout menu.";
     };
 

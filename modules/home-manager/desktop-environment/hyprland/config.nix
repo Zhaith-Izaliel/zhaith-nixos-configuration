@@ -1,4 +1,4 @@
-{ lib, config, osConfig, theme, pkgs, ... }:
+{ lib, config, os-config, theme, pkgs, ... }:
 
 let
   inherit (lib) strings getExe lists range mkIf;
@@ -120,7 +120,7 @@ in
       ''
       )
 
-      (strings.optionalString osConfig.hellebore.games.enable
+      (strings.optionalString os-config.hellebore.games.enable
       ''
       workspace = 5,persistent:true
       ${mkWindowrulev2 "class:(steam)" [
@@ -145,10 +145,10 @@ in
       ''
       )
 
-      (strings.optionalString osConfig.hellebore.vm.enable
+      (strings.optionalString os-config.hellebore.vm.enable
       ''
       workspace = 6,persistent:true
-      ${mkWindowrulev2 "title:(${osConfig.hellebore.vm.name})class:(looking-glass-client)" [
+      ${mkWindowrulev2 "title:(${os-config.hellebore.vm.name})class:(looking-glass-client)" [
         "fullscreen"
         "idleinhibit always"
         "workspace 6"

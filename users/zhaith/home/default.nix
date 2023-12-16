@@ -8,15 +8,18 @@
 
   hellebore = {
 
-    fontSize = 14;
-
     desktop-environment = {
       hyprland = {
         enable = true;
         mirrorFirstMonitor = true;
         lockscreen = {
           enable = true;
-          fontSize = config.hellebore.fontSize + 10;
+          fontSize = config.hellebore.font.size + 10;
+          timeouts = {
+            dim.enable = true;
+            lock.enable = true;
+            powerSaving.enable = true;
+          };
         };
         logout = {
           enable = true;

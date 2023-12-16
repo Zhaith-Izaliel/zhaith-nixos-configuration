@@ -1,4 +1,4 @@
-{ osConfig, config, lib, pkgs, ... }:
+{ os-config, config, lib, pkgs, ... }:
 
 with lib;
 
@@ -52,7 +52,7 @@ in
 
     assertions = [
       {
-        assertion = cfg.enable -> osConfig.services.pipewire.enable;
+        assertion = cfg.enable -> os-config.services.pipewire.enable;
         message = "Hellebore's MPD configuration relies on pipewire to be
         enabled on your system globally.";
       }

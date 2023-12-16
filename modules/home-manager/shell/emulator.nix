@@ -1,4 +1,4 @@
-{ config, lib, pkgs, theme, ... }:
+{ config, lib, pkgs, theme, extra-types, ... }:
 
 with lib;
 
@@ -14,10 +14,9 @@ in
   options.hellebore.shell.emulator = {
     enable = mkEnableOption "Hellebore terminal emulator configuration";
 
-    fontSize = mkOption {
-      type = types.int;
-      default = config.hellebore.fontSize;
-      description = "Set the emulator font size.";
+    fontSize = extra-types.fontSize {
+      default = config.hellebore.font.size;
+      description = "Set the terminal emulator font size.";
     };
 
     integratedGPU = {

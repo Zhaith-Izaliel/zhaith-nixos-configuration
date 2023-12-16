@@ -1,8 +1,12 @@
-{ extraTypes, ... }:
+{ extra-types, theme, ... }:
 
 {
   options.hellebore = {
-    inherit (extraTypes) fontSize monitors;
+    inherit (extra-types) monitors;
+
+    font = extra-types.font {
+      name = theme.font.name;
+    };
   };
 
   imports = [

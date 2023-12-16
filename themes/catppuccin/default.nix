@@ -38,6 +38,9 @@ in
   hyprland = rec {
     package = theme-packages.hyprland-palette;
     palette = "${package}/themes/macchiato.conf";
+    theme = ''
+
+    '';
   };
 
   fcitx5 = {
@@ -46,6 +49,15 @@ in
   };
 
   kitty.theme = "Catppuccin-Macchiato";
+
+  rofi = {
+    theme = {};
+
+    applets = {
+      vertical-theme = {};
+      horizontal-theme = {};
+    };
+  };
 
   colors = import ./colors.nix {};
 }

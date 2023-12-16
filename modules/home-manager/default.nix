@@ -1,13 +1,14 @@
-{ extraTypes, osConfig, ... }:
+{ extra-types, os-config, ... }:
 
 {
   options.hellebore = {
-    fontSize = extraTypes.fontSize // {
-      default = osConfig.hellebore.fontSize;
+    font = extra-types.font {
+      size = os-config.hellebore.font.size;
+      name = os-config.hellebore.font.name;
     };
 
-    monitors = extraTypes.monitors // {
-      default = osConfig.hellebore.monitors;
+    monitors = extra-types.monitors // {
+      default = os-config.hellebore.monitors;
     };
   };
 

@@ -1,4 +1,4 @@
-{ osConfig, config, lib, pkgs, ... }:
+{ os-config, config, lib, pkgs, ... }:
 
 with lib;
 
@@ -21,7 +21,7 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.protonmail.enable -> osConfig.services.gnome.gnome-keyring.enable;
+        assertion = cfg.protonmail.enable -> os-config.services.gnome.gnome-keyring.enable;
         message = "Gnome keyring needs to be enable to allow Protonmail-Bridge
         to store passwords locally";
       }

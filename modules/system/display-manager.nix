@@ -1,4 +1,4 @@
-{ config, lib, theme, ... }:
+{ config, lib, theme, extra-types, ... }:
 
 with lib;
 
@@ -16,9 +16,8 @@ in
       description = "Width of the screen.";
     };
 
-    fontSize = mkOption {
-      type = types.int;
-      default = config.hellebore.fontSize;
+    fontSize = extra-types.fontSize {
+      default = config.hellebore.font.size;
       description = "Set SDDM font size";
     };
 

@@ -46,12 +46,27 @@ rec {
     };
   };
 
-  fontSize = mkOption {
+  fontSize = { default, description }: mkOption {
+    inherit default description;
     type = types.ints.unsigned;
-    default = 12;
-    description = "Define a global font size for applications. Each
-    application font size can be changed granularly, or set globally using
-    this option.";
+  };
+
+
+  font = { name ? "", size ? 12 }: {
+    size = fontSize {
+      default = size;
+      description = "Define a global font size for applications. Each
+      application font size can be changed granularly, or set globally using
+      this option.";
+    };
+
+    name = mkOption {
+      type = types.nonEmptyStr;
+      default = name;
+      description = "Define a global font face for applications. Each
+      application font face can be changed granularly, or set globally using
+      this option.";
+    };
   };
 
   monitors = mkOption {

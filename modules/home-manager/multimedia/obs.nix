@@ -1,4 +1,4 @@
-{ osConfig, config, lib, pkgs, ... }:
+{ os-config, config, lib, pkgs, ... }:
 
 with lib;
 
@@ -14,7 +14,7 @@ in
 
     programs.obs-studio = {
       enable = true;
-      plugins = lists.optionals osConfig.hellebore.vm.enable [
+      plugins = lists.optionals os-config.hellebore.vm.enable [
         pkgs.obs-studio-plugins.looking-glass-obs
       ];
     };
