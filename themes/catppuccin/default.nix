@@ -1,46 +1,16 @@
-{ pkgs, lib }:
+{ pkgs, lib, inputs }:
 let
   theme-packages = import ./packages.nix { inherit pkgs lib; };
+  apps = import ./apps { inherit pkgs lib inputs; };
 in
 {
-  bat = {
-    package = theme-packages.bat-theme;
-    src = theme-packages.bat-theme.src;
-    name = "catppuccin-macchiato";
-    file = "Catppuccin-macchiato.tmTheme";
-  };
-
-  gitui = rec {
-    package = theme-packages.gitui-theme;
-    file = "${package}/theme/macchiato.ron";
-  };
-
-  gtk = rec {
-    inherit (theme-packages.gtk) configure-gtk theme cursorTheme iconTheme font;
-
-    packages = [
-      theme.package
-      cursorTheme.package
-      iconTheme.package
-      font.package
-      configure-gtk
-      pkgs.gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
-    ];
-  };
+  inherit (apps) hyprland bat gitui gtk;
 
   starship = rec {
     package = theme-packages.starship-palette;
     paletteName = "catppuccin_macchiato";
     palette = builtins.fromTOML (builtins.readFile (package +
     /palettes/macchiato.toml));
-  };
-
-  hyprland = rec {
-    package = theme-packages.hyprland-palette;
-    palette = "${package}/themes/macchiato.conf";
-    theme = ''
-
-    '';
   };
 
   fcitx5 = {

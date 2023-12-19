@@ -50,7 +50,6 @@ let
   gamescope-args = lists.optional config.programs.hyprland.enable "--expose-wayland"
   ++ [
     "-f"
-    "--force-grab-cursor"
     "--adaptive-sync"
     "--force-composition"
     "-W ${toString gameMonitor.width}"
@@ -168,6 +167,7 @@ in
       cartridges
       protontricks
       wineWowPackages.stable
+      heroic
       wine
       (wine.override { wineBuild = "wine64"; })
       wineWowPackages.staging

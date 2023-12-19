@@ -1,6 +1,7 @@
-{ lib }:
+{ lib, pkgs }:
 let
   inherit (lib) types mkOption;
+  themes = import ../../themes { inherit lib pkgs; };
 in
 rec {
   monitor = types.submodule {
@@ -51,7 +52,6 @@ rec {
     type = types.ints.unsigned;
   };
 
-
   font = { name ? "", size ? 12 }: {
     size = fontSize {
       default = size;
@@ -73,6 +73,18 @@ rec {
     type = types.listOf monitor;
     default = [];
     description = "A list describing the monitors configuration.";
+  };
+
+  themeName = { default ? "", description }: mkOption {
+    inherit default description;
+    type = types.nonEmptyStr;
+  };
+
+  themes = mkOption {
+    default = themes;
+    type = types.attrsOf (types.submodule (import ./theme.nix));
+    description = "The attribut set containing the theme elements. Read only.";
+    readOnly = true;
   };
 }
 
