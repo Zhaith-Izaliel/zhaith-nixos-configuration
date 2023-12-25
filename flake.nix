@@ -77,7 +77,8 @@
         extraModules = [
           zhaith-neovim.homeManagerModules.default
           modules.home-manager
-        ] ++ rofi-applets.homeManagerModules.all;
+          rofi-applets.homeManagerModules.default
+        ];
         overlays = [
           hyprland.overlays.default
           hyprland-contrib.overlays.default

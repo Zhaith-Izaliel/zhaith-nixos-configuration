@@ -1,9 +1,10 @@
-{ config, lib, pkgs, theme, extra-types, ... }:
-
-with lib;
+{ config, lib, pkgs, extra-types, ... }:
 
 let
+  inherit (config.lib.formats.rasi) mkLiteral;
+  inherit (lib) mkEnableOption mkIf mkOption types optionalString;
   cfg = config.hellebore.desktop-environment.hyprland.applications-launcher;
+  theme = config.hellebore.theme.themes.${cfg.theme};
 in
 {
   options.hellebore.desktop-environment.hyprland.applications-launcher = {
@@ -27,6 +28,12 @@ in
       description = "The command to show the applications launcher.";
     };
 
+    theme = extra-types.themeName {
+      default = config.hellebore.theme.name;
+      description = "The application launcher theme to use. Default to global
+      theme.";
+    };
+
     width = mkOption {
       type = types.str;
       default = "1600px";
@@ -40,10 +47,6 @@ in
     };
   };
 
-  imports = [
-    ./theme.nix
-  ];
-
   config = mkIf cfg.enable {
     programs.rofi = {
       enable = true;
@@ -52,7 +55,7 @@ in
 
       font = "NotoMono Nerd Font ${toString cfg.fontSize}";
 
-      terminal = strings.optionalString
+      terminal = optionalString
       config.hellebore.shell.emulator.enable
       config.hellebore.shell.emulator.bin;
 
@@ -68,6 +71,16 @@ in
         drun-display-format = "{name}";
         icon-theme = theme.gtk.iconTheme.name;
         window-format = "{w} · {c} · {t}";
+      };
+
+      theme = {
+        window = {
+          width = mkLiteral cfg.width;
+          height = mkLiteral cfg.height;
+          cursor = theme.gtk.cursorTheme.name;
+        };
+      } // theme.rofi.theme {
+        inherit mkLiteral; inherit (cfg) background;
       };
 
       applets = {

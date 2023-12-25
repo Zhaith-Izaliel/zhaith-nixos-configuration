@@ -34,10 +34,6 @@ let
         ${nvidia-command} gamemoderun gamescope "''${@:2}"
       ;;
 
-      --gamescope-steam)
-        ${nvidia-command} gamemoderun gamescope -e "''${@:2}"
-      ;;
-
       *)
         ${nvidia-command} gamemoderun "$@"
       ;;

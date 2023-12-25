@@ -1,24 +1,11 @@
 { pkgs, lib, inputs }:
 let
-  theme-packages = import ./packages.nix { inherit pkgs lib; };
-  apps = import ./apps { inherit pkgs lib inputs; };
+  colors = import ./colors.nix {};
+  apps = import ./apps { inherit pkgs lib inputs colors; };
 in
 {
-  inherit (apps) hyprland bat gitui gtk;
-
-  starship = rec {
-    package = theme-packages.starship-palette;
-    paletteName = "catppuccin_macchiato";
-    palette = builtins.fromTOML (builtins.readFile (package +
-    /palettes/macchiato.toml));
-  };
-
-  fcitx5 = {
-    package = theme-packages.fcitx5-theme;
-    name = "catppuccin-macchiato";
-  };
-
-  kitty.theme = "Catppuccin-Macchiato";
+  inherit (apps) hyprland bat gitui gtk starship kitty fcitx5;
+  inherit colors;
 
   rofi = {
     theme = {};
@@ -29,6 +16,5 @@ in
     };
   };
 
-  colors = import ./colors.nix {};
 }
 

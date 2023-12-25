@@ -2007,11 +2007,11 @@
         "rofi-network-manager": "rofi-network-manager"
       },
       "locked": {
-        "lastModified": 1702465621,
-        "narHash": "sha256-o9iW9AayWfBd1UUNgox9ytZSXmS7IWyAxKq4AnQlYQk=",
+        "lastModified": 1703501364,
+        "narHash": "sha256-Btu+lfcjiKMRIM734zIjzPUwFXfmW4zUQYh3tUfj9F8=",
         "owner": "Zhaith-Izaliel",
         "repo": "rofi-applets",
-        "rev": "8dd8d08c8f7a1a75e3ec090519c361b08770f0ba",
+        "rev": "6acaae83e0693178c6d29441ca8089b3debff8f9",
         "type": "gitlab"
       },
       "original": {

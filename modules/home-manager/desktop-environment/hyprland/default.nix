@@ -36,6 +36,12 @@ in
       default = config.hellebore.monitors;
     };
 
+    layout = mkOption {
+      type = types.enum [ "dwindle" "master" ];
+      description = "Defines the layout used in Hyprland.";
+      default = "dwindle";
+    };
+
     theme = extra-types.themeName {
       name = config.hellebore.theme.name;
       description = "Defines the theme applied to Hyprland and GTK/QT based
