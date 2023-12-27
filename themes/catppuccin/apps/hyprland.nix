@@ -1,16 +1,11 @@
 { pkgs, lib, inputs }:
 
 rec {
-  package = pkgs.stdenv.mkDerivation rec {
+  package = pkgs.stdenv.mkDerivation {
     name = "catppucin-hyprland";
-    version = "1.2";
+    version = inputs.catppucin-hyprland.rev;
 
-    src = pkgs.fetchFromGitHub {
-      owner = "catppuccin";
-      repo = "hyprland";
-      rev  = "v${version}";
-      sha256 = "sha256-07B5QmQmsUKYf38oWU3+2C6KO4JvinuTwmW1Pfk8CT8=";
-    };
+    src = inputs.catppucin-hyprland;
 
     installPhase = ''
     mkdir -p $out

@@ -1,8 +1,9 @@
-{ config, lib, theme, extra-types, ... }:
+{ config, lib, extra-types, ... }:
 
-with lib;
 
 let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+  theme = config.hellebore.theme.themes.${config.hellebore.theme.name};
   cfg = config.hellebore.display-manager;
   defaultMonitor = builtins.elemAt config.hellebore.monitors 0;
 in
@@ -18,7 +19,7 @@ in
 
     fontSize = extra-types.fontSize {
       default = config.hellebore.font.size;
-      description = "Set SDDM font size";
+      description = "Set the display manager font size";
     };
 
     screenHeight = mkOption {
@@ -75,17 +76,10 @@ in
           settings = {
             ScreenWidth = cfg.screenWidth;
             ScreenHeight = cfg.screenHeight;
-            FormPosition = "left";
-            HaveFormBackground = true;
-            PartialBlur = true;
-            AccentColor = theme.colors.mauve;
-            BackgroundColor = theme.colors.base;
             Font = theme.gtk.font.name;
             FontSize = toString cfg.fontSize;
-            MainColor = theme.colors.text;
-            ForceHideCompletePassword = true;
             Background = cfg.background.path;
-          };
+          } // theme.sddm.settings;
         };
       };
     };

@@ -1,44 +1,21 @@
-{ config, lib, theme, pkgs, extra-types, ... }:
+{ config, lib, pkgs, extra-types, ... }:
 
 with lib;
 
 let
-  getImage = name: cleanSource ../../../../assets/images/wlogout/${name};
-  images = {
-    lock = {
-      default = getImage "lock.png";
-      hover = getImage "lock-hover.png";
-    };
-
-    reboot = {
-      default = getImage "reboot.png";
-      hover = getImage "reboot-hover.png";
-    };
-
-    shutdown = {
-      default = getImage "shutdown.png";
-      hover = getImage "shutdown-hover.png";
-    };
-
-    logout = {
-      default = getImage "logout.png";
-      hover = getImage "logout-hover.png";
-    };
-
-    suspend = {
-      default = getImage "suspend.png";
-      hover = getImage "suspend-hover.png";
-    };
-  };
+  inherit (lib) mkEnableOption mkOption mkIf getExe;
   cfg = config.hellebore.desktop-environment.hyprland.logout;
+  theme = config.hellebore.theme.themes.${config.hellebore.theme.name};
 in
 {
   options.hellebore.desktop-environment.hyprland.logout = {
     enable = mkEnableOption "Hellebore WLogout configuration";
 
-    fontSize = extra-types.fontSize {
-      default = config.hellebore.font.size;
-      description = "Set the font size of the logout menu.";
+    font = extra-types.font {
+      size = config.hellebore.font.size;
+      name = config.hellebore.font.name;
+      sizeDescription = "Set the font size of the logout menu.";
+      nameDescription = "Set the font family of the logout menu.";
     };
 
     bin = mkOption {
@@ -105,67 +82,11 @@ in
 
       style = ''
       window {
-        font-family: "Fira Code";
-        font-size: ${toString cfg.fontSize}pt;
-        color: ${theme.colors.text};
-        background-repeat: no-repeat;
-        background-image: image(url("/tmp/wlogout-blur.png"));
+        font-family: "${cfg.font.name}";
+        font-size: ${toString cfg.font.size}pt;
       }
 
-      button {
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 25%;
-        border: none;
-        background-color: rgba(30, 30, 46, 0);
-        margin: 5px;
-        transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
-      }
-
-      button:hover {
-        background-color: rgba(49, 50, 68, 0.1);
-      }
-
-      button:focus {
-        background-color: ${theme.colors.mauve};
-        color: ${theme.colors.base};
-      }
-
-      #lock {
-        background-image: image(url("${images.lock.default}"));
-      }
-      #lock:focus {
-        background-image: image(url("${images.lock.hover}"));
-      }
-
-      #logout {
-        background-image: image(url("${images.logout.default}"));
-      }
-      #logout:focus {
-        background-image: image(url("${images.logout.hover}"));
-      }
-
-      #suspend {
-        background-image: image(url("${images.suspend.default}"));
-      }
-      #suspend:focus {
-        background-image: image(url("${images.suspend.hover}"));
-      }
-
-      #shutdown {
-        background-image: image(url("${images.shutdown.default}"));
-      }
-      #shutdown:focus {
-        background-image: image(url("${images.shutdown.hover}"));
-      }
-
-      #reboot {
-        background-image: image(url("${images.reboot.default}"));
-      }
-      #reboot:focus {
-        background-image: image(url("${images.reboot.hover}"));
-      }
-      '';
+      '' ++ theme.wlogout.style;
     };
   };
 }

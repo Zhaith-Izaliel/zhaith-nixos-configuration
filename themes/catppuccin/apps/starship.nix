@@ -11,14 +11,9 @@ rec {
     palette = builtins.fromTOML (builtins.readFile (palette.package +
     /palettes/macchiato.toml));
     package = pkgs.stdenv.mkDerivation {
-      pname = "starship-palette";
-      version = "3e3e544";
-      src = pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "starship";
-        rev = "3e3e544"; # Replace with the latest commit hash
-        sha256 = "sha256-soEBVlq3ULeiZFAdQYMRFuswIIhI9bclIU8WXjxd7oY=";
-      };
+      pname = "catppuccin-starship";
+      version = inputs.catppuccin-starship.rev;
+      src = inputs.catppuccin-starship;
 
       installPhase = ''
       mkdir -p $out

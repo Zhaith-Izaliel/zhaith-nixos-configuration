@@ -1,16 +1,11 @@
 { pkgs, lib, inputs }:
 
 let
-  package = pkgs.stdenv.mkDerivation rec {
+  package = pkgs.stdenv.mkDerivation {
     pname = "bat-catppuccin";
-    version  = "ba4d168";
+    version  = inputs.catppuccin-bat.rev;
 
-    src = pkgs.fetchFromGitHub {
-      owner = "catppuccin";
-      repo = "bat";
-      rev = version;
-      sha256 = "sha256-6WVKQErGdaqb++oaXnY3i6/GuH2FhTgK0v4TN4Y0Wbw=";
-    };
+    src = inputs.catppuccin-bat;
 
     installPhase = ''
     mkdir -p $out

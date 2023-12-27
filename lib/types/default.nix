@@ -52,20 +52,16 @@ rec {
     type = types.ints.unsigned;
   };
 
-  font = { name ? "", size ? 12 }: {
+  font = { name, nameDescription, size, sizeDescription }: {
     size = fontSize {
       default = size;
-      description = "Define a global font size for applications. Each
-      application font size can be changed granularly, or set globally using
-      this option.";
+      description = sizeDescription;
     };
 
     name = mkOption {
       type = types.nonEmptyStr;
       default = name;
-      description = "Define a global font face for applications. Each
-      application font face can be changed granularly, or set globally using
-      this option.";
+      description = nameDescription;
     };
   };
 

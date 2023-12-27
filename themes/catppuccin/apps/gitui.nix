@@ -1,16 +1,11 @@
 { pkgs, lib, inputs }:
 
 rec {
-  package = pkgs.stdenv.mkDerivation rec {
+  package = pkgs.stdenv.mkDerivation {
     pname = "gitui-catppuccin";
-    version  = "3997836";
+    version  = inputs.catppuccin-gitui.rev;
 
-    src = pkgs.fetchFromGitHub {
-      owner = "catppuccin";
-      repo = "gitui"; # Bat uses sublime syntax for its themes
-      rev = version;
-      sha256 = "sha256-kWaHQ1+uoasT8zXxOxkur+QgZu1wLsOOrP/TL+6cfII=";
-    };
+    src = inputs.catppuccin-gitui;
 
     installPhase = ''
     mkdir -p $out
