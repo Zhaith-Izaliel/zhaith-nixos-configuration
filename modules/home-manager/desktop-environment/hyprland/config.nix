@@ -1,7 +1,8 @@
 { lib, config, os-config, pkgs, ... }:
 
 let
-  inherit (lib) strings getExe optional optionals flatten range mkIf recursiveUpdate;
+  inherit (lib) concatStringsSep optionalString getExe optional optionals
+  flatten range mkIf recursiveUpdate;
 
   cfg = config.hellebore.desktop-environment.hyprland;
 
@@ -19,7 +20,7 @@ let
     yOffset = toString monitor.yOffset;
     refreshRate = toString monitor.refreshRate;
     scaling = toString monitor.scaling;
-    extraArgs = strings.concatStringsSep "," monitor.extraArgs;
+    extraArgs = concatStringsSep "," monitor.extraArgs;
   in
   "${name},${width}x${height}@${refreshRate},${xOffset}x${yOffset},${scaling},${extraArgs}";
 
@@ -42,19 +43,9 @@ in
         "XCURSOR_SIZE,24"
       ];
 
-      workspace = flatten [
-        "1,default:true,persistent:true"
-        (optional config.hellebore.tools.office.enable
-        "2,persistent:true")
-        (optional config.hellebore.tools.discord.enable
-        "3,persistent:true")
-        (optional config.hellebore.desktop-environment.mail.enable
-        "4,persistent:true")
-        (optional os-config.hellebore.games.enable
-        "5,persistent:true")
-        (optional os-config.hellebore.vm.enable
-        "6,persistent:true")
-      ];
+      workspace = map
+      (x: "${toString x},${optionalString (x == 1) "default:true"},persistent:true")
+      (range 1 10);
 
       windowrulev2 = flatten [
         (optionals config.hellebore.tools.discord.enable
