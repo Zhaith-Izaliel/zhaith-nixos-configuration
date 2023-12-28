@@ -154,13 +154,13 @@ in
 
         # Switch workspaces with mainMod + F[1-10]
         (map
-          (item: "bind = $mainMod, F${toString item}, workspace, ${toString item}")
+          (item: "$mainMod, F${toString item}, workspace, ${toString item}")
           (range 1 10)
         )
 
         # Move active window to a workspace with mainMod + CONTROL + F[1-10]
         (map
-          (item: "bind = $mainMod CONTROL, F${toString item}, movetoworkspace, ${toString item}")
+          (item: "$mainMod CONTROL, F${toString item}, movetoworkspace, ${toString item}")
           (range 1 10)
         )
 

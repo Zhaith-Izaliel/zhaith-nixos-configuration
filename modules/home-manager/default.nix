@@ -2,7 +2,9 @@
 
 {
   options.hellebore = {
-    inherit (extra-types) monitors;
+    monitors = extra-types.monitors // {
+      default = os-config.hellebore.monitors;
+    };
 
     font = extra-types.font {
       inherit (os-config.hellebore.font) name size;

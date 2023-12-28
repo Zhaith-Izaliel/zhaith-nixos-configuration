@@ -66,8 +66,8 @@ rec {
   };
 
   monitors = mkOption {
-    type = types.listOf monitor;
     default = [];
+    type = types.listOf monitor;
     description = "A list describing the monitors configuration.";
   };
 

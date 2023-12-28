@@ -17,7 +17,7 @@ in
 
     background = mkOption {
       type = types.path;
-      default = ../../../../../assets/images/rofi/wall.png;
+      default = ../../../../assets/images/rofi/wall.png;
       description = "Background used in the applications-launcher theme.";
     };
 

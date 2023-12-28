@@ -12,7 +12,7 @@ in
 
     enableAnthy = mkEnableOption "Anthy input method";
 
-    font.size = extra-types.font {
+    font = extra-types.font {
       size = config.hellebore.font.size;
       name = config.hellebore.font.name;
       sizeDescription = "Set Fcitx5 client font size.";

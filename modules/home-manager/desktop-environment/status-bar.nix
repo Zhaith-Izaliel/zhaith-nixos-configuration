@@ -2,7 +2,7 @@
 
 
 let
-  inherit (lib) mkIf mkOption mkEnableOption optionalString elemAt types getExe recursiveUpdate;
+  inherit (lib) mkIf mkOption mkEnableOption elemAt types getExe recursiveUpdate;
   cfg = config.hellebore.desktop-environment.status-bar;
   theme = config.hellebore.theme.themes.${config.hellebore.theme.name}.waybar;
 in
@@ -57,52 +57,51 @@ in
       settings = recursiveUpdate theme.settings {
         mainBar = {
           output = (elemAt config.hellebore.monitors 0).name;
-        };
-
-        "custom/weather" = {
-          tooltip = true;
-          interval = 3600;
-          exec = "${getExe pkgs.wttrbar}";
-          return-type = "json";
-        };
-
-        bluetooth = {
-          on-click = "${getExe pkgs.toggle-bluetooth}";
-          on-click-right = "${pkgs.blueberry}/bin/blueberry";
-        };
-
-        backlight = {
-          device = cfg.backlight-device;
-          on-scroll-up = "${lib.getExe pkgs.volume-brightness} -b 1%+";
-          on-scroll-down = "${lib.getExe pkgs.volume-brightness} -b 1%-";
-        };
-
-        battery = {
-          states = {
-            good = 95;
-            warning = 30;
-            critical = 20;
+          "custom/weather" = {
+            tooltip = true;
+            interval = 3600;
+            exec = "${getExe pkgs.wttrbar}";
+            return-type = "json";
           };
-        };
 
-        clock = {
-          timezone = os-config.time.timeZone;
-        };
+          bluetooth = {
+            on-click = "${getExe pkgs.toggle-bluetooth}";
+            on-click-right = "${pkgs.blueberry}/bin/blueberry";
+          };
 
-        wireplumber = {
-          on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-          on-click-right = "${lib.getExe pkgs.pavucontrol}";
-          on-scroll-up = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
-          on-scroll-down = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
+          backlight = {
+            device = cfg.backlight-device;
+            on-scroll-up = "${lib.getExe pkgs.volume-brightness} -b 1%+";
+            on-scroll-down = "${lib.getExe pkgs.volume-brightness} -b 1%-";
+          };
+
+          battery = {
+            states = {
+              good = 95;
+              warning = 30;
+              critical = 20;
+            };
+          };
+
+          clock = {
+            timezone = os-config.time.timeZone;
+          };
+
+          wireplumber = {
+            on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            on-click-right = "${lib.getExe pkgs.pavucontrol}";
+            on-scroll-up = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
+            on-scroll-down = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
+          };
         };
       };
 
       style = ''
-        * {
-          font-size: ${toString cfg.font.size}pt;
-          font-family: '${cfg.font.name}';
-        }
-      '';
+      * {
+        font-size: ${toString cfg.font.size}pt;
+        font-family: '${cfg.font.name}';
+      }
+      '' + theme.style;
     };
   };
 }

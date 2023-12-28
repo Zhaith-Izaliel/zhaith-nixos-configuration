@@ -39,7 +39,7 @@
 
       status-bar = {
         enable = true;
-        font.size = 12;
+        font.size = 11;
         backlight-device = "intel_backlight";
       };
 
