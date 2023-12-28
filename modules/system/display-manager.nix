@@ -17,9 +17,10 @@ in
       description = "Width of the screen.";
     };
 
-    fontSize = extra-types.fontSize {
-      default = config.hellebore.font.size;
-      description = "Set the display manager font size";
+    font = extra-types.font {
+      inherit (config.hellebore.font) size name;
+      sizeDescription = "Set the display manager font size.";
+      nameDescription = "Set the display manager font family.";
     };
 
     screenHeight = mkOption {
@@ -72,7 +73,7 @@ in
           Theme = {
             CursorTheme = theme.gtk.cursorTheme.name;
             CursorSize = 24;
-            Font = cfg.fontSize;
+            Font = cfg.font.size;
           };
         };
 
@@ -81,8 +82,8 @@ in
           settings = {
             ScreenWidth = cfg.screenWidth;
             ScreenHeight = cfg.screenHeight;
-            Font = theme.gtk.font.name;
-            FontSize = toString cfg.fontSize;
+            Font = cfg.font.name;
+            FontSize = toString cfg.font.size;
             Background = cfg.background.path;
           } // theme.sddm.settings;
         };

@@ -3,17 +3,19 @@
 rec {
   package = pkgs.stdenv.mkDerivation {
     name = "catppucin-hyprland";
-    version = inputs.catppucin-hyprland.rev;
+    version = inputs.catppuccin-hyprland.rev;
 
-    src = inputs.catppucin-hyprland;
+    src = inputs.catppuccin-hyprland;
 
     installPhase = ''
     mkdir -p $out
     cp -r themes $out
     '';
   };
+
   palette = "${package}/themes/macchiato.conf";
-  theme = {
+
+  settings = {
     source = [
       palette
     ];

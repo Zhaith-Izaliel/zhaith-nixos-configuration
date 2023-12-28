@@ -1,7 +1,7 @@
 { lib, config, os-config, pkgs, ... }:
 
 let
-  inherit (lib) strings getExe optional optionals flatten range mkIf;
+  inherit (lib) strings getExe optional optionals flatten range mkIf recursiveUpdate;
 
   cfg = config.hellebore.desktop-environment.hyprland;
 
@@ -28,12 +28,11 @@ let
 in
 {
   config = mkIf cfg.enable {
-    wayland.windowManager.hyprland.settings = {
-      inherit (theme) animations decoration source;
+    wayland.windowManager.hyprland.settings = recursiveUpdate theme.hyprland.settings {
       "$mainMod" = "SUPER";
       "$mainModKey" = "SUPER_L";
 
-      general = theme.general // {
+      general = {
         layout = cfg.layout;
       };
 
@@ -58,7 +57,7 @@ in
       ];
 
       windowrulev2 = flatten [
-        (optionals config.hellebore.tools.discord
+        (optionals config.hellebore.tools.discord.enable
           (mkWindowrulev2 "class:(discord)" [
           "workspace 3 silent"
           "noinitialfocus"

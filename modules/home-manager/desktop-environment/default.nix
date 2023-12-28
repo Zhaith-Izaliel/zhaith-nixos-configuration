@@ -15,7 +15,7 @@
     ./lockscreen.nix
     ./notifications.nix
     ./applications-launcher
-    ./status-bar
+    ./status-bar.nix
     ./widget
   ];
 }

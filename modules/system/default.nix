@@ -2,14 +2,14 @@
 
 let
   cfg = config.hellebore;
-  theme = cfg.theme.themes.${cfg.theme};
+  theme = cfg.theme.themes.${cfg.theme.name};
 in
 {
   options.hellebore = {
     inherit (extra-types) monitors;
 
     font = extra-types.font {
-      name = theme.font.name;
+      name = theme.gtk.font.name;
       size = 12;
       sizeDescription = "Define a global font size for applications. Each
       application's font size can be changed granularly, or set globally using

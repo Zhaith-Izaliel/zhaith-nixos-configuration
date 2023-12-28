@@ -1,10 +1,9 @@
-{ config, lib, pkgs, theme, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
 let
   cfg = config.hellebore.hyprland;
-  # isNvidia = elem "nvidia" config.services.xserver.videoDrivers;
 in
 {
   options.hellebore.hyprland = {
@@ -16,7 +15,7 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       gtk3
-    ] ++ theme.gtk.packages;
+    ];
 
     qt.enable = true;
 

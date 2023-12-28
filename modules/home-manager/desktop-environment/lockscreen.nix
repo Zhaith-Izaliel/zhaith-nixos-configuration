@@ -11,7 +11,7 @@ in
     enable = mkEnableOption "Hellebore Swaylock and Swayidle configuration";
 
     font = extra-types.font {
-      inherit (config.hellebore.font) name size;
+      inherit (config.hellebore.font) size name;
       sizeDescription = "Set lockscreen font size.";
       nameDescription = "Set lockscreen font family.";
     };

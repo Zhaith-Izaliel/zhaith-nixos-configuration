@@ -85,12 +85,12 @@ in
       ];
 
       style = ''
-      window {
-        font-family: "${cfg.font.name}";
-        font-size: ${toString cfg.font.size}pt;
-      }
+        window {
+          font-family: "${cfg.font.name}";
+          font-size: ${toString cfg.font.size}pt;
+        }
 
-      '' ++ theme.wlogout.style;
+      '' + theme.wlogout.style;
     };
   };
 }

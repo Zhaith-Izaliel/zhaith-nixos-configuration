@@ -74,7 +74,7 @@ in
         volume_icon = {
           summary = "Volume";
           default_icon = toString (cleanSource
-          ../../../../assets/images/other/volume.png);
+          ../../../assets/images/other/volume.png);
         };
 
         volume_onehundred = {
@@ -90,7 +90,7 @@ in
         brightness_icon = {
           summary = "Brightness";
           default_icon = toString (cleanSource
-          ../../../../assets/images/other/brightness.png);
+          ../../../assets/images/other/brightness.png);
         };
       };
     };

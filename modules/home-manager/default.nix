@@ -17,7 +17,7 @@
     theme = {
       inherit (extra-types.theme) themes;
       name = extra-types.theme.name {
-        name = os-config.hellebore.theme.name;
+        default = os-config.hellebore.theme.name;
         description = "Defines the name of the theme applied globally";
       };
     };

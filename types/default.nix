@@ -1,7 +1,7 @@
-{ lib, pkgs }:
+{ lib, inputs, pkgs }:
 let
   inherit (lib) types mkOption;
-  themes = import ../../themes { inherit lib pkgs; };
+  themes = import ../themes { inherit lib pkgs inputs; };
 in
 rec {
   monitor = types.submodule {
@@ -80,7 +80,7 @@ rec {
     themes = mkOption {
       default = themes;
       # TEMP: should be submodule, it's for testing purposes only
-      type = types.attrsOf types.any;
+      type = types.attrsOf types.anything;
       description = "The attribut set containing the theme elements. Read only.";
       readOnly = true;
     };

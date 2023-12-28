@@ -1,6 +1,5 @@
-{ config, cfg, os-config, lib, pkgs, colors }:
+{ colors }:
 let
-  inherit (lib) lists mkIf getExe;
   mkBig = icon: "<big>${icon}</big>";
 in
 {
@@ -8,16 +7,12 @@ in
     mainBar = {
       layer = "top";
       position = "top";
-      output = with config.hellebore.desktop-environment.hyprland;
-      strings.optionalString enable (elemAt monitors 0).name;
       spacing = 0;
       height = 0;
       modules-left = [
         "clock"
         "custom/weather"
-      ]
-      ++ lists.optional config.services.mpd.enable "mpd"
-      ++ [
+        "mpd"
         "hyprland/workspaces"
       ];
       modules-center = [
@@ -26,18 +21,15 @@ in
       modules-right = [
         "tray"
         "idle_inhibitor"
-      ]
-      ++ lists.optional os-config.programs.gamemode.enable "gamemode"
-      ++ lists.optional config.hellebore.desktop-environment.bluetooth.enable "bluetooth"
-      ++ [
+        "gamemode"
+        "bluetooth"
         "network"
         "backlight"
         "wireplumber"
         "battery"
-      ]
-      ++ lists.optional config.programs.wlogout.enable "custom/shutdown";
+      ];
 
-      gamemode = mkIf os-config.programs.gamemode.enable {
+      gamemode = {
         format = "{glyph} GameMode On";
         hide-not-running = true;
         use-icon = true;
@@ -48,31 +40,18 @@ in
 
       "custom/weather" = {
         format = "{} °C";
-        tooltip = true;
-        interval = 3600;
-        exec = "${getExe pkgs.wttrbar}";
-        return-type = "json";
       };
 
-      bluetooth = mkIf config.hellebore.desktop-environment.bluetooth.enable {
+      bluetooth = {
         format = "󰂯 {status}";
         format-off = "󰂲 off";
         format-disabled = "󰂳 off";
         format-connected = "${mkBig "󰂱"} {device_alias}";
         format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
-        on-click = "${getExe pkgs.toggle-bluetooth}";
-        on-click-right = "${pkgs.blueberry}/bin/blueberry";
         tooltip-format = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
         tooltip-format-connected = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected\n\n{device_enumerate}";
         tooltip-format-enumerate-connected = "󰥰 {device_alias} - {device_address}";
         tooltip-format-enumerate-connected-battery = "󰥰 {device_alias} - {device_address} (󰁹 {device_battery_percentage}%)";
-      };
-
-      "custom/shutdown" = mkIf config.programs.wlogout.enable {
-        format = mkBig "";
-        on-click = config.hellebore.desktop-environment.logout.bin;
-        tooltip = false;
-        interval = "once";
       };
 
       "hyprland/window" = {
@@ -85,16 +64,16 @@ in
         sort-by-number =  true;
         format = mkBig "{icon}";
         format-icons = {
-          "1" = "";
-          "2" = "󰹕";
-          "3" = "󰙯";
-          "4" = "󰇮";
-          "5" = "";
-          "6" = "";
-          "7" = "󰲬";
-          "8" = "󰲮";
-          "9" = "󰲰";
-          "10" = "󰿬";
+          "1" = "一";
+          "2" = "二";
+          "3" = "三";
+          "4" = "四";
+          "5" = "五";
+          "6" = "六";
+          "7" = "七";
+          "8" = "八";
+          "9" = "九";
+          "10" = "";
         };
       };
 
@@ -114,21 +93,12 @@ in
       };
 
       backlight = {
-        device = cfg.backlight-device;
         format = "${mkBig "{icon}"} {percent}%";
         format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖨"];
-        on-scroll-up = "${lib.getExe pkgs.volume-brightness} -b 1%+";
-        on-scroll-down = "${lib.getExe pkgs.volume-brightness} -b 1%-";
         min-length = 6;
       };
 
       battery = {
-        states = {
-          good = 95;
-          warning = 30;
-          critical = 20;
-        };
-
         format = "{icon} {capacity}%";
         format-charging = "󰂄 {capacity}%";
         format-plugged = " {capacity}%";
@@ -137,7 +107,6 @@ in
 
       clock = {
         format = "${mkBig ""} {:%H:%M}";
-        timezone = os-config.time.timeZone;
         tooltip-format = "<tt><small>{calendar}</small></tt>";
         calendar = {
           mode = "month";
@@ -171,14 +140,10 @@ in
       wireplumber = {
         format = "${mkBig "{icon}"} {volume}%";
         format-muted = mkBig "󰖁";
-        on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-        on-click-right = "${lib.getExe pkgs.pavucontrol}";
-        on-scroll-up = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
-        on-scroll-down = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
         format-icons = [ "" "" "" ];
       };
 
-      mpd = mkIf config.services.mpd.enable {
+      mpd = {
         format = "${mkBig "{stateIcon}"} {title}";
         tooltip-format = "{albumArtist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})";
         format-stopped = "${mkBig ""} Stopped";
@@ -221,10 +186,6 @@ in
   @define-color pink      ${colors.pink};
   @define-color flamingo  ${colors.flamingo};
   @define-color rosewater ${colors.rosewater};
-
-  * {
-    font-size: ${toString cfg.fontSize}pt;
-  }
 
   '' + builtins.readFile ./style.css;
 }

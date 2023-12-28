@@ -1,6 +1,6 @@
-{ pkgs, lib }:
+{ pkgs, lib, inputs }:
 
 {
-  catppuccin = import ./catppuccin { inherit pkgs lib; };
+  catppuccin = import ./catppuccin { inherit pkgs lib inputs; };
 }
 

@@ -1,9 +1,10 @@
-{ config, lib, pkgs, theme, ... }:
+{ config, lib, pkgs, extra-types, ... }:
 
 with lib;
 
 let
   cfg = config.hellebore.development.bat;
+  theme = config.hellebore.theme.themes.${cfg.theme};
 in
 {
   options.hellebore.development.bat = {
@@ -19,6 +20,11 @@ in
       type = types.listOf types.package;
       default = [];
       description = "Extra plugins to add alongside the default ones.";
+    };
+
+    theme = extra-types.theme.name {
+      default = config.hellebore.theme.name;
+      description = "Defines Bat's theme. Default to global theme.";
     };
   };
 

@@ -29,6 +29,8 @@
   hellebore = rec {
     font.size = 14;
 
+    theme.name = "catppuccin";
+
     monitors = [
       {
         name = "eDP-1";

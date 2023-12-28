@@ -28,7 +28,7 @@ in
       description = "The command to show the applications launcher.";
     };
 
-    theme = extra-types.themeName {
+    theme = extra-types.theme.name {
       default = config.hellebore.theme.name;
       description = "The application launcher theme to use. Default to global
       theme.";
