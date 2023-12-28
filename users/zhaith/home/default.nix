@@ -8,33 +8,41 @@
 
   hellebore = {
 
+    theme.name = "catppuccin";
+
     desktop-environment = {
       hyprland = {
         enable = true;
         mirrorFirstMonitor = true;
-        lockscreen = {
-          enable = true;
-          fontSize = config.hellebore.font.size + 10;
-          timeouts = {
-            dim.enable = true;
-            lock.enable = true;
-            powerSaving.enable = true;
-          };
-        };
-        logout = {
-          enable = true;
-          fontSize = 20;
-        };
-        applications-launcher = {
-          enable = true;
-        };
-        notifications.enable = true;
-        status-bar = {
-          enable = true;
-          fontSize = 12;
-          backlight-device = "intel_backlight";
+      };
+
+      lockscreen = {
+        enable = true;
+        font.size = config.hellebore.font.size + 10;
+        timeouts = {
+          dim.enable = true;
+          lock.enable = true;
+          powerSaving.enable = true;
         };
       };
+
+      logout = {
+        enable = true;
+        font.size = 20;
+      };
+
+      applications-launcher = {
+        enable = true;
+      };
+
+      notifications.enable = true;
+
+      status-bar = {
+        enable = true;
+        font.size = 11;
+        backlight-device = "intel_backlight";
+      };
+
       bluetooth.enable = true;
       network.enable = true;
       cloud.enable = true;

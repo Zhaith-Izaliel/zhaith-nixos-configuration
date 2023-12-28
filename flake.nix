@@ -21,6 +21,33 @@
     sddm-sugar-candy-nix.url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
     virgutils.url = "gitlab:Zhaith-Izaliel/virgutils";
     rofi-applets.url = "gitlab:Zhaith-Izaliel/rofi-applets/develop";
+
+    # Theme packages
+    # NOTE: include them as "{theme-name}-{app-name}"
+
+    # Catppuccin
+    catppuccin-bat = {
+      url = "github:catppuccin/bat";
+      flake = false;
+    };
+
+    catppuccin-fcitx5 = {
+      url = "github:catppuccin/fcitx5";
+      flake = false;
+    };
+
+    catppuccin-gitui = {
+      url = "github:catppuccin/gitui";
+      flake = false;
+    };
+    catppuccin-hyprland = {
+      url = "github:catppuccin/hyprland";
+      flake = false;
+    };
+    catppuccin-starship = {
+      url = "github:catppuccin/starship";
+      flake = false;
+    };
   };
 
   outputs = {nixpkgs, nixpkgs-stable, flake-utils,
@@ -28,14 +55,13 @@
   sddm-sugar-candy-nix, virgutils, rofi-applets, ...}@attrs:
   let
     system = "x86_64-linux";
-    theme = "catppuccin";
     customHelpers = import ./lib { inputs = attrs; };
     modules = import ./modules {};
   in
   {
     nixosConfigurations = {
       Whispering-Willow = customHelpers.mkSystem {
-        inherit system theme;
+        inherit system;
         hostname = "Whispering-Willow";
         users = [ "zhaith" ];
         extraModules = [
@@ -53,7 +79,7 @@
         ];
       };
       Ethereal-Edelweiss = customHelpers.mkSystem {
-        inherit system theme;
+        inherit system;
         hostname = "Ethereal-Edelweiss";
         users = [ "lilith" ];
         nixpkgs = nixpkgs-stable;
@@ -70,14 +96,15 @@
     };
     homeConfigurations = {
       "zhaith@Whispering-Willow" = customHelpers.mkHome {
-        inherit system theme;
+        inherit system;
         username = "zhaith";
         hostname = "Whispering-Willow";
         stateVersion = "22.05";
         extraModules = [
           zhaith-neovim.homeManagerModules.default
           modules.home-manager
-        ] ++ rofi-applets.homeManagerModules.all;
+          rofi-applets.homeManagerModules.default
+        ];
         overlays = [
           hyprland.overlays.default
           hyprland-contrib.overlays.default
@@ -88,7 +115,7 @@
       };
 
       "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
-        inherit system theme;
+        inherit system;
         username = "lilith";
         hostname = "Ethereal-Edelweiss";
         stateVersion = "21.05";

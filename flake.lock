@@ -1,5 +1,85 @@
 {
   "nodes": {
+    "catppuccin-bat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1668065083,
+        "narHash": "sha256-6WVKQErGdaqb++oaXnY3i6/GuH2FhTgK0v4TN4Y0Wbw=",
+        "owner": "catppuccin",
+        "repo": "bat",
+        "rev": "ba4d16880d63e656acced2b7d4e034e4a93f74b1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "bat",
+        "type": "github"
+      }
+    },
+    "catppuccin-fcitx5": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1664946380,
+        "narHash": "sha256-uFaCbyrEjv4oiKUzLVFzw+UY54/h7wh2cntqeyYwGps=",
+        "owner": "catppuccin",
+        "repo": "fcitx5",
+        "rev": "ce244cfdf43a648d984719fdfd1d60aab09f5c97",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "fcitx5",
+        "type": "github"
+      }
+    },
+    "catppuccin-gitui": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1699888294,
+        "narHash": "sha256-kWaHQ1+uoasT8zXxOxkur+QgZu1wLsOOrP/TL+6cfII=",
+        "owner": "catppuccin",
+        "repo": "gitui",
+        "rev": "39978362b2c88b636cacd55b65d2f05c45a47eb9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "gitui",
+        "type": "github"
+      }
+    },
+    "catppuccin-hyprland": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1702668781,
+        "narHash": "sha256-9BhZq9J1LmHfAPBqOr64chiAEzS+YV6zqe9ma95V3no=",
+        "owner": "catppuccin",
+        "repo": "hyprland",
+        "rev": "fc228737d3d0c12e34a7fa155a0fc3192e5e4017",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "hyprland",
+        "type": "github"
+      }
+    },
+    "catppuccin-starship": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1689246850,
+        "narHash": "sha256-nsRuxQFKbQkyEI4TXgvAjcroVdG+heKX5Pauq/4Ota0=",
+        "owner": "catppuccin",
+        "repo": "starship",
+        "rev": "5629d2356f62a9f2f8efad3ff37476c19969bd4f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "starship",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -2007,11 +2087,11 @@
         "rofi-network-manager": "rofi-network-manager"
       },
       "locked": {
-        "lastModified": 1702465621,
-        "narHash": "sha256-o9iW9AayWfBd1UUNgox9ytZSXmS7IWyAxKq4AnQlYQk=",
+        "lastModified": 1703781826,
+        "narHash": "sha256-RW7Sj35UjRSh4ukorxhjmRgWB0Y6FJEwX9tpvAorXeU=",
         "owner": "Zhaith-Izaliel",
         "repo": "rofi-applets",
-        "rev": "8dd8d08c8f7a1a75e3ec090519c361b08770f0ba",
+        "rev": "88915b0a3aaaf8f027deac0cb43c0330a186ce19",
         "type": "gitlab"
       },
       "original": {
@@ -2039,6 +2119,11 @@
     },
     "root": {
       "inputs": {
+        "catppuccin-bat": "catppuccin-bat",
+        "catppuccin-fcitx5": "catppuccin-fcitx5",
+        "catppuccin-gitui": "catppuccin-gitui",
+        "catppuccin-hyprland": "catppuccin-hyprland",
+        "catppuccin-starship": "catppuccin-starship",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "grub2-themes": "grub2-themes",

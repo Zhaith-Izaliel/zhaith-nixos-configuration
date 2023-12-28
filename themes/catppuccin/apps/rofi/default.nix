@@ -1,27 +1,19 @@
-{ config, theme, ... }:
+{ colors }:
 
-let
-  inherit (config.lib.formats.rasi) mkLiteral;
-  colors = theme.colors;
-  cfg = config.hellebore.desktop-environment.hyprland.applications-launcher;
-in
 {
-  programs.rofi.theme = {
+  theme = { mkLiteral, background ? "" }: {
     window = {
       # properties for window widget
       transparency = "real";
       location = mkLiteral "center";
       anchor = mkLiteral "center";
       fullscreen = false;
-      width = mkLiteral cfg.width;
-      height = mkLiteral cfg.height;
       x-offset = mkLiteral "0px";
       y-offset = mkLiteral "0px";
 
       # properties for all widgets
       enabled = true;
       border-radius = mkLiteral "15px";
-      cursor = theme.gtk.cursorTheme.name;
       background-color = mkLiteral colors.base;
       border = mkLiteral "3px";
       border-color = mkLiteral colors.mauve;
@@ -39,7 +31,7 @@ in
       enabled = true;
       padding = mkLiteral "1.25em";
       background-color = mkLiteral "transparent";
-      background-image = mkLiteral ''url("${cfg.background}", height)'';
+      background-image = mkLiteral ''url("${background}", height)'';
       orientation = mkLiteral "vertical";
       children = [ "inputbar" "dummy" "mode-switcher" ];
     };
@@ -217,6 +209,15 @@ in
       background-color = mkLiteral colors.base;
       text-color = mkLiteral colors.text;
     };
+  };
+
+  applets = {
+    bluetooth = {};
+    favorites = {};
+    mpd = {};
+    network-manager = {};
+    power-profiles = {};
+    quicklinks = {};
   };
 }
 

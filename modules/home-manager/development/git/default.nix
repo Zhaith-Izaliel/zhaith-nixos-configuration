@@ -1,9 +1,10 @@
-{ config, lib, pkgs, theme, ... }:
+{ config, lib, pkgs, extra-types, ... }:
 
 with lib;
 
 let
   cfg = config.hellebore.development.git;
+  theme = config.hellebore.theme.themes.${cfg.gitui.theme};
 in
 {
   imports = [
@@ -29,6 +30,11 @@ in
 
     gitui = {
       enable = mkEnableOption "Hellebore's Gitui configuration";
+
+      theme = extra-types.theme.name {
+        default = config.hellebore.theme.name;
+        description = "Defines GitUI theme name.";
+      };
 
       package = mkOption {
         type = types.package;

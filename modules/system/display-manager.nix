@@ -1,8 +1,9 @@
-{ config, lib, theme, extra-types, ... }:
+{ config, lib, extra-types, ... }:
 
-with lib;
 
 let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+  theme = config.hellebore.theme.themes.${cfg.theme};
   cfg = config.hellebore.display-manager;
   defaultMonitor = builtins.elemAt config.hellebore.monitors 0;
 in
@@ -16,9 +17,10 @@ in
       description = "Width of the screen.";
     };
 
-    fontSize = extra-types.fontSize {
-      default = config.hellebore.font.size;
-      description = "Set SDDM font size";
+    font = extra-types.font {
+      inherit (config.hellebore.font) size name;
+      sizeDescription = "Set the display manager font size.";
+      nameDescription = "Set the display manager font family.";
     };
 
     screenHeight = mkOption {
@@ -37,6 +39,11 @@ in
       type = types.str;
       default = config.hellebore.locale.keyboard.defaultVariant;
       description = "Keyboard variant used in the Display Manager.";
+    };
+
+    theme = extra-types.theme.name {
+      default = config.hellebore.theme.name;
+      description = "Defines the display manager theme.";
     };
 
     background = {
@@ -66,7 +73,7 @@ in
           Theme = {
             CursorTheme = theme.gtk.cursorTheme.name;
             CursorSize = 24;
-            Font = cfg.fontSize;
+            Font = cfg.font.size;
           };
         };
 
@@ -75,17 +82,10 @@ in
           settings = {
             ScreenWidth = cfg.screenWidth;
             ScreenHeight = cfg.screenHeight;
-            FormPosition = "left";
-            HaveFormBackground = true;
-            PartialBlur = true;
-            AccentColor = theme.colors.mauve;
-            BackgroundColor = theme.colors.base;
-            Font = theme.gtk.font.name;
-            FontSize = toString cfg.fontSize;
-            MainColor = theme.colors.text;
-            ForceHideCompletePassword = true;
+            Font = cfg.font.name;
+            FontSize = toString cfg.font.size;
             Background = cfg.background.path;
-          };
+          } // theme.sddm.settings;
         };
       };
     };

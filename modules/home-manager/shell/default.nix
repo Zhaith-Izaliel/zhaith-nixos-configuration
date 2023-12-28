@@ -1,10 +1,11 @@
-{ config, lib, theme, pkgs, ... }:
+{ config, lib, pkgs, extra-types, ... }:
 
 with lib;
 
 let
   cfg = config.hellebore.shell;
   image = lib.cleanSource cfg.motd.image;
+  theme = config.hellebore.theme.themes.${cfg.theme};
 in
 {
   imports = [
@@ -23,6 +24,12 @@ in
         description = "Image used with Neofetch. Can only be used if kitty is
         enabled";
       };
+    };
+
+    theme = extra-types.theme.name {
+      default = config.hellebore.theme.name;
+      description = "Defines the theme used to pull some colors from to various
+      aspect of the shell (Autosuggestions highlights, etc.).";
     };
 
     dirHashes = mkOption {
@@ -87,7 +94,7 @@ in
 
         ''
         # Zsh autosuggestions
-        export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=${theme.colors.subtext0}"
+        export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=${theme.shell.autosuggestions}"
         ''
         ];
 

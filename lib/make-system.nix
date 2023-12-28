@@ -1,24 +1,22 @@
 { inputs }:
 
 let
-  types = import ./types.nix { inherit lib; };
   lib = inputs.nixpkgs.lib;
 in
 {
   mkSystem = { hostname, system, users ? [ ], extraModules ? [ ], overlays ? [
-  ], theme ? "", nixpkgs ? inputs.nixpkgs }:
+  ], nixpkgs ? inputs.nixpkgs }:
     let
       pkgs = import nixpkgs {
         inherit overlays system;
       };
-      theme-set = (import ../themes { inherit lib pkgs; }).${theme};
+      types = import ../types { inherit lib pkgs inputs; };
     in
     lib.nixosSystem {
       inherit system;
       specialArgs = {
         inherit hostname system inputs;
         extra-types = types;
-        theme = theme-set;
         stable-pkgs = import inputs.nixpkgs-stable {
           inherit overlays system;
         };
@@ -55,20 +53,19 @@ in
     };
 
     mkHome = { username, system, hostname, stateVersion, extraModules ? [ ],
-    overlays ? [ ], theme ? "", nixpkgs ? inputs.nixpkgs, home-manager ?
+    overlays ? [ ], nixpkgs ? inputs.nixpkgs, home-manager ?
     inputs.home-manager }:
     let
+      types = import ../types { inherit lib pkgs inputs; };
       pkgs = import nixpkgs {
         inherit overlays system;
       };
-      theme-set = (import ../themes { inherit pkgs lib; }).${theme};
     in
     home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
 
       extraSpecialArgs = {
         inherit system hostname inputs;
-        theme = theme-set;
         extra-types = types;
         stable-pkgs = import inputs.nixpkgs-stable {
           inherit overlays system;

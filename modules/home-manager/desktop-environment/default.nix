@@ -11,6 +11,12 @@
     ./i18n.nix
     ./network.nix
     ./hyprland
+    ./logout.nix
+    ./lockscreen.nix
+    ./notifications.nix
+    ./applications-launcher
+    ./status-bar.nix
+    ./widget
   ];
 }
 

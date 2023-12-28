@@ -1,6 +1,7 @@
-{ lib }:
+{ lib, inputs, pkgs }:
 let
   inherit (lib) types mkOption;
+  themes = import ../themes { inherit lib pkgs inputs; };
 in
 rec {
   monitor = types.submodule {
@@ -51,28 +52,38 @@ rec {
     type = types.ints.unsigned;
   };
 
-
-  font = { name ? "", size ? 12 }: {
+  font = { name, nameDescription, size, sizeDescription }: {
     size = fontSize {
       default = size;
-      description = "Define a global font size for applications. Each
-      application font size can be changed granularly, or set globally using
-      this option.";
+      description = sizeDescription;
     };
 
     name = mkOption {
       type = types.nonEmptyStr;
       default = name;
-      description = "Define a global font face for applications. Each
-      application font face can be changed granularly, or set globally using
-      this option.";
+      description = nameDescription;
     };
   };
 
   monitors = mkOption {
-    type = types.listOf monitor;
     default = [];
+    type = types.listOf monitor;
     description = "A list describing the monitors configuration.";
+  };
+
+  theme = {
+    name = { default ? "", description }: mkOption {
+      inherit default description;
+      type = types.nonEmptyStr;
+    };
+
+    themes = mkOption {
+      default = themes;
+      # TEMP: should be submodule, it's for testing purposes only
+      type = types.attrsOf types.anything;
+      description = "The attribut set containing the theme elements. Read only.";
+      readOnly = true;
+    };
   };
 }
 
