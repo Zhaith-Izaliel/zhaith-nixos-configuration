@@ -37,7 +37,7 @@ in
     };
 
     theme = extra-types.theme.name {
-      name = config.hellebore.theme.name;
+      default = config.hellebore.theme.name;
       description = "Defines the theme applied to Hyprland and GTK/QT based
       applications";
     };

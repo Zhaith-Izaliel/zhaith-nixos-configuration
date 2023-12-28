@@ -11,6 +11,7 @@
   kitty = import ./kitty.nix {};
   rofi = import ./rofi { inherit colors; };
   sddm = import ./sddm.nix { inherit colors; };
+  shell = import ./shell.nix { inherit colors; };
   swaylock = import ./swaylock.nix { inherit colors; };
   waybar = { config, cfg, os-config }: import ./waybar {
     inherit config cfg os-config colors pkgs lib;

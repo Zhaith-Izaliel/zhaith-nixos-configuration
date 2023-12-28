@@ -28,7 +28,8 @@ in
 
     theme = extra-types.theme.name {
       default = config.hellebore.theme.name;
-      description = "Defines the shell prompt theme.";
+      description = "Defines the theme used to pull some colors from to various
+      aspect of the shell (Autosuggestions highlights, etc.).";
     };
 
     dirHashes = mkOption {
@@ -93,7 +94,7 @@ in
 
         ''
         # Zsh autosuggestions
-        export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=${theme.colors.subtext0}"
+        export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=${theme.shell.autosuggestions}"
         ''
         ];
 

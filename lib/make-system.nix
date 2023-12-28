@@ -1,7 +1,6 @@
 { inputs }:
 
 let
-  types = import ../types { inherit lib; };
   lib = inputs.nixpkgs.lib;
 in
 {
@@ -11,6 +10,7 @@ in
       pkgs = import nixpkgs {
         inherit overlays system;
       };
+      types = import ../types { inherit lib pkgs; };
     in
     lib.nixosSystem {
       inherit system;
@@ -56,6 +56,7 @@ in
     overlays ? [ ], nixpkgs ? inputs.nixpkgs, home-manager ?
     inputs.home-manager }:
     let
+      types = import ../types { inherit lib pkgs; };
       pkgs = import nixpkgs {
         inherit overlays system;
       };
