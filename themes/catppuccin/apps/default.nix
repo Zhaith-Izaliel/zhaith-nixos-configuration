@@ -2,7 +2,8 @@
 
 {
   bat = import ./bat.nix { inherit pkgs lib inputs; };
-  fcitx5 = import ./fctix5.nix { inherit pkgs inputs; };
+  dunst = import ./dunst.nix { inherit lib colors; };
+  fcitx5 = import ./fctix5.nix { inherit pkgs inputs colors; };
   gitui = import ./gitui.nix { inherit pkgs lib inputs; };
   gtk = import ./gtk.nix { inherit pkgs lib inputs; };
   hyprland = import ./hyprland.nix { inherit pkgs lib inputs; };

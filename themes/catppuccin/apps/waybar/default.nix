@@ -70,7 +70,7 @@ in
 
       "custom/shutdown" = mkIf config.programs.wlogout.enable {
         format = mkBig "";
-        on-click = config.hellebore.desktop-environment.hyprland.logout.bin;
+        on-click = config.hellebore.desktop-environment.logout.bin;
         tooltip = false;
         interval = "once";
       };

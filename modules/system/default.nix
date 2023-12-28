@@ -1,5 +1,9 @@
-{ extra-types, theme, ... }:
+{ config, extra-types, ... }:
 
+let
+  cfg = config.hellebore;
+  theme = cfg.theme.themes.${cfg.theme};
+in
 {
   options.hellebore = {
     inherit (extra-types) monitors;
@@ -13,6 +17,13 @@
       nameDescription = "Define a global font family for applications. Each
       application's font family can be changed granularly, or set globally using
       this option.";
+    };
+
+    theme = {
+      inherit (extra-types.theme) themes;
+      name = extra-types.theme.name {
+        description = "Defines the name of the theme applied globally";
+      };
     };
   };
 

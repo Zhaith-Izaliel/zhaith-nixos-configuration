@@ -16,17 +16,11 @@ let
     gsettings set $gnome_schema cursor-theme ${gtkTheme.cursorTheme.name}
     gsettings set $gnome_schema font-name ${gtkTheme.font.name}
   '';
-  theme = config.hellebore.theme.themes.${config.hellebore.theme.name};
+  theme = config.hellebore.theme.themes.${cfg.theme};
 in
 {
   imports = [
     ./config.nix
-    ./logout.nix
-    ./lockscreen.nix
-    ./notifications.nix
-    ./applications-launcher
-    ./status-bar
-    ./widget
   ];
 
   options.hellebore.desktop-environment.hyprland = {
@@ -42,7 +36,7 @@ in
       default = "dwindle";
     };
 
-    theme = extra-types.themeName {
+    theme = extra-types.theme.name {
       name = config.hellebore.theme.name;
       description = "Defines the theme applied to Hyprland and GTK/QT based
       applications";

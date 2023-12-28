@@ -1,4 +1,4 @@
-{ config, lib, pkgs, theme, extra-types, ... }:
+{ config, lib, pkgs, extra-types, ... }:
 
 with lib;
 
@@ -9,32 +9,46 @@ let
     "MESA_LOADER_DRIVER_OVERRIDE=${cfg.integratedGPU.driver} __EGL_VENDOR_LIBRARY_FILENAMES=${pkgs.mesa.drivers}/share/glvnd/egl_vendor.d/50_mesa.json")
     "${pkgs.kitty}/bin/kitty"
   ];
+  theme = config.hellebore.theme.themes.${cfg.theme};
 in
 {
   options.hellebore.shell.emulator = {
     enable = mkEnableOption "Hellebore terminal emulator configuration";
 
-    fontSize = extra-types.fontSize {
-      default = config.hellebore.font.size;
-      description = "Set the terminal emulator font size.";
+    font = (extra-types.font {
+      size = config.hellebore.font.size;
+      sizeDescription = "Set the terminal emulator font size.";
+      name = "Fira Code";
+      nameDescription = "Set the terminal emulator font family.";
+    }) // {
+      package = mkOption {
+        default = pkgs.fira-code;
+        type = types.package;
+        description = "Set the terminal emulator font package";
+      };
+    };
+
+    theme = extra-types.theme.name {
+      default = config.hellebore.theme.name;
+      description = "Defines the terminal emulator theme.";
     };
 
     integratedGPU = {
       enable = mkEnableOption null // {
-        description = "Enable Kitty to run on the integrated GPU on a multi GPU
+        description = "Enable the terminal emulator to run on the integrated GPU on a multi GPU
         setup.";
       };
       driver = mkOption {
         type = types.enum [ "i965" "iris" "radeonsi" ];
         default = "";
-        description = "Defines the driver to run kitty on a multi GPU setup.";
+        description = "Defines the driver to run the terminal emulator on a multi GPU setup.";
       };
     };
 
     bin = mkOption {
       type = types.str;
       default = kitty-bin;
-      description = "Get the Kitty binary.";
+      description = "Get the terminal emulator binary.";
       readOnly = true;
     };
   };
@@ -43,12 +57,7 @@ in
     programs.kitty = {
       enable = true;
       inherit (theme.kitty) theme;
-
-      font = {
-        package = pkgs.fira-code;
-        name = "Fira Code";
-        size = cfg.fontSize;
-      };
+      inherit (cfg) font;
 
       settings = {
         hide_window_decorations = true;

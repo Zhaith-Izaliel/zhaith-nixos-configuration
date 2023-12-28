@@ -27,7 +27,25 @@
 
     # Catppuccin
     catppuccin-bat = {
-      url = "";
+      url = "github:catppuccin/bat";
+      flake = false;
+    };
+
+    catppuccin-fcitx5 = {
+      url = "github:catppuccin/fcitx5";
+      flake = false;
+    };
+
+    catppuccin-gitui = {
+      url = "github:catppuccin/gitui";
+      flake = false;
+    };
+    catppuccin-hyprland = {
+      url = "github:catppuccin/hyprland";
+      flake = false;
+    };
+    catppuccin-starship = {
+      url = "github:catppuccin/starship";
       flake = false;
     };
   };

@@ -3,7 +3,7 @@
 
 let
   inherit (lib) mkEnableOption mkIf mkOption types;
-  theme = config.hellebore.theme.themes.${config.hellebore.theme.name};
+  theme = config.hellebore.theme.themes.${cfg.theme};
   cfg = config.hellebore.display-manager;
   defaultMonitor = builtins.elemAt config.hellebore.monitors 0;
 in
@@ -38,6 +38,11 @@ in
       type = types.str;
       default = config.hellebore.locale.keyboard.defaultVariant;
       description = "Keyboard variant used in the Display Manager.";
+    };
+
+    theme = extra-types.theme.name {
+      default = config.hellebore.theme.name;
+      description = "Defines the display manager theme.";
     };
 
     background = {

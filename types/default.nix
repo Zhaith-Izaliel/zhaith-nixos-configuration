@@ -71,16 +71,19 @@ rec {
     description = "A list describing the monitors configuration.";
   };
 
-  themeName = { default ? "", description }: mkOption {
-    inherit default description;
-    type = types.nonEmptyStr;
-  };
+  theme = {
+    name = { default ? "", description }: mkOption {
+      inherit default description;
+      type = types.nonEmptyStr;
+    };
 
-  themes = mkOption {
-    default = themes;
-    type = types.attrsOf (types.submodule (import ./theme.nix));
-    description = "The attribut set containing the theme elements. Read only.";
-    readOnly = true;
+    themes = mkOption {
+      default = themes;
+      # TEMP: should be submodule, it's for testing purposes only
+      type = types.attrsOf types.any;
+      description = "The attribut set containing the theme elements. Read only.";
+      readOnly = true;
+    };
   };
 }
 

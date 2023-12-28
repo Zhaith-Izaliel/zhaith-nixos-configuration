@@ -2,22 +2,26 @@
 
 {
   options.hellebore = {
+    inherit (extra-types) monitors;
+
     font = extra-types.font {
-      size = os-config.hellebore.font.size;
+      inherit (os-config.hellebore.font) name size;
       sizeDescription = "Define a global font size for applications. Each
       application's font size can be changed granularly, or set globally using
       this option.";
-      name = os-config.hellebore.font.name;
       nameDescription = "Define a global font family for applications. Each
       application's font family can be changed granularly, or set globally using
       this option.";
     };
 
-    monitors = extra-types.monitors // {
-      default = os-config.hellebore.monitors;
+    theme = {
+      inherit (extra-types.theme) themes;
+      name = extra-types.theme.name {
+        name = os-config.hellebore.theme.name;
+        description = "Defines the name of the theme applied globally";
+      };
     };
   };
-
   imports = [
     ./development
     ./shell

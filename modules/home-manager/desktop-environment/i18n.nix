@@ -1,9 +1,10 @@
-{ config, lib, pkgs, theme, extra-types, ... }:
+{ config, lib, pkgs, extra-types, ... }:
 
 with lib;
 
 let
   cfg = config.hellebore.desktop-environment.i18n;
+  theme = config.hellebore.theme.themes.${cfg.theme};
 in
 {
   options.hellebore.desktop-environment.i18n = {
@@ -11,9 +12,16 @@ in
 
     enableAnthy = mkEnableOption "Anthy input method";
 
-    fontSize = extra-types.fontSize {
-      default = config.hellebore.font.size;
-      description = "Set Fcitx5 client font size.";
+    font.size = extra-types.font {
+      size = config.hellebore.font.size;
+      name = config.hellebore.font.name;
+      sizeDescription = "Set Fcitx5 client font size.";
+      nameDescription = "Set Fcitx5 client font family.";
+    };
+
+    theme = extra-types.theme.name {
+      default = config.hellebore.theme.name;
+      description = "Defines the terminal emulator theme.";
     };
   };
 
@@ -41,19 +49,13 @@ in
       WheelForPaging=True
 
       # Font
-      Font="${theme.gtk.font.name} ${toString cfg.fontSize}"
+      Font="${cfg.font.name} ${toString cfg.font.size}"
 
       # Menu Font
-      MenuFont="${theme.gtk.font.name} ${toString cfg.fontSize}"
+      MenuFont="${cfg.font.name} ${toString cfg.font.size}"
 
       # Tray Font
-      TrayFont="${theme.gtk.font.name} Bold ${toString cfg.fontSize}"
-
-      # Tray Label Outline Color
-      TrayOutlineColor=${theme.colors.mantle}
-
-      # Tray Label Text Color
-      TrayTextColor=${theme.colors.text}
+      TrayFont="${cfg.font.name} Bold ${toString cfg.font.size}"
 
       # Prefer Text Icon
       PreferTextIcon=False
@@ -69,7 +71,7 @@ in
 
       # Force font DPI on Wayland
       ForceWaylandDPI=0
-    '';
+    '' + theme.fcitx5.extraConfig;
   };
 }
 

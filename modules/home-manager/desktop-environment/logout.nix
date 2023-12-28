@@ -4,25 +4,29 @@ with lib;
 
 let
   inherit (lib) mkEnableOption mkOption mkIf getExe;
-  cfg = config.hellebore.desktop-environment.hyprland.logout;
-  theme = config.hellebore.theme.themes.${config.hellebore.theme.name};
+  cfg = config.hellebore.desktop-environment.logout;
+  theme = config.hellebore.theme.themes.${cfg.theme};
 in
 {
-  options.hellebore.desktop-environment.hyprland.logout = {
-    enable = mkEnableOption "Hellebore WLogout configuration";
+  options.hellebore.desktop-environment.logout = {
+    enable = mkEnableOption "Hellebore logout screen configuration";
 
     font = extra-types.font {
-      size = config.hellebore.font.size;
-      name = config.hellebore.font.name;
+      inherit (config.hellebore.font) name size;
       sizeDescription = "Set the font size of the logout menu.";
       nameDescription = "Set the font family of the logout menu.";
+    };
+
+    theme = extra-types.theme.name {
+      default = config.hellebore.theme.name;
+      description = "Defines the logout screen theme.";
     };
 
     bin = mkOption {
       type = types.str;
       default = "${getExe pkgs.wlogout-blur} --protocol layer-shell -b 5 -T 400 -B 400";
       readOnly = true;
-      description  = "Define the command to run the logout program.";
+      description  = "Define the command to run the logout screen.";
     };
   };
 

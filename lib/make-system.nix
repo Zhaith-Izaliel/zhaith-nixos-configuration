@@ -1,7 +1,7 @@
 { inputs }:
 
 let
-  types = import ./types { inherit lib; };
+  types = import ../types { inherit lib; };
   lib = inputs.nixpkgs.lib;
 in
 {

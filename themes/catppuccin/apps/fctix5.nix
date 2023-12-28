@@ -1,15 +1,10 @@
-{ pkgs, inputs }:
+{ pkgs, inputs, colors }:
 
 {
-  package = pkgs.stdenv.mkDerivation rec {
+  package = pkgs.stdenv.mkDerivation {
     pname = "catppuccin-fcitx5";
-    version = "ce244cf";
-    src = pkgs.fetchFromGitHub {
-      owner = "catppuccin";
-      repo = "fcitx5";
-      rev = version;
-      sha256 = "sha256-uFaCbyrEjv4oiKUzLVFzw+UY54/h7wh2cntqeyYwGps=";
-    };
+    version = inputs.catppuccin-fcitx5.rev;
+    src = inputs.catppuccin-fcitx5;
 
     installPhase = ''
     local themeDir=$out/share/fcitx5/themes
@@ -18,5 +13,12 @@
     '';
   };
   name = "catppuccin-macchiato";
+  extraConfig = ''
+    # Tray Label Outline Color
+    TrayOutlineColor=${colors.mantle}
+
+    # Tray Label Text Color
+    TrayTextColor=${colors.text}
+  '';
 }
 

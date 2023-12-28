@@ -3,11 +3,11 @@
 let
   inherit (config.lib.formats.rasi) mkLiteral;
   inherit (lib) mkEnableOption mkIf mkOption types optionalString;
-  cfg = config.hellebore.desktop-environment.hyprland.applications-launcher;
+  cfg = config.hellebore.desktop-environment.applications-launcher;
   theme = config.hellebore.theme.themes.${cfg.theme};
 in
 {
-  options.hellebore.desktop-environment.hyprland.applications-launcher = {
+  options.hellebore.desktop-environment.applications-launcher = {
     enable = mkEnableOption "Hellebore Applications Launcher configuration";
 
     fontSize = extra-types.fontSize {

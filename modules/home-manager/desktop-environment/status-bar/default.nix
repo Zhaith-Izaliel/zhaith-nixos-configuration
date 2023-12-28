@@ -3,13 +3,13 @@
 with lib;
 
 let
-  cfg = config.hellebore.desktop-environment.hyprland.status-bar;
+  cfg = config.hellebore.desktop-environment.status-bar;
   theme = config.hellebore.theme.themes.${config.hellebore.theme.name}.waybar {
     inherit os-config config cfg;
   };
 in
 {
-  options.hellebore.desktop-environment.hyprland.status-bar = {
+  options.hellebore.desktop-environment.status-bar = {
     enable = mkEnableOption "Hellebore Waybar configuration";
 
     fontSize = extra-types.fontSize {

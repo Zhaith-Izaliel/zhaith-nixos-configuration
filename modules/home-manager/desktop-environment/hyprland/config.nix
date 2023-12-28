@@ -6,7 +6,7 @@ let
   cfg = config.hellebore.desktop-environment.hyprland;
 
   theme =
-    config.hellebore.theme.themes.${config.hellebore.theme.name}.hyprland.theme;
+    config.hellebore.theme.themes.${cfg.theme};
 
   mkWindowrulev2 = window: rules: (map (rule: "${rule},${window}") rules);
 
@@ -165,14 +165,14 @@ in
           (range 1 10)
         )
 
-        (optional config.hellebore.desktop-environment.hyprland.logout.enable
-        "$mainMod, L, exec, ${config.hellebore.desktop-environment.hyprland.logout.bin}")
+        (optional config.hellebore.desktop-environment.logout.enable
+        "$mainMod, L, exec, ${config.hellebore.desktop-environment.logout.bin}")
         (optional config.hellebore.shell.emulator.enable
         "$mainMod, Q, exec, ${config.hellebore.shell.emulator.bin}")
         (optional os-config.hellebore.vm.enable
         "$mainMod, W, exec, start-vm --resolution=${toString firstMonitor.width}x${toString firstMonitor.height} -Fi")
-        (optional config.hellebore.desktop-environment.hyprland.applications-launcher.enable
-        "$mainMod, R, exec, ${config.hellebore.desktop-environment.hyprland.applications-launcher.command}")
+        (optional config.hellebore.desktop-environment.applications-launcher.enable
+        "$mainMod, R, exec, ${config.hellebore.desktop-environment.applications-launcher.command}")
         (optional config.hellebore.desktop-environment.i18n.enable
         "$mainMod, I, exec, fcitx5-remote -t")
       ];
