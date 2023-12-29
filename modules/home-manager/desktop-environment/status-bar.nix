@@ -57,6 +57,7 @@ in
       settings = recursiveUpdate theme.settings {
         mainBar = {
           output = (elemAt config.hellebore.monitors 0).name;
+
           "custom/weather" = {
             tooltip = true;
             interval = 3600;

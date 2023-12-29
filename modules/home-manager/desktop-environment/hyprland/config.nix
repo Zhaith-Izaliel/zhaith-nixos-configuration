@@ -2,7 +2,7 @@
 
 let
   inherit (lib) concatStringsSep optionalString getExe optional optionals
-  flatten range mkIf recursiveUpdate;
+  flatten range mkIf recursiveUpdate count;
 
   cfg = config.hellebore.desktop-environment.hyprland;
 
@@ -26,6 +26,14 @@ let
 
   mkMonitors = monitors: builtins.map mkMonitor monitors;
   firstMonitor = builtins.elemAt cfg.monitors 0;
+  maxPersistentWorkspaces = count (x: x) [
+    true
+    config.hellebore.tools.office.enable
+    config.hellebore.tools.discord.enable
+    config.hellebore.desktop-environment.mail.enable
+    os-config.hellebore.games.enable
+    os-config.hellebore.vm.enable
+  ];
 in
 {
   config = mkIf cfg.enable {
@@ -45,7 +53,7 @@ in
 
       workspace = map
       (x: "${toString x},${optionalString (x == 1) "default:true"},persistent:true")
-      (range 1 10);
+      (range 1 maxPersistentWorkspaces);
 
       windowrulev2 = flatten [
         (optionals config.hellebore.tools.discord.enable
