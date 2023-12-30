@@ -30,7 +30,7 @@ in
       ];
 
       gamemode = {
-        format = "{glyph} GameMode On";
+        format = "{glyph}";
         hide-not-running = true;
         use-icon = true;
         tooltip = true;

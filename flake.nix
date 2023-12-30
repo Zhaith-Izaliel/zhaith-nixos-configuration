@@ -55,7 +55,7 @@
   sddm-sugar-candy-nix, virgutils, rofi-applets, ...}@attrs:
   let
     system = "x86_64-linux";
-    customHelpers = import ./lib { inputs = attrs; };
+    customHelpers = import ./utils { inputs = attrs; };
     modules = import ./modules {};
   in
   {
