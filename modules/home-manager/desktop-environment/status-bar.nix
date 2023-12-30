@@ -5,6 +5,9 @@ let
   inherit (lib) mkIf mkOption mkEnableOption elemAt types getExe recursiveUpdate;
   cfg = config.hellebore.desktop-environment.status-bar;
   theme = config.hellebore.theme.themes.${config.hellebore.theme.name}.waybar;
+  modulesToUse = [
+
+  ];
 in
 {
   options.hellebore.desktop-environment.status-bar = {
@@ -61,7 +64,7 @@ in
           "custom/weather" = {
             tooltip = true;
             interval = 3600;
-            exec = "${getExe pkgs.wttrbar}";
+            exec = "${getExe pkgs.wttrbar} --custom-indicator'{ICON}{temp_C}°C({FeelsLikeC}°C)'";
             return-type = "json";
           };
 

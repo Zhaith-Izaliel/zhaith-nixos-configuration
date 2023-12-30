@@ -39,15 +39,15 @@ in
       };
 
       "custom/weather" = {
-        format = "{} °C";
+        format = "{}";
       };
 
       bluetooth = {
-        format = "󰂯 {status}";
-        format-off = "󰂲 off";
-        format-disabled = "󰂳 off";
+        format = "󰂯";
+        format-off = "󰂲";
+        format-disabled = "󰂳";
         format-connected = "${mkBig "󰂱"} {device_alias}";
-        format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
+        format-connected-battery = "${mkBig "󰂱"} {device_alias} {device_battery_percentage}%";
         tooltip-format = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
         tooltip-format-connected = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected\n\n{device_enumerate}";
         tooltip-format-enumerate-connected = "󰥰 {device_alias} - {device_address}";
@@ -103,9 +103,9 @@ in
       };
 
       battery = {
-        format = "{icon} {capacity}%";
-        format-charging = "󰂄 {capacity}%";
-        format-plugged = " {capacity}%";
+        format = "{capacity}% {icon}";
+        format-charging = "{capacity}% 󰂄";
+        format-plugged = "{capacity}% ";
         format-icons = ["󰁺" "󰁻" "󰁼" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
       };
 
@@ -133,16 +133,23 @@ in
         };
       };
 
-      network = {
-        format-wifi = "${mkBig ""} {essid}";
-        format-ethernet = "${mkBig "󰈀"} {ifname}";
-        format-linked = "${mkBig "󰈀"} {ifname} (No IP)";
-        format-disconnected = "${mkBig "󰒏"} Disconnected";
-        tooltip-format-wifi = "Signal Strenght: {signalStrength}% | Down Speed: {bandwidthDownBits}, Up Speed: {bandwidthUpBits}";
+      network =
+      let
+        speedFormat = "󰮏 {bandwidthDownBits}⎹ 󰸇 {bandwidthUpBits}";
+      in
+      {
+        format-wifi = "{essid} ${mkBig ""}";
+        format-ethernet = "{ifname} ${mkBig "󰈀"}";
+        format-linked = "{ifname} ${mkBig ""}";
+        format-disconnected = mkBig "󰒏";
+        tooltip-format-wifi = "{essid} - {signalStrength}%\n${speedFormat}";
+        tooltip-format-disconnected = "Disconnected";
+        tooltip-format-ethernet = speedFormat;
+        tooltip-format-linked = speedFormat;
       };
 
       wireplumber = {
-        format = "${mkBig "{icon}"} {volume}%";
+        format = "{volume}% ${mkBig "{icon}"}";
         format-muted = mkBig "󰖁";
         format-icons = [ "" "" "" ];
       };
@@ -150,7 +157,10 @@ in
       mpd = {
         format = "${mkBig "{stateIcon}"} {title}";
         tooltip-format = "{albumArtist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})";
-        format-stopped = "${mkBig ""} Stopped";
+        format-stopped = mkBig "";
+        format-disconnected = mkBig "󰎊";
+        tooltip-format-stopped = "Stopped";
+        tooltip-format-disconnected = "Disconnected";
         state-icons = {
           playing = "󰎈";
           paused = "";
