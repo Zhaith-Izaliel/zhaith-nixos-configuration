@@ -2,11 +2,25 @@
 
 
 let
-  inherit (lib) mkIf mkOption mkEnableOption elemAt types getExe recursiveUpdate;
+  inherit (lib) mkIf mkOption mkEnableOption elemAt types getExe recursiveUpdate
+  flatten optional;
   cfg = config.hellebore.desktop-environment.status-bar;
-  theme = config.hellebore.theme.themes.${config.hellebore.theme.name}.waybar;
-  modulesToUse = [
-
+  theme = config.hellebore.theme.themes.${config.hellebore.theme.name}.waybar modules;
+  modules = flatten [
+    "clock"
+    "custom/weather"
+    (optional config.services.mpd.enable "mpd")
+    "hyprland/workspaces"
+    "hyprland/window"
+    "tray"
+    "idle_inhibitor"
+    (optional os-config.hellebore.games.enable "gamemode")
+    (optional os-config.hardware.bluetooth.enable "bluetooth")
+    "network"
+    "backlight"
+    (optional os-config.services.pipewire.wireplumber.enable "wireplumber")
+    "battery"
+    "group/power"
   ];
 in
 {
@@ -64,8 +78,24 @@ in
           "custom/weather" = {
             tooltip = true;
             interval = 3600;
-            exec = "${getExe pkgs.wttrbar} --custom-indicator'{ICON}{temp_C}°C({FeelsLikeC}°C)'";
+            exec = "${getExe pkgs.wttrbar} --custom-indicator '{ICON} {temp_C}°C ({FeelsLikeC}°C)'";
             return-type = "json";
+          };
+
+          "custom/quit" = {
+            on-click = "hyprctl dispatch exit";
+          };
+
+          "custom/lock" = {
+            on-click = "swaylock -fF --grace ${toString config.hellebore.desktop-environment.lockscreen.gracePeriod}";
+          };
+
+          "custom/reboot" = {
+            on-click = "systemctl reboot";
+          };
+
+          "custom/power" = {
+            on-click = "systemctl poweroff";
           };
 
           bluetooth = {

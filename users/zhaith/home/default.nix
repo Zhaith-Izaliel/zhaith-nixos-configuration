@@ -46,10 +46,12 @@
       bluetooth.enable = true;
       network.enable = true;
       cloud.enable = true;
+
       i18n = {
         enable = true;
         enableAnthy = true;
       };
+
       files-manager = {
         enable = true;
         supports = {
@@ -59,11 +61,14 @@
           fonts-viewer = true;
         };
       };
+
       disks.enable = true;
+
       mail = {
         enable = true;
         protonmail.enable = true;
       };
+
       browsers = {
         enable = true;
         profiles.zhaith.enable = true;

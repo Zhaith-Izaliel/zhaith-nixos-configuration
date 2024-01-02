@@ -4,10 +4,10 @@ let
   inherit (lib) intersectLists;
 in
 {
-  mkWaybarModules = { modules, modulesPosition }: {
-    left-modules = intersectLists modules modulesPosition.left-modules;
-    center-modules = intersectLists modules modulesPosition.center-modules;
-    right-modules = intersectLists modules modulesPosition.right-modules;
+  mkWaybarModules = modules: modulesPosition: {
+    modules-left = intersectLists modules modulesPosition.modules-left;
+    modules-center = intersectLists modules modulesPosition.modules-center;
+    modules-right = intersectLists modules modulesPosition.modules-right;
   };
 }
 

@@ -1,6 +1,29 @@
-{ colors }:
+{ colors, inputs, modules }:
 let
   mkBig = icon: "<big>${icon}</big>";
+  mkWaybarModules = (import ../../../../utils/default.nix { inherit inputs; }
+  ).mkWaybarModules;
+  modulesPosition = {
+    modules-left = [
+      "hyprland/workspaces"
+      "mpd"
+    ];
+    modules-center = [
+      "clock"
+      "custom/weather"
+    ];
+    modules-right = [
+      "tray"
+      "idle_inhibitor"
+      "gamemode"
+      "bluetooth"
+      "network"
+      "backlight"
+      "wireplumber"
+      "battery"
+      "group/power"
+    ];
+  };
 in
 {
   settings = {
@@ -9,25 +32,6 @@ in
       position = "top";
       spacing = 0;
       height = 0;
-      modules-left = [
-        "clock"
-        "custom/weather"
-        "mpd"
-        "hyprland/workspaces"
-      ];
-      modules-center = [
-        "hyprland/window"
-      ];
-      modules-right = [
-        "tray"
-        "idle_inhibitor"
-        "gamemode"
-        "bluetooth"
-        "network"
-        "backlight"
-        "wireplumber"
-        "battery"
-      ];
 
       gamemode = {
         format = "{glyph}";
@@ -40,6 +44,41 @@ in
 
       "custom/weather" = {
         format = "{}";
+      };
+
+      "group/power" = {
+        orientation = "inherit";
+        drawer = {
+          transition-duration = 500;
+          children-class = "not-power";
+          transition-left-to-right = false;
+        };
+        modules = [
+          "custom/power"
+          "custom/quit"
+          "custom/lock"
+          "custom/reboot"
+        ];
+      };
+
+      "custom/quit" = {
+        format = mkBig "󰗼";
+        tooltip = false;
+      };
+
+      "custom/lock" = {
+        format = mkBig "󰍁";
+        tooltip = false;
+      };
+
+      "custom/reboot" = {
+        format = mkBig "󰜉";
+        tooltip = false;
+      };
+
+      "custom/power" = {
+        format = mkBig "";
+        tooltip = false;
       };
 
       bluetooth = {
@@ -98,14 +137,15 @@ in
 
       backlight = {
         format = "${mkBig "{icon}"} {percent}%";
+        tooltip-format = "Brightness: {percent}%";
         format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖨"];
         min-length = 6;
       };
 
       battery = {
-        format = "{capacity}% {icon}";
-        format-charging = "{capacity}% 󰂄";
-        format-plugged = "{capacity}% ";
+        format = "{icon} {capacity}%";
+        format-charging = "󰂄 {capacity}%";
+        format-plugged = " {capacity}%";
         format-icons = ["󰁺" "󰁻" "󰁼" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
       };
 
@@ -138,9 +178,9 @@ in
         speedFormat = "󰮏 {bandwidthDownBits}⎹ 󰸇 {bandwidthUpBits}";
       in
       {
-        format-wifi = "{essid} ${mkBig ""}";
-        format-ethernet = "{ifname} ${mkBig "󰈀"}";
-        format-linked = "{ifname} ${mkBig ""}";
+        format-wifi = "${mkBig ""} {essid}";
+        format-ethernet = "${mkBig "󰈀"} {ifname}";
+        format-linked = "${mkBig ""} {ifname}";
         format-disconnected = mkBig "󰒏";
         tooltip-format-wifi = "{essid} - {signalStrength}%\n${speedFormat}";
         tooltip-format-disconnected = "Disconnected";
@@ -166,7 +206,7 @@ in
           paused = "";
         };
       };
-    };
+    } // mkWaybarModules modules modulesPosition;
   };
 
   style = ''

@@ -13,7 +13,7 @@
   sddm = import ./sddm.nix { inherit colors; };
   shell = import ./shell.nix { inherit colors; };
   swaylock = import ./swaylock.nix { inherit lib colors; };
-  waybar = import ./waybar { inherit colors; };
+  waybar = modules: import ./waybar { inherit colors inputs modules; };
   wlogout = import ./wlogout.nix { inherit colors lib; };
 }
 

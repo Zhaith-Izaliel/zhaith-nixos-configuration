@@ -102,7 +102,6 @@ in
       enable = true;
       package = pkgs.swaylock-effects;
       settings = {
-        grace = cfg.gracePeriod;
         indicator-radius = cfg.indicatorRadius;
         font-size = cfg.font.size;
         font = cfg.font.name;
@@ -121,7 +120,7 @@ in
 
         (mkIf cfg.timeouts.lock.enable {
           timeout = cfg.timeouts.lock.timer;
-          command = "${getExe config.programs.swaylock.package} -fF";
+          command = "${getExe config.programs.swaylock.package} -fF --grace ${toString cfg.gracePeriod}";
         })
 
         (mkIf cfg.timeouts.powerSaving.enable {
@@ -131,7 +130,10 @@ in
         })
       ];
       events = [
-        { event = "lock"; command = "${lib.getExe config.programs.swaylock.package} -fF"; }
+        {
+          event = "lock";
+          command = "${lib.getExe config.programs.swaylock.package} -fF --grace ${toString cfg.gracePeriod}";
+        }
       ];
     };
   };
