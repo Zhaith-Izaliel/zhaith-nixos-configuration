@@ -8,6 +8,8 @@
 
   hellebore = {
 
+    font.size = 14;
+
     theme.name = "catppuccin";
 
     desktop-environment = {

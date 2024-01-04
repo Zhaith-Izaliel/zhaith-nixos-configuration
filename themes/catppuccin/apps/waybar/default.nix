@@ -42,11 +42,13 @@ in
     mainBar = recursiveUpdate {
       layer = "top";
       position = "top";
+      margin-top = 20;
+      margin-right = 20;
+      margin-left = 20;
       spacing = 0;
-      height = 0;
 
       gamemode = {
-        format = "{glyph}";
+        format = "{glyph} On";
         hide-not-running = true;
         use-icon = true;
         tooltip = true;
@@ -60,11 +62,6 @@ in
 
       "custom/icon" = {
         format = mkBig "🪷";
-        tooltip = false;
-      };
-
-      "custom/separator" = {
-        format = "⎹";
         tooltip = false;
       };
 
@@ -98,9 +95,9 @@ in
       };
 
       bluetooth = {
-        format = "󰂯";
-        format-off = "󰂲";
-        format-disabled = "󰂳";
+        format = "󰂯 On";
+        format-off = "󰂲 Off";
+        format-disabled = "󰂳 Disabled";
         format-connected = "${mkBig "󰂱"} {device_alias}";
         format-connected-battery = "${mkBig "󰂱"} {device_alias} {device_battery_percentage}%";
         tooltip-format = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
@@ -147,8 +144,8 @@ in
       };
 
       tray = {
-        icon-size = 13;
-        spacing = 10;
+        icon-size = 24;
+        spacing = 7;
       };
 
       backlight = {
@@ -219,11 +216,10 @@ in
         };
 
         mpd = {
-          format = "${mkBig "{stateIcon}"} {title}";
-          tooltip-format = "{albumArtist} - {title}\n({elapsedTime:%M:%S}/{totalTime:%M:%S})\n{randomIcon} {repeatIcon} {singleIcon}";
-          format-stopped = mkBig "";
-          format-disconnected = mkBig "󰎊";
-          tooltip-format-stopped = "Stopped";
+          format = "${mkBig "{stateIcon}"}  {title}";
+          tooltip-format = "{albumArtist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})\n{randomIcon} {repeatIcon} {singleIcon}";
+          format-stopped = "${mkBig ""}  Stopped";
+          format-disconnected = "${mkBig "󰎊"}  Disconnected";
           tooltip-format-disconnected = "Disconnected";
           state-icons = {
             playing = "󰎈";
@@ -276,11 +272,6 @@ in
     @define-color pink      ${colors.pink};
     @define-color flamingo  ${colors.flamingo};
     @define-color rosewater ${colors.rosewater};
-
-    tooltip {
-      background-image: url("${../../../../assets/images/waybar/tooltip-background.png}");
-      opacity: 0.98;
-    }
 
     '' + builtins.readFile ./style.css;
   }

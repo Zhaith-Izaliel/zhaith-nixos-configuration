@@ -2,9 +2,7 @@
 
 
 let
-  builders = import ../../builders/default.nix { inherit pkgs; };
   inherit (lib) mkEnableOption mkIf;
-  inherit (builders) nerd-font-patcher;
   cfg = config.hellebore.fonts;
 in
 {
@@ -29,11 +27,6 @@ in
         rictydiminished-with-firacode
         terminus_font
         font-awesome
-        (nerd-font-patcher (cantarell-fonts.overrideAttrs {
-          configurePhase = ''
-            meson configure "-Dbuildvf=false -Dbuildstatics=true"
-          '';
-        }))
       ];
 
       fontconfig = {

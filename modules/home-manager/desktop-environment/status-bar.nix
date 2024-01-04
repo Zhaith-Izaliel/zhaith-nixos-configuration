@@ -5,7 +5,8 @@ let
   inherit (lib) mkIf mkOption mkEnableOption elemAt types getExe recursiveUpdate
   flatten optional optionalString concatStringsSep;
   cfg = config.hellebore.desktop-environment.status-bar;
-  theme = config.hellebore.theme.themes.${config.hellebore.theme.name}.waybar modules;
+  theme = config.hellebore.theme.themes.${config.hellebore.theme.name};
+  waybar-theme = theme.waybar modules;
   modules = {
     modules = flatten [
       "custom/icon"
@@ -45,7 +46,7 @@ in
 
     font = extra-types.font {
       size = config.hellebore.font.size;
-      name = "Fira Code Nerd Font Mono";
+      name = theme.gtk.font.name;
       sizeDescription = "Set the status bar font size.";
       nameDescription = "Set the status bar font family.";
     };
@@ -87,7 +88,7 @@ in
         target = "hyprland-session.target";
       };
 
-      settings = recursiveUpdate theme.settings {
+      settings = recursiveUpdate waybar-theme.settings {
         mainBar = {
           output = (elemAt config.hellebore.monitors 0).name;
 
@@ -103,7 +104,7 @@ in
           };
 
           "custom/lock" = {
-            on-click = "swaylock -fF --grace ${toString config.hellebore.desktop-environment.lockscreen.gracePeriod}";
+            on-click = "swaylock -fF";
           };
 
           "custom/reboot" = {
@@ -156,10 +157,10 @@ in
         ''
         * {
           font-size: ${toString cfg.font.size}pt;
-          font-family: '${cfg.font.name}';
+          font-family: "${cfg.font.name}", "Fira Code Nerd Font Mono";
         }
         ''
-        theme.style
+        waybar-theme.style
       ];
     };
   };

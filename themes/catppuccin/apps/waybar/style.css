@@ -1,9 +1,20 @@
 /* Keyframes */
 
 @keyframes idle-activated {
-  0% { color: @flamingo; }
-  50%  { color: @maroon; }
-  100% { color: @flamingo; }
+  0% {
+    color: @flamingo;
+    border-color: @flamingo;
+  }
+
+  50% {
+    color: @maroon;
+    border-color: @maroon;
+  }
+
+  100% {
+    color: @flamingo;
+    border-color: @flamingo;
+  }
 }
 
 @keyframes battery-blink {
@@ -29,36 +40,83 @@
 }
 
 window#waybar {
-  background: rgba(21, 18, 27, 0);
   color: @text;
 }
 
 tooltip {
-  font-weight: normal;
   border: 1px solid @mantle;
   border-radius: 10px;
-  /* background-color: rgba(24, 25, 38, 0.85); */
+  background: rgba(24, 25, 38, 0.95);
 }
 
 tooltip label {
-  margin: 0.25rem;
+  margin: .4rem;
   opacity: 1;
   color: @text;
 }
 
-#workspaces button {
-  margin-right: .1em;
-  padding: 0px .3em;
-  border-radius: 9999px;
-  transition: all .5s ease-in-out;
+/* GLOBAL MODULE CONFIG */
+
+.modules-center {
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
-#workspaces button.active {
-  color: @mauve;
+#power, /* TODO: find a way to set group properties without using their ID */
+.modules-left > * > *, /* We need the 2nd child of the modules box */
+.modules-center > * > *,
+.modules-right > * > * {
+  margin: .2em .3em;
+}
+
+.modules-center,
+.modules-left,
+.modules-right {
+  border: 2px solid @mantle;
+  border-radius: 10px;
+  padding: 0 .5em;
+  background: @crust;
+}
+
+
+#custom-icon {
+  border-right: 2px solid @surface0;
+  padding-right: .6em;
+}
+
+#custom-weather {
+  margin-right: .4em;
+}
+
+/* ------------------------------ */
+/* ----------WORKSPACES---------- */
+/* ------------------------------ */
+
+#workspaces {
+  padding-left: .8em;
+  border-left: 2px solid @surface0;
+}
+
+#workspaces button {
+  padding: 0px .3em;
+  margin-right: .3em;
+  border-radius: 10px;
+  border: 1px solid @text;
+  border-bottom: 4px solid @text;
+  transition: all .5s ease-in-out;
+  background: @mantle;
 }
 
 #workspaces button.empty {
   color: @overlay0;
+  border: 1px solid @overlay0;
+  border-bottom: 4px solid @overlay0;
+}
+
+#workspaces button.active {
+  color: @mauve;
+  border: 1px solid @mauve;
+  border-bottom: 4px solid @mauve;
 }
 
 #workspaces button.urgent {
@@ -68,63 +126,17 @@ tooltip label {
 }
 
 #workspaces button:hover {
+  border-color: darker(@mauve);
   background: @mauve;
   color: @base;
 }
 
-#custom-power,
-#custom-reboot,
-#custom-lock,
-#custom-logout,
-#idle_inhibitor,
-#window,
-#clock,
-#custom-weather,
-#battery,
-#wireplumber,
-#network,
-#workspaces,
-#tray,
-#mpd,
-#custom-shutdown,
-#bluetooth,
-#gamemode,
-#backlight {
-  background: @base;
-  padding: 0px .6em;
-  margin-bottom: .225em;
-  margin-top: .75em;
-  border: 1px solid @mantle;
-}
-
-#workspaces {
-  padding: 0px;
-}
-
-#tray {
-  border-radius: 10px;
-  margin-right: .75em;
-}
-
-#workspaces {
-  border-radius: 10px;
-  margin-left: .75em;
-  padding-right: 0px;
-  padding-left: .375em;
-}
-
-#custom-shutdown {
-  border-radius: 9999px;
-  margin-right: .375em;
-  padding: 0 .525em;
-  color: @text;
-  transition: all .5s ease-in-out;
-}
+/* MPD */
 
 #mpd {
-  border-radius: 10px;
-  margin-left: .75em;
   transition: color .5s ease-in-out;
+  border-left: 2px solid @surface0;
+  padding-left: .6em;
 }
 
 #mpd.playing {
@@ -132,7 +144,7 @@ tooltip label {
 }
 
 #mpd.stopped {
-  color: @rosewater;
+  color: @maroon;
 }
 
 #mpd.paused {
@@ -143,11 +155,29 @@ tooltip label {
   color: @pink;
 }
 
+/* WINDOW MODULE */
+
+#window {
+  margin-left: .5em;
+  margin-right: .5em;
+}
+
+/* TRAY */
+
+#tray {
+  border-right: 2px solid @surface0;
+  padding-right: .5em;
+}
+
+/* IDLE INHIBITOR */
+
 #idle_inhibitor {
-  border-radius: 10px 0px 0px 10px;
-  border-right: 0px;
-  margin-left: .75em;
-  transition-property: color;
+  border-radius: 10px;
+  padding: 0px .4em;
+  margin: .3em .5em;
+  border: 1px solid @text;
+  border-bottom: 4px solid @text;
+  transition-property: all;
   transition-duration: .5s;
   transition-timing-function: ease-in-out;
 }
@@ -162,80 +192,18 @@ tooltip label {
   color: @text;
 }
 
+/* #idle_inhibitor:hover { */
+/*   color: @flamingo; */
+/*   border-color: @flamingo; */
+/* } */
 
-#window {
-  border-radius: 10px;
-  margin-left: 4.5em;
-  margin-right: 4.5em;
-}
-
-#clock {
-  color: @yellow;
-  border-radius: 10px;
-  margin-left: .75em;
-}
-
-#custom-weather {
-  color: @text;
-  border-radius: 10px;
-  margin-left: .75rem;
-}
-
-#network {
-  color: @peach;
-  border-left: 0px;
-  border-right: 0px;
-}
-
-#wireplumber {
-  color: @blue;
-  border-left: 0px;
-  border-right: 0px;
-}
-
-#battery {
-  color: @sky;
-  border-radius: 0px .75em .75em 0px;
-  margin-right: .75em;
-  border-left: 0px;
-}
-
-#battery.good,
-#battery.charging {
-  color: @teal;
-}
-
-#battery.warning {
-  color: @peach;
-}
-
-#battery.critical:not(.charging) {
-  color: @red;
-  animation-name: battery-blink;
-  animation-duration: 0.5s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-
-#backlight {
-  color: @mauve;
-  border-left: 0px;
-  border-right: 0px;
-}
-
-#bluetooth {
-  color: @text;
-  border-left: 0px;
-  border-right: 0px;
-}
+/* GAMEMODE */
 
 #gamemode {
   color: @lavender;
-  border-left: 0px;
-  border-right: 0px;
 }
+
+/* BLUETOOTH */
 
 #bluetooth.disabled {
   color: @maroon;
@@ -256,5 +224,77 @@ tooltip label {
 #bluetooth.on,
 #bluetooth.connected {
   color: @sapphire;
+}
+
+
+/* NETWORK */
+
+#network {
+  color: @mauve;
+}
+
+/* BACKLIGHT */
+
+#backlight {
+  color: @yellow;
+}
+
+/* WIREPLUMBER */
+
+#wireplumber {
+  color: @blue;
+}
+
+/* BATTERY */
+
+#battery {
+  color: @sky;
+}
+
+#battery.good,
+#battery.charging {
+  color: @teal;
+}
+
+#battery.discharging {
+  color: @peach;
+}
+
+#battery.warning {
+  color: @maroon;
+}
+
+#battery.critical:not(.charging) {
+  color: @red;
+  animation-name: battery-blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+/* POWER GROUP */
+
+#power {
+  border-radius: 10px;
+  margin-top: .3em;
+  margin-bottom: .3em;
+  margin-left: .5em;
+  margin-right: 0;
+  border: 1px solid @text;
+  border-bottom: 4px solid @text;
+}
+
+#custom-power,
+#custom-lock,
+#custom-logout,
+#custom-reboot {
+  padding: 0 .5em;
+}
+
+#custom-lock,
+#custom-logout,
+#custom-reboot {
+  border-right: 1px solid @text;
 }
 
