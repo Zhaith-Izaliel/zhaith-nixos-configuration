@@ -40,10 +40,6 @@ in
   options.hellebore.desktop-environment.status-bar = {
     enable = mkEnableOption "Hellebore Waybar configuration";
 
-    followGTKTheme = (mkEnableOption null) // {
-      description  = "Make the status bar follow the GTK Theme applied globally";
-    };
-
     font = extra-types.font {
       size = config.hellebore.font.size;
       name = theme.gtk.font.name;
@@ -163,9 +159,6 @@ in
       };
 
       style = concatStringsSep "\n" [
-        (optionalString (!cfg.followGTKTheme) ''
-        '')
-
         ''
         * {
           font-size: ${toString cfg.font.size}pt;
