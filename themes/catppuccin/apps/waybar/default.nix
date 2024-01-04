@@ -1,16 +1,19 @@
-{ colors, inputs, modules }:
+{ colors, inputs, modules, lib }:
 let
+  inherit (lib) recursiveUpdate;
   mkBig = icon: "<big>${icon}</big>";
   mkWaybarModules = (import ../../../../utils/default.nix { inherit inputs; }
   ).mkWaybarModules;
   modulesPosition = {
     modules-left = [
+      "custom/icon"
+      "clock"
+      "custom/weather"
       "hyprland/workspaces"
       "mpd"
     ];
     modules-center = [
-      "clock"
-      "custom/weather"
+      "hyprland/window"
     ];
     modules-right = [
       "tray"
@@ -23,11 +26,20 @@ let
       "battery"
       "group/power"
     ];
+
+    "group/power" = {
+      modules = [
+        "custom/power"
+        "custom/lock"
+        "custom/logout"
+        "custom/reboot"
+      ];
+    };
   };
 in
 {
   settings = {
-    mainBar = {
+    mainBar = recursiveUpdate {
       layer = "top";
       position = "top";
       spacing = 0;
@@ -46,22 +58,26 @@ in
         format = "{}";
       };
 
+      "custom/icon" = {
+        format = mkBig "🪷";
+        tooltip = false;
+      };
+
+      "custom/separator" = {
+        format = "⎹";
+        tooltip = false;
+      };
+
       "group/power" = {
         orientation = "inherit";
         drawer = {
           transition-duration = 500;
-          children-class = "not-power";
+          children-class = "power-child";
           transition-left-to-right = false;
         };
-        modules = [
-          "custom/power"
-          "custom/quit"
-          "custom/lock"
-          "custom/reboot"
-        ];
       };
 
-      "custom/quit" = {
+      "custom/logout" = {
         format = mkBig "󰗼";
         tooltip = false;
       };
@@ -174,73 +190,97 @@ in
       };
 
       network =
-      let
-        speedFormat = "󰮏 {bandwidthDownBits}⎹ 󰸇 {bandwidthUpBits}";
-      in
-      {
-        format-wifi = "${mkBig ""} {essid}";
-        format-ethernet = "${mkBig "󰈀"} {ifname}";
-        format-linked = "${mkBig ""} {ifname}";
-        format-disconnected = mkBig "󰒏";
-        tooltip-format-wifi = "{essid} - {signalStrength}%\n${speedFormat}";
-        tooltip-format-disconnected = "Disconnected";
-        tooltip-format-ethernet = speedFormat;
-        tooltip-format-linked = speedFormat;
-      };
-
-      wireplumber = {
-        format = "{volume}% ${mkBig "{icon}"}";
-        format-muted = mkBig "󰖁";
-        format-icons = [ "" "" "" ];
-      };
-
-      mpd = {
-        format = "${mkBig "{stateIcon}"} {title}";
-        tooltip-format = "{albumArtist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})";
-        format-stopped = mkBig "";
-        format-disconnected = mkBig "󰎊";
-        tooltip-format-stopped = "Stopped";
-        tooltip-format-disconnected = "Disconnected";
-        state-icons = {
-          playing = "󰎈";
-          paused = "";
+        let
+          speedFormat = "󰮏 {bandwidthDownBits}⎹ 󰸇 {bandwidthUpBits}";
+        in
+        {
+          format-wifi = "${mkBig "{icon}"} {essid}";
+          format-ethernet = "${mkBig "󰈀"} {ipaddr}/{cidr}";
+          format-linked = "${mkBig ""} {ifname}";
+          format-disconnected = mkBig "󰒏";
+          tooltip-format-wifi = "{essid} - {icon} {signalStrength}%\n${speedFormat}";
+          tooltip-format-disconnected = "Disconnected";
+          tooltip-format-ethernet = "{ifname}\n${speedFormat}";
+          tooltip-format-linked = speedFormat;
+          format-icons = [
+            "󰤫"
+            "󰤟"
+            "󰤢"
+            "󰤥"
+            "󰤨"
+          ];
         };
-      };
-    } // mkWaybarModules modules modulesPosition;
-  };
 
-  style = ''
-  @define-color base   ${colors.base};
-  @define-color mantle ${colors.mantle};
-  @define-color crust  ${colors.crust};
+        wireplumber = {
+          format = "${mkBig "{icon}"} {volume}%";
+          tooltip-format = "Device Node: {node_name}\nVolume: {volume}%";
+          format-muted = mkBig "󰖁";
+          format-icons = [ "" "" "" ];
+        };
 
-  @define-color text     ${colors.text};
-  @define-color subtext0 ${colors.subtext0};
-  @define-color subtext1 ${colors.subtext1};
+        mpd = {
+          format = "${mkBig "{stateIcon}"} {title}";
+          tooltip-format = "{albumArtist} - {title}\n({elapsedTime:%M:%S}/{totalTime:%M:%S})\n{randomIcon} {repeatIcon} {singleIcon}";
+          format-stopped = mkBig "";
+          format-disconnected = mkBig "󰎊";
+          tooltip-format-stopped = "Stopped";
+          tooltip-format-disconnected = "Disconnected";
+          state-icons = {
+            playing = "󰎈";
+            paused = "";
+          };
+          random-icons = {
+            on = "󰒝 on";
+            off = "󰒞 off";
+          };
+          repeat-icons = {
+            on = "󰑖 on";
+            off = "󰑗 off";
+          };
+          single-icons = {
+            on = "󰑘 on";
+            off = "󰑘 off";
+          };
+        };
+      } (mkWaybarModules modules modulesPosition);
+    };
 
-  @define-color surface0 ${colors.surface0};
-  @define-color surface1 ${colors.surface1};
-  @define-color surface2 ${colors.surface2};
+    style = ''
+    @define-color base   ${colors.base};
+    @define-color mantle ${colors.mantle};
+    @define-color crust  ${colors.crust};
 
-  @define-color overlay0 ${colors.overlay0};
-  @define-color overlay1 ${colors.overlay1};
-  @define-color overlay2 ${colors.overlay2};
+    @define-color text     ${colors.text};
+    @define-color subtext0 ${colors.subtext0};
+    @define-color subtext1 ${colors.subtext1};
 
-  @define-color blue      ${colors.blue};
-  @define-color lavender  ${colors.lavender};
-  @define-color sapphire  ${colors.sapphire};
-  @define-color sky       ${colors.sky};
-  @define-color teal      ${colors.teal};
-  @define-color green     ${colors.green};
-  @define-color yellow    ${colors.yellow};
-  @define-color peach     ${colors.peach};
-  @define-color maroon    ${colors.maroon};
-  @define-color red       ${colors.red};
-  @define-color mauve     ${colors.mauve};
-  @define-color pink      ${colors.pink};
-  @define-color flamingo  ${colors.flamingo};
-  @define-color rosewater ${colors.rosewater};
+    @define-color surface0 ${colors.surface0};
+    @define-color surface1 ${colors.surface1};
+    @define-color surface2 ${colors.surface2};
 
-  '' + builtins.readFile ./style.css;
-}
+    @define-color overlay0 ${colors.overlay0};
+    @define-color overlay1 ${colors.overlay1};
+    @define-color overlay2 ${colors.overlay2};
+
+    @define-color blue      ${colors.blue};
+    @define-color lavender  ${colors.lavender};
+    @define-color sapphire  ${colors.sapphire};
+    @define-color sky       ${colors.sky};
+    @define-color teal      ${colors.teal};
+    @define-color green     ${colors.green};
+    @define-color yellow    ${colors.yellow};
+    @define-color peach     ${colors.peach};
+    @define-color maroon    ${colors.maroon};
+    @define-color red       ${colors.red};
+    @define-color mauve     ${colors.mauve};
+    @define-color pink      ${colors.pink};
+    @define-color flamingo  ${colors.flamingo};
+    @define-color rosewater ${colors.rosewater};
+
+    tooltip {
+      background: url(${../../../../assets/images/waybar/tooltip-background.png})
+    }
+
+    '' + builtins.readFile ./style.css;
+  }
 

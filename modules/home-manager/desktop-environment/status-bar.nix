@@ -3,29 +3,45 @@
 
 let
   inherit (lib) mkIf mkOption mkEnableOption elemAt types getExe recursiveUpdate
-  flatten optional;
+  flatten optional optionalString concatStringsSep;
   cfg = config.hellebore.desktop-environment.status-bar;
   theme = config.hellebore.theme.themes.${config.hellebore.theme.name}.waybar modules;
-  modules = flatten [
-    "clock"
-    "custom/weather"
-    (optional config.services.mpd.enable "mpd")
-    "hyprland/workspaces"
-    "hyprland/window"
-    "tray"
-    "idle_inhibitor"
-    (optional os-config.hellebore.games.enable "gamemode")
-    (optional os-config.hardware.bluetooth.enable "bluetooth")
-    "network"
-    "backlight"
-    (optional os-config.services.pipewire.wireplumber.enable "wireplumber")
-    "battery"
-    "group/power"
-  ];
+  modules = {
+    modules = flatten [
+      "custom/icon"
+      "clock"
+      "custom/weather"
+      (optional config.services.mpd.enable "mpd")
+      "hyprland/workspaces"
+      "hyprland/window"
+      "tray"
+      "idle_inhibitor"
+      (optional os-config.hellebore.games.enable "gamemode")
+      (optional os-config.hardware.bluetooth.enable "bluetooth")
+      "network"
+      "backlight"
+      (optional os-config.services.pipewire.wireplumber.enable "wireplumber")
+      "battery"
+      "group/power"
+      (optional
+      config.hellebore.desktop-environment.applications-launcher.enable "custom/app")
+    ];
+
+    "group/power" = [
+      "custom/power"
+      "custom/lock"
+      "custom/logout"
+      "custom/reboot"
+    ];
+  };
 in
 {
   options.hellebore.desktop-environment.status-bar = {
     enable = mkEnableOption "Hellebore Waybar configuration";
+
+    followGTKTheme = (mkEnableOption null) // {
+      description  = "Make the status bar follow the GTK Theme applied globally";
+    };
 
     font = extra-types.font {
       size = config.hellebore.font.size;
@@ -130,12 +146,21 @@ in
         };
       };
 
-      style = ''
-      * {
-        font-size: ${toString cfg.font.size}pt;
-        font-family: '${cfg.font.name}';
-      }
-      '' + theme.style;
+      style = concatStringsSep "\n" [
+        (optionalString (!cfg.followGTKTheme) ''
+        * {
+          all: unset;
+        }
+        '')
+
+        ''
+        * {
+          font-size: ${toString cfg.font.size}pt;
+          font-family: '${cfg.font.name}';
+        }
+        ''
+        theme.style
+      ];
     };
   };
 }

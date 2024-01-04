@@ -24,13 +24,6 @@
   100% { background-color: @base; }
 }
 
-* {
-  font-weight: bold;
-  border: none;
-  border-radius: 0px;
-  min-height: 0px;
-}
-
 .text-xl {
   font-size: 1.5rem;
 }
@@ -41,31 +34,30 @@ window#waybar {
 }
 
 tooltip {
-  background: @base;
-  border-radius: 10px;
-  border: 1px solid @mantle;
   font-weight: normal;
+  border: 1px solid @mantle;
+  border-radius: 10px;
+  background-color: rgba(24, 25, 38, 0.85);
+}
+
+tooltip label {
+  margin: 0.25rem;
+  color: @text;
 }
 
 #workspaces button {
-  color: @surface0;
   margin-right: .1em;
   padding: 0px .3em;
   border-radius: 9999px;
   transition: all .5s ease-in-out;
 }
 
-#workspaces button:hover {
-  background: @mauve;
-  color: @base;
+#workspaces button.active {
+  color: @mauve;
 }
 
 #workspaces button.empty {
   color: @overlay0;
-}
-
-#workspaces button.active {
-  color: @subtext1;
 }
 
 #workspaces button.urgent {
@@ -74,8 +66,15 @@ tooltip {
   animation-iteration-count: infinite;
 }
 
+#workspaces button:hover {
+  background: @mauve;
+  color: @base;
+}
 
-#custom-language,
+#custom-power,
+#custom-reboot,
+#custom-lock,
+#custom-logout,
 #idle_inhibitor,
 #window,
 #clock,
@@ -236,12 +235,6 @@ tooltip {
   border-left: 0px;
   border-right: 0px;
 }
-
-/* #gamemode.running { */
-/*   animation-name: gamemode-activated; */
-/*   animation-duration: 4s; */
-/*   animation-iteration-count: infinite; */
-/* } */
 
 #bluetooth.disabled {
   color: @maroon;
