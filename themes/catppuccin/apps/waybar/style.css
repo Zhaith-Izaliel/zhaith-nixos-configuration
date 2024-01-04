@@ -82,11 +82,14 @@ tooltip label {
   background: @crust;
 }
 
+/* ICON */
 
 #custom-icon {
   border-right: 2px solid @surface0;
   padding-right: .6em;
 }
+
+/* WEATHER */
 
 #custom-weather {
   margin-right: .4em;
