@@ -43,6 +43,10 @@
         enable = true;
         font.size = 11;
         backlight-device = "intel_backlight";
+        tray = {
+          icon-size = 22;
+          spacing = 5;
+        };
       };
 
       bluetooth.enable = true;

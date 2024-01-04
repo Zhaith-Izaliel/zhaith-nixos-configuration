@@ -96,7 +96,7 @@ in
 
       bluetooth = {
         format = "󰂯 On";
-        format-off = "󰂲 Off";
+        format-off = "${mkBig "󰂲"} Off";
         format-disabled = "󰂳 Disabled";
         format-connected = "${mkBig "󰂱"} {device_alias}";
         format-connected-battery = "${mkBig "󰂱"} {device_alias} {device_battery_percentage}%";
@@ -141,11 +141,6 @@ in
         };
         tooltip-format-activated = "Active";
         tooltip-format-deactivated = "Inactive";
-      };
-
-      tray = {
-        icon-size = 24;
-        spacing = 7;
       };
 
       backlight = {

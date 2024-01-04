@@ -30,17 +30,21 @@
 }
 
 @keyframes workspace-blink {
-  0% { background-color: @base; }
-  50% { background-color: @green; }
-  100% { background-color: @base; }
-}
-
-.text-xl {
-  font-size: 1.5rem;
+  from {
+    background-color: @mantle;
+    color: @text;
+    border-color: @text;
+  }
+  to {
+    background-color: @green;
+    color: @mantle;
+    border-color: darker(@green);
+  }
 }
 
 window#waybar {
   color: @text;
+  background: rgba(24, 25, 38, 0);
 }
 
 tooltip {
@@ -103,6 +107,7 @@ tooltip label {
   border-radius: 10px;
   border: 1px solid @text;
   border-bottom: 4px solid @text;
+  color: @text;
   transition: all .5s ease-in-out;
   background: @mantle;
 }
@@ -115,13 +120,13 @@ tooltip label {
 
 #workspaces button.active {
   color: @mauve;
-  border: 1px solid @mauve;
-  border-bottom: 4px solid @mauve;
+  border-color: @mauve;
 }
 
 #workspaces button.urgent {
   animation-name: workspace-blink;
-  animation-duration: 2s;
+  animation-duration: 1s;
+  animation-direction: alternate;
   animation-iteration-count: infinite;
 }
 

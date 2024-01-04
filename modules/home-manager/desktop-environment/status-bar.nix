@@ -51,6 +51,20 @@ in
       nameDescription = "Set the status bar font family.";
     };
 
+    tray = {
+      icon-size = mkOption {
+        type = types.ints.unsigned;
+        default = 10;
+        description = "Defines the size of the icons in the system tray;";
+      };
+
+      spacing = mkOption {
+        type = types.ints.unsigned;
+        default = 5;
+        description = "Defines the spacing between the icons in the system tray.";
+      };
+    };
+
     backlight-device = mkOption {
       type = types.nonEmptyStr;
       default = "";
@@ -90,6 +104,7 @@ in
 
       settings = recursiveUpdate waybar-theme.settings {
         mainBar = {
+          inherit (cfg) tray;
           output = (elemAt config.hellebore.monitors 0).name;
 
           "custom/weather" = {
@@ -149,9 +164,6 @@ in
 
       style = concatStringsSep "\n" [
         (optionalString (!cfg.followGTKTheme) ''
-        * {
-          all: unset;
-        }
         '')
 
         ''
