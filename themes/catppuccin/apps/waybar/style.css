@@ -37,11 +37,12 @@ tooltip {
   font-weight: normal;
   border: 1px solid @mantle;
   border-radius: 10px;
-  background-color: rgba(24, 25, 38, 0.85);
+  /* background-color: rgba(24, 25, 38, 0.85); */
 }
 
 tooltip label {
   margin: 0.25rem;
+  opacity: 1;
   color: @text;
 }
 

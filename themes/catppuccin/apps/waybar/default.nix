@@ -278,7 +278,8 @@ in
     @define-color rosewater ${colors.rosewater};
 
     tooltip {
-      background: url(${../../../../assets/images/waybar/tooltip-background.png})
+      background-image: url("${../../../../assets/images/waybar/tooltip-background.png}");
+      opacity: 0.98;
     }
 
     '' + builtins.readFile ./style.css;
