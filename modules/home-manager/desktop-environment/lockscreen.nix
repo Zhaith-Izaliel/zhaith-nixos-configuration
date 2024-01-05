@@ -34,6 +34,12 @@ in
       password, in seconds.";
     };
 
+    package = mkOption {
+      type = types.package;
+      default = pkgs.swaylock-effects;
+      description = "Defines the package used for the lockscreen.";
+    };
+
     timeouts = {
       dim = {
         enable = mkEnableOption "Dim Screen timeout";
@@ -99,8 +105,8 @@ in
     ];
 
     programs.swaylock = {
+      inherit (cfg) package;
       enable = true;
-      package = pkgs.swaylock-effects;
       settings = {
         indicator-radius = cfg.indicatorRadius;
         font-size = cfg.font.size;

@@ -83,6 +83,7 @@ in
       brightnessctl
       wttrbar
       dunstbar
+      (config.hellebore.desktop-environment.lockscreen.package)
     ];
 
     systemd.user.targets.tray = {
@@ -112,11 +113,11 @@ in
           };
 
           "custom/quit" = {
-            on-click = "hyprctl dispatch exit";
+            on-click = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch exit 0";
           };
 
           "custom/lock" = {
-            on-click = "swaylock -fF";
+            on-click = "${getExe config.hellebore.desktop-environment.lockscreen.package} -fF";
           };
 
           "custom/reboot" = {
@@ -131,7 +132,6 @@ in
             exec = "${getExe pkgs.dunstbar} -i";
             on-click = "${getExe pkgs.dunstbar} -p";
             on-click-right = "${getExe pkgs.dunstbar} -c";
-            interval = 0;
             return-type = "json";
           };
 
