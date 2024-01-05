@@ -8,19 +8,53 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     flake-utils.url = "github:numtide/flake-utils";
+
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
     };
-    grub2-themes.url = "github:/vinceliuice/grub2-themes";
-    nix-alien.url = "github:thiagokokada/nix-alien";
-    zhaith-neovim.url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprland-contrib.url = "github:hyprwm/contrib";
-    sddm-sugar-candy-nix.url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
-    virgutils.url = "gitlab:Zhaith-Izaliel/virgutils";
-    rofi-applets.url = "gitlab:Zhaith-Izaliel/rofi-applets/develop";
+
+    grub2-themes = {
+      url = "github:/vinceliuice/grub2-themes";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-alien = {
+      url = "github:thiagokokada/nix-alien";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    zhaith-neovim = {
+      url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    sddm-sugar-candy-nix = {
+      url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    virgutils = {
+      url = "gitlab:Zhaith-Izaliel/virgutils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    rofi-applets = {
+      url = "gitlab:Zhaith-Izaliel/rofi-applets/develop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Theme packages
     # NOTE: include them as "{theme-name}-{app-name}"
