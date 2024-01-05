@@ -198,7 +198,8 @@ tooltip label {
   background-color: @lavender;
 }
 
-#custom-notifications.paused {
+#custom-notifications.paused,
+#custom-notifications.error {
   border-color: @red;
   color: @red;
 }

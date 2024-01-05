@@ -101,6 +101,7 @@ in
         format-icons = {
           not-paused = "";
           paused = "";
+          error = "";
         };
       };
 
