@@ -2454,11 +2454,11 @@
         "nixpkgs": "nixpkgs_10"
       },
       "locked": {
-        "lastModified": 1704464009,
-        "narHash": "sha256-Uy166iFVDrwb4kfiZrOSRc232/od0g01vIkv8csT3Ec=",
+        "lastModified": 1704470879,
+        "narHash": "sha256-/rwomX7eGZWJCcVdjfiXiLMLbxYJ92rxK32cM/SjROM=",
         "owner": "Zhaith-Izaliel",
         "repo": "virgutils",
-        "rev": "a1bfa951663ffd2a029b1c26b9d1ac6c00b04e09",
+        "rev": "10a285475289c758d6a74d28baa3c6cf82c1b92b",
         "type": "gitlab"
       },
       "original": {
