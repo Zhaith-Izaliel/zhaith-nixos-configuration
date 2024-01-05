@@ -1,15 +1,15 @@
 { os-config, config, lib, pkgs, extra-types, ... }:
 
-
 let
   inherit (lib) mkIf mkOption mkEnableOption elemAt types getExe recursiveUpdate
-  flatten optional optionalString concatStringsSep;
+  flatten optional concatStringsSep;
   cfg = config.hellebore.desktop-environment.status-bar;
   theme = config.hellebore.theme.themes.${config.hellebore.theme.name};
   waybar-theme = theme.waybar modules;
   modules = {
     modules = flatten [
       "custom/icon"
+      (optional config.services.dunst.enable "custom/notifications")
       "clock"
       "custom/weather"
       (optional config.services.mpd.enable "mpd")
@@ -82,6 +82,7 @@ in
       libappindicator-gtk3
       brightnessctl
       wttrbar
+      dunstbar
     ];
 
     systemd.user.targets.tray = {
@@ -126,6 +127,14 @@ in
             on-click = "systemctl poweroff";
           };
 
+          "custom/notifications" = {
+            exec = "${getExe pkgs.dunstbar} -i";
+            on-click = "${getExe pkgs.dunstbar} -p";
+            on-click-right = "${getExe pkgs.dunstbar} -c";
+            interval = 0;
+            return-type = "json";
+          };
+
           bluetooth = {
             on-click = "${getExe pkgs.toggle-bluetooth}";
             on-click-right = "${pkgs.blueberry}/bin/blueberry";
@@ -133,8 +142,8 @@ in
 
           backlight = {
             device = cfg.backlight-device;
-            on-scroll-up = "${lib.getExe pkgs.volume-brightness} -b 1%+";
-            on-scroll-down = "${lib.getExe pkgs.volume-brightness} -b 1%-";
+            on-scroll-up = "${getExe pkgs.volume-brightness} -b 1%+";
+            on-scroll-down = "${getExe pkgs.volume-brightness} -b 1%-";
           };
 
           battery = {
@@ -151,9 +160,9 @@ in
 
           wireplumber = {
             on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-            on-click-right = "${lib.getExe pkgs.pavucontrol}";
-            on-scroll-up = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
-            on-scroll-down = "${lib.getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
+            on-click-right = "${getExe pkgs.pavucontrol}";
+            on-scroll-up = "${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
+            on-scroll-down = "${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
           };
         };
       };

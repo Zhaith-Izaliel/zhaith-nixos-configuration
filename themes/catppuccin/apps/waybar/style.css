@@ -82,11 +82,20 @@ tooltip label {
   background: @crust;
 }
 
-/* ICON */
+/* SEPARATORS */
 
-#custom-icon {
-  border-right: 2px solid @surface0;
-  padding-right: .6em;
+#clock,
+#workspaces,
+#mpd
+{
+  border-left: 2px solid @surface0;
+}
+
+/* CLOCK */
+
+#clock {
+  padding-left: .6em;
+  margin-left: 1em;
 }
 
 /* WEATHER */
@@ -112,7 +121,7 @@ tooltip label {
   border-bottom: 4px solid @text;
   color: @text;
   transition: all .5s ease-in-out;
-  background: @mantle;
+  background: @base;
 }
 
 #workspaces button.empty {
@@ -143,7 +152,6 @@ tooltip label {
 
 #mpd {
   transition: color .5s ease-in-out;
-  border-left: 2px solid @surface0;
   padding-left: .6em;
 }
 
@@ -170,10 +178,38 @@ tooltip label {
   margin-right: .5em;
 }
 
+/* NOTIFICATIONS */
+
+#custom-notifications {
+  border: solid @text0;
+  border-width: 1px 1px 4px;
+  border-radius: 10px;
+  padding: 0 .4em;
+  margin: .3em .5em;
+  transition-property: all;
+  transition-duration: .5s;
+  transition-timing-function: ease-in-out;
+  background-color: @base;
+}
+
+#custom-notifications:hover {
+  border-color: darker(@lavender);
+  color: @mantle;
+  background-color: @lavender;
+}
+
+#custom-notifications.paused {
+  border-color: @red;
+  color: @red;
+}
+
 /* TRAY */
 
 #tray {
-  border-right: 2px solid @surface0;
+  border-style: solid;
+  border-color: @surface0;
+  border-right-width: 2px;
+  padding-left: .5em;
   padding-right: .5em;
 }
 
@@ -181,13 +217,14 @@ tooltip label {
 
 #idle_inhibitor {
   border-radius: 10px;
-  padding: 0px .4em;
+  padding: 0 .4em;
   margin: .3em .5em;
   border: 1px solid @text;
   border-bottom: 4px solid @text;
   transition-property: all;
   transition-duration: .5s;
   transition-timing-function: ease-in-out;
+  background-color: @base;
 }
 
 #idle_inhibitor.activated {
@@ -291,6 +328,7 @@ tooltip label {
   margin-right: 0;
   border: 1px solid @text;
   border-bottom: 4px solid @text;
+  background-color: @base;
 }
 
 #custom-power,

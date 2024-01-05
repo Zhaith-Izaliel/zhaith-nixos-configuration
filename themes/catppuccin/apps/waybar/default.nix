@@ -1,6 +1,6 @@
 { colors, inputs, modules, lib }:
 let
-  inherit (lib) recursiveUpdate;
+  inherit (lib) recursiveUpdate any optionalString concatStringsSep;
   mkBig = icon: "<big>${icon}</big>";
   mkWaybarModules = (import ../../../../utils/default.nix { inherit inputs; }
   ).mkWaybarModules;
@@ -16,6 +16,7 @@ let
       "hyprland/window"
     ];
     modules-right = [
+      "custom/notifications"
       "tray"
       "idle_inhibitor"
       "gamemode"
@@ -36,6 +37,7 @@ let
       ];
     };
   };
+  finalModules = mkWaybarModules modules modulesPosition;
 in
 {
   settings = {
@@ -92,6 +94,14 @@ in
       "custom/power" = {
         format = mkBig "";
         tooltip = false;
+      };
+
+      "custom/notifications" = {
+        format = "${mkBig "{icon}"} {}";
+        format-icons = {
+          not-paused = "";
+          paused = "";
+        };
       };
 
       bluetooth = {
@@ -233,41 +243,54 @@ in
             off = "󰑘 off";
           };
         };
-      } (mkWaybarModules modules modulesPosition);
+      } finalModules;
     };
 
-    style = ''
-    @define-color base   ${colors.base};
-    @define-color mantle ${colors.mantle};
-    @define-color crust  ${colors.crust};
+    style = concatStringsSep "\n" [
+      ''
+      @define-color base   ${colors.base};
+      @define-color mantle ${colors.mantle};
+      @define-color crust  ${colors.crust};
 
-    @define-color text     ${colors.text};
-    @define-color subtext0 ${colors.subtext0};
-    @define-color subtext1 ${colors.subtext1};
+      @define-color text     ${colors.text};
+      @define-color subtext0 ${colors.subtext0};
+      @define-color subtext1 ${colors.subtext1};
 
-    @define-color surface0 ${colors.surface0};
-    @define-color surface1 ${colors.surface1};
-    @define-color surface2 ${colors.surface2};
+      @define-color surface0 ${colors.surface0};
+      @define-color surface1 ${colors.surface1};
+      @define-color surface2 ${colors.surface2};
 
-    @define-color overlay0 ${colors.overlay0};
-    @define-color overlay1 ${colors.overlay1};
-    @define-color overlay2 ${colors.overlay2};
+      @define-color overlay0 ${colors.overlay0};
+      @define-color overlay1 ${colors.overlay1};
+      @define-color overlay2 ${colors.overlay2};
 
-    @define-color blue      ${colors.blue};
-    @define-color lavender  ${colors.lavender};
-    @define-color sapphire  ${colors.sapphire};
-    @define-color sky       ${colors.sky};
-    @define-color teal      ${colors.teal};
-    @define-color green     ${colors.green};
-    @define-color yellow    ${colors.yellow};
-    @define-color peach     ${colors.peach};
-    @define-color maroon    ${colors.maroon};
-    @define-color red       ${colors.red};
-    @define-color mauve     ${colors.mauve};
-    @define-color pink      ${colors.pink};
-    @define-color flamingo  ${colors.flamingo};
-    @define-color rosewater ${colors.rosewater};
+      @define-color blue      ${colors.blue};
+      @define-color lavender  ${colors.lavender};
+      @define-color sapphire  ${colors.sapphire};
+      @define-color sky       ${colors.sky};
+      @define-color teal      ${colors.teal};
+      @define-color green     ${colors.green};
+      @define-color yellow    ${colors.yellow};
+      @define-color peach     ${colors.peach};
+      @define-color maroon    ${colors.maroon};
+      @define-color red       ${colors.red};
+      @define-color mauve     ${colors.mauve};
+      @define-color pink      ${colors.pink};
+      @define-color flamingo  ${colors.flamingo};
+      @define-color rosewater ${colors.rosewater};
 
-    '' + builtins.readFile ./style.css;
+      ''
+      (
+        optionalString
+        (any (item: item == "custom/notifications") modules.modules)
+        ''
+        #tray {
+          border-left-width: 2px;
+        }
+
+        ''
+      )
+      (builtins.readFile ./style.css)
+    ];
   }
 
