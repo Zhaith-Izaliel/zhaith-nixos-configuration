@@ -5,9 +5,9 @@
     FormPosition = "left";
     HaveFormBackground = true;
     PartialBlur = true;
-    AccentColor = colors.mauve;
-    BackgroundColor = colors.base;
-    MainColor = colors.text;
+    AccentColor = colors.normal.mauve;
+    BackgroundColor = colors.normal.base;
+    MainColor = colors.normal.text;
     ForceHideCompletePassword = true;
   };
 }

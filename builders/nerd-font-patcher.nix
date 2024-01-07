@@ -5,8 +5,10 @@ stdenv.mkDerivation {
   src = font;
   nativeBuildInputs = [ nerd-font-patcher ];
   buildPhase = ''
-    find -name \*.ttf -o -name \*.otf -exec nerd-font-patcher -c {} \;
+    find -name \*.ttf -o -name \*.otf -exec nerd-font-patcher -c --no-progressbars {} \;
   '';
-  installPhase = "cp -a . $out";
+  installPhase = ''
+    cp -a . $out
+  '';
 }
 

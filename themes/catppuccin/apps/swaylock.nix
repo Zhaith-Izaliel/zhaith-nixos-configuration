@@ -3,7 +3,7 @@
 let
   converted-colors = lib.attrsets.mapAttrs
   (name: value: lib.strings.removePrefix "#" value)
-  colors;
+  colors.normal;
 in
 {
   settings = {
@@ -44,6 +44,5 @@ in
     timestr = "%H:%M";
     datestr = "%d %b, %Y";
   };
-
 }
 

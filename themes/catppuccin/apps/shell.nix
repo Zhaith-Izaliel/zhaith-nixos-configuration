@@ -1,6 +1,6 @@
 { colors }:
 
 {
-  autosuggestions = colors.subtext0;
+  autosuggestions = colors.normal.subtext0;
 }
 

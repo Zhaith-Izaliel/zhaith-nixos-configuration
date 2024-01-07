@@ -2,8 +2,8 @@
 
 let
   gitMetricsSegmentBg = "black";
-  nixShellSegmentColor = colors.blue;
-  nixShellTextColor = colors.base;
+  nixShellSegmentColor = colors.normal.blue;
+  nixShellTextColor = colors.normal.base;
 in
 rec {
   palette = {

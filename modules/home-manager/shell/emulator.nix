@@ -82,7 +82,7 @@ in
         tab_title_template = "{f'{title[:20]}…' if title.rindex(title[-1]) + 1 > 30 else (title.center(6) if (title.rindex(title[-1]) + 1) % 2 == 0 else title.center(5))}";
         active_tab_font_style = "bold";
         active_tab_foreground = "black";
-        active_tab_background = theme.colors.blue;
+        active_tab_background = theme.colors.normal.blue;
         inactive_tab_font_style = "normal";
       };
 

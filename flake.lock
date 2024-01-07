@@ -2031,11 +2031,11 @@
         "rofi-network-manager": "rofi-network-manager"
       },
       "locked": {
-        "lastModified": 1703927102,
-        "narHash": "sha256-Wag7cOKNvKOVnGltBQJoMt5ukJCBwvRhnCY4H/C/Abs=",
+        "lastModified": 1704551393,
+        "narHash": "sha256-w0ibe7+b4gW/EUCtnsBhKKZPpJyaoBzJ0Q4WQ/raTS8=",
         "owner": "Zhaith-Izaliel",
         "repo": "rofi-applets",
-        "rev": "319c38e42c2f5d6ffb1c304fdbab19e17f6b90b1",
+        "rev": "234e5d74db04c4b346d21d7b4dd41cd7ac6937e9",
         "type": "gitlab"
       },
       "original": {
@@ -2489,11 +2489,11 @@
         "nvim-yuck": "nvim-yuck"
       },
       "locked": {
-        "lastModified": 1704407582,
-        "narHash": "sha256-07hgNRuVYHGHcpGfFmwv+5uza+aSlJsmmUxGm762BiM=",
+        "lastModified": 1704550123,
+        "narHash": "sha256-jIJ/D135IQdeZ1FZls1oc2hsHQbyh/JUXpFLREqFah4=",
         "owner": "Zhaith-Izaliel",
         "repo": "neovim-config",
-        "rev": "d9da27608014856b29c5df5fbe0b83d817c70357",
+        "rev": "ddf3418886dc01134adabd6c48563d9c7b358cd3",
         "type": "gitlab"
       },
       "original": {

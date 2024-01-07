@@ -32,7 +32,7 @@ in
 {
   style = ''
     window {
-      color: ${colors.text};
+      color: ${colors.normal.text};
       background-repeat: no-repeat;
       background-image: image(url("/tmp/wlogout-blur.png"));
     }
@@ -52,8 +52,8 @@ in
     }
 
     button:focus {
-      background-color: ${colors.mauve};
-      color: ${colors.base};
+      background-color: ${colors.normal.mauve};
+      color: ${colors.normal.base};
     }
 
     #lock {

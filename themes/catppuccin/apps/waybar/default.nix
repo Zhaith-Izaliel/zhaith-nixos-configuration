@@ -178,11 +178,11 @@ in
           on-scroll = 1;
           on-click = "mode";
           format = {
-            months = "<span color='${colors.mauve}'><b>{}</b></span>";
-            days = "<span color='${colors.lavender}'><b>{}</b></span>";
-            weeks = "<span color='${colors.teal}'><b>W{}</b></span>";
-            weekdays = "<span color='${colors.blue}'><b>{}</b></span>";
-            today = "<span color='${colors.red}'><b><u>{}</u></b></span>";
+            months = "<span color='${colors.normal.mauve}'><b>{}</b></span>";
+            days = "<span color='${colors.normal.lavender}'><b>{}</b></span>";
+            weeks = "<span color='${colors.normal.teal}'><b>W{}</b></span>";
+            weekdays = "<span color='${colors.normal.blue}'><b>{}</b></span>";
+            today = "<span color='${colors.normal.red}'><b><u>{}</u></b></span>";
           };
           actions = {
             on-click = "mode";
@@ -249,36 +249,36 @@ in
 
     style = concatStringsSep "\n" [
       ''
-      @define-color base   ${colors.base};
-      @define-color mantle ${colors.mantle};
-      @define-color crust  ${colors.crust};
+      @define-color base   ${colors.normal.base};
+      @define-color mantle ${colors.normal.mantle};
+      @define-color crust  ${colors.normal.crust};
 
-      @define-color text     ${colors.text};
-      @define-color subtext0 ${colors.subtext0};
-      @define-color subtext1 ${colors.subtext1};
+      @define-color text     ${colors.normal.text};
+      @define-color subtext0 ${colors.normal.subtext0};
+      @define-color subtext1 ${colors.normal.subtext1};
 
-      @define-color surface0 ${colors.surface0};
-      @define-color surface1 ${colors.surface1};
-      @define-color surface2 ${colors.surface2};
+      @define-color surface0 ${colors.normal.surface0};
+      @define-color surface1 ${colors.normal.surface1};
+      @define-color surface2 ${colors.normal.surface2};
 
-      @define-color overlay0 ${colors.overlay0};
-      @define-color overlay1 ${colors.overlay1};
-      @define-color overlay2 ${colors.overlay2};
+      @define-color overlay0 ${colors.normal.overlay0};
+      @define-color overlay1 ${colors.normal.overlay1};
+      @define-color overlay2 ${colors.normal.overlay2};
 
-      @define-color blue      ${colors.blue};
-      @define-color lavender  ${colors.lavender};
-      @define-color sapphire  ${colors.sapphire};
-      @define-color sky       ${colors.sky};
-      @define-color teal      ${colors.teal};
-      @define-color green     ${colors.green};
-      @define-color yellow    ${colors.yellow};
-      @define-color peach     ${colors.peach};
-      @define-color maroon    ${colors.maroon};
-      @define-color red       ${colors.red};
-      @define-color mauve     ${colors.mauve};
-      @define-color pink      ${colors.pink};
-      @define-color flamingo  ${colors.flamingo};
-      @define-color rosewater ${colors.rosewater};
+      @define-color blue      ${colors.normal.blue};
+      @define-color lavender  ${colors.normal.lavender};
+      @define-color sapphire  ${colors.normal.sapphire};
+      @define-color sky       ${colors.normal.sky};
+      @define-color teal      ${colors.normal.teal};
+      @define-color green     ${colors.normal.green};
+      @define-color yellow    ${colors.normal.yellow};
+      @define-color peach     ${colors.normal.peach};
+      @define-color maroon    ${colors.normal.maroon};
+      @define-color red       ${colors.normal.red};
+      @define-color mauve     ${colors.normal.mauve};
+      @define-color pink      ${colors.normal.pink};
+      @define-color flamingo  ${colors.normal.flamingo};
+      @define-color rosewater ${colors.normal.rosewater};
 
       ''
       (

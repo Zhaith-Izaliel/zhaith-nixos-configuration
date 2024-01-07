@@ -15,10 +15,10 @@
   name = "catppuccin-macchiato";
   extraConfig = ''
     # Tray Label Outline Color
-    TrayOutlineColor=${colors.mantle}
+    TrayOutlineColor=${colors.normal.mantle}
 
     # Tray Label Text Color
-    TrayTextColor=${colors.text}
+    TrayTextColor=${colors.normal.text}
   '';
 }
 
