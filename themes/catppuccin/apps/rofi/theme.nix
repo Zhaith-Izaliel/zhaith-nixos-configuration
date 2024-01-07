@@ -68,7 +68,7 @@
 
   entry = {
     enabled = true;
-    background-color = mkLiteral "inherit";
+    background-color = mkLiteral colors.normal.crust;
     text-color = mkLiteral "inherit";
     cursor = mkLiteral "text";
     placeholder = "Search";
@@ -177,7 +177,7 @@
   textbox = {
     padding = mkLiteral "0.95em";
     border-radius = mkLiteral "10px";
-    background-color = mkLiteral colors.normal.base;
+    background-color = mkLiteral colors.normal.crust;
     text-color = mkLiteral colors.normal.text;
     vertical-align = mkLiteral "0.5";
     horizontal-align = mkLiteral "0.5";

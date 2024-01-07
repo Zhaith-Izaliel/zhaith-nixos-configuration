@@ -95,6 +95,7 @@ tooltip label {
 
 #custom-power-profiles,
 #custom-notifications,
+#idle_inhibitor,
 #workspaces button,
 #power {
   border: solid @text0;
