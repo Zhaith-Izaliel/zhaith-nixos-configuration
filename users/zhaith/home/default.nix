@@ -38,22 +38,20 @@
         font.name = "NotoMono Nerd Font";
 
         applets = let
-          font = {
-            inherit (config.hellebore.desktop-environment.applications-launcher.font) size;
-            name = "FiraCode Nerd Font Mono";
+          defaultAppletSettings = {
+            font = {
+              inherit (config.hellebore.desktop-environment.applications-launcher.font) size;
+              name = "FiraCode Nerd Font Mono";
+            };
+            width = "1000px";
+            height = "600px";
           };
         in {
-          favorites = {
-            inherit font;
-            width = "1000px";
-            height = "600px";
-          };
-
-          quicklinks = {
-            inherit font;
-            width = "1000px";
-            height = "600px";
-          };
+          favorites = defaultAppletSettings;
+          quicklinks = defaultAppletSettings;
+          bluetooth = defaultAppletSettings;
+          mpd = defaultAppletSettings;
+          power-profiles = defaultAppletSettings;
         };
       };
 

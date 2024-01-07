@@ -7,6 +7,7 @@ let
   modulesPosition = {
     modules-left = [
       "custom/icon"
+      "custom/power-profiles"
       "clock"
       "custom/weather"
       "hyprland/workspaces"
@@ -101,6 +102,16 @@ in
         format-icons = {
           not-paused = "";
           paused = "";
+          error = "";
+        };
+      };
+
+      "custom/power-profiles" = {
+        format = mkBig "{icon}";
+        format-icons = {
+          performance = "󰓅";
+          balanced = "󰾅";
+          power-saver = "󰾆";
           error = "";
         };
       };
@@ -288,7 +299,6 @@ in
         #tray {
           border-left-width: 2px;
         }
-
         ''
       )
       (builtins.readFile ./style.css)

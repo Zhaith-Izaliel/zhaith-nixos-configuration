@@ -25,7 +25,9 @@ let
   "${name},${width}x${height}@${refreshRate},${xOffset}x${yOffset},${scaling},${extraArgs}";
 
   mkMonitors = monitors: builtins.map mkMonitor monitors;
+
   firstMonitor = builtins.elemAt cfg.monitors 0;
+
   maxPersistentWorkspaces = count (x: x) [
     true
     config.hellebore.tools.office.enable
@@ -34,6 +36,8 @@ let
     os-config.hellebore.games.enable
     os-config.hellebore.vm.enable
   ];
+
+  appletsConfig = config.programs.rofi.applets;
 in
 {
   config = mkIf cfg.enable {
@@ -173,6 +177,22 @@ in
         "$mainMod, R, exec, ${config.hellebore.desktop-environment.applications-launcher.command}")
         (optional config.hellebore.desktop-environment.i18n.enable
         "$mainMod, I, exec, fcitx5-remote -t")
+
+        # Rofi Applets
+        (optional appletsConfig.favorites.enable
+        "$mainMod SHIFT, R, exec, ${getExe appletsConfig.favorites.package}")
+
+        (optional appletsConfig.quicklinks.enable
+        "$mainMod CTRL, R, exec, ${getExe appletsConfig.quicklinks.package}")
+
+        (optional appletsConfig.bluetooth.enable
+        "$mainMod, B, exec, ${getExe appletsConfig.bluetooth.package}")
+
+        (optional appletsConfig.mpd.enable
+        "$mainMod, A, exec, ${getExe appletsConfig.mpd.package}")
+
+        (optional appletsConfig.power-profiles.enable
+        "$mainMod, Z, exec, ${getExe appletsConfig.power-profiles.package}")
       ];
 
       bindl = [

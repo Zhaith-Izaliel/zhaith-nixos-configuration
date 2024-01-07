@@ -36,11 +36,53 @@ in
     icon = "";
   };
 
-  mpd = {};
+  mpd = { image, font }: horizontal-theme {
+    inherit image font mkLiteral;
 
-  network-manager = {};
+    background = colors.normal.crust;
+    background-alt = colors.normal.base;
+    text = colors.normal.text;
+    selected = colors.normal.sky;
+    selected-alt = colors.darken.sky;
+    highlight = colors.normal.sapphire;
+    highlight-alt = colors.darken.sapphire;
+    active = colors.normal.green;
+    active-alt = colors.darken.green;
+    urgent = colors.normal.maroon;
+    urgent-alt = colors.darken.maroon;
+    icon = "󰽴";
+  };
 
-  power-profiles = {};
+  network-manager = { image, font }: vertical-theme {
+    inherit image font mkLiteral;
+
+    background = colors.normal.base;
+    background-alt = colors.normal.crust;
+    text = colors.normal.text;
+    selected = colors.normal.lavender;
+    highlight = colors.normal.mauve;
+    highlight-alt = colors.darken.mauve;
+    active = colors.normal.sky;
+    urgent = colors.normal.maroon;
+    icon = "";
+  };
+
+  power-profiles = { image, font }: horizontal-theme {
+    inherit image font mkLiteral;
+
+    background = colors.normal.crust;
+    background-alt = colors.normal.base;
+    text = colors.normal.text;
+    selected = colors.normal.maroon;
+    selected-alt = colors.darken.maroon;
+    highlight = colors.normal.red;
+    highlight-alt = colors.darken.red;
+    active = colors.normal.green;
+    active-alt = colors.darken.green;
+    urgent = colors.normal.peach;
+    urgent-alt = colors.darken.peach;
+    icon = "󱐋";
+  };
 
   quicklinks = { image, font }: horizontal-theme {
     inherit image font mkLiteral;

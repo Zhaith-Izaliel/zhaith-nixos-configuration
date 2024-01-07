@@ -9,6 +9,7 @@ let
   modules = {
     modules = flatten [
       "custom/icon"
+      "custom/power-profiles"
       (optional config.services.dunst.enable "custom/notifications")
       "clock"
       "custom/weather"
@@ -83,6 +84,7 @@ in
       brightnessctl
       wttrbar
       dunstbar
+      power-profilesbar
       (config.hellebore.desktop-environment.lockscreen.package)
     ];
 
@@ -132,6 +134,11 @@ in
             exec = "${getExe pkgs.dunstbar} -i";
             on-click = "${getExe pkgs.dunstbar} -p";
             on-click-right = "${getExe pkgs.dunstbar} -c";
+            return-type = "json";
+          };
+
+          "custom/power-profiles" = {
+            exec = "${getExe pkgs.power-profilesbar} -i";
             return-type = "json";
           };
 

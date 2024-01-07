@@ -2031,11 +2031,11 @@
         "rofi-network-manager": "rofi-network-manager"
       },
       "locked": {
-        "lastModified": 1704551393,
-        "narHash": "sha256-w0ibe7+b4gW/EUCtnsBhKKZPpJyaoBzJ0Q4WQ/raTS8=",
+        "lastModified": 1704661281,
+        "narHash": "sha256-5Ug/FKq1stc2fTx2EdqsFyANQYDNZ4c0f1zf7Bnz4lw=",
         "owner": "Zhaith-Izaliel",
         "repo": "rofi-applets",
-        "rev": "234e5d74db04c4b346d21d7b4dd41cd7ac6937e9",
+        "rev": "761f625f37006fb75781e8a20a71190c406adfa4",
         "type": "gitlab"
       },
       "original": {
@@ -2352,11 +2352,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1704470879,
-        "narHash": "sha256-/rwomX7eGZWJCcVdjfiXiLMLbxYJ92rxK32cM/SjROM=",
+        "lastModified": 1704661845,
+        "narHash": "sha256-jtpWuUxbp/E+MgYF5L36VM3chEZ5DBp+9M6MZV3QNpY=",
         "owner": "Zhaith-Izaliel",
         "repo": "virgutils",
-        "rev": "10a285475289c758d6a74d28baa3c6cf82c1b92b",
+        "rev": "1bd15fadec81dd0bafb90d0275d5db165f9cc4b5",
         "type": "gitlab"
       },
       "original": {

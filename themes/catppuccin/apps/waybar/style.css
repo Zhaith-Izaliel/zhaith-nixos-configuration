@@ -91,11 +91,54 @@ tooltip label {
   border-left: 2px solid @surface0;
 }
 
+/* BUTTON STYLE */
+
+#custom-power-profiles,
+#custom-notifications,
+#workspaces button,
+#power {
+  border: solid @text0;
+  border-width: 1px 1px 4px;
+  border-radius: 10px;
+  background: @base;
+  color: @text;
+}
+
+/* GRANULAR MODULES STYLE */
+
+#custom-power-profiles {
+  padding: 0 .4em;
+  margin: .3em .5em;
+  transition-property: all;
+  transition-duration: .5s;
+  transition-timing-function: ease-in-out;
+}
+
+#custom-power-profiles.performance {
+  border-color: @red;
+  color: @red;
+}
+
+#custom-power-profiles.balanced {
+  border-color: @text;
+  color: @text;
+}
+
+#custom-power-profiles.power-saver {
+  border-color: @teal;
+  color: @teal;
+}
+
+#custom-power-profiles.error {
+  border-color: @maroon;
+  color: @maroon;
+}
+
+
 /* CLOCK */
 
 #clock {
   padding-left: .6em;
-  margin-left: 1em;
 }
 
 /* WEATHER */
@@ -116,18 +159,12 @@ tooltip label {
 #workspaces button {
   padding: 0px .3em;
   margin-right: .3em;
-  border-radius: 10px;
-  border: 1px solid @text;
-  border-bottom: 4px solid @text;
-  color: @text;
   transition: all .5s ease-in-out;
-  background: @base;
 }
 
 #workspaces button.empty {
   color: @overlay0;
-  border: 1px solid @overlay0;
-  border-bottom: 4px solid @overlay0;
+  border-color: @overlay0;
 }
 
 #workspaces button.active {
@@ -181,15 +218,11 @@ tooltip label {
 /* NOTIFICATIONS */
 
 #custom-notifications {
-  border: solid @text0;
-  border-width: 1px 1px 4px;
-  border-radius: 10px;
   padding: 0 .4em;
   margin: .3em .5em;
   transition-property: all;
   transition-duration: .5s;
   transition-timing-function: ease-in-out;
-  background-color: @base;
 }
 
 #custom-notifications:hover {
@@ -217,15 +250,11 @@ tooltip label {
 /* IDLE INHIBITOR */
 
 #idle_inhibitor {
-  border-radius: 10px;
   padding: 0 .4em;
   margin: .3em .5em;
-  border: 1px solid @text;
-  border-bottom: 4px solid @text;
   transition-property: all;
   transition-duration: .5s;
   transition-timing-function: ease-in-out;
-  background-color: @base;
 }
 
 #idle_inhibitor.activated {
@@ -327,9 +356,6 @@ tooltip label {
   margin-bottom: .3em;
   margin-left: .5em;
   margin-right: 0;
-  border: 1px solid @text;
-  border-bottom: 4px solid @text;
-  background-color: @base;
 }
 
 #custom-power,

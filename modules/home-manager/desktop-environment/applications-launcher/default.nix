@@ -29,7 +29,7 @@ let
     description = "Defines the height of the window.";
   };
 
-  applets-submodule = {
+  applets-submodule = name: {
     inherit width height;
 
     font = extra-types.font {
@@ -42,7 +42,13 @@ let
     image = mkOption {
       type = types.path;
       default = cfg.image;
-      description = "Image used in the applications-launcher theme.";
+      description = "Image used in the applet theme.";
+    };
+
+    package = mkOption {
+      type = types.package;
+      default = config.programs.rofi.applets.${name}.package;
+      description = "Defines the package of the applet.";
     };
   };
 
@@ -91,9 +97,12 @@ in
     };
 
     applets = {
-      favorites = applets-submodule;
-      bluetooth = applets-submodule;
-      quicklinks = applets-submodule;
+      favorites = applets-submodule "favorites";
+      bluetooth = applets-submodule "bluetooth";
+      quicklinks = applets-submodule "quicklinks";
+      network-manager = applets-submodule "network-manager";
+      mpd = applets-submodule "mpd";
+      power-profiles = applets-submodule "power-profiles";
     };
   };
 
@@ -202,6 +211,43 @@ in
             exit_text = "󰗼";
           };
           theme = mkAppletTheme "favorites";
+        };
+
+        mpd = {
+          enable = true;
+          theme = mkAppletTheme "mpd";
+          settings = {
+            stop_text = "";
+            next_text = "󰒭";
+            previous_text = "󰒮";
+            repeat_text = "";
+            random_text = "";
+            pause_text = "";
+            play_text = "";
+            parse_error_text = "";
+            no_song_text = "󰟎";
+          };
+        };
+
+        network-manager = {
+          enable = true;
+          theme = mkAppletTheme "network-manager";
+          settings = {
+            notifications = "true";
+            ascii_out = true;
+            width_fix_main = 100;
+          };
+        };
+
+        power-profiles = {
+          enable = true;
+          theme = mkAppletTheme "power-profiles";
+          settings = {
+            exit_text = "󰗼";
+            performance_text = "󰓅";
+            balanced_text = "󰾅";
+            power_saver_text = "󰾆";
+          };
         };
       };
     };
