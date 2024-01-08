@@ -14,7 +14,7 @@
     ./logout.nix
     ./lockscreen.nix
     ./notifications.nix
-    ./applications-launcher
+    ./applications-launcher.nix
     ./status-bar.nix
     ./widget
   ];

@@ -39,12 +39,6 @@ let
       sizeDescription = "Defines the applet's font size to scale the UI on.";
     };
 
-    image = mkOption {
-      type = types.path;
-      default = cfg.image;
-      description = "Image used in the applet theme.";
-    };
-
     package = mkOption {
       type = types.package;
       default = config.programs.rofi.applets.${name}.package;
@@ -54,7 +48,7 @@ let
 
   mkAppletTheme = name: let
     theme = rofi-theme.applets.${name} {
-      inherit (cfg.applets.${name}) font image;
+      inherit (cfg.applets.${name}) font;
     };
     generatedModuleTheme = moduleTheme {
       inherit (cfg.applets.${name}) width height;
@@ -75,12 +69,6 @@ in
       applications launcher.";
       sizeDescription = "Defines the font size used on the
       applications launcher to scale the UI on.";
-    };
-
-    image = mkOption {
-      type = types.path;
-      default = ../../../../assets/images/rofi/wall.png;
-      description = "Image used in the applications launcher theme.";
     };
 
     command = mkOption {
@@ -133,7 +121,7 @@ in
       };
 
       theme = recursiveUpdate
-        (rofi-theme.theme { inherit (cfg) image; })
+        (rofi-theme.theme { inherit (cfg); })
         (moduleTheme { inherit (cfg) width height; })
       ;
 

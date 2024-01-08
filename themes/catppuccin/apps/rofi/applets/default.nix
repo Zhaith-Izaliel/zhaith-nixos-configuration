@@ -5,9 +5,10 @@ let
   horizontal-theme = import ./horizontal.nix;
 in
 {
-  bluetooth = { image, font }: vertical-theme {
-    inherit image font mkLiteral;
+  bluetooth = { font }: vertical-theme {
+    inherit font mkLiteral;
 
+    image = ../../../../../assets/images/rofi/rofi-bluetooth-wall.jpg;
     background = colors.normal.base;
     background-alt = colors.normal.crust;
     text = colors.normal.text;
@@ -19,9 +20,10 @@ in
     icon = "";
   };
 
-  favorites = { image, font }: horizontal-theme {
-    inherit image font mkLiteral;
+  favorites = { font }: horizontal-theme {
+    inherit font mkLiteral;
 
+    image = ../../../../../assets/images/rofi/wall.png;
     background = colors.normal.crust;
     background-alt = colors.normal.base;
     text = colors.normal.text;
@@ -36,26 +38,28 @@ in
     icon = "";
   };
 
-  mpd = { image, font }: horizontal-theme {
-    inherit image font mkLiteral;
+  mpd = { font }: horizontal-theme {
+    inherit font mkLiteral;
 
+    image = ../../../../../assets/images/rofi/rofi-mpd-wall.jpg;
     background = colors.normal.crust;
     background-alt = colors.normal.base;
     text = colors.normal.text;
-    selected = colors.normal.sky;
-    selected-alt = colors.darken.sky;
-    highlight = colors.normal.sapphire;
-    highlight-alt = colors.darken.sapphire;
-    active = colors.normal.green;
-    active-alt = colors.darken.green;
-    urgent = colors.normal.maroon;
-    urgent-alt = colors.darken.maroon;
+    selected = colors.normal.mauve;
+    selected-alt = colors.darken.mauve;
+    highlight = colors.normal.lavender;
+    highlight-alt = colors.darken.lavender;
+    active = colors.normal.pink;
+    active-alt = colors.darken.pink;
+    urgent = colors.normal.red;
+    urgent-alt = colors.darken.red;
     icon = "󰽴";
   };
 
-  network-manager = { image, font }: vertical-theme {
-    inherit image font mkLiteral;
+  network-manager = { font }: vertical-theme {
+    inherit font mkLiteral;
 
+    image = ../../../../../assets/images/rofi/wall.png;
     background = colors.normal.base;
     background-alt = colors.normal.crust;
     text = colors.normal.text;
@@ -67,9 +71,10 @@ in
     icon = "";
   };
 
-  power-profiles = { image, font }: horizontal-theme {
-    inherit image font mkLiteral;
+  power-profiles = { font }: horizontal-theme {
+    inherit font mkLiteral;
 
+    image = ../../../../../assets/images/rofi/rofi-power-profiles-wall.jpg;
     background = colors.normal.crust;
     background-alt = colors.normal.base;
     text = colors.normal.text;
@@ -84,9 +89,10 @@ in
     icon = "󱐋";
   };
 
-  quicklinks = { image, font }: horizontal-theme {
-    inherit image font mkLiteral;
+  quicklinks = { font }: horizontal-theme {
+    inherit font mkLiteral;
 
+    image = ../../../../../assets/images/rofi/wall.png;
     background = colors.normal.crust;
     background-alt = colors.normal.base;
     text = colors.normal.text;
