@@ -121,7 +121,7 @@ in
       };
 
       theme = recursiveUpdate
-        (rofi-theme.theme { inherit (cfg); })
+        rofi-theme.theme
         (moduleTheme { inherit (cfg) width height; })
       ;
 
