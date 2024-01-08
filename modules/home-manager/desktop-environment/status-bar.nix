@@ -131,7 +131,7 @@ in
           };
 
           "custom/notifications" = {
-            exec = "${getExe pkgs.dunstbar} -i";
+            exec = "${getExe pkgs.dunstbar} --history=10 -i";
             on-click = "${getExe pkgs.dunstbar} -p";
             on-click-right = "${getExe pkgs.dunstbar} -c";
             return-type = "json";
