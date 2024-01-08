@@ -23,7 +23,7 @@ in
   favorites = { font }: horizontal-theme {
     inherit font mkLiteral;
 
-    image = ../../../../../assets/images/rofi/wall.png;
+    image = ../../../../../assets/images/rofi/rofi-favorites-wall.jpg;
     background = colors.normal.crust;
     background-alt = colors.normal.base;
     text = colors.normal.text;
