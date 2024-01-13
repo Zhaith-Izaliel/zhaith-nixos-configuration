@@ -52,7 +52,7 @@
     };
 
     rofi-applets = {
-      url = "gitlab:Zhaith-Izaliel/rofi-applets/develop";
+      url = "gitlab:Zhaith-Izaliel/rofi-applets";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

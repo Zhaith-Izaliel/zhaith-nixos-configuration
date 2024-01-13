@@ -16,13 +16,6 @@ in
         enable = true;
         enableUserService = true;
       };
-
-      supergfxd = {
-        enable = true;
-        settings = {
-          gfx_vfio_enable = config.hellebore.vm.enable;
-        };
-      };
     };
   };
 }

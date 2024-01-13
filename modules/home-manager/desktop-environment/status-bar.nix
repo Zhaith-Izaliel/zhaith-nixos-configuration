@@ -9,7 +9,7 @@ let
   modules = {
     modules = flatten [
       "custom/icon"
-      "custom/power-profiles"
+      (optional os-config.services.power-profiles-daemon.enable "custom/power-profiles")
       (optional config.services.dunst.enable "custom/notifications")
       "clock"
       "custom/weather"
@@ -78,13 +78,13 @@ in
       }
     ];
 
-    home.packages = with pkgs; [
+    home.packages = with pkgs; flatten [
       sutils
       libappindicator-gtk3
       brightnessctl
       wttrbar
-      dunstbar
-      power-profilesbar
+      (optional config.services.dunst.enable dunstbar)
+      (optional os-config.services.power-profiles-daemon.enable power-profilesbar)
       (config.hellebore.desktop-environment.lockscreen.package)
     ];
 

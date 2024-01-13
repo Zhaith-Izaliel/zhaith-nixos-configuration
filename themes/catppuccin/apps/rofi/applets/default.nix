@@ -96,8 +96,8 @@ in
     background = colors.normal.crust;
     background-alt = colors.normal.base;
     text = colors.normal.text;
-    selected = colors.normal.mauve;
-    selected-alt = colors.darken.mauve;
+    selected = colors.normal.blue;
+    selected-alt = colors.darken.blue;
     highlight = colors.normal.blue;
     highlight-alt = colors.darken.blue;
     active = colors.normal.lavender;

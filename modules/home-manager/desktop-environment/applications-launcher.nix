@@ -1,4 +1,4 @@
-{ config, lib, pkgs, extra-types, ... }:
+{ os-config, config, lib, pkgs, extra-types, ... }:
 
 let
   inherit (config.lib.formats.rasi) mkLiteral;
@@ -127,9 +127,13 @@ in
 
       applets = {
         bluetooth = {
-          enable = true;
+          package = pkgs.rofi-bluetooth.override {
+            withBluezExperimental =
+              os-config.hellebore.hardware.bluetooth.enablePowerSupport;
+          };
+          enable = os-config.hardware.bluetooth.enable;
           settings = {
-            divider = "──────────────────────────────────────────";
+            divider = "────────────────────────────────────";
             go_back_text = "↩ Back";
             scan_on_text = "󰂰 Scan: On";
             scan_off_text = "󰂰 Scan: Off";
@@ -202,7 +206,7 @@ in
         };
 
         mpd = {
-          enable = true;
+          enable = config.services.mpd.enable;
           theme = mkAppletTheme "mpd";
           settings = {
             stop_text = "";
@@ -218,7 +222,7 @@ in
         };
 
         network-manager = {
-          enable = true;
+          enable = os-config.networking.networkmanager.enable;
           theme = mkAppletTheme "network-manager";
           settings = {
             notifications = "true";
@@ -228,7 +232,7 @@ in
         };
 
         power-profiles = {
-          enable = true;
+          enable = os-config.services.power-profiles-daemon.enable;
           theme = mkAppletTheme "power-profiles";
           settings = {
             exit_text = "󰗼";

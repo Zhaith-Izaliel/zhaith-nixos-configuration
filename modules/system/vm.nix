@@ -1,9 +1,50 @@
 { config, lib, pkgs, ... }:
 
-with lib;
-
 let
+  inherit (lib) mkEnableOption mkOption types mkIf optionalString optionals
+  concatStringsSep;
+
   cfg = config.hellebore.vm;
+  qemu-hook-script = pkgs.writeScript "qemu-hook" ''
+    #!${pkgs.stdenv.shell}
+    VM_NAME="$1"
+    VM_ACTION="$2/$3"
+    if [ "$VM_NAME" = "${cfg.name}" ]; then
+      if [ "$VM_ACTION" = "prepare/begin" ]; then
+        if [ "${cfg.cpuIsolation.variableName}" = "true" ]; then
+          systemctl set-property --runtime -- user.slice AllowedCPUs="${cfg.cpuIsolation.hostCores}"
+          systemctl set-property --runtime -- system.slice AllowedCPUs="${cfg.cpuIsolation.hostCores}"
+          systemctl set-property --runtime -- init.scope AllowedCPUs="${cfg.cpuIsolation.hostCores}"
+        fi
+
+        ${optionalString cfg.pcisBinding.enableDynamicBinding ''
+        modprobe -r nvidia_drm
+        modprobe -i vfio_pci
+        ''}
+
+        ${optionalString cfg.externalPartition.enable ''
+        ${pkgs.util-linux}/bin/umount /dev/disk/by-uuid/${cfg.externalPartition.uuid}
+        ''}
+
+        elif [ "$VM_ACTION" = "release/end" ]; then
+
+        if [ "${cfg.cpuIsolation.variableName}" = "true" ]; then
+          systemctl set-property --runtime -- user.slice AllowedCPUs="${cfg.cpuIsolation.totalCores}"
+          systemctl set-property --runtime -- system.slice AllowedCPUs="${cfg.cpuIsolation.totalCores}"
+          systemctl set-property --runtime -- init.scope AllowedCPUs="${cfg.cpuIsolation.totalCores}"
+        fi
+
+        ${optionalString cfg.pcisBinding.enableDynamicBinding ''
+        modprobe -r vfio_pci
+        modprobe -i nvidia_drm
+        ''}
+
+        ${optionalString cfg.externalPartition.enable ''
+        ${pkgs.util-linux}/bin/mount /dev/disk/by-uuid/${cfg.externalPartition.uuid}
+        ''}
+      fi
+    fi
+  '';
 in
 {
   options.hellebore.vm = {
@@ -39,20 +80,37 @@ in
       description = "Name of the VM in virt-manager";
     };
 
-    pcisBinding = {
-      enableOnBoot = mkEnableOption "PCIs binding on Boot";
+    useSecureBoot = mkEnableOption "Secure Boot on OVMF packages";
 
-      enableDynamicBinding = mkEnableOption "PCIs dynamic binding on VM run
-      (Nvidia only)";
+    externalPartition = {
+      enable = mkEnableOption "using an external partition for the VM";
 
-      pcis = mkOption {
-        type = types.listOf types.nonEmptyStr;
-        default = [];
-        description = "List of the PCIs to isolate the GPU.";
+      uuid = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "The UUID of the partition to mount to the VM when it
+        starts and unmount to the VM when it closes.";
       };
     };
 
+    pcisBinding = {
+      enableDynamicBinding = mkEnableOption "PCIs dynamic binding on VM run
+      (Nvidia only)";
 
+      # pcis = mkOption {
+      #   type = types.listOf types.nonEmptyStr;
+      #   default = [];
+      #   description = "List of the PCIs to isolate the GPU (should contain
+      #   everything available in its IOMMU group).";
+      # };
+
+      vendorIds = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "List of the GPU vendor IDs to isolate it (should contain
+        everything available in its IOMMU group).";
+      };
+    };
 
     username = mkOption {
       type = types.nonEmptyStr;
@@ -64,69 +122,49 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> (builtins.length cfg.pcisBinding.pcis) > 0;
+        assertion = cfg.enable -> (builtins.length cfg.pcisBinding.vendorIds) > 0;
         message = "You need at least one PCI to allow GPU passthrough.";
-      }
-      {
-        assertion = cfg.pcisBinding.enableOnBoot ->
-        !cfg.pcisBinding.enableDynamicBinding;
-        message = "You can't enable dynamic PCIs binding and binding on boot at the same time.";
       }
     ];
 
     environment.systemPackages = with pkgs; [
       virt-manager
       start-vm
+      win-virtio
     ];
 
-    virtualisation.libvirtd = {
-      enable = true;
-      qemu = {
-        ovmf.enable = true;
-        runAsRoot = true;
-        verbatimConfig = ''
+    virtualisation = {
+      spiceUSBRedirection.enable = true;
+
+      libvirtd = {
+        enable = true;
+        qemu = {
+          ovmf = {
+            enable = true;
+            packages = with pkgs; [
+              (OVMFFull.override {
+                secureBoot = cfg.useSecureBoot;
+              }).fd
+            ];
+          };
+          runAsRoot = true;
+          verbatimConfig = ''
           user = "zhaith"
-        '';
+          '';
+          swtpm.enable = true;
+        };
+        onBoot = "ignore";
+        onShutdown = "shutdown";
+
+        hooks.qemu = {
+          qemu-hook = "${qemu-hook-script}";
+        };
       };
-      onBoot = "ignore";
-      onShutdown = "shutdown";
     };
 
     systemd.tmpfiles.rules = [
-      "f /dev/shm/looking-glass 0660 ${cfg.username} qemu-libvirtd -"
+      "f /dev/shm/looking-glass 0660 ${cfg.username} kvm -"
     ];
-
-    systemd.services.libvirtd.preStart = let
-      qemuHook = pkgs.writeScript "qemu-hook" ''
-        #!${pkgs.stdenv.shell}
-        VM_NAME="$1"
-        VM_ACTION="$2/$3"
-        if [ "$VM_NAME" = "${cfg.name}" ] && [ "${cfg.cpuIsolation.variableName}" = "true" ]; then
-          if [[ "$VM_ACTION" == "prepare/begin" ]]; then
-            systemctl set-property --runtime -- user.slice AllowedCPUs="${cfg.cpuIsolation.hostCores}"
-            systemctl set-property --runtime -- system.slice AllowedCPUs="${cfg.cpuIsolation.hostCores}"
-            systemctl set-property --runtime -- init.scope AllowedCPUs="${cfg.cpuIsolation.hostCores}"
-            ${strings.optionalString cfg.pcisBinding.enableDynamicBinding ''
-            # TODO: pci binding to vfio_pci and unbind from nvidia
-            ''}
-          elif [[ "$VM_ACTION" == "release/end" ]]; then
-            systemctl set-property --runtime -- user.slice AllowedCPUs="${cfg.cpuIsolation.totalCores}"
-            systemctl set-property --runtime -- system.slice AllowedCPUs="${cfg.cpuIsolation.totalCores}"
-            systemctl set-property --runtime -- init.scope AllowedCPUs="${cfg.cpuIsolation.totalCores}"
-            ${strings.optionalString cfg.pcisBinding.enableDynamicBinding ''
-            # TODO: pci binding to nvidia and unbind from vfio_pci
-            ''}
-          fi
-        fi
-      '';
-      libvirtHooks = "/var/lib/libvirt/hooks";
-    in ''
-      mkdir -p "${libvirtHooks}"
-      chmod 755 "${libvirtHooks}"
-
-      # Copy hook files
-      ln -sf ${qemuHook} "${libvirtHooks}/qemu"
-    '';
 
     boot = {
       kernelModules = [
@@ -136,34 +174,50 @@ in
         "vfio_pci"
         "vfio_virqfd"
         "vhost-net"
+      ] ++ optionals cfg.pcisBinding.enableDynamicBinding [
+        "nvidia"
+        "nvidia_modeset"
+        "nvidia_uvm"
+        "nvidia_drm"
       ];
       kernelParams = [
         "intel_iommu=on"
         "iommu=pt"
+        ("vfio-pci.ids=" + concatStringsSep "," cfg.pcisBinding.vendorIds)
       ];
-      initrd = mkIf cfg.pcisBinding.enableOnBoot {
+      initrd = {
         availableKernelModules = [
           "vfio"
           "vfio_iommu_type1"
           "vfio_pci"
           "vfio_virqfd"
           "vhost-net"
+        ] ++ optionals cfg.pcisBinding.enableDynamicBinding [
+          "nvidia"
+          "nvidia_modeset"
+          "nvidia_uvm"
+          "nvidia_drm"
         ];
 
-
-        preDeviceCommands = ''
-          for DEV in ${strings.concatStringsSep " " cfg.pcisBinding.pcis}; do
-          echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
-          done
-          modprobe -i vfio-pci
-        '';
+        # preDeviceCommands = ''
+        # for DEV in ${concatStringsSep " " cfg.pcisBinding.pcis}; do
+        #   echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
+        # done
+        # modprobe -i vfio-pci
+        # '';
       };
 
-      extraModprobeConfig = ''
+      extraModprobeConfig = concatStringsSep "\n"  [
+        ''
         blacklist nouveau
         # blacklist xpad
-        ${strings.optionalString cfg.pcisBinding.enableOnBoot "options nouveau modeset=0"}
-      '';
+        ''
+        (optionalString (!cfg.pcisBinding.enableDynamicBinding) "options nouveau modeset=0")
+        (optionalString cfg.pcisBinding.enableDynamicBinding ''
+        remove vfio_pci
+        install nvidia_drm
+        '')
+      ];
     };
   };
 }

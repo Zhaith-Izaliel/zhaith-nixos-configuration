@@ -16,17 +16,22 @@
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/07b0a626-cbfb-4f9e-ae2d-ee488441ceac";
       fsType = "ext4";
-    };  
+    };
 
   fileSystems."/home" =
     { device = "/dev/disk/by-uuid/9f181965-f48e-4e6e-8dcf-e00695fda38c";
       fsType = "ext4";
-    };  
+    };
+
+  fileSystems."/mnt/windows-vm" =
+    { device = "/dev/disk/by-uuid/c54e439c-06dc-4f46-80c5-bb63c5f3e9ba";
+      fsType = "ext4";
+    };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/37C9-C571";
+    { device = "/dev/disk/by-uuid/12CE-A600";
       fsType = "vfat";
-    };  
+    };
 
   swapDevices =
     [ { device = "/dev/disk/by-uuid/0e5f0870-489a-455d-bf56-28eccde7c6ce"; }

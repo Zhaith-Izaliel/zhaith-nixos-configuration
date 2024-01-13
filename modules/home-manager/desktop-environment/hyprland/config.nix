@@ -34,7 +34,6 @@ let
     config.hellebore.tools.discord.enable
     config.hellebore.desktop-environment.mail.enable
     os-config.hellebore.games.enable
-    os-config.hellebore.vm.enable
   ];
 
   appletsConfig = config.programs.rofi.applets;
@@ -93,13 +92,16 @@ in
             "idleinhibit"
           ])
         ])
-        (optionals os-config.hellebore.vm.enable
+        (optionals os-config.hellebore.vm.enable [
           (mkWindowrulev2 "title:(${os-config.hellebore.vm.name})class:(looking-glass-client)" [
             "fullscreen"
             "idleinhibit always"
             "workspace 6"
           ])
-        )
+          (mkWindowrulev2 "class:(virt-manager)" [
+            "workspace 6"
+          ])
+        ])
       ];
 
       exec-once = flatten [

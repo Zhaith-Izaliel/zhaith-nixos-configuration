@@ -190,43 +190,48 @@
         percentageAction = 5;
       };
     };
+
+    vm = {
+      enable = true;
+
+      useSecureBoot = true;
+
+      externalPartition = {
+        # enable = true;
+        uuid = "3DC7196A3AF67751";
+      };
+
+      cpuIsolation = {
+        totalCores = "0-15";
+        hostCores = "0-3,8-11";
+        variableName = "ISOLATE_CPUS";
+      };
+
+      name = "Luminous-Rafflesia";
+
+      pcisBinding = {
+        enableDynamicBinding = true;
+        vendorIds = [
+          "10de:2520" # GPU
+          "10de:228e" # Audio
+        ];
+      };
+
+      username = "zhaith";
+    };
   };
 
   specialisation = {
-    vm.configuration = {
-      hellebore = {
-        hardware.nvidia.enable = lib.mkForce false;
-
-        vm = {
-          enable = true;
-
-          cpuIsolation = {
-            totalCores = "0-15";
-            hostCores = "0-3,8-11";
-            variableName = "ISOLATE_CPUS";
-          };
-
-          name = "Luminous-Rafflesia";
-
-          pcisBinding = {
-            enableDynamicBinding = false;
-            pcis = [
-              "0000:01:00.0"
-              "0000:01:00.1"
-            ];
-          };
-
-          username = "zhaith";
-        };
-      };
-    };
-
     wacom.configuration = {
-      hellebore.hardware = {
-        nvidia.forceWaylandOnMesa = lib.mkForce false;
-        graphics-tablet = {
-          enable = true;
-          isWacom = true;
+      hellebore = {
+        vm.enable = lib.mkForce false;
+
+        hardware = {
+          nvidia.forceWaylandOnMesa = lib.mkForce false;
+          graphics-tablet = {
+            enable = true;
+            isWacom = true;
+          };
         };
       };
     };
