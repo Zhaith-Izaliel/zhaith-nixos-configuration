@@ -218,6 +218,10 @@ in
             play_text = "";
             parse_error_text = "";
             no_song_text = "󰟎";
+            previous_notification_text = "Playing";
+            next_notification_text = "Playing";
+            play_notification_text = "Playing";
+            pause_notification_text = "Pausing";
           };
         };
 

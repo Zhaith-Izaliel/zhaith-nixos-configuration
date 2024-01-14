@@ -2031,11 +2031,11 @@
         "rofi-network-manager": "rofi-network-manager"
       },
       "locked": {
-        "lastModified": 1705151974,
-        "narHash": "sha256-24qFFyNvrzrd0BVqtB8CfLrCU4A3QHBzNUpcie3lOcY=",
+        "lastModified": 1705229809,
+        "narHash": "sha256-fIMOn7JQ3yTXvPh1P1aB6w95UHL3K3/r55X8J9DzlwQ=",
         "owner": "Zhaith-Izaliel",
         "repo": "rofi-applets",
-        "rev": "3489d826982a4b2debae96a84e5405e38e1b530d",
+        "rev": "40acf5a762e970452f8bf97bda05cd734a701d7e",
         "type": "gitlab"
       },
       "original": {
