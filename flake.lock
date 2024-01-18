@@ -2505,11 +2505,11 @@
         "nvim-yuck": "nvim-yuck"
       },
       "locked": {
-        "lastModified": 1705574438,
-        "narHash": "sha256-i/Jj61xc5jSF+WQid2qbGWgVtSW49cFuJ2a+VtsypYk=",
+        "lastModified": 1705576932,
+        "narHash": "sha256-F0rwItKur0OVkOopawkhz8SavPiBMvcJaf0wH9bz8Ok=",
         "owner": "Zhaith-Izaliel",
         "repo": "neovim-config",
-        "rev": "865c1b54dc65e55f4dbf1762d0eaa07cef4ed07f",
+        "rev": "bb75e01d7393e69070f256ddf271ac290ebe9902",
         "type": "gitlab"
       },
       "original": {
