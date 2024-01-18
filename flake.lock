@@ -1872,6 +1872,22 @@
         "type": "github"
       }
     },
+    "nvim-twilight": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1695631985,
+        "narHash": "sha256-WFE8FZU8E8i6mX9bFl80YkIypGXOOhKvGbLrBoPce0g=",
+        "owner": "folke",
+        "repo": "twilight.nvim",
+        "rev": "8b7b50c0cb2dc781b2f4262a5ddd57571556d1e4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "folke",
+        "repo": "twilight.nvim",
+        "type": "github"
+      }
+    },
     "nvim-typescript-tools": {
       "flake": false,
       "locked": {
@@ -2480,6 +2496,7 @@
         "nvim-todo-comments": "nvim-todo-comments",
         "nvim-trouble": "nvim-trouble",
         "nvim-tw-values": "nvim-tw-values",
+        "nvim-twilight": "nvim-twilight",
         "nvim-typescript-tools": "nvim-typescript-tools",
         "nvim-vim-sleuth": "nvim-vim-sleuth",
         "nvim-web-devicons": "nvim-web-devicons",
@@ -2488,11 +2505,11 @@
         "nvim-yuck": "nvim-yuck"
       },
       "locked": {
-        "lastModified": 1705151835,
-        "narHash": "sha256-kDSIAA0qTM4z+KhndCMcrHz9pTjFcV2ZJy0JT22Mj94=",
+        "lastModified": 1705574438,
+        "narHash": "sha256-i/Jj61xc5jSF+WQid2qbGWgVtSW49cFuJ2a+VtsypYk=",
         "owner": "Zhaith-Izaliel",
         "repo": "neovim-config",
-        "rev": "1e2fd25648c9149f92c275f4df646b1b66be1a85",
+        "rev": "865c1b54dc65e55f4dbf1762d0eaa07cef4ed07f",
         "type": "gitlab"
       },
       "original": {
