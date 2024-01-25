@@ -928,6 +928,22 @@
         "type": "github"
       }
     },
+    "nvim-autotag": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1702195293,
+        "narHash": "sha256-O10jzgh4aznTQ1EIEL8OGBsgjN9arsM6XZC2FBKevS4=",
+        "owner": "windwp",
+        "repo": "nvim-ts-autotag",
+        "rev": "8515e48a277a2f4947d91004d9aa92c29fdc5e18",
+        "type": "github"
+      },
+      "original": {
+        "owner": "windwp",
+        "repo": "nvim-ts-autotag",
+        "type": "github"
+      }
+    },
     "nvim-caser": {
       "flake": false,
       "locked": {
@@ -2454,6 +2470,7 @@
           "nixpkgs"
         ],
         "nvim-alpha": "nvim-alpha",
+        "nvim-autotag": "nvim-autotag",
         "nvim-caser": "nvim-caser",
         "nvim-catppuccin": "nvim-catppuccin",
         "nvim-cmp": "nvim-cmp",
@@ -2522,11 +2539,11 @@
         "nvim-yuck": "nvim-yuck"
       },
       "locked": {
-        "lastModified": 1705586711,
-        "narHash": "sha256-q+VKJPxR9MvLsGILfZR8+z6oyvbrVobazyusj10okT0=",
+        "lastModified": 1706092154,
+        "narHash": "sha256-tzl+JZS1JWIcB2etXpuME4P5L1K9QJEvIynAyl/NJ7M=",
         "owner": "Zhaith-Izaliel",
         "repo": "neovim-config",
-        "rev": "53e60a59e4c8ca3c2451c2f8b7b38c475ef7b68c",
+        "rev": "54cfbfb38ef49b0c919e04e192aa62eb02f13020",
         "type": "gitlab"
       },
       "original": {
