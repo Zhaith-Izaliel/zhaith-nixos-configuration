@@ -1,4 +1,5 @@
-{ final, prev }:
+{ inputs }:
+final: prev:
 let
   nodejs-packages = import ../assets/packages/nodejs {
     pkgs = prev;
@@ -22,5 +23,7 @@ in
 
   commitlint-config-conventional =
     nodejs-packages."@commitlint/config-conventional";
+
+  KawAnime = prev.callPackage ../packages/kawanime.nix { src = inputs.kawanime; };
 }
 

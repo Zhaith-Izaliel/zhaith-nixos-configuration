@@ -56,6 +56,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Other packages
+    kawanime = {
+      url = "github:Kylart/KawAnime";
+      flake = false;
+    };
+
     # Theme packages
     # NOTE: include them as "{theme-name}-{app-name}"
 
@@ -82,15 +88,17 @@
       url = "github:catppuccin/starship";
       flake = false;
     };
+
   };
 
   outputs = {nixpkgs, nixpkgs-stable, flake-utils,
   grub2-themes, nix-alien, zhaith-neovim, hyprland, hyprland-contrib,
-  sddm-sugar-candy-nix, virgutils, rofi-applets, ...}@attrs:
+  sddm-sugar-candy-nix, virgutils, rofi-applets, ...}@inputs:
   let
     system = "x86_64-linux";
-    customHelpers = import ./utils { inputs = attrs; };
+    customHelpers = import ./utils { inherit inputs; };
     modules = import ./modules {};
+    customOverlay = import ./overlay { inherit inputs; };
   in
   {
     nixosConfigurations = {
@@ -109,7 +117,7 @@
           hyprland-contrib.overlays.default
           sddm-sugar-candy-nix.overlays.default
           virgutils.overlays.${system}.default
-          (final: prev: import ./overlay { inherit final prev; })
+          customOverlay
         ];
       };
       Ethereal-Edelweiss = customHelpers.mkSystem {
@@ -144,7 +152,7 @@
           hyprland-contrib.overlays.default
           virgutils.overlays.${system}.default
           rofi-applets.overlays.default
-          (final: prev: import ./overlay { inherit final prev; })
+          customOverlay
         ];
       };
 

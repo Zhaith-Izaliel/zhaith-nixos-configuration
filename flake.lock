@@ -631,6 +631,22 @@
         "type": "github"
       }
     },
+    "kawanime": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1639785656,
+        "narHash": "sha256-J2NKbucx242gE6D+lBFrDgYEOshqe1aHObyijXILSaY=",
+        "owner": "Kylart",
+        "repo": "KawAnime",
+        "rev": "de2e78349ef4bd3e7d6fd83c93da58f1531cd4c8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Kylart",
+        "repo": "KawAnime",
+        "type": "github"
+      }
+    },
     "neodev-nvim": {
       "flake": false,
       "locked": {
@@ -2109,6 +2125,7 @@
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "hyprland-contrib": "hyprland-contrib",
+        "kawanime": "kawanime",
         "nix-alien": "nix-alien",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-stable": "nixpkgs-stable",
@@ -2527,11 +2544,11 @@
         "nvim-yuck": "nvim-yuck"
       },
       "locked": {
-        "lastModified": 1706142966,
-        "narHash": "sha256-8Zj61Mh3eFLnRSuHQ6YF2m2LXaZkzjDYlhspp1ehK2g=",
+        "lastModified": 1706194789,
+        "narHash": "sha256-eeROpm3oRp+7EEdqC4tEqiBDvye5OjArsrJV+3nbWEc=",
         "owner": "Zhaith-Izaliel",
         "repo": "neovim-config",
-        "rev": "17933a3c6bf2e2fa51c138ac66d8a5b42ba743d2",
+        "rev": "2cc83e5592e22c9f6369ab4d8e6d6cb4b2c3d277",
         "type": "gitlab"
       },
       "original": {
