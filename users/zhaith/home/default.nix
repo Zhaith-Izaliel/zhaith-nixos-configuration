@@ -1,9 +1,13 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-25.9.0" # Obsidian
+  ];
+
+  home.packages = with pkgs; [
+    KawAnime
   ];
 
   hellebore = {

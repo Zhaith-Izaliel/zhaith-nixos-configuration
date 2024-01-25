@@ -1,22 +1,29 @@
-{ src, buildNpmPackage, cmake, mpv, boost }:
+{ src, buildNpmPackage, cmake, mpv, boost, libtorrent-rasterbar }:
 
 buildNpmPackage rec {
   inherit src;
   pname = "KawAnime";
   version = src.shortRev;
 
-  npmDepsHash = "";
+  npmDepsHash = "sha256-4B2ZbL2BWVM8RVoQELI0IooS5ikTjMwD3E8dPyvGiMg=";
 
   nativeBuildInputs = [
     cmake
   ];
 
+  buildPhase = ''
+    npm run dist:linux
+  '';
+
   buildInputs = [
     mpv
     boost
+    libtorrent-rasterbar
   ];
 
-  # The prepack script runs the build script, which we'd rather do in the build phase.
-  npmPackFlags = [ "--ignore-scripts" ];
+  installPhase = ''
+    install -Dt $out/bin/KawAnime dist/linux-unpacked
+  '';
+
 }
 
