@@ -19,7 +19,6 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       onefetch
-      universal-ctags
     ];
 
     home.sessionVariables = mkIf (!cfg.direnv.enableLogs) {

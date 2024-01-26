@@ -17,12 +17,13 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      vlc
+      mpv
       kid3
       ffmpeg
       pavucontrol
       blueberry
       power-management
+      # KawAnime
     ];
   };
 }

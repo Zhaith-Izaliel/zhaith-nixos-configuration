@@ -9,8 +9,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flake-utils.url = "github:numtide/flake-utils";
-
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
@@ -28,6 +26,11 @@
 
     zhaith-neovim = {
       url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    zhaith-helix = {
+      url = "gitlab:Zhaith-Izaliel/helix-config/develop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -91,9 +94,20 @@
 
   };
 
-  outputs = {nixpkgs, nixpkgs-stable, flake-utils,
-  grub2-themes, nix-alien, zhaith-neovim, hyprland, hyprland-contrib,
-  sddm-sugar-candy-nix, virgutils, rofi-applets, ...}@inputs:
+  outputs = {
+    nixpkgs,
+    nixpkgs-stable,
+    grub2-themes,
+    nix-alien,
+    zhaith-neovim,
+    hyprland,
+    hyprland-contrib,
+    sddm-sugar-candy-nix,
+    virgutils,
+    rofi-applets,
+    zhaith-helix,
+    ...
+  }@inputs:
   let
     system = "x86_64-linux";
     customHelpers = import ./utils { inherit inputs; };
@@ -144,6 +158,7 @@
         stateVersion = "22.05";
         extraModules = [
           zhaith-neovim.homeManagerModules.default
+          zhaith-helix.homeManagerModules.default
           modules.home-manager
           rofi-applets.homeManagerModules.default
         ];
@@ -164,29 +179,6 @@
         nixpkgs = nixpkgs-stable;
       };
     };
-  } // flake-utils.lib.eachDefaultSystem
-  (system:
-  let
-    pkgs = nixpkgs.legacyPackages.${system};
-    docs = pkgs.callPackage ./modules/docs.nix {};
-  in
-  {
-    # If you're not using NixOS and only want to load your home
-    # configuration when `nix` is installed on your system and
-    # flakes are enabled.
-    #
-    # Enable a `nix develop` shell with home-manager and git to
-    # only load your home configuration.
-    devShells.default = pkgs.mkShell {
-      buildInputs = with pkgs; [
-        home-manager
-        git
-      ];
-      NIX_CONFIG = "experimental-features = nix-command flakes";
-    };
-    packages = {
-      docs = pkgs.callPackage ./mkDocs.nix { system-options-doc = docs; };
-    };
-  });
+  };
 }
 

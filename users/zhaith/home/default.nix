@@ -1,13 +1,9 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-25.9.0" # Obsidian
-  ];
-
-  home.packages = with pkgs; [
-    KawAnime
   ];
 
   hellebore = {
@@ -174,5 +170,6 @@
   };
 
   programs.neovim.zhaith-config.enable = true;
+  programs.helix.zhaith-configuration.enable = true;
 }
 
