@@ -108,17 +108,6 @@ in
       }
     ];
 
-    home.sessionVariables = {
-      GDK_BACKEND = "wayland,x11";
-      QT_QPA_PLATFORM = "wayland;xcb";
-      CLUTTER_BACKEND = "wayland";
-      XDG_CURRENT_DESKTOP = "Hyprland";
-      XDG_SESSION_TYPE = "wayland";
-      XDG_SESSION_DESKTOP = "Hyprland";
-      WLR_NO_HARDWARE_CURSORS = "1";
-    };
-
-
     home.packages = with pkgs; [
       swww
       swayosd
@@ -129,7 +118,7 @@ in
       volume-brightness
       screenshot
       (configure-gtk theme.gtk)
-      pkgs.gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
+      gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
     ] ++ theme.gtk.packages;
 
     gtk = {
@@ -139,14 +128,6 @@ in
       font = {
         inherit (theme.gtk.font) name package;
         size = config.hellebore.font.size;
-      };
-
-      gtk3.extraConfig = {
-        gtk-application-prefer-dark-theme = 1;
-      };
-
-      gtk4.extraConfig = {
-        gtk-application-prefer-dark-theme = 1;
       };
     };
 

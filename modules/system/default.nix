@@ -1,22 +1,25 @@
-{ config, extra-types, ... }:
-
-let
+{
+  config,
+  extra-types,
+  ...
+}: let
   cfg = config.hellebore;
   theme = cfg.theme.themes.${cfg.theme.name};
-in
-{
+in {
   options.hellebore = {
     inherit (extra-types) monitors;
 
     font = extra-types.font {
       name = theme.gtk.font.name;
       size = 12;
-      sizeDescription = "Define a global font size for applications. Each
-      application's font size can be changed granularly, or set globally using
-      this option.";
-      nameDescription = "Define a global font family for applications. Each
-      application's font family can be changed granularly, or set globally using
-      this option.";
+      sizeDescription = ''
+        Define a global font size for applications. Each
+              application's font size can be changed granularly, or set globally using
+              this option.'';
+      nameDescription = ''
+        Define a global font family for applications. Each
+              application's font family can be changed granularly, or set globally using
+              this option.'';
     };
 
     theme = {
@@ -50,4 +53,3 @@ in
     ./vm.nix
   ];
 }
-

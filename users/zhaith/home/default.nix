@@ -1,13 +1,9 @@
-{ config, ... }:
-
-{
-
+{config, ...}: {
   nixpkgs.config.permittedInsecurePackages = [
     "electron-25.9.0" # Obsidian
   ];
 
   hellebore = {
-
     font.size = 14;
 
     theme.name = "catppuccin";
@@ -82,7 +78,6 @@
           images = true;
           torrents = true;
           archives = true;
-          fonts-viewer = true;
         };
       };
 
@@ -140,7 +135,6 @@
         enable = true;
         gitui.enable = true;
         commitlint.enable = true;
-        ghq.enable = true;
         h.enable = true;
       };
       erdtree = {
@@ -169,7 +163,9 @@
     };
   };
 
-  programs.neovim.zhaith-config.enable = true;
-  programs.helix.zhaith-configuration.enable = true;
+  # programs.neovim.zhaith-config.enable = true;
+  programs.helix.zhaith-configuration = {
+    enable = true;
+    defaultEditor = true;
+  };
 }
-

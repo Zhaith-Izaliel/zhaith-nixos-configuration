@@ -91,7 +91,6 @@
       url = "github:catppuccin/starship";
       flake = false;
     };
-
   };
 
   outputs = {
@@ -107,78 +106,80 @@
     rofi-applets,
     zhaith-helix,
     ...
-  }@inputs:
-  let
+  } @ inputs: let
     system = "x86_64-linux";
-    customHelpers = import ./utils { inherit inputs; };
+    customHelpers = import ./utils {inherit inputs;};
     modules = import ./modules {};
-    customOverlay = import ./overlay { inherit inputs; };
+    customOverlay = import ./overlay {inherit inputs;};
   in
-  {
-    nixosConfigurations = {
-      Whispering-Willow = customHelpers.mkSystem {
-        inherit system;
-        hostname = "Whispering-Willow";
-        users = [ "zhaith" ];
-        extraModules = [
-          grub2-themes.nixosModules.default
-          sddm-sugar-candy-nix.nixosModules.default
-          modules.system
-        ];
-        overlays = [
-          nix-alien.overlays.default
-          hyprland.overlays.default
-          hyprland-contrib.overlays.default
-          sddm-sugar-candy-nix.overlays.default
-          virgutils.overlays.${system}.default
-          customOverlay
-        ];
+    with import nixpkgs {inherit system;}; {
+      nixosConfigurations = {
+        Whispering-Willow = customHelpers.mkSystem {
+          inherit system;
+          hostname = "Whispering-Willow";
+          users = ["zhaith"];
+          extraModules = [
+            grub2-themes.nixosModules.default
+            sddm-sugar-candy-nix.nixosModules.default
+            modules.system
+          ];
+          overlays = [
+            nix-alien.overlays.default
+            hyprland.overlays.default
+            hyprland-contrib.overlays.default
+            sddm-sugar-candy-nix.overlays.default
+            virgutils.overlays.${system}.default
+            customOverlay
+          ];
+        };
+        Ethereal-Edelweiss = customHelpers.mkSystem {
+          inherit system;
+          hostname = "Ethereal-Edelweiss";
+          users = ["lilith"];
+          nixpkgs = nixpkgs-stable;
+          overlays = [
+            (final: prev: {
+              power-management = virgutils.packages.${system}.power-management;
+            })
+          ];
+          extraModules = [grub2-themes.nixosModules.default modules.system];
+        };
       };
-      Ethereal-Edelweiss = customHelpers.mkSystem {
-        inherit system;
-        hostname = "Ethereal-Edelweiss";
-        users = [ "lilith" ];
-        nixpkgs = nixpkgs-stable;
-        overlays = [
-          (final: prev: {
-            power-management = virgutils.packages.${system}.power-management;
-          })
-        ];
-        extraModules = [
-          grub2-themes.nixosModules.default
-          modules.system
-        ];
-      };
-    };
-    homeConfigurations = {
-      "zhaith@Whispering-Willow" = customHelpers.mkHome {
-        inherit system;
-        username = "zhaith";
-        hostname = "Whispering-Willow";
-        stateVersion = "22.05";
-        extraModules = [
-          zhaith-neovim.homeManagerModules.default
-          zhaith-helix.homeManagerModules.default
-          modules.home-manager
-          rofi-applets.homeManagerModules.default
-        ];
-        overlays = [
-          hyprland.overlays.default
-          hyprland-contrib.overlays.default
-          virgutils.overlays.${system}.default
-          rofi-applets.overlays.default
-          customOverlay
-        ];
+      homeConfigurations = {
+        "zhaith@Whispering-Willow" = customHelpers.mkHome {
+          inherit system;
+          username = "zhaith";
+          hostname = "Whispering-Willow";
+          stateVersion = "22.05";
+          extraModules = [
+            zhaith-neovim.homeManagerModules.default
+            zhaith-helix.homeManagerModules.default
+            modules.home-manager
+            rofi-applets.homeManagerModules.default
+          ];
+          overlays = [
+            hyprland.overlays.default
+            hyprland-contrib.overlays.default
+            virgutils.overlays.${system}.default
+            rofi-applets.overlays.default
+            customOverlay
+          ];
+        };
+
+        "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
+          inherit system;
+          username = "lilith";
+          hostname = "Ethereal-Edelweiss";
+          stateVersion = "21.05";
+          nixpkgs = nixpkgs-stable;
+        };
       };
 
-      "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
-        inherit system;
-        username = "lilith";
-        hostname = "Ethereal-Edelweiss";
-        stateVersion = "21.05";
-        nixpkgs = nixpkgs-stable;
+      devShells.${system}.default = pkgs.mkShell {
+        nativeBuildInputs = with pkgs; [
+          alejandra
+          home-manager
+        ];
       };
     };
-  };
 }
-

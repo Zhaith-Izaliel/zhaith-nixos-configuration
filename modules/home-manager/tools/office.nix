@@ -18,6 +18,7 @@ in
       calibre
       obsidian
       gnome.simple-scan
+      fontpreview
     ];
   };
 }
