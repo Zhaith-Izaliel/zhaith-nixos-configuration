@@ -278,6 +278,24 @@
         "type": "github"
       }
     },
+    "flake-utils_12": {
+      "inputs": {
+        "systems": "systems_13"
+      },
+      "locked": {
+        "lastModified": 1701680307,
+        "narHash": "sha256-kAuep2h5ajznlPMD9rnQyffWG8EM/C73lejGofXvdM8=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "4022d587cbbfd70fe950c1e2083a02621806a725",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "flake-utils_2": {
       "inputs": {
         "systems": "systems_3"
@@ -391,11 +409,11 @@
         "systems": "systems_9"
       },
       "locked": {
-        "lastModified": 1701680307,
-        "narHash": "sha256-kAuep2h5ajznlPMD9rnQyffWG8EM/C73lejGofXvdM8=",
+        "lastModified": 1705309234,
+        "narHash": "sha256-uNRRNRKmJyCRC/8y1RqBkqWBLM034y4qN7EprSdmgyA=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "4022d587cbbfd70fe950c1e2083a02621806a725",
+        "rev": "1ef2e671c3b0c19053962c07dbda38332dcebf26",
         "type": "github"
       },
       "original": {
@@ -492,7 +510,7 @@
     "haskell-tools-nvim": {
       "inputs": {
         "flake-compat": "flake-compat_5",
-        "flake-utils": "flake-utils_6",
+        "flake-utils": "flake-utils_7",
         "neodev-nvim": "neodev-nvim",
         "neorocks": "neorocks",
         "nixpkgs": [
@@ -664,6 +682,29 @@
         "type": "github"
       }
     },
+    "naersk": {
+      "inputs": {
+        "nixpkgs": [
+          "zhaith-helix",
+          "simple-completion-language-server",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1694081375,
+        "narHash": "sha256-vzJXOUnmkMCm3xw8yfPP5m8kypQ3BhAIRe4RRCWpzy8=",
+        "owner": "nix-community",
+        "repo": "naersk",
+        "rev": "3f976d822b7b37fc6fb8e6f157c2dd05e7e94e89",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "master",
+        "repo": "naersk",
+        "type": "github"
+      }
+    },
     "neodev-nvim": {
       "flake": false,
       "locked": {
@@ -683,7 +724,7 @@
     "neorocks": {
       "inputs": {
         "flake-compat": "flake-compat_6",
-        "flake-utils": "flake-utils_7",
+        "flake-utils": "flake-utils_8",
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs_5",
         "pre-commit-hooks": "pre-commit-hooks"
@@ -704,7 +745,7 @@
     },
     "neovim-nightly": {
       "inputs": {
-        "flake-utils": "flake-utils_8",
+        "flake-utils": "flake-utils_9",
         "nixpkgs": [
           "zhaith-neovim",
           "haskell-tools-nvim",
@@ -750,7 +791,7 @@
     },
     "nil_2": {
       "inputs": {
-        "flake-utils": "flake-utils_11",
+        "flake-utils": "flake-utils_12",
         "nixpkgs": "nixpkgs_6",
         "rust-overlay": "rust-overlay_2"
       },
@@ -2094,7 +2135,7 @@
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_7",
-        "flake-utils": "flake-utils_9",
+        "flake-utils": "flake-utils_10",
         "gitignore": "gitignore",
         "nixpkgs": [
           "zhaith-neovim",
@@ -2121,7 +2162,7 @@
     "pre-commit-hooks_2": {
       "inputs": {
         "flake-compat": "flake-compat_8",
-        "flake-utils": "flake-utils_10",
+        "flake-utils": "flake-utils_11",
         "gitignore": "gitignore_2",
         "nixpkgs": [
           "zhaith-neovim",
@@ -2280,6 +2321,29 @@
         "type": "gitlab"
       }
     },
+    "simple-completion-language-server": {
+      "inputs": {
+        "flake-utils": "flake-utils_5",
+        "naersk": "naersk",
+        "nixpkgs": [
+          "zhaith-helix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1704780784,
+        "narHash": "sha256-V2tCVy3C/FC8BfRc3bo7ElcrE5wTMxcFd+Yy+7Q9twI=",
+        "owner": "estin",
+        "repo": "simple-completion-language-server",
+        "rev": "482976d81c9c43ed96a1372efd06aa6dbfb9da26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "estin",
+        "repo": "simple-completion-language-server",
+        "type": "github"
+      }
+    },
     "systems": {
       "locked": {
         "lastModified": 1689347949,
@@ -2326,6 +2390,21 @@
       }
     },
     "systems_12": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_13": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -2570,14 +2649,15 @@
         "nil": "nil",
         "nixpkgs": [
           "nixpkgs"
-        ]
+        ],
+        "simple-completion-language-server": "simple-completion-language-server"
       },
       "locked": {
-        "lastModified": 1706317375,
-        "narHash": "sha256-pkai4SAxd+YrHjRlhd99SG9asdO9vwxIHcrdPZ4E3h4=",
+        "lastModified": 1706322005,
+        "narHash": "sha256-MR/1ekQA2pnPHAYUHlprIUOFbFwnoF1XtsAyCerQYns=",
         "owner": "Zhaith-Izaliel",
         "repo": "helix-config",
-        "rev": "cfe0155517bba1159dac598bea3ab52200a0b9a4",
+        "rev": "0e746bcddbf2214485d78f5741bea7f1b345157a",
         "type": "gitlab"
       },
       "original": {
@@ -2589,7 +2669,7 @@
     },
     "zhaith-neovim": {
       "inputs": {
-        "flake-utils": "flake-utils_5",
+        "flake-utils": "flake-utils_6",
         "haskell-tools-nvim": "haskell-tools-nvim",
         "nil": "nil_2",
         "nixpkgs": [
