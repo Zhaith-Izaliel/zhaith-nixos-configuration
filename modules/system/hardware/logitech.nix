@@ -1,12 +1,11 @@
-{ config, lib, ... }:
-
-
-let
+{
+  config,
+  lib,
+  ...
+}: let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.hellebore.hardware.logitech;
-in
-
-{
+in {
   options.hellebore.hardware.logitech = {
     enable = mkEnableOption "Logitech hardware support";
     lcd.enable = mkEnableOption "Logitech LCD hardware support";
@@ -27,4 +26,3 @@ in
     };
   };
 }
-

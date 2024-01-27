@@ -13,10 +13,8 @@
   urgent-alt,
   icon,
   image,
-  font
-}:
-
-{
+  font,
+}: {
   "*" = {
     font = "${font.name} ${toString font.size}";
   };
@@ -44,7 +42,7 @@
     spacing = mkLiteral "1em";
     padding = mkLiteral "1em";
     orientation = mkLiteral "vertical";
-    children =  [ "inputbar" "listview" "message" ];
+    children = ["inputbar" "listview" "message"];
     background-color = mkLiteral "transparent";
   };
 
@@ -190,4 +188,3 @@
     text-color = mkLiteral text;
   };
 }
-

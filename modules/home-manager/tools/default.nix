@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   imports = [
     ./docs.nix
     ./office.nix
@@ -8,4 +6,3 @@
     ./tasks.nix
   ];
 }
-

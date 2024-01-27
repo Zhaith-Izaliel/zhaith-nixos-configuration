@@ -1,11 +1,12 @@
-{ lib, config, pkgs, ...  }:
-
-
-let
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}: let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.hellebore.hardware.gaming;
-in
-{
+in {
   options.hellebore.hardware.gaming = {
     enable = mkEnableOption "Hellebore's gaming hardware support through Piper.";
   };
@@ -18,4 +19,3 @@ in
     ];
   };
 }
-

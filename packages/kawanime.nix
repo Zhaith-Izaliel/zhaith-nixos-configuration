@@ -7,7 +7,6 @@
   libtorrent-rasterbar,
   electron,
 }:
-
 buildNpmPackage rec {
   inherit src;
   pname = "KawAnime";
@@ -41,4 +40,3 @@ buildNpmPackage rec {
     libtorrent-rasterbar
   ];
 }
-

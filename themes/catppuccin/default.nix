@@ -1,7 +1,9 @@
-{ pkgs, lib, inputs }:
-let
+{
+  pkgs,
+  lib,
+  inputs,
+}: let
   colors = import ./colors.nix {};
-  apps = import ./apps { inherit pkgs lib inputs colors; };
+  apps = import ./apps {inherit pkgs lib inputs colors;};
 in
-apps // { inherit colors; }
-
+  apps // {inherit colors;}

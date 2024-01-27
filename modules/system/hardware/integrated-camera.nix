@@ -1,12 +1,13 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.hellebore.hardware.integratedCamera;
   usbBusDevices = "/sys/bus/usb/devices";
-in
-{
+in {
   options.hellebore.hardware.integratedCamera = {
     disable = mkOption {
       type = types.bool;
@@ -26,10 +27,9 @@ in
     systemd.services.disable-integrated-camera = {
       enable = true;
       script = ''
-      echo 0 > "${usbBusDevices}/${cfg.cameraBus}/bConfigurationValue"
+        echo 0 > "${usbBusDevices}/${cfg.cameraBus}/bConfigurationValue"
       '';
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = ["multi-user.target"];
     };
   };
 }
-

@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.hardware.ntfs;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.hardware.ntfs;
+in {
   options.hellebore.hardware.ntfs = {
     enable = mkEnableOption "NTFS support";
   };
@@ -15,7 +16,6 @@ in
       ntfs3g
     ];
 
-    boot.supportedFilesystems = [ "ntfs" ];
+    boot.supportedFilesystems = ["ntfs"];
   };
 }
-

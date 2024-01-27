@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-   cfg = config.hellebore.locale;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.locale;
+in {
   options.hellebore.locale = {
     enable = mkEnableOption "Hellebore locales configuration";
 
@@ -59,4 +60,3 @@ in
     ];
   };
 }
-

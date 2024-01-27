@@ -1,5 +1,4 @@
 {}:
-
 # NOTE: Catppuccin Macchiato, Can be found here: https://github.com/catppuccin/catppuccin
 {
   normal = {
@@ -49,4 +48,3 @@
     lavender = "#5B66D3";
   };
 }
-

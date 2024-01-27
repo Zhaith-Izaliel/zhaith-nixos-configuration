@@ -1,11 +1,11 @@
-{ config, lib, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.hardware.numerization;
-in
 {
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.hardware.numerization;
+in {
   options.hellebore.hardware.numerization = {
     enable = mkEnableOption "Numerization support";
   };
@@ -14,4 +14,3 @@ in
     hardware.sane.enable = true;
   };
 }
-

@@ -1,12 +1,14 @@
-{ config, lib, pkgs, extra-types, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  extra-types,
+  ...
+}:
+with lib; let
   cfg = config.hellebore.development.git;
   theme = config.hellebore.theme.themes.${cfg.gitui.theme};
-in
-{
+in {
   imports = [
     ./commitlint.nix
     ./h.nix
@@ -66,4 +68,3 @@ in
     };
   };
 }
-

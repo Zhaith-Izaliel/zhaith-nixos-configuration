@@ -1,12 +1,14 @@
-{ config, lib, pkgs, extra-types, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  extra-types,
+  ...
+}:
+with lib; let
   cfg = config.hellebore.development.bat;
   theme = config.hellebore.theme.themes.${cfg.theme};
-in
-{
+in {
   options.hellebore.development.bat = {
     enable = mkEnableOption "Hellebore's Bat configuration";
 
@@ -38,9 +40,11 @@ in
         };
       };
 
-      extraPackages = with pkgs.bat-extras; [
-        batdiff
-      ] ++ cfg.extraPlugins;
+      extraPackages = with pkgs.bat-extras;
+        [
+          batdiff
+        ]
+        ++ cfg.extraPlugins;
 
       config = {
         theme = theme.bat.name;
@@ -48,4 +52,3 @@ in
     };
   };
 }
-

@@ -1,16 +1,17 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.hellebore.tools.discord;
   finalPackage = cfg.package.override {
     withOpenASAR = cfg.openASAR.enable;
     withVencord = cfg.vencord.enable;
     withTTS = cfg.tts.enable;
   };
-in
-{
+in {
   options.hellebore.tools.discord = {
     enable = mkEnableOption "discord Hellebore's config";
 
@@ -45,9 +46,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [
-      finalPackage
-    ] ++ (lists.optional cfg.betterdiscord.enable cfg.betterdiscord.package);
+    home.packages =
+      [
+        finalPackage
+      ]
+      ++ (lists.optional cfg.betterdiscord.enable cfg.betterdiscord.package);
   };
 }
-

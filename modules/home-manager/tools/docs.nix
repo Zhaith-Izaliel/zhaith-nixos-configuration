@@ -1,10 +1,11 @@
-{ config, lib, ... }:
-
-let
+{
+  config,
+  lib,
+  ...
+}: let
   inherit (lib) mkIf mkEnableOption;
   cfg = config.hellebore.tools.docs;
-in
-{
+in {
   options.hellebore.tools.docs = {
     enable = mkEnableOption "Hellebore's documentation helpers";
   };
@@ -25,4 +26,3 @@ in
     };
   };
 }
-

@@ -1,6 +1,4 @@
-{ mkLiteral }:
-
-{
+{mkLiteral}: {
   vertical-theme = {
     background,
     background-alt,
@@ -12,7 +10,7 @@
     urgent,
     icon,
     image,
-    font
+    font,
   }: {
     "*" = {
       font = "${font.name} ${toString font.size}";
@@ -40,7 +38,7 @@
       enabled = true;
       spacing = mkLiteral "0px";
       orientation = mkLiteral "horizontal";
-      children =  [  "imagebox"  "listbox" "message" ];
+      children = ["imagebox" "listbox" "message"];
       background-color = mkLiteral "transparent";
     };
 
@@ -50,14 +48,14 @@
       background-color = mkLiteral "transparent";
       background-image = mkLiteral ''url("${image}", height)'';
       orientation = mkLiteral "vertical";
-      children = [ "inputbar" "dummy" ];
+      children = ["inputbar" "dummy"];
     };
 
     listbox = {
       enabled = true;
       padding = mkLiteral "1.25em";
       spacing = mkLiteral "1.25em";
-      children = [ "listview" ];
+      children = ["listview"];
       orientation = mkLiteral "vertical";
       background-color = mkLiteral "transparent";
     };
@@ -206,7 +204,7 @@
     urgent-alt,
     icon,
     image,
-    font
+    font,
   }: {
     "*" = {
       font = "${font.name} ${toString font.size}";
@@ -235,7 +233,7 @@
       spacing = mkLiteral "1em";
       padding = mkLiteral "1em";
       orientation = mkLiteral "vertical";
-      children =  [ "inputbar" "listview" "message" ];
+      children = ["inputbar" "listview" "message"];
       background-color = mkLiteral "transparent";
     };
 
@@ -382,4 +380,3 @@
     };
   };
 }
-

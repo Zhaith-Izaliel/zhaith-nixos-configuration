@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.hellebore.fonts;
-in
-{
+in {
   options.hellebore.fonts = {
     enable = mkEnableOption "Hellebore fonts configuration";
   };
@@ -34,10 +35,10 @@ in
         antialias = true;
         includeUserConf = true;
         defaultFonts = {
-          sansSerif = [ "Noto Sans" ];
-          serif = [ "Noto Serif" ];
-          monospace = [ "Noto Sans Mono" ];
-          emoji = [ "Twitter Color Emoji" ];
+          sansSerif = ["Noto Sans"];
+          serif = ["Noto Serif"];
+          monospace = ["Noto Sans Mono"];
+          emoji = ["Twitter Color Emoji"];
         };
       };
 
@@ -45,4 +46,3 @@ in
     };
   };
 }
-

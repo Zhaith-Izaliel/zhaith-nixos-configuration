@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.hellebore.multimedia;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.multimedia;
+in {
   imports = [
     ./art.nix
     ./mpd.nix
@@ -27,4 +29,3 @@ in
     ];
   };
 }
-

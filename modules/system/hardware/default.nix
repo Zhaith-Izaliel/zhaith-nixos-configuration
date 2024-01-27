@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   imports = [
     ./asus.nix
     ./bluetooth.nix
@@ -14,4 +12,3 @@
     ./printing.nix
   ];
 }
-

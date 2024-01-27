@@ -1,6 +1,3 @@
-{}:
-
-{
+{}: {
   theme = "Catppuccin-Macchiato";
 }
-

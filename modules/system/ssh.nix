@@ -1,11 +1,11 @@
-{ config, lib, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.ssh;
-in
 {
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.ssh;
+in {
   options.hellebore.ssh = {
     enable = mkEnableOption "Hellebore SSH configuration";
 
@@ -14,7 +14,7 @@ in
 
       ports = mkOption {
         type = types.listOf types.int;
-        default = [ 22 ];
+        default = [22];
         description = "Ports used by OpenSSH.";
       };
     };
@@ -39,4 +39,3 @@ in
     })
   ];
 }
-

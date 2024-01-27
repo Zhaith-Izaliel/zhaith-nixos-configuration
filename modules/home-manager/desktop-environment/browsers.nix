@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.desktop-environment.browsers;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.desktop-environment.browsers;
+in {
   options.hellebore.desktop-environment.browsers = {
     enable = mkEnableOption "Hellebore Browsers configuration";
 
@@ -29,48 +30,69 @@ in
           default = "Google";
           engines = {
             "Nix Packages" = {
-              urls = [{
-                template = "https://search.nixos.org/packages";
-                params = [
-                  { name = "type"; value = "packages"; }
-                  { name = "query"; value = "{searchTerms}"; }
-                ];
-              }];
+              urls = [
+                {
+                  template = "https://search.nixos.org/packages";
+                  params = [
+                    {
+                      name = "type";
+                      value = "packages";
+                    }
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
 
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-              definedAliases = [ "@np" ];
+              definedAliases = ["@np"];
             };
 
             "Nix Options" = {
-              urls = [{
-                template = "https://search.nixos.org/options";
-                params = [
-                  { name = "type"; value = "packages"; }
-                  { name = "query"; value = "{searchTerms}"; }
-                ];
-              }];
+              urls = [
+                {
+                  template = "https://search.nixos.org/options";
+                  params = [
+                    {
+                      name = "type";
+                      value = "packages";
+                    }
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
 
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-              definedAliases = [ "@no" ];
+              definedAliases = ["@no"];
             };
 
             "YouTube" = {
-              urls = [{
-                template = "https://www.youtube.com/results";
-                params = [
-                  { name = "search_query"; value = "{searchTerms}"; }
-                ];
-              }];
+              urls = [
+                {
+                  template = "https://www.youtube.com/results";
+                  params = [
+                    {
+                      name = "search_query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
 
               iconUpdateURL = "https://www.youtube.com/favicon.ico";
-              definedAliases = [ "@yt" ];
+              definedAliases = ["@yt"];
             };
 
             "NixOS Wiki" = {
-              urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
+              urls = [{template = "https://nixos.wiki/index.php?search={searchTerms}";}];
               iconUpdateURL = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000; # every day
-              definedAliases = [ "@nw" ];
+              definedAliases = ["@nw"];
             };
 
             "Bing".metaData.hidden = true;
@@ -81,13 +103,12 @@ in
         };
 
         userChrome = ''
-        .bookmark-item {
-          margin-left: .25rem !important;
-          margin-right: .25rem !important;
-        }
+          .bookmark-item {
+            margin-left: .25rem !important;
+            margin-right: .25rem !important;
+          }
         '';
       };
     };
   };
 }
-

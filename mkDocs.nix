@@ -1,5 +1,7 @@
-{ stdenv, system-options-doc }:
-
+{
+  stdenv,
+  system-options-doc,
+}:
 stdenv.mkDerivation {
   src = ./.;
   name = "docs";
@@ -20,4 +22,3 @@ stdenv.mkDerivation {
     ln -s $out "./docs"
   '';
 }
-

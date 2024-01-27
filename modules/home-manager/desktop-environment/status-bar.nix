@@ -1,8 +1,24 @@
-{ os-config, config, lib, pkgs, extra-types, ... }:
-
-let
-  inherit (lib) mkIf mkOption mkEnableOption elemAt types getExe recursiveUpdate
-  flatten optional concatStringsSep;
+{
+  os-config,
+  config,
+  lib,
+  pkgs,
+  extra-types,
+  ...
+}: let
+  inherit
+    (lib)
+    mkIf
+    mkOption
+    mkEnableOption
+    elemAt
+    types
+    getExe
+    recursiveUpdate
+    flatten
+    optional
+    concatStringsSep
+    ;
   cfg = config.hellebore.desktop-environment.status-bar;
   theme = config.hellebore.theme.themes.${config.hellebore.theme.name};
   waybar-theme = theme.waybar modules;
@@ -26,7 +42,7 @@ let
       "battery"
       "group/power"
       (optional
-      config.hellebore.desktop-environment.applications-launcher.enable "custom/app")
+        config.hellebore.desktop-environment.applications-launcher.enable "custom/app")
     ];
 
     "group/power" = [
@@ -36,8 +52,7 @@ let
       "custom/reboot"
     ];
   };
-in
-{
+in {
   options.hellebore.desktop-environment.status-bar = {
     enable = mkEnableOption "Hellebore Waybar configuration";
 
@@ -78,20 +93,21 @@ in
       }
     ];
 
-    home.packages = with pkgs; flatten [
-      sutils
-      libappindicator-gtk3
-      brightnessctl
-      wttrbar
-      (optional config.services.dunst.enable dunstbar)
-      (optional os-config.services.power-profiles-daemon.enable power-profilesbar)
-      (config.hellebore.desktop-environment.lockscreen.package)
-    ];
+    home.packages = with pkgs;
+      flatten [
+        sutils
+        libappindicator-gtk3
+        brightnessctl
+        wttrbar
+        (optional config.services.dunst.enable dunstbar)
+        (optional os-config.services.power-profiles-daemon.enable power-profilesbar)
+        (config.hellebore.desktop-environment.lockscreen.package)
+      ];
 
     systemd.user.targets.tray = {
       Unit = {
         Description = "Home Manager System Tray";
-        Requires = [ "graphical-session-pre.target" ];
+        Requires = ["graphical-session-pre.target"];
       };
     };
 
@@ -176,14 +192,13 @@ in
 
       style = concatStringsSep "\n" [
         ''
-        * {
-          font-size: ${toString cfg.font.size}pt;
-          font-family: "${cfg.font.name}", "Fira Code Nerd Font Mono";
-        }
+          * {
+            font-size: ${toString cfg.font.size}pt;
+            font-family: "${cfg.font.name}", "Fira Code Nerd Font Mono";
+          }
         ''
         waybar-theme.style
       ];
     };
   };
 }
-

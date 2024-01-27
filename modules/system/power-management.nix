@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.power-management;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.power-management;
+in {
   options.hellebore.power-management = {
     enable = mkEnableOption "Hellebore's power management module";
 
@@ -91,7 +92,7 @@ in
       };
 
       criticalPowerAction = mkOption {
-        type = types.enum [ "PowerOff" "Hibernate" "HybridSleep" ];
+        type = types.enum ["PowerOff" "Hibernate" "HybridSleep"];
         default = "HybridSleep";
         description = lib.mdDoc ''
           The action to take when `timeAction` or
@@ -120,22 +121,29 @@ in
     (mkIf (cfg.enable && cfg.autoShutdown.enable) {
       services.cron = {
         enable = true;
-        systemCronJobs = [
-          "${cfg.autoShutdown.cronTemplate} root ${getExe pkgs.power-management} ${cfg.autoShutdown.shutdownDate}"
-        ] ++ builtins.map
-        (template: "${template} root ${getExe pkgs.power-management} --show" )
-        cfg.autoShutdown.reminders;
+        systemCronJobs =
+          [
+            "${cfg.autoShutdown.cronTemplate} root ${getExe pkgs.power-management} ${cfg.autoShutdown.shutdownDate}"
+          ]
+          ++ builtins.map
+          (template: "${template} root ${getExe pkgs.power-management} --show")
+          cfg.autoShutdown.reminders;
       };
     })
 
     (mkIf (cfg.enable && cfg.upower.enable) {
       services.upower = {
-        inherit (cfg.upower) ignoreLid criticalPowerAction percentageLow
-        percentageCritical percentageAction;
+        inherit
+          (cfg.upower)
+          ignoreLid
+          criticalPowerAction
+          percentageLow
+          percentageCritical
+          percentageAction
+          ;
         enable = true;
         usePercentageForPolicy = true;
       };
     })
   ];
 }
-

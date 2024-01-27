@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.development.git.h;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.development.git.h;
+in {
   options.hellebore.development.git.h = {
     enable = mkEnableOption "H git utility";
 
@@ -27,4 +28,3 @@ in
     '';
   };
 }
-

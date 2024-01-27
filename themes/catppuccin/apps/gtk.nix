@@ -1,10 +1,25 @@
-{ pkgs, lib }:
-
-rec {
+{
+  pkgs,
+  lib,
+}: rec {
   theme = {
     package = pkgs.catppuccin-gtk.override {
-      accents = [ "blue" "flamingo" "green" "lavender" "maroon" "mauve" "peach"
-      "pink" "red" "rosewater" "sapphire" "sky" "teal" "yellow" ];
+      accents = [
+        "blue"
+        "flamingo"
+        "green"
+        "lavender"
+        "maroon"
+        "mauve"
+        "peach"
+        "pink"
+        "red"
+        "rosewater"
+        "sapphire"
+        "sky"
+        "teal"
+        "yellow"
+      ];
       size = "standard";
       variant = "macchiato";
     };
@@ -33,4 +48,3 @@ rec {
     font.package
   ];
 }
-

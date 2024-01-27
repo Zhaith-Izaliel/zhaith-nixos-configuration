@@ -1,11 +1,13 @@
-{ os-config, config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.desktop-environment.bluetooth;
-in
 {
+  os-config,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.desktop-environment.bluetooth;
+in {
   options.hellebore.desktop-environment.bluetooth = {
     enable = mkEnableOption "Hellebore's Bluetooth support";
   };
@@ -24,4 +26,3 @@ in
     ];
   };
 }
-

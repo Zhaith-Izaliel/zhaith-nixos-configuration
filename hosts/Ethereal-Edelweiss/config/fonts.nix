@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   # Fonts
   fonts = {
     fonts = with pkgs; [
@@ -21,13 +19,12 @@
       antialias = true;
       includeUserConf = true;
       defaultFonts = {
-        sansSerif = [ "Noto Sans" ];
-        serif = [ "Noto Serif" ];
-        monospace = [ "Noto Sans Mono" ];
-        emoji = [ "Twitter Color Emoji" ];
+        sansSerif = ["Noto Sans"];
+        serif = ["Noto Serif"];
+        monospace = ["Noto Sans Mono"];
+        emoji = ["Twitter Color Emoji"];
       };
     };
     fontDir.enable = true;
   };
 }
-

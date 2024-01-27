@@ -1,7 +1,9 @@
 # Base config
-{ config, pkgs, ...}:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # Set your time zone.
   time.timeZone = "Europe/Paris";
 

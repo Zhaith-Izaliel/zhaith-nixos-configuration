@@ -1,12 +1,14 @@
-{ config, lib, pkgs, extra-types, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  extra-types,
+  ...
+}:
+with lib; let
   cfg = config.hellebore.shell.prompt;
   theme = config.hellebore.theme.themes.${cfg.theme};
-in
-{
+in {
   options.hellebore.shell.prompt = {
     enable = mkEnableOption "Starship Hellebore's config";
 
@@ -23,7 +25,6 @@ in
   };
 
   config = mkIf cfg.enable {
-
     programs.starship = {
       inherit (cfg) package;
       inherit (theme.starship) settings;
@@ -31,4 +32,3 @@ in
     };
   };
 }
-

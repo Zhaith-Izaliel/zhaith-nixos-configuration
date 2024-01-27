@@ -1,13 +1,15 @@
-{ config, lib, pkgs, extra-types, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  extra-types,
+  ...
+}:
+with lib; let
   inherit (lib) mkEnableOption mkOption mkIf getExe;
   cfg = config.hellebore.desktop-environment.logout;
   theme = config.hellebore.theme.themes.${cfg.theme};
-in
-{
+in {
   options.hellebore.desktop-environment.logout = {
     enable = mkEnableOption "Hellebore logout screen configuration";
 
@@ -26,7 +28,7 @@ in
       type = types.str;
       default = "${getExe pkgs.wlogout-blur} --protocol layer-shell -b 5 -T 400 -B 400";
       readOnly = true;
-      description  = "Define the command to run the logout screen.";
+      description = "Define the command to run the logout screen.";
     };
   };
 
@@ -84,14 +86,15 @@ in
         }
       ];
 
-      style = ''
-        window {
-          font-family: "${cfg.font.name}";
-          font-size: ${toString cfg.font.size}pt;
-        }
+      style =
+        ''
+          window {
+            font-family: "${cfg.font.name}";
+            font-size: ${toString cfg.font.size}pt;
+          }
 
-      '' + theme.wlogout.style;
+        ''
+        + theme.wlogout.style;
     };
   };
 }
-

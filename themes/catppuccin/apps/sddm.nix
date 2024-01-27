@@ -1,6 +1,4 @@
-{ colors }:
-
-{
+{colors}: {
   settings = {
     FormPosition = "left";
     HaveFormBackground = true;
@@ -11,4 +9,3 @@
     ForceHideCompletePassword = true;
   };
 }
-

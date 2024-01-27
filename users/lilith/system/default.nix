@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   users.groups.lilith = {};
 
   # Define user accounts. Don't forget to set a password with ‘passwd’.
@@ -15,4 +13,3 @@
     shell = pkgs.zsh;
   };
 }
-

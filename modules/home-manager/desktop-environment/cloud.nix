@@ -1,11 +1,12 @@
-{ os-config, config, lib, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.desktop-environment.cloud;
-in
 {
+  os-config,
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.desktop-environment.cloud;
+in {
   options.hellebore.desktop-environment.cloud = {
     enable = mkEnableOption "Hellebore cloud saves configuration";
   };
@@ -13,8 +14,9 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable ->
-        os-config.services.gnome.gnome-keyring.enable;
+        assertion =
+          cfg.enable
+          -> os-config.services.gnome.gnome-keyring.enable;
         message = "Gnome Keyring should be enabled to store passwords for
         Nextcloud client.";
       }
@@ -26,4 +28,3 @@ in
     };
   };
 }
-

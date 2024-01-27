@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -13,7 +15,7 @@
   };
 
   console = {
-     font = "Lat2-Terminus32";
-     keyMap = "fr-latin1";
+    font = "Lat2-Terminus32";
+    keyMap = "fr-latin1";
   };
 }

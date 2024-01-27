@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   imports = [
     ./nextcloud.nix
     ./nginx.nix
@@ -11,4 +9,3 @@
     #./minecraftServer.nix
   ];
 }
-

@@ -1,9 +1,11 @@
-{ lib, inputs, pkgs }:
-let
+{
+  lib,
+  inputs,
+  pkgs,
+}: let
   inherit (lib) types mkOption;
-  themes = import ../themes { inherit lib pkgs inputs; };
-in
-rec {
+  themes = import ../themes {inherit lib pkgs inputs;};
+in rec {
   monitor = types.submodule {
     options = {
       name = mkOption {
@@ -47,12 +49,21 @@ rec {
     };
   };
 
-  fontSize = { default, description }: mkOption {
-    inherit default description;
-    type = types.ints.unsigned;
-  };
+  fontSize = {
+    default,
+    description,
+  }:
+    mkOption {
+      inherit default description;
+      type = types.ints.unsigned;
+    };
 
-  font = { name, nameDescription, size, sizeDescription }: {
+  font = {
+    name,
+    nameDescription,
+    size,
+    sizeDescription,
+  }: {
     size = fontSize {
       default = size;
       description = sizeDescription;
@@ -72,10 +83,14 @@ rec {
   };
 
   theme = {
-    name = { default ? "", description }: mkOption {
-      inherit default description;
-      type = types.nonEmptyStr;
-    };
+    name = {
+      default ? "",
+      description,
+    }:
+      mkOption {
+        inherit default description;
+        type = types.nonEmptyStr;
+      };
 
     themes = mkOption {
       default = themes;
@@ -86,4 +101,3 @@ rec {
     };
   };
 }
-

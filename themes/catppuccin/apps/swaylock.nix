@@ -1,11 +1,12 @@
-{ lib, colors }:
-
-let
-  converted-colors = lib.attrsets.mapAttrs
-  (name: value: lib.strings.removePrefix "#" value)
-  colors.normal;
-in
 {
+  lib,
+  colors,
+}: let
+  converted-colors =
+    lib.attrsets.mapAttrs
+    (name: value: lib.strings.removePrefix "#" value)
+    colors.normal;
+in {
   settings = {
     color = converted-colors.base;
     bs-hl-color = converted-colors.rosewater;
@@ -45,4 +46,3 @@ in
     datestr = "%d %b, %Y";
   };
 }
-

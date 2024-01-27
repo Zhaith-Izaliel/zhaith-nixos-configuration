@@ -1,8 +1,23 @@
-{ lib, config, os-config, pkgs, ... }:
-
-let
-  inherit (lib) concatStringsSep optionalString getExe optional optionals
-  flatten range mkIf recursiveUpdate count;
+{
+  lib,
+  config,
+  os-config,
+  pkgs,
+  ...
+}: let
+  inherit
+    (lib)
+    concatStringsSep
+    optionalString
+    getExe
+    optional
+    optionals
+    flatten
+    range
+    mkIf
+    recursiveUpdate
+    count
+    ;
 
   cfg = config.hellebore.desktop-environment.hyprland;
 
@@ -11,8 +26,7 @@ let
 
   mkWindowrulev2 = window: rules: (map (rule: "${rule},${window}") rules);
 
-  mkMonitor = monitor:
-  let
+  mkMonitor = monitor: let
     inherit (monitor) name;
     width = toString monitor.width;
     height = toString monitor.height;
@@ -21,8 +35,7 @@ let
     refreshRate = toString monitor.refreshRate;
     scaling = toString monitor.scaling;
     extraArgs = concatStringsSep "," monitor.extraArgs;
-  in
-  "${name},${width}x${height}@${refreshRate},${xOffset}x${yOffset},${scaling},${extraArgs}";
+  in "${name},${width}x${height}@${refreshRate},${xOffset}x${yOffset},${scaling},${extraArgs}";
 
   mkMonitors = monitors: builtins.map mkMonitor monitors;
 
@@ -37,8 +50,7 @@ let
   ];
 
   appletsConfig = config.programs.rofi.applets;
-in
-{
+in {
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland.settings = recursiveUpdate theme.hyprland.settings {
       "$mainMod" = "SUPER";
@@ -54,18 +66,21 @@ in
         "XCURSOR_SIZE,24"
       ];
 
-      workspace = map
-      (x: "${toString x},${optionalString (x == 1) "default:true"},persistent:true")
-      (range 1 maxPersistentWorkspaces);
+      workspace =
+        map
+        (x: "${toString x},${optionalString (x == 1) "default:true"},persistent:true")
+        (range 1 maxPersistentWorkspaces);
 
       windowrulev2 = flatten [
-        (optionals config.hellebore.tools.discord.enable
+        (
+          optionals config.hellebore.tools.discord.enable
           (mkWindowrulev2 "class:(discord)" [
-          "workspace 3 silent"
-          "noinitialfocus"
+            "workspace 3 silent"
+            "noinitialfocus"
           ])
         )
-        (optionals config.hellebore.desktop-environment.mail.enable
+        (
+          optionals config.hellebore.desktop-environment.mail.enable
           (mkWindowrulev2 "class:(evolution)" [
             "workspace 4 silent"
           ])
@@ -112,15 +127,15 @@ in
         "hyprctl setcursor ${theme.gtk.cursorTheme.name} 24"
         (optional config.gtk.enable "configure-gtk")
         (optional config.hellebore.desktop-environment.browsers.enable
-        "[workspace 1] ${getExe pkgs.firefox}")
+          "[workspace 1] ${getExe pkgs.firefox}")
         (optional config.hellebore.shell.emulator.enable
-        "[workspace 1] ${config.hellebore.shell.emulator.bin}")
+          "[workspace 1] ${config.hellebore.shell.emulator.bin}")
         (optional config.hellebore.tools.office.enable
-        "[workspace 2] obsidian")
+          "[workspace 2] obsidian")
         (optional config.hellebore.tools.discord.enable
-        "${getExe config.hellebore.tools.discord.finalPackage}")
+          "${getExe config.hellebore.tools.discord.finalPackage}")
         (optional config.hellebore.desktop-environment.mail.enable
-        "${config.hellebore.desktop-environment.mail.bin}")
+          "${config.hellebore.desktop-environment.mail.bin}")
         (optionals os-config.hellebore.games.enable [
           "cartridges"
           "steam -silent"
@@ -159,43 +174,45 @@ in
         "$mainMod, mouse_up, workspace, e-1"
 
         # Switch workspaces with mainMod + F[1-10]
-        (map
+        (
+          map
           (item: "$mainMod, F${toString item}, workspace, ${toString item}")
           (range 1 10)
         )
 
         # Move active window to a workspace with mainMod + CONTROL + F[1-10]
-        (map
+        (
+          map
           (item: "$mainMod CONTROL, F${toString item}, movetoworkspace, ${toString item}")
           (range 1 10)
         )
 
         (optional config.hellebore.desktop-environment.logout.enable
-        "$mainMod, L, exec, ${config.hellebore.desktop-environment.logout.bin}")
+          "$mainMod, L, exec, ${config.hellebore.desktop-environment.logout.bin}")
         (optional config.hellebore.shell.emulator.enable
-        "$mainMod, Q, exec, ${config.hellebore.shell.emulator.bin}")
+          "$mainMod, Q, exec, ${config.hellebore.shell.emulator.bin}")
         (optional os-config.hellebore.vm.enable
-        "$mainMod, W, exec, start-vm --resolution=${toString firstMonitor.width}x${toString firstMonitor.height} -Fi")
+          "$mainMod, W, exec, start-vm --resolution=${toString firstMonitor.width}x${toString firstMonitor.height} -Fi")
         (optional config.hellebore.desktop-environment.applications-launcher.enable
-        "$mainMod, R, exec, ${config.hellebore.desktop-environment.applications-launcher.command}")
+          "$mainMod, R, exec, ${config.hellebore.desktop-environment.applications-launcher.command}")
         (optional config.hellebore.desktop-environment.i18n.enable
-        "$mainMod, I, exec, fcitx5-remote -t")
+          "$mainMod, I, exec, fcitx5-remote -t")
 
         # Rofi Applets
         (optional appletsConfig.favorites.enable
-        "$mainMod SHIFT, R, exec, ${getExe appletsConfig.favorites.package}")
+          "$mainMod SHIFT, R, exec, ${getExe appletsConfig.favorites.package}")
 
         (optional appletsConfig.quicklinks.enable
-        "$mainMod CTRL, R, exec, ${getExe appletsConfig.quicklinks.package}")
+          "$mainMod CTRL, R, exec, ${getExe appletsConfig.quicklinks.package}")
 
         (optional appletsConfig.bluetooth.enable
-        "$mainMod, B, exec, ${getExe appletsConfig.bluetooth.package}")
+          "$mainMod, B, exec, ${getExe appletsConfig.bluetooth.package}")
 
         (optional appletsConfig.mpd.enable
-        "$mainMod, A, exec, ${getExe appletsConfig.mpd.package}")
+          "$mainMod, A, exec, ${getExe appletsConfig.mpd.package}")
 
         (optional appletsConfig.power-profiles.enable
-        "$mainMod, Z, exec, ${getExe appletsConfig.power-profiles.package}")
+          "$mainMod, Z, exec, ${getExe appletsConfig.power-profiles.package}")
       ];
 
       bindl = [
@@ -234,14 +251,13 @@ in
       };
 
       dwindle = {
-          pseudotile = true;
-          preserve_split = true;
+        pseudotile = true;
+        preserve_split = true;
       };
 
       gestures = {
-          workspace_swipe = false;
+        workspace_swipe = false;
       };
     };
   };
 }
-

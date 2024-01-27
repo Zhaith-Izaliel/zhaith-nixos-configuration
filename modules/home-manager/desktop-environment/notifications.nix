@@ -1,12 +1,13 @@
-{ config, lib, extra-types, ... }:
-
-let
+{
+  config,
+  lib,
+  extra-types,
+  ...
+}: let
   inherit (lib) mkEnableOption mkOption mkIf types recursiveUpdate cleanSource;
   cfg = config.hellebore.desktop-environment.notifications;
   theme = config.hellebore.theme.themes.${cfg.theme};
-in
-{
-
+in {
   options.hellebore.desktop-environment.notifications = {
     enable = mkEnableOption "Hellebore Dunst configuration";
 
@@ -73,8 +74,9 @@ in
 
         volume_icon = {
           summary = "Volume";
-          default_icon = toString (cleanSource
-          ../../../assets/images/other/volume.png);
+          default_icon =
+            toString (cleanSource
+              ../../../assets/images/other/volume.png);
         };
 
         volume_onehundred = {
@@ -89,11 +91,11 @@ in
 
         brightness_icon = {
           summary = "Brightness";
-          default_icon = toString (cleanSource
-          ../../../assets/images/other/brightness.png);
+          default_icon =
+            toString (cleanSource
+              ../../../assets/images/other/brightness.png);
         };
       };
     };
   };
 }
-

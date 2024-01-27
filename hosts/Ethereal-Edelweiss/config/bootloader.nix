@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # Use efi systemd-boot
   boot.loader = {
     efi.canTouchEfiVariables = true;

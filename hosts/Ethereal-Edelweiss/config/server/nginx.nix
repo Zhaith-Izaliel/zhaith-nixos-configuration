@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   services.nginx = {
     enable = true;
     recommendedGzipSettings = true;
@@ -9,7 +7,8 @@
     recommendedTlsSettings = true;
 
     virtualHosts = {
-      "jellyfin.ethereal-edelweiss.cloud" = { # Jellyfin
+      "jellyfin.ethereal-edelweiss.cloud" = {
+        # Jellyfin
         addSSL = true;
         enableACME = true;
         locations = {
@@ -23,19 +22,21 @@
         };
       };
 
-      "books.ethereal-edelweiss.cloud" = { # Jellyfin
-      addSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "http://localhost:8083";
+      "books.ethereal-edelweiss.cloud" = {
+        # Jellyfin
+        addSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://localhost:8083";
+        };
+      };
+
+      "nextcloud.ethereal-edelweiss.cloud" = {
+        # Nextcloud
+        addSSL = true;
+        enableACME = true;
       };
     };
-
-    "nextcloud.ethereal-edelweiss.cloud" = { # Nextcloud
-    addSSL = true;
-    enableACME = true;
-  };
-};
   };
 
   security.acme = {
@@ -47,4 +48,3 @@
     };
   };
 }
-

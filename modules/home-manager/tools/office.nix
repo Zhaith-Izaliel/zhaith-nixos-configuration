@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.tools.office;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.tools.office;
+in {
   options.hellebore.tools.office = {
     enable = mkEnableOption "Hellebore office tools";
   };
@@ -22,4 +23,3 @@ in
     ];
   };
 }
-

@@ -1,6 +1,8 @@
-{ colors, mkLiteral, image }:
-
 {
+  colors,
+  mkLiteral,
+  image,
+}: {
   window = {
     transparency = "real";
     location = mkLiteral "center";
@@ -19,7 +21,7 @@
     enabled = true;
     spacing = mkLiteral "0px";
     orientation = mkLiteral "horizontal";
-    children =  [  "imagebox"  "listbox" ];
+    children = ["imagebox" "listbox"];
     background-color = mkLiteral "transparent";
   };
 
@@ -29,14 +31,14 @@
     background-color = mkLiteral "transparent";
     background-image = mkLiteral ''url("${image}", height)'';
     orientation = mkLiteral "vertical";
-    children = [ "inputbar" "dummy" "mode-switcher" ];
+    children = ["inputbar" "dummy" "mode-switcher"];
   };
 
   listbox = {
     enabled = true;
     spacing = mkLiteral "1.25em";
     padding = mkLiteral "1.25em";
-    children = [ "message" "listview" ];
+    children = ["message" "listview"];
     orientation = mkLiteral "vertical";
     background-color = mkLiteral "transparent";
   };
@@ -55,7 +57,7 @@
     border-color = mkLiteral colors.normal.blue;
     border = mkLiteral "2px";
     text-color = mkLiteral colors.normal.text;
-    children = [ "textbox-prompt-colon" "entry" ];
+    children = ["textbox-prompt-colon" "entry"];
   };
 
   textbox-prompt-colon = {
@@ -190,4 +192,3 @@
     text-color = mkLiteral colors.normal.text;
   };
 }
-

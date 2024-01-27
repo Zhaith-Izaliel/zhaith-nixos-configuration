@@ -1,6 +1,8 @@
-{ pkgs, lib, inputs }:
-
-rec {
+{
+  pkgs,
+  lib,
+  inputs,
+}: rec {
   package = pkgs.stdenv.mkDerivation {
     name = "catppucin-hyprland";
     version = inputs.catppuccin-hyprland.rev;
@@ -8,8 +10,8 @@ rec {
     src = inputs.catppuccin-hyprland;
 
     installPhase = ''
-    mkdir -p $out
-    cp -r themes $out
+      mkdir -p $out
+      cp -r themes $out
     '';
   };
 
@@ -20,8 +22,8 @@ rec {
       palette
     ];
 
-    general =  {
-    # See https://wiki.hyprland.org/Configuring/Variables/ for more
+    general = {
+      # See https://wiki.hyprland.org/Configuring/Variables/ for more
 
       gaps_in = 5;
       gaps_out = 20;
@@ -55,7 +57,7 @@ rec {
         "easeInOutSine, .37, 0, .63, 1"
       ];
 
-      animation =  [
+      animation = [
         "windows, 1, 7, easeOutCubic"
         "windowsOut, 1, 7, easeOutCubic, popin 80%"
         "windowsIn, 1, 7, easeOutCubic, popin 80%"
@@ -67,4 +69,3 @@ rec {
     };
   };
 }
-

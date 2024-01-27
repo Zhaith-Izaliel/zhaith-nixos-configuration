@@ -1,6 +1,8 @@
-{ config, pkgs, ...}:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   services.calibre-web = {
     enable = true;
     group = "nextcloud";

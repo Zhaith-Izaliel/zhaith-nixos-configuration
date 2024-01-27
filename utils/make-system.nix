@@ -1,17 +1,20 @@
-{ inputs }:
-
-let
+{inputs}: let
   lib = inputs.nixpkgs.lib;
-in
-{
-  mkSystem = { hostname, system, users ? [ ], extraModules ? [ ], overlays ? [
-  ], nixpkgs ? inputs.nixpkgs }:
-    let
-      pkgs = import nixpkgs {
-        inherit overlays system;
-      };
-      types = import ../types { inherit lib pkgs inputs; };
-    in
+in {
+  mkSystem = {
+    hostname,
+    system,
+    users ? [],
+    extraModules ? [],
+    overlays ? [
+    ],
+    nixpkgs ? inputs.nixpkgs,
+  }: let
+    pkgs = import nixpkgs {
+      inherit overlays system;
+    };
+    types = import ../types {inherit lib pkgs inputs;};
+  in
     lib.nixosSystem {
       inherit system;
       specialArgs = {
@@ -24,43 +27,52 @@ in
           inherit overlays system;
         };
       };
-      modules = [
-        ../hosts/${hostname}
-        {
-          networking.hostName = hostname;
+      modules =
+        [
+          ../hosts/${hostname}
+          {
+            networking.hostName = hostname;
 
-          # Allow unfree packages
-          nixpkgs = {
-            inherit overlays;
-            config.allowUnfree = true;
-          };
+            # Allow unfree packages
+            nixpkgs = {
+              inherit overlays;
+              config.allowUnfree = true;
+            };
 
-          nix = {
-            enable = true;
+            nix = {
+              enable = true;
 
-            extraOptions = ''
-            experimental-features = nix-command flakes
-            '';
+              extraOptions = ''
+                experimental-features = nix-command flakes
+              '';
 
-            # Add each input as a registry
-            registry = inputs.nixpkgs.lib.mapAttrs'
-            (n: v: inputs.nixpkgs.lib.nameValuePair n { flake = v; })
-            inputs;
-          };
-        }
-      ] ++ nixpkgs.lib.forEach users (u: ../users/${u}/system)
-      ++ extraModules;
+              # Add each input as a registry
+              registry =
+                inputs.nixpkgs.lib.mapAttrs'
+                (n: v: inputs.nixpkgs.lib.nameValuePair n {flake = v;})
+                inputs;
+            };
+          }
+        ]
+        ++ nixpkgs.lib.forEach users (u: ../users/${u}/system)
+        ++ extraModules;
     };
 
-    mkHome = { username, system, hostname, stateVersion, extraModules ? [ ],
-    overlays ? [ ], nixpkgs ? inputs.nixpkgs, home-manager ?
-    inputs.home-manager }:
-    let
-      types = import ../types { inherit lib pkgs inputs; };
-      pkgs = import nixpkgs {
-        inherit overlays system;
-      };
-    in
+  mkHome = {
+    username,
+    system,
+    hostname,
+    stateVersion,
+    extraModules ? [],
+    overlays ? [],
+    nixpkgs ? inputs.nixpkgs,
+    home-manager ? inputs.home-manager,
+  }: let
+    types = import ../types {inherit lib pkgs inputs;};
+    pkgs = import nixpkgs {
+      inherit overlays system;
+    };
+  in
     home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
 
@@ -76,27 +88,28 @@ in
         os-config = inputs.self.nixosConfigurations.${hostname}.config;
       };
 
-      modules = [
-        ../users/${username}/home
-        {
-          nixpkgs = {
-            inherit overlays;
-            config = {
-              allowUnfree = true;
-              allowUnfreePredicate = _: true;
+      modules =
+        [
+          ../users/${username}/home
+          {
+            nixpkgs = {
+              inherit overlays;
+              config = {
+                allowUnfree = true;
+                allowUnfreePredicate = _: true;
+              };
             };
-          };
-          programs = {
-            home-manager.enable = true;
-            git.enable = true;
-          };
+            programs = {
+              home-manager.enable = true;
+              git.enable = true;
+            };
 
-          home = {
-            inherit username stateVersion;
-            homeDirectory = "/home/${username}";
-          };
-        }
-      ] ++ extraModules;
+            home = {
+              inherit username stateVersion;
+              homeDirectory = "/home/${username}";
+            };
+          }
+        ]
+        ++ extraModules;
     };
-  }
-
+}

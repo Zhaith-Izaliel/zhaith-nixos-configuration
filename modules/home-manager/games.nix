@@ -1,10 +1,11 @@
-{ lib, config, ... }:
-
-let
+{
+  lib,
+  config,
+  ...
+}: let
   inherit (lib) mkEnableOption mkOption mkMerge mkIf types;
   cfg = config.hellebore.games;
-in
-{
+in {
   options.hellebore.games = {
     dxvk = {
       enable = mkEnableOption "DXVK configuration management";
@@ -23,4 +24,3 @@ in
     })
   ];
 }
-

@@ -1,13 +1,14 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.hellebore.sound;
   json = pkgs.formats.json {};
   toPeriod = quantum: "${toString quantum}/${toString cfg.lowLatency.rate}";
-in
-{
+in {
   options.hellebore.sound = {
     enable = mkEnableOption "Hellebore sound configuration";
 
@@ -89,4 +90,3 @@ in
     };
   };
 }
-

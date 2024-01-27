@@ -1,11 +1,13 @@
-{ os-config, config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.desktop-environment.mail;
-in
 {
+  os-config,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.desktop-environment.mail;
+in {
   options.hellebore.desktop-environment.mail = {
     enable = mkEnableOption "Hellebore Mail clients";
     bin = mkOption {
@@ -27,9 +29,11 @@ in
       }
     ];
 
-    home.packages = [
-      pkgs.evolution
-    ] ++ lists.optional cfg.protonmail.enable pkgs.protonmail-bridge;
+    home.packages =
+      [
+        pkgs.evolution
+      ]
+      ++ lists.optional cfg.protonmail.enable pkgs.protonmail-bridge;
 
     systemd.user.services.protonmail-bridge = mkIf cfg.protonmail.enable {
       Unit = {
@@ -48,9 +52,8 @@ in
       };
 
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = ["graphical-session.target"];
       };
     };
   };
 }
-

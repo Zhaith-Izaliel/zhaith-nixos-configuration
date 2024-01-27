@@ -1,6 +1,7 @@
-{ colors, lib }:
-
-let
+{
+  colors,
+  lib,
+}: let
   getImage = name: lib.cleanSource ../../../assets/images/wlogout/${name};
   images = {
     lock = {
@@ -28,8 +29,7 @@ let
       hover = getImage "suspend-hover.png";
     };
   };
-in
-{
+in {
   style = ''
     window {
       color: ${colors.normal.text};
@@ -92,4 +92,3 @@ in
     }
   '';
 }
-

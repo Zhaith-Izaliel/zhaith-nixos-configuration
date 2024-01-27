@@ -1,13 +1,14 @@
-{ config, lib, extra-types, ... }:
-
-
-let
+{
+  config,
+  lib,
+  extra-types,
+  ...
+}: let
   inherit (lib) mkEnableOption mkIf mkOption types;
   theme = config.hellebore.theme.themes.${cfg.theme};
   cfg = config.hellebore.display-manager;
   defaultMonitor = builtins.elemAt config.hellebore.monitors 0;
-in
-{
+in {
   options.hellebore.display-manager = {
     enable = mkEnableOption "Hellebore's Display Manager";
 
@@ -47,13 +48,13 @@ in
     };
 
     background = {
-      path  = mkOption {
-        type = types.oneOf [ types.path types.str ];
+      path = mkOption {
+        type = types.oneOf [types.path types.str];
         default = "";
         description = "The path to the background image to use in the greeter.";
       };
       fit = mkOption {
-        type = types.enum [ "Fill" "Contain" "Cover" "ScaleDown" ];
+        type = types.enum ["Fill" "Contain" "Cover" "ScaleDown"];
         default = "Contain";
         description = "How the background image covers the screen if the aspect
         ratio doesn't match";
@@ -79,16 +80,17 @@ in
 
         sugarCandyNix = {
           enable = true;
-          settings = {
-            ScreenWidth = cfg.screenWidth;
-            ScreenHeight = cfg.screenHeight;
-            Font = cfg.font.name;
-            FontSize = toString cfg.font.size;
-            Background = cfg.background.path;
-          } // theme.sddm.settings;
+          settings =
+            {
+              ScreenWidth = cfg.screenWidth;
+              ScreenHeight = cfg.screenHeight;
+              Font = cfg.font.name;
+              FontSize = toString cfg.font.size;
+              Background = cfg.background.path;
+            }
+            // theme.sddm.settings;
         };
       };
     };
   };
 }
-

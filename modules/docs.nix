@@ -1,6 +1,9 @@
-{ lib, runCommand, nixosOptionsDoc, ...}:
-
-let
+{
+  lib,
+  runCommand,
+  nixosOptionsDoc,
+  ...
+}: let
   modules = import ./default.nix {};
 
   # Evaluate modules
@@ -18,6 +21,4 @@ let
     inherit (eval) options;
   };
 in
-
-optionsDoc
-
+  optionsDoc

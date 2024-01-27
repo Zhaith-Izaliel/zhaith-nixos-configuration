@@ -1,8 +1,19 @@
-{ config, lib, pkgs, ... }:
-
-let
-  inherit (lib) mkEnableOption mkOption types mkIf optionalString optionals
-  concatStringsSep;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit
+    (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    optionalString
+    optionals
+    concatStringsSep
+    ;
 
   cfg = config.hellebore.vm;
   qemu-hook-script = pkgs.writeScript "qemu-hook" ''
@@ -18,13 +29,13 @@ let
         fi
 
         ${optionalString cfg.pcisBinding.enableDynamicBinding ''
-        modprobe -r nvidia_drm
-        modprobe -i vfio_pci
-        ''}
+      modprobe -r nvidia_drm
+      modprobe -i vfio_pci
+    ''}
 
         ${optionalString cfg.externalPartition.enable ''
-        ${pkgs.util-linux}/bin/umount /dev/disk/by-uuid/${cfg.externalPartition.uuid}
-        ''}
+      ${pkgs.util-linux}/bin/umount /dev/disk/by-uuid/${cfg.externalPartition.uuid}
+    ''}
 
         elif [ "$VM_ACTION" = "release/end" ]; then
 
@@ -35,18 +46,17 @@ let
         fi
 
         ${optionalString cfg.pcisBinding.enableDynamicBinding ''
-        modprobe -r vfio_pci
-        modprobe -i nvidia_drm
-        ''}
+      modprobe -r vfio_pci
+      modprobe -i nvidia_drm
+    ''}
 
         ${optionalString cfg.externalPartition.enable ''
-        ${pkgs.util-linux}/bin/mount /dev/disk/by-uuid/${cfg.externalPartition.uuid}
-        ''}
+      ${pkgs.util-linux}/bin/mount /dev/disk/by-uuid/${cfg.externalPartition.uuid}
+    ''}
       fi
     fi
   '';
-in
-{
+in {
   options.hellebore.vm = {
     enable = mkEnableOption "Hellebore KVM VM (*Works only with an Intel CPU and
     Nvidia GPU)";
@@ -144,12 +154,13 @@ in
             packages = with pkgs; [
               (OVMFFull.override {
                 secureBoot = cfg.useSecureBoot;
-              }).fd
+              })
+              .fd
             ];
           };
           runAsRoot = true;
           verbatimConfig = ''
-          user = "zhaith"
+            user = "zhaith"
           '';
           swtpm.enable = true;
         };
@@ -167,37 +178,41 @@ in
     ];
 
     boot = {
-      kernelModules = [
-        "kvm-intel"
-        "vfio"
-        "vfio_iommu_type1"
-        "vfio_pci"
-        "vfio_virqfd"
-        "vhost-net"
-      ] ++ optionals cfg.pcisBinding.enableDynamicBinding [
-        "nvidia"
-        "nvidia_modeset"
-        "nvidia_uvm"
-        "nvidia_drm"
-      ];
+      kernelModules =
+        [
+          "kvm-intel"
+          "vfio"
+          "vfio_iommu_type1"
+          "vfio_pci"
+          "vfio_virqfd"
+          "vhost-net"
+        ]
+        ++ optionals cfg.pcisBinding.enableDynamicBinding [
+          "nvidia"
+          "nvidia_modeset"
+          "nvidia_uvm"
+          "nvidia_drm"
+        ];
       kernelParams = [
         "intel_iommu=on"
         "iommu=pt"
         ("vfio-pci.ids=" + concatStringsSep "," cfg.pcisBinding.vendorIds)
       ];
       initrd = {
-        availableKernelModules = [
-          "vfio"
-          "vfio_iommu_type1"
-          "vfio_pci"
-          "vfio_virqfd"
-          "vhost-net"
-        ] ++ optionals cfg.pcisBinding.enableDynamicBinding [
-          "nvidia"
-          "nvidia_modeset"
-          "nvidia_uvm"
-          "nvidia_drm"
-        ];
+        availableKernelModules =
+          [
+            "vfio"
+            "vfio_iommu_type1"
+            "vfio_pci"
+            "vfio_virqfd"
+            "vhost-net"
+          ]
+          ++ optionals cfg.pcisBinding.enableDynamicBinding [
+            "nvidia"
+            "nvidia_modeset"
+            "nvidia_uvm"
+            "nvidia_drm"
+          ];
 
         # preDeviceCommands = ''
         # for DEV in ${concatStringsSep " " cfg.pcisBinding.pcis}; do
@@ -207,18 +222,17 @@ in
         # '';
       };
 
-      extraModprobeConfig = concatStringsSep "\n"  [
+      extraModprobeConfig = concatStringsSep "\n" [
         ''
-        blacklist nouveau
-        # blacklist xpad
+          blacklist nouveau
+          # blacklist xpad
         ''
         (optionalString (!cfg.pcisBinding.enableDynamicBinding) "options nouveau modeset=0")
         (optionalString cfg.pcisBinding.enableDynamicBinding ''
-        remove vfio_pci
-        install nvidia_drm
+          remove vfio_pci
+          install nvidia_drm
         '')
       ];
     };
   };
 }
-

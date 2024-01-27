@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.desktop-environment.files-manager;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.desktop-environment.files-manager;
+in {
   options.hellebore.desktop-environment.files-manager = {
     enable = mkEnableOption "Hellebore files manager's configuration";
 
@@ -19,20 +20,20 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      cinnamon.nemo
-    ]
-    ++ lists.optionals cfg.supports.images (with pkgs; [
-      qview
-      gthumb
-    ])
-    ++ lists.optionals cfg.supports.archives (with pkgs; [
-      cinnamon.nemo-fileroller
-      gnome.file-roller
-      zip
-      unzip
-    ])
-    ++ lists.optional cfg.supports.torrents pkgs.fragments;
+    home.packages = with pkgs;
+      [
+        cinnamon.nemo
+      ]
+      ++ lists.optionals cfg.supports.images (with pkgs; [
+        qview
+        gthumb
+      ])
+      ++ lists.optionals cfg.supports.archives (with pkgs; [
+        cinnamon.nemo-fileroller
+        gnome.file-roller
+        zip
+        unzip
+      ])
+      ++ lists.optional cfg.supports.torrents pkgs.fragments;
   };
 }
-

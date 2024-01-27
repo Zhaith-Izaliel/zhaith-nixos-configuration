@@ -1,11 +1,11 @@
-{ config, lib, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.hardware.printing;
-in
 {
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.hardware.printing;
+in {
   options.hellebore.hardware.printing = {
     enable = mkEnableOption "Printing support";
     drivers = mkOption {
@@ -31,4 +31,3 @@ in
     };
   };
 }
-

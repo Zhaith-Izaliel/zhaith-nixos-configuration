@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.hyprland;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.hyprland;
+in {
   options.hellebore.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
@@ -32,16 +33,16 @@ in
     programs.dconf.enable = true;
 
     security.pam.services.swaylock.text = strings.optionalString cfg.enableSwaylockPam ''
-    # PAM configuration file for the swaylock screen locker. By default, it includes
-    # the 'login' configuration file (see /etc/pam.d/login)
-    auth include login
+      # PAM configuration file for the swaylock screen locker. By default, it includes
+      # the 'login' configuration file (see /etc/pam.d/login)
+      auth include login
     '';
 
     systemd.user.services.polkit-gnome-authentication-agent-1 = {
       description = "polkit-gnome-authentication-agent-1";
-      wantedBy = [ "graphical-session.target" ];
-      wants = [ "graphical-session.target" ];
-      after = [ "graphical-session.target" ];
+      wantedBy = ["graphical-session.target"];
+      wants = ["graphical-session.target"];
+      after = ["graphical-session.target"];
       serviceConfig = {
         Type = "simple";
         ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
@@ -56,7 +57,6 @@ in
       options nouveau modeset=0
     '';
 
-
     programs.hyprland = {
       enable = true;
       xwayland = {
@@ -66,4 +66,3 @@ in
     };
   };
 }
-

@@ -1,8 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.hellebore.development.git.commitlint;
   commitlintrc = ''
     module.exports = {
@@ -19,10 +21,8 @@ let
       helpUrl: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint',
       prompt: {}
     }
-    '';
-
-in
-  {
+  '';
+in {
   options.hellebore.development.git.commitlint = {
     enable = mkEnableOption "Enable Commitlint with the Hellebore
     configuration";
@@ -55,4 +55,3 @@ in
     home.file.".commitlintrc.js".text = cfg.commitlintrc;
   };
 }
-

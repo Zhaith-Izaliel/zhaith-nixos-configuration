@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   # Define user accounts. Don't forget to set a password with ‘passwd’.
 
   users.groups.zhaith = {
@@ -24,4 +22,3 @@
     shell = pkgs.zsh;
   };
 }
-

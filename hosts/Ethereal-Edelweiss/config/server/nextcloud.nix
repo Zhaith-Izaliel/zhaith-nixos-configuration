@@ -1,6 +1,4 @@
-{ pkgs, ...}:
-
-{
+{pkgs, ...}: {
   # Actual Nextcloud Config
   services.nextcloud = {
     enable = true;
@@ -58,7 +56,7 @@
 
   services.postgresql = {
     enable = true;
-    ensureDatabases = [ "nextcloud" ];
+    ensureDatabases = ["nextcloud"];
     ensureUsers = [
       {
         name = "nextcloud";
@@ -81,4 +79,3 @@
     ];
   };
 }
-

@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   networking = {
     domain = "ethereal-edelweiss.cloud";
 
@@ -14,8 +16,8 @@
     };
     # Configure network proxy if necessary
     # proxy = {
-      # default = "http://user:password@proxy:port/";
-      # noProxy = "127.0.0.1,localhost,internal.domain";
+    # default = "http://user:password@proxy:port/";
+    # noProxy = "127.0.0.1,localhost,internal.domain";
     # };
 
     # Open ports in the firewall.

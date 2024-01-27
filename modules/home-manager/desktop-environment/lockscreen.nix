@@ -1,12 +1,15 @@
-{ os-config, config, lib, pkgs, extra-types, ... }:
-
-with lib;
-
-let
+{
+  os-config,
+  config,
+  lib,
+  pkgs,
+  extra-types,
+  ...
+}:
+with lib; let
   cfg = config.hellebore.desktop-environment.lockscreen;
   theme = config.hellebore.theme.themes.${cfg.theme};
-in
-{
+in {
   options.hellebore.desktop-environment.lockscreen = {
     enable = mkEnableOption "Hellebore Swaylock and Swayidle configuration";
 
@@ -96,9 +99,11 @@ in
         to properly log you in.";
       }
       {
-        assertion = cfg.enable ->
-          cfg.timeouts.dim.timer < cfg.timeouts.lock.timer &&
-          cfg.timeouts.lock.timer < cfg.timeouts.powerSaving.timer;
+        assertion =
+          cfg.enable
+          -> cfg.timeouts.dim.timer
+          < cfg.timeouts.lock.timer
+          && cfg.timeouts.lock.timer < cfg.timeouts.powerSaving.timer;
         message = "Your timers should be in ascending order, such that
         `dim.timer < lock.timer < powerSaving.timer`";
       }
@@ -107,11 +112,13 @@ in
     programs.swaylock = {
       inherit (cfg) package;
       enable = true;
-      settings = {
-        indicator-radius = cfg.indicatorRadius;
-        font-size = cfg.font.size;
-        font = cfg.font.name;
-      } // theme.swaylock.settings;
+      settings =
+        {
+          indicator-radius = cfg.indicatorRadius;
+          font-size = cfg.font.size;
+          font = cfg.font.name;
+        }
+        // theme.swaylock.settings;
     };
 
     services.swayidle = {
@@ -144,4 +151,3 @@ in
     };
   };
 }
-

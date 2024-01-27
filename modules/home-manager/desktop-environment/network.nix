@@ -1,11 +1,13 @@
-{ os-config, config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.desktop-environment.network;
-in
 {
+  os-config,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.desktop-environment.network;
+in {
   options.hellebore.desktop-environment.network = {
     enable = mkEnableOption "Hellebore's Network configuration";
   };
@@ -24,4 +26,3 @@ in
     ];
   };
 }
-

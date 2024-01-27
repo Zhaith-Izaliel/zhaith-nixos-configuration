@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.opengl;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.opengl;
+in {
   options.hellebore.opengl = {
     enable = mkEnableOption "Hellebore OpenGL configuration";
   };
@@ -26,4 +27,3 @@ in
     };
   };
 }
-

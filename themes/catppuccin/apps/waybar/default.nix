@@ -1,9 +1,16 @@
-{ colors, inputs, modules, lib }:
-let
+{
+  colors,
+  inputs,
+  modules,
+  lib,
+}: let
   inherit (lib) recursiveUpdate any optionalString concatStringsSep;
   mkBig = icon: "<big>${icon}</big>";
-  mkWaybarModules = (import ../../../../utils/default.nix { inherit inputs; }
-  ).mkWaybarModules;
+  mkWaybarModules =
+    (
+      import ../../../../utils/default.nix {inherit inputs;}
+    )
+    .mkWaybarModules;
   modulesPosition = {
     modules-left = [
       "custom/icon"
@@ -39,175 +46,173 @@ let
     };
   };
   finalModules = mkWaybarModules modules modulesPosition;
-in
-{
+in {
   settings = {
-    mainBar = recursiveUpdate {
-      layer = "top";
-      position = "top";
-      margin-top = 20;
-      margin-right = 20;
-      margin-left = 20;
-      spacing = 0;
+    mainBar =
+      recursiveUpdate {
+        layer = "top";
+        position = "top";
+        margin-top = 20;
+        margin-right = 20;
+        margin-left = 20;
+        spacing = 0;
 
-      gamemode = {
-        format = "{glyph} On";
-        hide-not-running = true;
-        use-icon = true;
-        tooltip = true;
-        tooltip-format = "Processes running: {count}";
-        icon-spacing = 0;
-      };
-
-      "custom/weather" = {
-        format = "{}";
-      };
-
-      "custom/icon" = {
-        format = mkBig "🪷";
-        tooltip = false;
-      };
-
-      "group/power" = {
-        orientation = "inherit";
-        drawer = {
-          transition-duration = 500;
-          children-class = "power-child";
-          transition-left-to-right = false;
-        };
-      };
-
-      "custom/logout" = {
-        format = mkBig "󰗼";
-        tooltip = false;
-      };
-
-      "custom/lock" = {
-        format = mkBig "󰍁";
-        tooltip = false;
-      };
-
-      "custom/reboot" = {
-        format = mkBig "󰜉";
-        tooltip = false;
-      };
-
-      "custom/power" = {
-        format = mkBig "";
-        tooltip = false;
-      };
-
-      "custom/notifications" = {
-        format = "${mkBig "{icon}"} {}";
-        format-icons = {
-          not-paused = "";
-          paused = "";
-          error = "";
-        };
-      };
-
-      "custom/power-profiles" = {
-        format = mkBig "{icon}";
-        format-icons = {
-          performance = "󰓅";
-          balanced = "󰾅";
-          power-saver = "󰾆";
-          error = "";
-        };
-      };
-
-      bluetooth = {
-        format = "󰂯 On";
-        format-off = "${mkBig "󰂲"} Off";
-        format-disabled = "󰂳 Disabled";
-        format-connected = "${mkBig "󰂱"} {device_alias}";
-        format-connected-battery = "${mkBig "󰂱"} {device_alias} {device_battery_percentage}%";
-        tooltip-format = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
-        tooltip-format-connected = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected\n\n{device_enumerate}";
-        tooltip-format-enumerate-connected = "󰥰 {device_alias} - {device_address}";
-        tooltip-format-enumerate-connected-battery = "󰥰 {device_alias} - {device_address} (󰁹 {device_battery_percentage}%)";
-      };
-
-      "hyprland/window" = {
-        format = "{}";
-      };
-
-      "hyprland/workspaces" = {
-        disable-scroll = true;
-        all-outputs = true;
-        sort-by-number =  true;
-        format = mkBig "{icon}";
-        format-icons = {
-          "1" = "一";
-          "2" = "二";
-          "3" = "三";
-          "4" = "四";
-          "5" = "五";
-          "6" = "六";
-          "7" = "七";
-          "8" = "八";
-          "9" = "九";
-          "10" = "〇";
+        gamemode = {
+          format = "{glyph} On";
+          hide-not-running = true;
+          use-icon = true;
+          tooltip = true;
+          tooltip-format = "Processes running: {count}";
+          icon-spacing = 0;
         };
 
-        persistent-workspaces = {
-          "*" = 10;
+        "custom/weather" = {
+          format = "{}";
         };
-      };
 
-      idle_inhibitor = {
-        format = mkBig "{icon}";
-        format-icons = {
-          deactivated = "󰅶";
-          activated = "󰶞";
+        "custom/icon" = {
+          format = mkBig "🪷";
+          tooltip = false;
         };
-        tooltip-format-activated = "Active";
-        tooltip-format-deactivated = "Inactive";
-      };
 
-      backlight = {
-        format = "${mkBig "{icon}"} {percent}%";
-        tooltip-format = "Brightness: {percent}%";
-        format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖨"];
-        min-length = 6;
-      };
-
-      battery = {
-        format = "{icon} {capacity}%";
-        format-charging = "󰂄 {capacity}%";
-        format-plugged = " {capacity}%";
-        format-icons = ["󰁺" "󰁻" "󰁼" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
-      };
-
-      clock = {
-        format = "${mkBig ""} {:%H:%M}";
-        tooltip-format = "<tt><small>{calendar}</small></tt>";
-        calendar = {
-          mode = "month";
-          mode-mon-col = 3;
-          weeks-pos = "right";
-          on-scroll = 1;
-          on-click = "mode";
-          format = {
-            months = "<span color='${colors.normal.mauve}'><b>{}</b></span>";
-            days = "<span color='${colors.normal.lavender}'><b>{}</b></span>";
-            weeks = "<span color='${colors.normal.teal}'><b>W{}</b></span>";
-            weekdays = "<span color='${colors.normal.blue}'><b>{}</b></span>";
-            today = "<span color='${colors.normal.red}'><b><u>{}</u></b></span>";
+        "group/power" = {
+          orientation = "inherit";
+          drawer = {
+            transition-duration = 500;
+            children-class = "power-child";
+            transition-left-to-right = false;
           };
-          actions = {
+        };
+
+        "custom/logout" = {
+          format = mkBig "󰗼";
+          tooltip = false;
+        };
+
+        "custom/lock" = {
+          format = mkBig "󰍁";
+          tooltip = false;
+        };
+
+        "custom/reboot" = {
+          format = mkBig "󰜉";
+          tooltip = false;
+        };
+
+        "custom/power" = {
+          format = mkBig "";
+          tooltip = false;
+        };
+
+        "custom/notifications" = {
+          format = "${mkBig "{icon}"} {}";
+          format-icons = {
+            not-paused = "";
+            paused = "";
+            error = "";
+          };
+        };
+
+        "custom/power-profiles" = {
+          format = mkBig "{icon}";
+          format-icons = {
+            performance = "󰓅";
+            balanced = "󰾅";
+            power-saver = "󰾆";
+            error = "";
+          };
+        };
+
+        bluetooth = {
+          format = "󰂯 On";
+          format-off = "${mkBig "󰂲"} Off";
+          format-disabled = "󰂳 Disabled";
+          format-connected = "${mkBig "󰂱"} {device_alias}";
+          format-connected-battery = "${mkBig "󰂱"} {device_alias} {device_battery_percentage}%";
+          tooltip-format = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
+          tooltip-format-connected = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected\n\n{device_enumerate}";
+          tooltip-format-enumerate-connected = "󰥰 {device_alias} - {device_address}";
+          tooltip-format-enumerate-connected-battery = "󰥰 {device_alias} - {device_address} (󰁹 {device_battery_percentage}%)";
+        };
+
+        "hyprland/window" = {
+          format = "{}";
+        };
+
+        "hyprland/workspaces" = {
+          disable-scroll = true;
+          all-outputs = true;
+          sort-by-number = true;
+          format = mkBig "{icon}";
+          format-icons = {
+            "1" = "一";
+            "2" = "二";
+            "3" = "三";
+            "4" = "四";
+            "5" = "五";
+            "6" = "六";
+            "7" = "七";
+            "8" = "八";
+            "9" = "九";
+            "10" = "〇";
+          };
+
+          persistent-workspaces = {
+            "*" = 10;
+          };
+        };
+
+        idle_inhibitor = {
+          format = mkBig "{icon}";
+          format-icons = {
+            deactivated = "󰅶";
+            activated = "󰶞";
+          };
+          tooltip-format-activated = "Active";
+          tooltip-format-deactivated = "Inactive";
+        };
+
+        backlight = {
+          format = "${mkBig "{icon}"} {percent}%";
+          tooltip-format = "Brightness: {percent}%";
+          format-icons = ["" "" "" "" "" "" "" "" "" "" "󰽢" "󰖨"];
+          min-length = 6;
+        };
+
+        battery = {
+          format = "{icon} {capacity}%";
+          format-charging = "󰂄 {capacity}%";
+          format-plugged = " {capacity}%";
+          format-icons = ["󰁺" "󰁻" "󰁼" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+        };
+
+        clock = {
+          format = "${mkBig ""} {:%H:%M}";
+          tooltip-format = "<tt><small>{calendar}</small></tt>";
+          calendar = {
+            mode = "month";
+            mode-mon-col = 3;
+            weeks-pos = "right";
+            on-scroll = 1;
             on-click = "mode";
-            on-scroll-up = "shift_up";
-            on-scroll-down = "shift_down";
+            format = {
+              months = "<span color='${colors.normal.mauve}'><b>{}</b></span>";
+              days = "<span color='${colors.normal.lavender}'><b>{}</b></span>";
+              weeks = "<span color='${colors.normal.teal}'><b>W{}</b></span>";
+              weekdays = "<span color='${colors.normal.blue}'><b>{}</b></span>";
+              today = "<span color='${colors.normal.red}'><b><u>{}</u></b></span>";
+            };
+            actions = {
+              on-click = "mode";
+              on-scroll-up = "shift_up";
+              on-scroll-down = "shift_down";
+            };
           };
         };
-      };
 
-      network =
-        let
+        network = let
           speedFormat = "󰮏 {bandwidthDownBits}⎹ 󰸇 {bandwidthUpBits}";
-        in
-        {
+        in {
           format-wifi = "${mkBig "{icon}"} {essid}";
           format-ethernet = "${mkBig "󰈀"} {ipaddr}/{cidr}";
           format-linked = "${mkBig ""} {ifname}";
@@ -229,7 +234,7 @@ in
           format = "${mkBig "{icon}"} {volume}%";
           tooltip-format = "Device Node: {node_name}\nVolume: {volume}%";
           format-muted = mkBig "󰖁";
-          format-icons = [ "" "" "" ];
+          format-icons = ["" "" ""];
         };
 
         mpd = {
@@ -255,11 +260,12 @@ in
             off = "󰑘 off";
           };
         };
-      } finalModules;
-    };
+      }
+      finalModules;
+  };
 
-    style = concatStringsSep "\n" [
-      ''
+  style = concatStringsSep "\n" [
+    ''
       @define-color base   ${colors.normal.base};
       @define-color mantle ${colors.normal.mantle};
       @define-color crust  ${colors.normal.crust};
@@ -291,17 +297,16 @@ in
       @define-color flamingo  ${colors.normal.flamingo};
       @define-color rosewater ${colors.normal.rosewater};
 
+    ''
+    (
+      optionalString
+      (any (item: item == "custom/notifications") modules.modules)
       ''
-      (
-        optionalString
-        (any (item: item == "custom/notifications") modules.modules)
-        ''
         #tray {
           border-left-width: 2px;
         }
-        ''
-      )
-      (builtins.readFile ./style.css)
-    ];
-  }
-
+      ''
+    )
+    (builtins.readFile ./style.css)
+  ];
+}

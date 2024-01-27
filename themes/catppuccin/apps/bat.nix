@@ -1,22 +1,22 @@
-{ pkgs, lib, inputs }:
-
-let
+{
+  pkgs,
+  lib,
+  inputs,
+}: let
   package = pkgs.stdenv.mkDerivation {
     pname = "bat-catppuccin";
-    version  = inputs.catppuccin-bat.rev;
+    version = inputs.catppuccin-bat.rev;
 
     src = inputs.catppuccin-bat;
 
     installPhase = ''
-    mkdir -p $out
-    cp -r *.tmTheme $out
+      mkdir -p $out
+      cp -r *.tmTheme $out
     '';
   };
-in
-{
+in {
   inherit package;
   inherit (package) src;
   name = "catppuccin-macchiato";
   file = "Catppuccin-macchiato.tmTheme";
 }
-

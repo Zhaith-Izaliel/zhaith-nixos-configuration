@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.tex;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hellebore.tex;
+in {
   options.hellebore.tex = {
     enable = mkEnableOption "Hellebore LaTeX packages";
   };
@@ -17,4 +18,3 @@ in
     ];
   };
 }
-

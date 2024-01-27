@@ -1,24 +1,28 @@
-{ os-config, config, lib, pkgs, extra-types, ... }:
-
-let
+{
+  os-config,
+  config,
+  lib,
+  pkgs,
+  extra-types,
+  ...
+}: let
   inherit (lib) types mkOption mkEnableOption mkIf;
   cfg = config.hellebore.desktop-environment.hyprland;
   configure-gtk = gtkTheme: let
     schema = pkgs.gsettings-desktop-schemas;
     datadir = "${schema}/share/gsettings-schemas/${schema.name}";
   in
-  pkgs.writeShellScriptBin "configure-gtk" ''
-    #!/usr/bin/env bash
-    export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-    local gnome_schema=org.gnome.desktop.interface
-    gsettings set $gnome_schema gtk-theme ${gtkTheme.theme.name}
-    gsettings set $gnome_schema icon-theme ${gtkTheme.iconTheme.name}
-    gsettings set $gnome_schema cursor-theme ${gtkTheme.cursorTheme.name}
-    gsettings set $gnome_schema font-name ${gtkTheme.font.name}
-  '';
+    pkgs.writeShellScriptBin "configure-gtk" ''
+      #!/usr/bin/env bash
+      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+      local gnome_schema=org.gnome.desktop.interface
+      gsettings set $gnome_schema gtk-theme ${gtkTheme.theme.name}
+      gsettings set $gnome_schema icon-theme ${gtkTheme.iconTheme.name}
+      gsettings set $gnome_schema cursor-theme ${gtkTheme.cursorTheme.name}
+      gsettings set $gnome_schema font-name ${gtkTheme.font.name}
+    '';
   theme = config.hellebore.theme.themes.${cfg.theme};
-in
-{
+in {
   imports = [
     ./config.nix
   ];
@@ -26,12 +30,14 @@ in
   options.hellebore.desktop-environment.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
-    monitors = extra-types.monitors // {
-      default = config.hellebore.monitors;
-    };
+    monitors =
+      extra-types.monitors
+      // {
+        default = config.hellebore.monitors;
+      };
 
     layout = mkOption {
-      type = types.enum [ "dwindle" "master" ];
+      type = types.enum ["dwindle" "master"];
       description = "Defines the layout used in Hyprland.";
       default = "dwindle";
     };
@@ -42,10 +48,12 @@ in
       applications.";
     };
 
-    mirrorFirstMonitor = mkEnableOption null // {
-      description = "Allow Hyprland to mirror the first monitor defined in its
+    mirrorFirstMonitor =
+      mkEnableOption null
+      // {
+        description = "Allow Hyprland to mirror the first monitor defined in its
       monitors list when connecting an unknown monitor.";
-    };
+      };
 
     package = mkOption {
       type = types.package;
@@ -108,18 +116,20 @@ in
       }
     ];
 
-    home.packages = with pkgs; [
-      swww
-      swayosd
-      wl-clipboard
-      power-management
-      hyprpicker
-      grimblast
-      volume-brightness
-      screenshot
-      (configure-gtk theme.gtk)
-      gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
-    ] ++ theme.gtk.packages;
+    home.packages = with pkgs;
+      [
+        swww
+        swayosd
+        wl-clipboard
+        power-management
+        hyprpicker
+        grimblast
+        volume-brightness
+        screenshot
+        (configure-gtk theme.gtk)
+        gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
+      ]
+      ++ theme.gtk.packages;
 
     gtk = {
       enable = true;
@@ -140,4 +150,3 @@ in
     };
   };
 }
-

@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   imports = [
     ./browsers.nix
     ./mail.nix
@@ -19,4 +17,3 @@
     ./widget
   ];
 }
-

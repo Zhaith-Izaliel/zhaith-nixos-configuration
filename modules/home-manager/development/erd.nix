@@ -1,8 +1,10 @@
-{ config, lib, pkgs, ...}:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   erdConfig = ''
     # Human readable sizes
     --human
@@ -16,10 +18,9 @@ let
     # Sort
     --dir-order first
     --sort name
-    '';
-    cfg = config.hellebore.development.erdtree;
-in
-{
+  '';
+  cfg = config.hellebore.development.erdtree;
+in {
   options.hellebore.development.erdtree = {
     enable = mkEnableOption "Erdtree - A modern, cross-platform, multi-threaded,
     and general purpose filesystem and disk-usage utility that is aware of
@@ -44,8 +45,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ cfg.package ];
+    home.packages = [cfg.package];
     home.file."${config.xdg.configHome}/erdtree/.erdtreerc".text = cfg.settings;
   };
 }
-

@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   services.inadyn = {
     enable = true;
     settings = ''
@@ -18,4 +16,3 @@
     passwordPlaceholder = "@password_placeholder@";
   };
 }
-

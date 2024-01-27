@@ -1,6 +1,4 @@
-{ colors }:
-
-{
+{colors}: {
   settings = {
     global = {
       corner_radius = 15;
@@ -46,4 +44,3 @@
     };
   };
 }
-

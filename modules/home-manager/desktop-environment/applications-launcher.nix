@@ -1,15 +1,30 @@
-{ os-config, config, lib, pkgs, extra-types, ... }:
-
-let
+{
+  os-config,
+  config,
+  lib,
+  pkgs,
+  extra-types,
+  ...
+}: let
   inherit (config.lib.formats.rasi) mkLiteral;
-  inherit (lib) mkEnableOption mkIf mkOption types optionalString
-  recursiveUpdate;
+  inherit
+    (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    optionalString
+    recursiveUpdate
+    ;
 
   cfg = config.hellebore.desktop-environment.applications-launcher;
   theme = config.hellebore.theme.themes.${cfg.theme};
   rofi-theme = theme.rofi mkLiteral;
 
-  moduleTheme = { width, height }: {
+  moduleTheme = {
+    width,
+    height,
+  }: {
     window = {
       cursor = theme.gtk.cursorTheme.name;
       width = mkLiteral width;
@@ -54,9 +69,8 @@ let
       inherit (cfg.applets.${name}) width height;
     };
   in
-  recursiveUpdate theme generatedModuleTheme;
-in
-{
+    recursiveUpdate theme generatedModuleTheme;
+in {
   options.hellebore.desktop-environment.applications-launcher = {
     inherit width height;
 
@@ -102,9 +116,10 @@ in
 
       font = "${cfg.font.name} ${toString cfg.font.size}";
 
-      terminal = optionalString
-      config.hellebore.shell.emulator.enable
-      config.hellebore.shell.emulator.bin;
+      terminal =
+        optionalString
+        config.hellebore.shell.emulator.enable
+        config.hellebore.shell.emulator.bin;
 
       plugins = with pkgs; [
         rofi-calc
@@ -120,10 +135,10 @@ in
         window-format = "{w} · {c} · {t}";
       };
 
-      theme = recursiveUpdate
+      theme =
+        recursiveUpdate
         rofi-theme.theme
-        (moduleTheme { inherit (cfg) width height; })
-      ;
+        (moduleTheme {inherit (cfg) width height;});
 
       applets = {
         bluetooth = {
@@ -249,4 +264,3 @@ in
     };
   };
 }
-
