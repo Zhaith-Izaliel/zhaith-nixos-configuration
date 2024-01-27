@@ -21,7 +21,7 @@ in {
 
     environment.systemPackages = with pkgs;
       [
-        neovim
+        helix
         git
       ]
       ++ (lists.optional cfg.enableDocker pkgs.docker-compose)

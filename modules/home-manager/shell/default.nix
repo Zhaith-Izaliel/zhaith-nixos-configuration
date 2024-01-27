@@ -84,13 +84,6 @@ in {
 
         envExtra = strings.concatStringsSep "\n" [
           ''
-            # Language
-            export LANG="en_US.UTF-8"
-
-            # EDITOR and VISUAL
-            export VISUAL="nvim"
-            export EDITOR="nvim"
-
             # Vi mode
             export VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
             export VI_MODE_SET_CURSOR=true
