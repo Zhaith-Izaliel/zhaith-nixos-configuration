@@ -28,7 +28,7 @@
   ];
 
   hellebore = rec {
-    font.size = 14;
+    font.size = 12;
 
     theme.name = "catppuccin";
 

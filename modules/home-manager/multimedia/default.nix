@@ -8,6 +8,7 @@ with lib; let
   cfg = config.hellebore.multimedia;
 in {
   imports = [
+    ./anime.nix
     ./art.nix
     ./mpd.nix
     ./obs.nix
@@ -25,7 +26,6 @@ in {
       pavucontrol
       blueberry
       power-management
-      # KawAnime
     ];
   };
 }

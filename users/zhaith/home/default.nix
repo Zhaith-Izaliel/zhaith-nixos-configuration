@@ -4,8 +4,6 @@
   ];
 
   hellebore = {
-    font.size = 14;
-
     theme.name = "catppuccin";
 
     desktop-environment = {
@@ -110,6 +108,7 @@
       enable = true;
       art.enable = true;
       obs.enable = true;
+      anime.enable = true;
       mpd = {
         enable = true;
         enableDiscordRPC = true;
@@ -117,16 +116,6 @@
           enable = true;
           spectrumSmoothLook = true;
         };
-      };
-    };
-
-    games = {
-      dxvk = {
-        enable = true;
-        config = ''
-          [HuntGame.exe]
-          dxvk.enableGraphicsPipelineLibrary = True
-        '';
       };
     };
 

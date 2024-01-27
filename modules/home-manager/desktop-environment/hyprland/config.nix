@@ -39,7 +39,7 @@
 
   mkMonitors = monitors: builtins.map mkMonitor monitors;
 
-  firstMonitor = builtins.elemAt cfg.monitors 0;
+  getMonitor = index: builtins.elemAt cfg.monitors index;
 
   maxPersistentWorkspaces = count (x: x) [
     true
@@ -191,8 +191,13 @@ in {
           "$mainMod, L, exec, ${config.hellebore.desktop-environment.logout.bin}")
         (optional config.hellebore.shell.emulator.enable
           "$mainMod, Q, exec, ${config.hellebore.shell.emulator.bin}")
-        (optional os-config.hellebore.vm.enable
-          "$mainMod, W, exec, start-vm --resolution=${toString firstMonitor.width}x${toString firstMonitor.height} -Fi")
+        (
+          optional os-config.hellebore.vm.enable
+          ''
+            $mainMod, W, exec, start-vm --resolution=${toString (getMonitor 0).width}x${toString (getMonitor 0).height} -Fi
+            $mainMod SHIFT, W, exec, start-vm --resolution=${toString (getMonitor 1).width}x${toString (getMonitor 1).height} -i
+          ''
+        )
         (optional config.hellebore.desktop-environment.applications-launcher.enable
           "$mainMod, R, exec, ${config.hellebore.desktop-environment.applications-launcher.command}")
         (optional config.hellebore.desktop-environment.i18n.enable
