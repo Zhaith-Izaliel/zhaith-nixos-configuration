@@ -108,7 +108,6 @@
       enable = true;
       art.enable = true;
       obs.enable = true;
-      anime.enable = true;
       mpd = {
         enable = true;
         enableDiscordRPC = true;

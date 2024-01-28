@@ -1,5 +1,4 @@
 {
-  pkgs,
   config,
   lib,
   ...
@@ -12,8 +11,8 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      KawAnime
+    warnings = [
+      "`hellebore.multimedia.anime` is unused at the moment, you shouldn't enable it, though it does nothing"
     ];
   };
 }

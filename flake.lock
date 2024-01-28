@@ -2581,11 +2581,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706143089,
-        "narHash": "sha256-CoDhRKH+MaRx6DWjt/rQWjOwHDeRom/MU4Kuv8RO5S8=",
+        "lastModified": 1706437719,
+        "narHash": "sha256-uuFImhd+m1o/Y7Sp93nz9AJdz5FewOsNxG0oJOuzEJU=",
         "owner": "Zhaith-Izaliel",
         "repo": "virgutils",
-        "rev": "478c2d3e78613ceed53f389e55a5345996c90776",
+        "rev": "e6ca0adb485dc4739fb6736e9e6310b7617bbeea",
         "type": "gitlab"
       },
       "original": {
@@ -2653,11 +2653,11 @@
         "simple-completion-language-server": "simple-completion-language-server"
       },
       "locked": {
-        "lastModified": 1706388735,
-        "narHash": "sha256-eZmDwOAx2WMWOObnmvWwG9vqHoFWWv6DBGpmMTy9aAU=",
+        "lastModified": 1706463354,
+        "narHash": "sha256-E9rGS7e1igcMsjP/piTVpHMOB3eVdAjDYWeqx6nCWac=",
         "owner": "Zhaith-Izaliel",
         "repo": "helix-config",
-        "rev": "9823f35ef7c569f1d1e76a384863bdb826cc4795",
+        "rev": "5f00bda6b77b68403cb9c5ecbb35b119a73baf96",
         "type": "gitlab"
       },
       "original": {

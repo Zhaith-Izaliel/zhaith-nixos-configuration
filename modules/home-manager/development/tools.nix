@@ -20,6 +20,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       onefetch
+      nix-npm-install
     ];
 
     home.sessionVariables = mkIf (!cfg.direnv.enableLogs) {
