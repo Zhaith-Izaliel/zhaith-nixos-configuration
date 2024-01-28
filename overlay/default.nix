@@ -1,9 +1,6 @@
 {inputs}: final: prev: let
-  nodejs-packages = import ../assets/packages/nodejs {
-    pkgs = prev;
-    nodejs = prev.nodejs;
-    stdenv = prev.stdenv;
-  };
+  inherit (packages) nodejs-packages;
+  packages = import ../packages {pkgs = final;};
 in {
   inherit (nodejs-packages) commitlint-format-json;
 
@@ -22,6 +19,4 @@ in {
 
   commitlint-config-conventional =
     nodejs-packages."@commitlint/config-conventional";
-
-  KawAnime = prev.callPackage ../packages/kawanime.nix {src = inputs.kawanime;};
 }
