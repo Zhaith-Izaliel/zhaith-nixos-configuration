@@ -148,6 +148,7 @@ in {
 
           "custom/notifications" = {
             exec = "${getExe pkgs.dunstbar} --history=10 -i";
+            restart-interval = 5;
             on-click = "${getExe pkgs.dunstbar} -p";
             on-click-right = "${getExe pkgs.dunstbar} -c";
             return-type = "json";
@@ -155,6 +156,7 @@ in {
 
           "custom/power-profiles" = {
             exec = "${getExe pkgs.power-profilesbar} -i";
+            restart-interval = 30;
             return-type = "json";
           };
 

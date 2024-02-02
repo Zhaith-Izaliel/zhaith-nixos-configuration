@@ -9,7 +9,12 @@ with lib; let
   cfg = config.hellebore.desktop-environment.mail;
 in {
   options.hellebore.desktop-environment.mail = {
-    enable = mkEnableOption "Hellebore Mail clients";
+    enable = mkOption {
+      default = osConfig.programs.evolution.enable;
+      description = "Enable Hellebore Mail client";
+      type = types.bool;
+    };
+
     bin = mkOption {
       default = "${pkgs.evolution}/bin/evolution";
       type = types.str;
@@ -29,11 +34,13 @@ in {
       }
     ];
 
-    home.packages =
-      [
-        pkgs.evolution
-      ]
-      ++ lists.optional cfg.protonmail.enable pkgs.protonmail-bridge;
+    home.packages = lists.optional cfg.protonmail.enable pkgs.protonmail-bridge;
+
+    programs.thunderbird = {
+      enable = true;
+      package = pkgs.thunderbird-bin;
+      profiles."zhaith".isDefault = true;
+    };
 
     systemd.user.services.protonmail-bridge = mkIf cfg.protonmail.enable {
       Unit = {

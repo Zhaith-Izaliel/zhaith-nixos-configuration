@@ -9,7 +9,6 @@ with lib; let
 in {
   options.hellebore.hardware.bluetooth = {
     enable = mkEnableOption "Bluetooth support";
-    enablePowerSupport = mkEnableOption "Bluetooth power visualization support";
   };
 
   config = mkIf cfg.enable {
@@ -17,7 +16,7 @@ in {
 
     hardware.bluetooth = {
       enable = true;
-      package = pkgs.bluez.override {withExperimental = cfg.enablePowerSupport;};
+      package = pkgs.bluez;
     };
   };
 }

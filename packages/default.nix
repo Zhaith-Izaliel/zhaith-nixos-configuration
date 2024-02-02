@@ -6,4 +6,5 @@
   };
 in {
   inherit nodejs-packages;
+  kando = pkgs.callPackage ./kando.nix {};
 }

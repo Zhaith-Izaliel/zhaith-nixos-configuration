@@ -3,6 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   pkgs,
+  stable-pkgs,
   lib,
   ...
 }: {
@@ -90,7 +91,6 @@
 
       bluetooth = {
         enable = true;
-        enablePowerSupport = true;
       };
 
       numerization.enable = true;
@@ -166,6 +166,7 @@
     hyprland = {
       enable = true;
       enableSwaylockPam = true;
+      enableEvolution = true;
     };
 
     display-manager = {

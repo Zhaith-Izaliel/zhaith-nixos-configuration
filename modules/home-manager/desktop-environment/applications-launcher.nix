@@ -142,10 +142,6 @@ in {
 
       applets = {
         bluetooth = {
-          package = pkgs.rofi-bluetooth.override {
-            withBluezExperimental =
-              os-config.hellebore.hardware.bluetooth.enablePowerSupport;
-          };
           enable = os-config.hardware.bluetooth.enable;
           settings = {
             divider = "────────────────────────────────────";

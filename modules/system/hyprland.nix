@@ -10,7 +10,15 @@ in {
   options.hellebore.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
+    package = mkOption {
+      type = types.package;
+      default = pkgs.hyprland;
+      description = "Override default Hyprland package";
+    };
+
     enableSwaylockPam = mkEnableOption "Swaylock PAM configuration";
+
+    enableEvolution = mkEnableOption "Evolution PIM";
   };
 
   config = mkIf cfg.enable {
@@ -31,6 +39,8 @@ in {
     services.gnome.gnome-settings-daemon.enable = true;
 
     programs.dconf.enable = true;
+
+    programs.evolution.enable = cfg.enableEvolution;
 
     security.pam.services.swaylock.text = strings.optionalString cfg.enableSwaylockPam ''
       # PAM configuration file for the swaylock screen locker. By default, it includes
@@ -59,10 +69,10 @@ in {
 
     programs.hyprland = {
       enable = true;
+      package = cfg.package;
       xwayland = {
         enable = true;
       };
-      # enableNvidiaPatches = isNvidia;
     };
   };
 }

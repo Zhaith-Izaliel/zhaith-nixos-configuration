@@ -35,7 +35,7 @@
     };
 
     hyprland = {
-      url = "github:hyprwm/Hyprland";
+      url = "github:hyprwm/Hyprland/v0.33.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -57,12 +57,6 @@
     rofi-applets = {
       url = "gitlab:Zhaith-Izaliel/rofi-applets";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Other packages
-    kawanime = {
-      url = "github:Kylart/KawAnime";
-      flake = false;
     };
 
     # Theme packages

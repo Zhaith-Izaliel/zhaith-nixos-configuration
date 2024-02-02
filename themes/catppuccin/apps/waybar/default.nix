@@ -216,7 +216,7 @@ in {
           format-wifi = "${mkBig "{icon}"} {essid}";
           format-ethernet = "${mkBig "󰈀"} {ipaddr}/{cidr}";
           format-linked = "${mkBig ""} {ifname}";
-          format-disconnected = mkBig "󰒏";
+          format-disconnected = "${mkBig "󰒏"} Disconnected";
           tooltip-format-wifi = "{essid} - {icon} {signalStrength}%\n${speedFormat}";
           tooltip-format-disconnected = "Disconnected";
           tooltip-format-ethernet = "{ifname}\n${speedFormat}";
