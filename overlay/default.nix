@@ -2,6 +2,7 @@
   inherit (packages) nodejs-packages;
   packages = import ../packages {pkgs = final;};
 in {
+  inherit (packages) kando;
   inherit (nodejs-packages) commitlint-format-json;
 
   commitlint = nodejs-packages."@commitlint/cli".overrideAttrs (

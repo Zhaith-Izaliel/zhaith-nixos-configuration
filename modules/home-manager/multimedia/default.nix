@@ -21,6 +21,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       mpv
+      vlc
       kid3
       ffmpeg
       pavucontrol

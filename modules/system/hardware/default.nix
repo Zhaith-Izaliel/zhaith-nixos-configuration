@@ -10,5 +10,6 @@
     ./numerization.nix
     ./nvidia.nix
     ./printing.nix
+    ./steam.nix
   ];
 }
