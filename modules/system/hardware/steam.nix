@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   inherit (lib) mkEnableOption mkIf;
@@ -11,6 +12,10 @@ in {
   };
 
   config = mkIf cfg.enable {
-    hardware.steam.enable = true;
+    hardware.steam-hardware.enable = true;
+
+    environment.systemPackages = with pkgs; [
+      sc-controller
+    ];
   };
 }

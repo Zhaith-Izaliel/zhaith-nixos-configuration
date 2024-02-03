@@ -19,9 +19,13 @@ in {
     enableSwaylockPam = mkEnableOption "Swaylock PAM configuration";
 
     enableEvolution = mkEnableOption "Evolution PIM";
+
+    useHack = mkEnableOption "Use a patched Hyprland version to fix wayland's socket buffer size overflowing (TEMP)";
   };
 
   config = mkIf cfg.enable {
+    warnings = optional cfg.useHack "Using a patched Hyprland version is a hack in itself and should be removed after https://github.com/swaywm/sway/issues/7645 is fixed, or https://gitlab.freedesktop.org/wayland/wayland/-/merge_requests/188 is merged and deployed on Wayland.";
+
     environment.systemPackages = with pkgs; [
       gtk3
     ];
@@ -67,9 +71,16 @@ in {
       options nouveau modeset=0
     '';
 
+    boot.kernel.sysctl = mkIf cfg.useHack {
+      "net.core.wmem_max" = 16777216;
+    };
+
     programs.hyprland = {
       enable = true;
-      package = cfg.package;
+      package =
+        if cfg.useHack
+        then pkgs.hyprland-patched
+        else cfg.package;
       xwayland = {
         enable = true;
       };

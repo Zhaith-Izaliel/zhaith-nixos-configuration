@@ -24,7 +24,7 @@
   theme =
     config.hellebore.theme.themes.${cfg.theme};
 
-  mkWindowrulev2 = window: rules: (map (rule: "${rule},${window}") rules);
+  mkWindowOrLayerRule = window: rules: (map (rule: "${rule},${window}") rules);
 
   mkMonitor = monitor: let
     inherit (monitor) name;
@@ -74,49 +74,56 @@ in {
       windowrulev2 = flatten [
         (
           optionals config.hellebore.tools.discord.enable
-          (mkWindowrulev2 "class:(discord)" [
+          (mkWindowOrLayerRule "class:(discord)" [
             "workspace 3 silent"
             "noinitialfocus"
           ])
         )
         (
           optionals config.hellebore.desktop-environment.mail.enable
-          (mkWindowrulev2 "class:(evolution)" [
+          (mkWindowOrLayerRule "class:(evolution)" [
             "workspace 4 silent"
           ])
         )
         (optionals os-config.hellebore.games.enable [
-          (mkWindowrulev2 "class:(steam)" [
+          (mkWindowOrLayerRule "class:(steam)" [
             "workspace 5 silent"
           ])
-          (mkWindowrulev2 "class:(.gamescope-wrapped)" [
+          (mkWindowOrLayerRule "class:(.gamescope-wrapped)" [
             "workspace 5"
             "idleinhibit"
           ])
-          (mkWindowrulev2 "class:(lutris)" [
+          (mkWindowOrLayerRule "class:(lutris)" [
             "workspace 5"
           ])
-          (mkWindowrulev2 "class:^.*(Cartridges).*$" [
+          (mkWindowOrLayerRule "class:^.*(Cartridges).*$" [
             "workspace 5 silent"
           ])
-          (mkWindowrulev2 "class:^.*(heroic).*$" [
+          (mkWindowOrLayerRule "class:^.*(heroic).*$" [
             "workspace 5"
           ])
-          (mkWindowrulev2 "class:(steam_app_).*" [
+          (mkWindowOrLayerRule "class:(steam_app_).*" [
             "workspace 5"
             "idleinhibit"
           ])
         ])
         (optionals os-config.hellebore.vm.enable [
-          (mkWindowrulev2 "title:(${os-config.hellebore.vm.name})class:(looking-glass-client)" [
+          (mkWindowOrLayerRule "title:(${os-config.hellebore.vm.name})class:(looking-glass-client)" [
             "fullscreen"
             "idleinhibit always"
             "workspace 6"
           ])
-          (mkWindowrulev2 "class:(virt-manager)" [
+          (mkWindowOrLayerRule "class:(virt-manager)" [
             "workspace 6"
           ])
         ])
+      ];
+
+      layerrule = flatten [
+        (optionals config.hellebore.desktop-environment.logout.useLayerBlur (mkWindowOrLayerRule "gtk-layer-shell" [
+          "blur"
+          "xray off"
+        ]))
       ];
 
       exec-once = flatten [

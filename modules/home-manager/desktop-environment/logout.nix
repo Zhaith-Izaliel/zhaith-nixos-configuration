@@ -6,8 +6,15 @@
   ...
 }:
 with lib; let
-  inherit (lib) mkEnableOption mkOption mkIf getExe;
+  inherit (lib) mkEnableOption mkOption mkIf getExe optionalString;
+
   cfg = config.hellebore.desktop-environment.logout;
+
+  package =
+    if cfg.useLayerBlur
+    then pkgs.wlogout
+    else pkgs.wlogout-blur;
+
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
   options.hellebore.desktop-environment.logout = {
@@ -24,12 +31,20 @@ in {
       description = "Defines the logout screen theme.";
     };
 
+    package = mkOption {
+      type = types.package;
+      default = package;
+      description = "Defines the WLogout package.";
+    };
+
     bin = mkOption {
       type = types.str;
-      default = "${getExe pkgs.wlogout-blur} --protocol layer-shell -b 5 -T 400 -B 400";
+      default = "${getExe package} --protocol layer-shell -b 5 -T 400 -B 400";
       readOnly = true;
       description = "Define the command to run the logout screen.";
     };
+
+    useLayerBlur = mkEnableOption "use Hyprland layer rules to blur background, instead of a screenshot";
   };
 
   config = mkIf cfg.enable {
@@ -39,11 +54,14 @@ in {
         message = "WLogout depends on Swaylock to lock the screen. Please enable
         it in your configuration.";
       }
-
       {
         assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
         message = "WLogout depends on Hyprland to logout. Please enable
         it in your configuration.";
+      }
+      {
+        assertion = cfg.useLayerBlur -> config.wayland.windowManager.hyprland.enable;
+        message = "WLogout layer blur depends on Hyprland to work properly. Please enable Hyprland in your configuration";
       }
     ];
 
@@ -91,6 +109,16 @@ in {
           window {
             font-family: "${cfg.font.name}";
             font-size: ${toString cfg.font.size}pt;
+            ${
+            if (!cfg.useLayerBlur)
+            then ''
+              background-repeat: no-repeat;
+              background-image: image(url("/tmp/wlogout-blur.png"));
+            ''
+            else ''
+              background-color: transparent;
+            ''
+          }
           }
 
         ''

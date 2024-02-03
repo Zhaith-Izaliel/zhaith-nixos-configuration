@@ -33,8 +33,6 @@ in {
   style = ''
     window {
       color: ${colors.normal.text};
-      background-repeat: no-repeat;
-      background-image: image(url("/tmp/wlogout-blur.png"));
     }
 
     button {
