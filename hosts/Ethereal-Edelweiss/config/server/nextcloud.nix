@@ -9,7 +9,7 @@
     https = true;
 
     # Nextcloud Version
-    package = pkgs.nextcloud28;
+    package = pkgs.nextcloud26;
 
     # Auto-update Nextcloud Apps
     autoUpdateApps.enable = true;
