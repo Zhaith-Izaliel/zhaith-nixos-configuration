@@ -1,6 +1,7 @@
 {pkgs, ...}: let
   oldPkgs = import (builtins.fetchTarball {
     url = "https://github.com/NixOS/nixpkgs/archive/f21b6f77ac562732a4c9b8d1e5751c97853fe873.tar.gz";
+    sha256 = "";
   }) {};
 in {
   # Actual Nextcloud Config
