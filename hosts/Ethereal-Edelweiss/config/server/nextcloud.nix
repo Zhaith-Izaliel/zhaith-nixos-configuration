@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  oldPkgs = import (builtins.fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/f21b6f77ac562732a4c9b8d1e5751c97853fe873.tar.gz";
+  }) {};
+in {
   # Actual Nextcloud Config
   services.nextcloud = {
     enable = true;
@@ -53,7 +57,7 @@
 
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql_11;
+    package = oldPkgs.postgresql_11;
     ensureDatabases = ["nextcloud"];
     ensureUsers = [
       {
