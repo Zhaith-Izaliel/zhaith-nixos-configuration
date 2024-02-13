@@ -1,9 +1,9 @@
 {
   inputs,
-  stdenv,
+  pkgs,
   ...
 }: let
-  virgilribeyre-package = inputs.virgilribeyre-com.${stdenv.system}.default;
+  virgilribeyre-package = inputs.virgilribeyre-com.${pkgs.system}.default;
 in {
   services.nginx = {
     enable = true;
