@@ -11,9 +11,6 @@
     # Nextcloud Version
     package = pkgs.nextcloud26;
 
-    # IMPORTANT set it to true if using server-side encryption
-    enableBrokenCiphersForSSE = false;
-
     # Auto-update Nextcloud Apps
     autoUpdateApps.enable = true;
     # Set what time makes sense for you

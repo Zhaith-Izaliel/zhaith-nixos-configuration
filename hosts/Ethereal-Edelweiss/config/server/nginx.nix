@@ -62,6 +62,7 @@ in {
       "nextcloud.ethereal-edelweiss.cloud".email = "virgil.ribeyre@protonmail.com";
       "jellyfin.ethereal-edelweiss.cloud".email = "virgil.ribeyre@protonmail.com";
       "books.ethereal-edelweiss.cloud".email = "virgil.ribeyre@protonmail.com";
+      "virgilribeyre.com".email = "virgil.ribeyre@protonmail.com";
     };
   };
 }
