@@ -15,7 +15,7 @@
       provider default@ovh.com {
         ssl = true
         username = virgiribeyre.com-zhaith
-        password = "@password_placeholder"
+        password = "@password_placeholder@"
         hostname = { virgilribeyre.com }
       }
     '';
