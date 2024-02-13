@@ -54,14 +54,14 @@
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_15;
-    # ensureDatabases = ["nextcloud"];
-    # ensureUsers = [
-    #   {
-    #     name = "nextcloud";
-    #     # ensurePermissions."DATABASE \"nextcloud\"" = "ALL PRIVILEGES";
-    #     ensureDBOwnership = true;
-    #   }
-    # ];
+    ensureDatabases = ["nextcloud"];
+    ensureUsers = [
+      {
+        name = "nextcloud";
+        # ensurePermissions."DATABASE \"nextcloud\"" = "ALL PRIVILEGES";
+        ensureDBOwnership = true;
+      }
+    ];
   };
 
   # ensure that postgres is running *before* running the setup
