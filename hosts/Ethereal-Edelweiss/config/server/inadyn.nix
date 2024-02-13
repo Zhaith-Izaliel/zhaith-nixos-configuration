@@ -19,7 +19,7 @@
         hostname = { www.virgilribeyre.com, virgilribeyre.com }
       }
     '';
-    passwordFile = "/var/run/inadyn-password";
+    passwordFile = "/var/run/inadyn/inadyn-password";
     passwordPlaceholder = "@password_placeholder@";
   };
 }
