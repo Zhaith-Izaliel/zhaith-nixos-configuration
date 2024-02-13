@@ -30,16 +30,18 @@ in {
       description = "Height of the screen.";
     };
 
-    keyboardLayout = mkOption {
-      type = types.str;
-      default = config.hellebore.locale.keyboard.defaultLayout;
-      description = "Keyboard layout used in the Display Manager.";
-    };
+    keyboard = {
+      layout = mkOption {
+        type = types.str;
+        default = config.hellebore.locale.keyboard.defaultLayout;
+        description = "Keyboard layout used in the Display Manager.";
+      };
 
-    keyboardVariant = mkOption {
-      type = types.str;
-      default = config.hellebore.locale.keyboard.defaultVariant;
-      description = "Keyboard variant used in the Display Manager.";
+      variant = mkOption {
+        type = types.str;
+        default = config.hellebore.locale.keyboard.defaultVariant;
+        description = "Keyboard variant used in the Display Manager.";
+      };
     };
 
     theme = extra-types.theme.name {
@@ -65,8 +67,9 @@ in {
   config = mkIf cfg.enable {
     services.xserver = {
       enable = true;
-      layout = cfg.keyboardLayout;
-      xkbVariant = cfg.keyboardVariant;
+      xkb = {
+        inherit (cfg.keyboard) layout variant;
+      };
       displayManager.sddm = {
         enable = true;
         wayland.enable = true;

@@ -213,13 +213,6 @@ in {
             "nvidia_uvm"
             "nvidia_drm"
           ];
-
-        # preDeviceCommands = ''
-        # for DEV in ${concatStringsSep " " cfg.pcisBinding.pcis}; do
-        #   echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
-        # done
-        # modprobe -i vfio-pci
-        # '';
       };
 
       extraModprobeConfig = concatStringsSep "\n" [

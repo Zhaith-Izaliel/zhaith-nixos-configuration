@@ -26,9 +26,11 @@ in {
   config = mkIf cfg.enable {
     warnings = optional cfg.useHack "Using a patched Hyprland version is a hack in itself and should be removed after https://github.com/swaywm/sway/issues/7645 is fixed, or https://gitlab.freedesktop.org/wayland/wayland/-/merge_requests/188 is merged and deployed on Wayland.";
 
-    environment.systemPackages = with pkgs; [
-      gtk3
-    ];
+    environment.systemPackages = with pkgs;
+      [
+        gtk3
+      ]
+      ++ optional cfg.useHack pkgs.hyprland-patched;
 
     qt.enable = true;
 
@@ -75,12 +77,18 @@ in {
       "net.core.wmem_max" = 16777216;
     };
 
+    services.xserver.displayManager.session = optional cfg.useHack {
+      manage = "desktop";
+      name = "hyprland-patched";
+      start = ''
+        zsh -c -- ${getExe pkgs.hyprland-patched} &
+        waitPID=$!
+      '';
+    };
+
     programs.hyprland = {
       enable = true;
-      package =
-        if cfg.useHack
-        then pkgs.hyprland-patched
-        else cfg.package;
+      package = cfg.package;
       xwayland = {
         enable = true;
       };

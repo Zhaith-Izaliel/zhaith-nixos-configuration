@@ -1,4 +1,10 @@
-{...}: {
+{
+  inputs,
+  stdenv,
+  ...
+}: let
+  virgilribeyre-package = inputs.virgilribeyre-com.${stdenv.system}.default;
+in {
   services.nginx = {
     enable = true;
     recommendedGzipSettings = true;
@@ -35,6 +41,17 @@
         # Nextcloud
         addSSL = true;
         enableACME = true;
+      };
+
+      "virgilribeyre.com" = {
+        addSSL = true;
+        enableACME = true;
+        locations = {
+          "/" = {
+            root = "${virgilribeyre-package}";
+            index = "${virgilribeyre-package}/index.html";
+          };
+        };
       };
     };
   };

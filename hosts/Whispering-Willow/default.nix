@@ -53,7 +53,7 @@
         scaling = 1.0;
         extraArgs = [
           "mirror"
-          (builtins.elemAt monitors 1).name
+          (builtins.elemAt monitors 0).name
         ];
       }
     ];
@@ -76,7 +76,7 @@
       nvidia = {
         enable = true;
         power-profiles.enable = true;
-        modesetting.enable = true;
+        modesetting.enable = false;
         forceWaylandOnMesa = true;
         deviceFilterName = "RTX 3060";
         open = false;
@@ -169,6 +169,7 @@
       enable = true;
       enableSwaylockPam = true;
       enableEvolution = true;
+      useHack = true;
     };
 
     display-manager = {
@@ -231,7 +232,13 @@
         vm.enable = lib.mkForce false;
 
         hardware = {
-          nvidia.forceWaylandOnMesa = lib.mkForce false;
+          nvidia = {
+            forceWaylandOnMesa = lib.mkForce false;
+            prime = {
+              offload.enable = lib.mkForce false;
+              reverseSync.enable = lib.mkForce false;
+            };
+          };
           graphics-tablet = {
             enable = true;
             isWacom = true;

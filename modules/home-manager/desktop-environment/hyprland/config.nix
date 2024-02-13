@@ -155,12 +155,12 @@ in {
 
         "$mainMod, C, killactive,"
         "$mainMod, E, exec, nemo"
-        "$mainMod, V, togglefloating,"
         "$mainMod, P, exec, hyprpicker -a"
 
         "$mainMod, J, togglesplit," # Dwindle
         "$mainMod, M, fullscreen, 1" # Maximize window
         "$mainMod, F, fullscreen, 0" # fullscreen window
+        "$mainMod SHIFT, F, togglefloating,"
 
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"
@@ -202,7 +202,6 @@ in {
           optional os-config.hellebore.vm.enable
           ''
             $mainMod, W, exec, start-vm --resolution=${toString (getMonitor 0).width}x${toString (getMonitor 0).height} -Fi
-            $mainMod SHIFT, W, exec, start-vm --resolution=${toString (getMonitor 1).width}x${toString (getMonitor 1).height} -i
           ''
         )
         (optional config.hellebore.desktop-environment.applications-launcher.enable

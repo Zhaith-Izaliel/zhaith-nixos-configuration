@@ -25,7 +25,7 @@
   modules = {
     modules = flatten [
       "custom/icon"
-      (optional os-config.services.power-profiles-daemon.enable "custom/power-profiles")
+      # (optional os-config.services.power-profiles-daemon.enable "custom/power-profiles")
       (optional config.services.dunst.enable "custom/notifications")
       "clock"
       "custom/weather"

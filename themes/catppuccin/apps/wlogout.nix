@@ -40,13 +40,13 @@ in {
       background-position: center;
       background-size: 25%;
       border: none;
-      background-color: rgba(30, 30, 46, 0);
+      background-color: rgba(24, 25, 38, 0.5);
       margin: 5px;
       transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
     }
 
     button:hover {
-      background-color: rgba(49, 50, 68, 0.1);
+      background-color: rgba(24, 25, 38, 0.8);
     }
 
     button:focus {

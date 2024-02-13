@@ -8,7 +8,7 @@ with lib; let
   cfg = config.hellebore.kernel;
 in {
   options.hellebore.kernel = {
-    enable = mkEnableOption "Hellebore Kernel configuration";
+    enable = mkEnableOption "Hellebore's Kernel configuration";
   };
 
   config = mkIf cfg.enable {

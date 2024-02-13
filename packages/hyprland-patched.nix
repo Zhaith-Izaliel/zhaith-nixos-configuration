@@ -1,8 +1,7 @@
 {
   stdenv,
-  fetchGit,
+  fetchgit,
   lib,
-  makeBinPath,
   binutils,
   pciutils,
   writeShellApplication,
@@ -12,9 +11,10 @@
   accepthack = stdenv.mkDerivation {
     name = "accepthack";
 
-    src = fetchGit {
+    src = fetchgit {
       url = "https://gitlab.com/retropc/accepthack.git";
       rev = "b3fe022a2ed1d3513888468f5808ee9cff8e7955";
+      sha256 = "sha256-Jg4eIHA4Y4oKfjDGeRJeUftlysm0P+2Gn07xN/bSpKM=";
     };
 
     installPhase = ''
@@ -26,7 +26,7 @@ in
     name = "hyprland-patched";
 
     text = ''
-      export PATH="''${PATH:-}:${makeBinPath [stdenv.cc binutils pciutils]}"
+      export PATH="''${PATH:-}:${lib.makeBinPath [stdenv.cc binutils pciutils]}"
       ${lib.getLib stdenv.cc.libc}/lib/ld-linux-x86-64.so.2 --preload ${accepthack}/lib/accepthack.so ${hyprland}/bin/.Hyprland-wrapped "$@"
     '';
   }
