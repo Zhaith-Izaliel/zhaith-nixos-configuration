@@ -12,12 +12,12 @@
         hostname    = { nextcloud.ethereal-edelweiss.cloud, jellyfin.ethereal-edelweiss.cloud, books.ethereal-edelweiss.cloud, ethereal-edelweiss.cloud }
       }
 
-      # provider default@ovh.com {
-      #   ssl = true
-      #   username = virgiribeyre.com-zhaith
-      #   password = "@password_placeholder@"
-      #   hostname = { virgilribeyre.com, www.virgilribeyre.com }
-      # }
+      provider default@ovh.com {
+        ssl = true
+        username = virgilribeyre.com-zhaith
+        password = "@password_placeholder@"
+        hostname = { virgilribeyre.com, www.virgilribeyre.com }
+      }
     '';
     passwordFile = "/var/run/inadyn-password";
     passwordPlaceholder = "@password_placeholder@";

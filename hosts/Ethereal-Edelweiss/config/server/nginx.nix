@@ -49,7 +49,7 @@ in {
         locations = {
           "/" = {
             root = "${virgilribeyre-package}";
-            index = "${virgilribeyre-package}/index.html";
+            index = "index.html";
           };
         };
       };
