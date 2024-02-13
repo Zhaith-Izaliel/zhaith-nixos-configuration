@@ -143,8 +143,6 @@
           ];
           extraModules = [
             grub2-themes.nixosModules.default
-            sddm-sugar-candy-nix.nixosModules.default
-            modules.system
           ];
         };
       };
