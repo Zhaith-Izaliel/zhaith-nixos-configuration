@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  virgilribeyre-package = inputs.virgilribeyre-com.${pkgs.system}.default;
+  virgilribeyre-package = inputs.virgilribeyre-com.packages.${pkgs.system}.default;
 in {
   services.nginx = {
     enable = true;
