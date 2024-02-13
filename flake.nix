@@ -143,6 +143,7 @@
           ];
           extraModules = [
             grub2-themes.nixosModules.default
+            modules.server
           ];
         };
       };

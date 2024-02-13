@@ -43,7 +43,6 @@ in {
     ./network.nix
     ./opengl.nix
     ./power-management.nix
-    ./server/inadyn.nix
     ./shell.nix
     ./sound.nix
     ./ssh.nix
