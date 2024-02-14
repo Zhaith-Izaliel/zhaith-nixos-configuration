@@ -46,6 +46,12 @@ in {
       "virgilribeyre.com" = {
         addSSL = true;
         enableACME = true;
+
+        serverAliases = [
+          "virgilribeyre.com"
+          "www.virgilribeyre.com"
+        ];
+
         locations = {
           "/" = {
             root = "${virgilribeyre-package}";
