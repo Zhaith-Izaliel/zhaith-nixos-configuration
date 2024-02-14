@@ -2629,11 +2629,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1707864561,
-        "narHash": "sha256-B6atxG7gorj0nqurkDjTkUo/PzQtplS1S0K8YLDau/4=",
+        "lastModified": 1707900723,
+        "narHash": "sha256-hWJQNCdyVr94bQn6ObBMMiBpJUyDxvSoMhDtu26LdlA=",
         "owner": "Zhaith-Izaliel",
         "repo": "virgilribeyre.com-next",
-        "rev": "918973039b4996dc6b64e38ded9c20673c4b4a22",
+        "rev": "1b43467048e745c8ee4074c1bd180117bd72907e",
         "type": "gitlab"
       },
       "original": {
