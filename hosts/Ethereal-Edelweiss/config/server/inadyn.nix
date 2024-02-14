@@ -16,10 +16,10 @@
         ssl = true
         username = virgilribeyre.com-zhaith
         password = "@password_placeholder@"
-        hostname = { virgilribeyre.com }
+        hostname = { www.virgilribeyre.com, virgilribeyre.com }
       }
     '';
-    passwordFile = "/var/run/inadyn/inadyn-password";
+    passwordFile = "/mnt/datas/inadyn/inadyn-password";
     passwordPlaceholder = "@password_placeholder@";
   };
 }
