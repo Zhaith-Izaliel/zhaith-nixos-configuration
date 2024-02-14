@@ -60,7 +60,7 @@
     };
 
     virgilribeyre-com = {
-      url = "gitlab:Zhaith-Izaliel/virgilribeyre.com-next/develop";
+      url = "gitlab:Zhaith-Izaliel/virgilribeyre.com-next";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
