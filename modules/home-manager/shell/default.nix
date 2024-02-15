@@ -12,6 +12,7 @@ in {
   imports = [
     ./emulator.nix
     ./prompt.nix
+    ./workspace.nix
   ];
 
   options.hellebore.shell = {
