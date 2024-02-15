@@ -139,7 +139,6 @@
 
     shell = {
       enable = true;
-      motd.enable = true;
       prompt.enable = true;
       emulator = {
         enable = true;

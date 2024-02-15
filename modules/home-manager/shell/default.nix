@@ -7,7 +7,6 @@
 }:
 with lib; let
   cfg = config.hellebore.shell;
-  image = lib.cleanSource cfg.motd.image;
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
   imports = [
@@ -17,16 +16,6 @@ in {
 
   options.hellebore.shell = {
     enable = mkEnableOption "Hellebore Shell configuration";
-
-    motd = {
-      enable = mkEnableOption "Neofetch MOTD";
-      image = mkOption {
-        type = types.path;
-        default = ../../../assets/images/neofetch/neofetch.png;
-        description = "Image used with Neofetch. Can only be used if kitty is
-        enabled";
-      };
-    };
 
     theme = extra-types.theme.name {
       default = config.hellebore.theme.name;
@@ -52,7 +41,6 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       any-nix-shell
-      viu
     ];
 
     programs = {
@@ -97,21 +85,6 @@ in {
         ];
 
         initExtra = strings.concatStringsSep "\n" [
-          (strings.optionalString cfg.motd.enable (
-            if config.programs.kitty.enable
-            then ''
-              # Neofetch MOTD
-              if [ "$KITTY_WINDOW_ID" = "1" ] && [ -z $IN_NIX_SHELL ]; then
-                ${lib.getExe pkgs.neofetch} --kitty ${image}
-              fi
-            ''
-            else ''
-              if [ -z $IN_NIX_SHELL ]; then
-                ${getExe pkgs.neofetch} --viu ${image}
-              fi
-            ''
-          ))
-
           ''
             # Nix shell integration
             ${lib.getExe pkgs.any-nix-shell} zsh | source /dev/stdin
