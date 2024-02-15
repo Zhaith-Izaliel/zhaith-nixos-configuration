@@ -8,11 +8,24 @@
   inherit (lib) concatStringsSep optionalString mkOption mkEnableOption getExe types mkIf;
 
   cfg = config.hellebore.shell.emulator;
-  emulator-bin = concatStringsSep " " [
-    (optionalString cfg.integratedGPU.enable
-      "MESA_LOADER_DRIVER_OVERRIDE=${cfg.integratedGPU.driver} __EGL_VENDOR_LIBRARY_FILENAMES=${pkgs.mesa.drivers}/share/glvnd/egl_vendor.d/50_mesa.json")
-    "${getExe pkgs.alacritty} msg create-window"
-  ];
+  emulator-bin = pkgs.writeScriptBin "emulator-bin" (concatStringsSep "\n" [
+    (
+      optionalString cfg.integratedGPU.enable
+      ''
+        export MESA_LOADER_DRIVER_OVERRIDE=${cfg.integratedGPU.driver}
+        export __EGL_VENDOR_LIBRARY_FILENAMES=${pkgs.mesa.drivers}/share/glvnd/egl_vendor.d/50_mesa.json
+      ''
+    )
+    ''
+      ${pkgs.procps}/bin/pgrep "alacritty" &> /dev/null
+      local exit_code="$?"
+      if [ "$exit_code" = "0" ]; then
+        ${getExe pkgs.alacritty} msg create-window
+      else
+        ${getExe pkgs.alacritty}
+      fi
+    ''
+  ]);
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
   options.hellebore.shell.emulator = {
@@ -52,7 +65,7 @@ in {
 
     bin = mkOption {
       type = types.str;
-      default = emulator-bin;
+      default = getExe emulator-bin;
       description = "Get the terminal emulator binary.";
       readOnly = true;
     };
