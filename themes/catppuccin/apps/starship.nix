@@ -13,7 +13,7 @@ in rec {
     palette =
       builtins.fromTOML (builtins.readFile (palette.package
           + /palettes/macchiato.toml));
-    package = pkgs.stdenv.mkDerivation {
+    package = pkgs.stdenvNoCC.mkDerivation {
       pname = "catppuccin-starship";
       version = inputs.catppuccin-starship.rev;
       src = inputs.catppuccin-starship;

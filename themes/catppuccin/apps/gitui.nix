@@ -3,7 +3,7 @@
   lib,
   inputs,
 }: rec {
-  package = pkgs.stdenv.mkDerivation {
+  package = pkgs.stdenvNoCC.mkDerivation {
     pname = "gitui-catppuccin";
     version = inputs.catppuccin-gitui.rev;
 

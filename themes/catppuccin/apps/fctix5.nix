@@ -3,7 +3,7 @@
   inputs,
   colors,
 }: {
-  package = pkgs.stdenv.mkDerivation {
+  package = pkgs.stdenvNoCC.mkDerivation {
     pname = "catppuccin-fcitx5";
     version = inputs.catppuccin-fcitx5.rev;
     src = inputs.catppuccin-fcitx5;

@@ -3,7 +3,7 @@
   lib,
   inputs,
 }: rec {
-  package = pkgs.stdenv.mkDerivation {
+  package = pkgs.stdenvNoCC.mkDerivation {
     name = "catppucin-hyprland";
     version = inputs.catppuccin-hyprland.rev;
 

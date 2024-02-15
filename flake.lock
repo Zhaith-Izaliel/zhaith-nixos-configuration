@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "catppuccin-alacritty": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1705368763,
+        "narHash": "sha256-ypYaxlsDjI++6YNcE+TxBSnlUXKKuAMmLQ4H74T/eLw=",
+        "owner": "catppuccin",
+        "repo": "alacritty",
+        "rev": "f2da554ee63690712274971dd9ce0217895f5ee0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "alacritty",
+        "type": "github"
+      }
+    },
     "catppuccin-bat": {
       "flake": false,
       "locked": {
@@ -2260,6 +2276,7 @@
     },
     "root": {
       "inputs": {
+        "catppuccin-alacritty": "catppuccin-alacritty",
         "catppuccin-bat": "catppuccin-bat",
         "catppuccin-fcitx5": "catppuccin-fcitx5",
         "catppuccin-gitui": "catppuccin-gitui",

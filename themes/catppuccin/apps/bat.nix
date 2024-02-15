@@ -3,7 +3,7 @@
   lib,
   inputs,
 }: let
-  package = pkgs.stdenv.mkDerivation {
+  package = pkgs.stdenvNoCC.mkDerivation {
     pname = "bat-catppuccin";
     version = inputs.catppuccin-bat.rev;
 
