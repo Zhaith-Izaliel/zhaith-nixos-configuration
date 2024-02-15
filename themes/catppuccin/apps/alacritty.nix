@@ -8,6 +8,7 @@
     src = inputs.catppuccin-alacritty;
 
     installPhase = ''
+      mkdir -p $out
       cp -r *.toml $out
     '';
   };

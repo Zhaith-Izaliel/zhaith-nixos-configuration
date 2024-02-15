@@ -52,6 +52,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       any-nix-shell
+      viu
     ];
 
     programs = {
@@ -106,7 +107,7 @@ in {
             ''
             else ''
               if [ -z $IN_NIX_SHELL ]; then
-                ${getExe pkgs.neofetch}
+                ${getExe pkgs.neofetch} --viu ${image}
               fi
             ''
           ))
