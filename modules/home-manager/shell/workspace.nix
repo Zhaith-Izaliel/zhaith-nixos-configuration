@@ -43,7 +43,6 @@ in {
 
       settings = {
         inherit (theme) theme;
-        on_force_close = "quit";
       };
     };
   };
