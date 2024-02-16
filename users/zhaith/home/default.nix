@@ -140,6 +140,7 @@
     shell = {
       enable = true;
       prompt.enable = true;
+      workspace.enable = true;
       emulator = {
         enable = true;
         integratedGPU = {
