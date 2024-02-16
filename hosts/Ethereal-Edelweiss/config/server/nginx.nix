@@ -15,7 +15,6 @@ in {
     virtualHosts = {
       "jellyfin.ethereal-edelweiss.cloud" = {
         # Jellyfin
-        addSSL = true;
         enableACME = true;
         forceSSL = true;
 
@@ -32,7 +31,6 @@ in {
 
       "books.ethereal-edelweiss.cloud" = {
         # Jellyfin
-        addSSL = true;
         enableACME = true;
         forceSSL = true;
 
@@ -43,13 +41,11 @@ in {
 
       "nextcloud.ethereal-edelweiss.cloud" = {
         # Nextcloud
-        addSSL = true;
         enableACME = true;
         forceSSL = true;
       };
 
       "virgilribeyre.com" = {
-        addSSL = true;
         enableACME = true;
         forceSSL = true;
 
