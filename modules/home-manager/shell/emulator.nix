@@ -34,7 +34,7 @@ in {
     font = extra-types.font {
       size = config.hellebore.font.size;
       sizeDescription = "Set the terminal emulator font size.";
-      name = "FiraMono Nerd Font";
+      name = "Fira Code";
       nameDescription = "Set the terminal emulator font family.";
     };
 
