@@ -16,15 +16,7 @@
         export __EGL_VENDOR_LIBRARY_FILENAMES=${pkgs.mesa.drivers}/share/glvnd/egl_vendor.d/50_mesa.json
       ''
     )
-    ''
-      ${pkgs.procps}/bin/pgrep "alacritty" &> /dev/null
-      local exit_code="$?"
-      if [ "$exit_code" = "0" ]; then
-        ${getExe pkgs.alacritty} msg create-window
-      else
-        ${getExe pkgs.alacritty}
-      fi
-    ''
+    (getExe cfg.package)
   ]);
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
@@ -34,7 +26,7 @@ in {
     font = extra-types.font {
       size = config.hellebore.font.size;
       sizeDescription = "Set the terminal emulator font size.";
-      name = "FiraCode Nerd Font";
+      name = "FiraMono Nerd Font";
       nameDescription = "Set the terminal emulator font family.";
     };
 
@@ -59,7 +51,7 @@ in {
 
     package = mkOption {
       type = types.package;
-      default = pkgs.alacritty;
+      default = pkgs.wezterm;
       description = "The default terminal emulator package.";
     };
 
@@ -72,42 +64,22 @@ in {
   };
 
   config = mkIf cfg.enable {
-    programs.alacritty = {
-      enable = true;
-      package = cfg.package;
+    programs.wezterm = {
+      inherit (cfg) enable package;
 
-      settings = {
-        import = [
-          (theme.alacritty.file)
-        ];
+      enableBashIntegration = config.programs.bash.enable;
+      enableZshIntegration = config.programs.zsh.enable;
 
-        window = {
-          decorations = "None";
-          opacity = 0.9;
-          blur = true;
-        };
+      extraConfig = ''
+        local wezterm = require("wezterm");
 
-        font = {
-          normal = {
-            family = "${cfg.font.name}";
-            style = "Regular";
-          };
-
-          size = cfg.font.size;
-        };
-
-        cursor = {
-          style = {
-            shape = "Beam";
-            blinking = "Always";
-          };
-
-          vi_mode_style = {
-            shape = "Block";
-            blinking = "Always";
-          };
-        };
-      };
+        return {
+          font = wezterm.font("${cfg.font.name}"),
+          font_size = ${toString cfg.font.size},
+          hide_tab_bar_if_only_one_tab = true,
+          color_scheme = "${theme.wezterm.theme}",
+        }
+      '';
     };
   };
 }
