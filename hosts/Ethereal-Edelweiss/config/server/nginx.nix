@@ -17,6 +17,8 @@ in {
         # Jellyfin
         addSSL = true;
         enableACME = true;
+        forceSSL = true;
+
         locations = {
           "/" = {
             proxyPass = "http://localhost:8096";
@@ -32,6 +34,8 @@ in {
         # Jellyfin
         addSSL = true;
         enableACME = true;
+        forceSSL = true;
+
         locations."/" = {
           proxyPass = "http://localhost:8083";
         };
@@ -41,11 +45,13 @@ in {
         # Nextcloud
         addSSL = true;
         enableACME = true;
+        forceSSL = true;
       };
 
       "virgilribeyre.com" = {
         addSSL = true;
         enableACME = true;
+        forceSSL = true;
 
         serverAliases = [
           "virgilribeyre.com"
