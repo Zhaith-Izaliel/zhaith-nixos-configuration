@@ -47,27 +47,6 @@ in {
           monospace = ["FiraCode Nerd Font"];
           emoji = ["Twitter Color Emoji"];
         };
-        localConf = ''
-          <match target="pattern">
-            <test name="prgname" compare="eq">
-              <string>kitty</string>
-            </test>
-            <edit name="family" mode="prepend" binding="strong">
-              <string>FiraCode Nerd Font</string>
-            <family>Ricty Diminished with Fira Code</family>
-            <family>Noto Color Emoji</family>
-            </edit>
-          </match>
-          <alias>
-           <family>FiraCode Nerd Font</family>
-           <prefer>
-            <family>FiraCode Nerd Font</family>
-            <family>Ricty Diminished with Fira Code</family>
-            <family>Noto Color Emoji</family>
-            <family/>
-           </prefer>
-          </alias>
-        '';
       };
 
       fontDir.enable = true;
