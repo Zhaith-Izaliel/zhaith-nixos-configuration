@@ -99,12 +99,12 @@ in {
         cursor = {
           style = {
             shape = "Beam";
-            blinking = "On";
+            blinking = "Always";
           };
 
           vi_mode_style = {
             shape = "Block";
-            blinking = "On";
+            blinking = "Always";
           };
         };
       };

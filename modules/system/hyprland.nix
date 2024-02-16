@@ -81,7 +81,7 @@ in {
       manage = "desktop";
       name = "hyprland-patched";
       start = ''
-        zsh -c -- ${getExe pkgs.hyprland-patched} &
+        ${getExe pkgs.hyprland-patched} &
         waitPID=$!
       '';
     };

@@ -33,6 +33,11 @@ in {
   };
 
   config = mkIf cfg.enable {
+    home.sessionVariables = {
+      ZELLIJ_AUTO_ATTACH = "true";
+      # ZELLIJ_AUTO_EXIT = "true";
+    };
+
     programs.zellij = {
       enable = true;
       package = cfg.package;
