@@ -121,32 +121,25 @@ in {
         // theme.swaylock.settings;
     };
 
-    services.swayidle = {
+    services.hypridle = {
       enable = true;
-      systemdTarget = "hyprland-session.target";
-      timeouts = [
+      listeners = [
         (mkIf cfg.timeouts.dim.enable {
           timeout = cfg.timeouts.dim.timer;
-          command = "${getExe pkgs.dim-on-lock} dim ${toString cfg.timeouts.dim.dimValue}";
-          resumeCommand = "${getExe pkgs.dim-on-lock} undim";
+          onTimeout = "${getExe pkgs.dim-on-lock} dim ${toString cfg.timeouts.dim.dimValue}";
+          onResume = "${getExe pkgs.dim-on-lock} undim";
         })
 
         (mkIf cfg.timeouts.lock.enable {
           timeout = cfg.timeouts.lock.timer;
-          command = "${getExe config.programs.swaylock.package} -fF --grace ${toString cfg.gracePeriod}";
+          onTimeout = "${getExe config.programs.swaylock.package} -fF --grace ${toString cfg.gracePeriod}";
         })
 
         (mkIf cfg.timeouts.powerSaving.enable {
           timeout = cfg.timeouts.powerSaving.timer;
-          command = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
-          resumeCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
+          onTimeout = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
+          onResume = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
         })
-      ];
-      events = [
-        {
-          event = "lock";
-          command = "${lib.getExe config.programs.swaylock.package} -fF --grace ${toString cfg.gracePeriod}";
-        }
       ];
     };
   };

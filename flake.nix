@@ -44,6 +44,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hypridle = {
+      url = "github:/hyprwm/hypridle";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     sddm-sugar-candy-nix = {
       url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -107,6 +112,7 @@
     zhaith-neovim,
     hyprland,
     hyprland-contrib,
+    hypridle,
     sddm-sugar-candy-nix,
     virgutils,
     rofi-applets,
@@ -165,12 +171,14 @@
             zhaith-helix.homeManagerModules.default
             modules.home-manager
             rofi-applets.homeManagerModules.default
+            hypridle.homeManagerModules.default
           ];
           overlays = [
             hyprland.overlays.default
             hyprland-contrib.overlays.default
             virgutils.overlays.${system}.default
             rofi-applets.overlays.default
+            hypridle.overlays.default
             customOverlay
           ];
         };

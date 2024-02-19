@@ -71,6 +71,24 @@ in {
               definedAliases = ["@no"];
             };
 
+            "ProtonDB" = {
+              urls = [
+                {
+                  template = "https://www.protondb.com/search";
+                  params = [
+                    {
+                      name = "q";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+
+              definedAliases = ["@pb"];
+              iconUpdateURL = "https://www.protondb.com/favicon.ico";
+              updateInterval = 24 * 60 * 60 * 1000; # every day
+            };
+
             "YouTube" = {
               urls = [
                 {
