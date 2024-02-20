@@ -10,7 +10,7 @@ with lib; let
 in {
   options.hellebore.desktop-environment.mail = {
     enable = mkOption {
-      default = osConfig.programs.evolution.enable;
+      default = os-config.programs.evolution.enable;
       description = "Enable Hellebore Mail client";
       type = types.bool;
     };
