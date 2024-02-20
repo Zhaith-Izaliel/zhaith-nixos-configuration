@@ -166,37 +166,34 @@
           ];
         };
       };
-      homeConfigurations = {
+      homeConfigurations = let
+        extraModules = [
+          zhaith-helix.homeManagerModules.default
+          modules.home-manager
+          rofi-applets.homeManagerModules.default
+          hypridle.homeManagerModules.default
+        ];
+        overlays = [
+          hyprland.overlays.default
+          hyprland-contrib.overlays.default
+          virgutils.overlays.${system}.default
+          rofi-applets.overlays.default
+          hypridle.overlays.default
+          customOverlay
+        ];
+      in {
         "zhaith@Whispering-Willow" = customHelpers.mkHome {
-          inherit system;
+          inherit system overlays extraModules;
           username = "zhaith";
           hostname = "Whispering-Willow";
           stateVersion = "22.05";
-          extraModules = [
-            zhaith-helix.homeManagerModules.default
-            modules.home-manager
-            rofi-applets.homeManagerModules.default
-            hypridle.homeManagerModules.default
-          ];
-          overlays = [
-            hyprland.overlays.default
-            hyprland-contrib.overlays.default
-            virgutils.overlays.${system}.default
-            rofi-applets.overlays.default
-            hypridle.overlays.default
-            customOverlay
-          ];
         };
 
         "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
-          inherit system;
+          inherit system overlays extraModules;
           username = "lilith";
           hostname = "Ethereal-Edelweiss";
           stateVersion = "22.05";
-          extraModules = [
-            modules.home-manager
-            zhaith-helix.homeManagerModules.default
-          ];
         };
       };
 
