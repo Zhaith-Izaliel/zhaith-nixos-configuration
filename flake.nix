@@ -167,7 +167,6 @@
           hostname = "Whispering-Willow";
           stateVersion = "22.05";
           extraModules = [
-            zhaith-neovim.homeManagerModules.default
             zhaith-helix.homeManagerModules.default
             modules.home-manager
             rofi-applets.homeManagerModules.default
@@ -189,6 +188,10 @@
           hostname = "Ethereal-Edelweiss";
           stateVersion = "21.05";
           nixpkgs = nixpkgs-stable;
+          extraModules = [
+            modules.home-manager
+            zhaith-helix.homeManagerModules.default
+          ];
         };
       };
 

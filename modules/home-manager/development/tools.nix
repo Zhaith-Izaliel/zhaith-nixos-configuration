@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkIf mkEnableOption optionals;
   cfg = config.hellebore.development.tools;
 in {
   options.hellebore.development.tools = {
@@ -17,11 +17,11 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+  config = {
+    home.packages = optionals cfg.enable (with pkgs; [
       onefetch
       nix-npm-install
-    ];
+    ]);
 
     home.sessionVariables = mkIf (!cfg.direnv.enableLogs) {
       DIRENV_LOG_FORMAT = "";
