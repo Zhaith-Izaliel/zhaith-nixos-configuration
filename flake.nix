@@ -9,6 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    home-manager-stable = {
+      url = "github:nix-community/home-manager/release-23.11";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
@@ -117,6 +122,7 @@
     virgutils,
     rofi-applets,
     zhaith-helix,
+    home-manager-stable,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -187,6 +193,7 @@
           username = "lilith";
           hostname = "Ethereal-Edelweiss";
           stateVersion = "22.05";
+          home-manager = home-manager-stable;
           nixpkgs = nixpkgs-stable;
           extraModules = [
             modules.home-manager
