@@ -186,7 +186,7 @@
           inherit system;
           username = "lilith";
           hostname = "Ethereal-Edelweiss";
-          stateVersion = "21.05";
+          stateVersion = "22.05";
           nixpkgs = nixpkgs-stable;
           extraModules = [
             modules.home-manager
