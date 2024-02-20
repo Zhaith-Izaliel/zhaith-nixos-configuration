@@ -3,7 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   pkgs,
-  stable-pkgs,
+  config,
   lib,
   ...
 }: {
@@ -197,14 +197,9 @@
     };
 
     vm = {
-      enable = true;
+      enable = !config.hellebore.hyprland.useHack;
 
       useSecureBoot = true;
-
-      externalPartition = {
-        # enable = true;
-        uuid = "3DC7196A3AF67751";
-      };
 
       cpuIsolation = {
         totalCores = "0-15";

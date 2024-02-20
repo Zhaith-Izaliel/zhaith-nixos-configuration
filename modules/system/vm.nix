@@ -32,11 +32,6 @@
       modprobe -r nvidia_drm
       modprobe -i vfio_pci
     ''}
-
-        ${optionalString cfg.externalPartition.enable ''
-      ${pkgs.util-linux}/bin/umount /dev/disk/by-uuid/${cfg.externalPartition.uuid}
-    ''}
-
         elif [ "$VM_ACTION" = "release/end" ]; then
 
         if [ "${cfg.cpuIsolation.variableName}" = "true" ]; then
@@ -48,10 +43,6 @@
         ${optionalString cfg.pcisBinding.enableDynamicBinding ''
       modprobe -r vfio_pci
       modprobe -i nvidia_drm
-    ''}
-
-        ${optionalString cfg.externalPartition.enable ''
-      ${pkgs.util-linux}/bin/mount /dev/disk/by-uuid/${cfg.externalPartition.uuid}
     ''}
       fi
     fi
@@ -91,17 +82,6 @@ in {
     };
 
     useSecureBoot = mkEnableOption "Secure Boot on OVMF packages";
-
-    externalPartition = {
-      enable = mkEnableOption "using an external partition for the VM";
-
-      uuid = mkOption {
-        type = types.nonEmptyStr;
-        default = "";
-        description = "The UUID of the partition to mount to the VM when it
-        starts and unmount to the VM when it closes.";
-      };
-    };
 
     pcisBinding = {
       enableDynamicBinding = mkEnableOption "PCIs dynamic binding on VM run

@@ -10,6 +10,7 @@
     extraGroups = [
       "wheel" # 'wheel' Enable ‘sudo’ for the user.
       "kvm"
+      "libvirt"
       "libvirtd"
       "qemu-libvirtd"
       "scanner"

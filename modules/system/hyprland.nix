@@ -24,6 +24,13 @@ in {
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.useHack -> !config.hellebore.vm.enable;
+        message = "Using the patched version of Hyprland conflicts with virt-manager.";
+      }
+    ];
+
     warnings = optional cfg.useHack "Using a patched Hyprland version is a hack in itself and should be removed after https://github.com/swaywm/sway/issues/7645 is fixed, or https://gitlab.freedesktop.org/wayland/wayland/-/merge_requests/188 is merged and deployed on Wayland.";
 
     environment.systemPackages = with pkgs;
