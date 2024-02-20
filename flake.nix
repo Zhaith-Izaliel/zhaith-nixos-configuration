@@ -193,8 +193,6 @@
           username = "lilith";
           hostname = "Ethereal-Edelweiss";
           stateVersion = "22.05";
-          home-manager = home-manager-stable;
-          nixpkgs = nixpkgs-stable;
           extraModules = [
             modules.home-manager
             zhaith-helix.homeManagerModules.default
