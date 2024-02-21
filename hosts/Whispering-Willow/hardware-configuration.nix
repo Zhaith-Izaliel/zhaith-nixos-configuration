@@ -2,9 +2,7 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }: {
@@ -42,9 +40,9 @@
   ];
 
   fileSystems."/mnt/games" = {
-    device = "/dev/disk/by-uuid/3DC7196A3AF67751";
-    fsType = "ntfs-3g";
-    options = ["rw" "uid=1000"];
+    device = "/dev/disk/by-uuid/26582702-96e5-4ec4-a22c-204955b87e93";
+    fsType = "ext4";
+    # options = ["rw" "uid=1000"];
   };
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";

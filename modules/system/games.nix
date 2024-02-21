@@ -175,8 +175,12 @@ in {
         winetricks
         game-run-script
       ]
-      ++ lists.optional config.programs.hyprland.enable
-      wineWowPackages.waylandFull
+      ++ lists.optionals config.programs.hyprland.enable
+      [
+        winePackages.waylandFull
+        wine64Packages.waylandFull
+        wine-wayland
+      ]
       ++ lists.optional cfg.minecraft.enable prismlauncher;
   };
 }

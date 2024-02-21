@@ -7,6 +7,8 @@
     theme.name = "catppuccin";
 
     desktop-environment = {
+      clipboard.enable = true;
+
       hyprland = {
         enable = true;
         mirrorFirstMonitor = true;

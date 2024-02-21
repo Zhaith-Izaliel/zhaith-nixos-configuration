@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./browsers.nix
+    ./clipboard.nix
     ./mail.nix
     ./disks.nix
     ./files-manager.nix
