@@ -2,8 +2,8 @@
   config,
   lib,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkOption mkMerge mkIf types;
   cfg = config.hellebore.ssh;
 in {
   options.hellebore.ssh = {
