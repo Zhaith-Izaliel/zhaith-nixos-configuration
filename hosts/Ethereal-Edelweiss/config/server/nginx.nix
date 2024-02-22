@@ -58,9 +58,8 @@ in {
           "/" = {
             root = "${virgilribeyre-package}";
             index = "index.html";
+            tryFiles = "$uri $uri/ /index.html";
           };
-
-          tryFiles = "$uri $uri/ /index.html";
         };
       };
     };
