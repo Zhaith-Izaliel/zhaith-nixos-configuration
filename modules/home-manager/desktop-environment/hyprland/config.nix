@@ -128,16 +128,10 @@ in {
 
       exec-once = flatten [
         "${getExe pkgs.swww} init"
-        # "${pkgs.wl-clipboard}/bin/wl-paste -p --watch ${pkgs.wl-clipboard}/bin/wl-copy -p ''"
-        # Workaround clipboard madness with wine
-        # ''
-        #   ${pkgs.wl-clipboard}/bin/wl-paste -t text -w sh -c 'v=$(cat); cmp -s <(${getExe pkgs.xclip} -selection clipboard -o) <<< "$v" || ${getExe pkgs.xclip} -selection clipboard <<< "$v"' -p --watch ${pkgs.wl-clipboard}/bin/wl-copy -p ""
-        # ''
-        # "${pkgs.wl-clipboard}/bin/wl-paste -t image --watch ${pkgs.wl-clipboard}/bin/wl-copy -p"
         "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
         "swayosd --max-volume 150"
         "hyprctl setcursor ${theme.gtk.cursorTheme.name} 24"
-        (optional config.gtk.enable "configure-gtk")
+        (optionalString config.gtk.enable "configure-gtk")
         (optional config.hellebore.desktop-environment.browsers.enable
           "[workspace 1] ${getExe pkgs.firefox}")
         (optional config.hellebore.shell.emulator.enable

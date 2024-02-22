@@ -124,7 +124,6 @@ in {
       [
         swww
         swayosd
-        wl-clipboard
         power-management
         hyprpicker
         grimblast
@@ -149,7 +148,6 @@ in {
       enable = true;
       package = os-config.programs.hyprland.package;
       xwayland.enable = true;
-      # enableNvidiaPatches = os-config.programs.hyprland.enableNvidiaPatches;
       systemd.enable = true;
     };
   };
