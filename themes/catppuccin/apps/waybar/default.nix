@@ -190,7 +190,7 @@ in {
           format = "${mkBig ""} {:%H:%M}";
           tooltip-format = "<tt><small>{calendar}</small></tt>";
           calendar = {
-            mode = "month";
+            mode = "year";
             mode-mon-col = 3;
             weeks-pos = "right";
             on-scroll = 1;

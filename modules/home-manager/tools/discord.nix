@@ -7,8 +7,6 @@
 with lib; let
   cfg = config.hellebore.tools.discord;
   finalPackage = cfg.package.override {
-    withOpenASAR = cfg.openASAR.enable;
-    withVencord = cfg.vencord.enable;
     withTTS = cfg.tts.enable;
   };
 in {
@@ -17,7 +15,7 @@ in {
 
     package = mkOption {
       type = types.package;
-      default = pkgs.discord;
+      default = pkgs.vesktop;
       description = "The default Discord package.";
     };
 
@@ -28,28 +26,12 @@ in {
       readOnly = true;
     };
 
-    betterdiscord = {
-      enable = mkEnableOption "betterdiscordctl";
-
-      package = mkOption {
-        type = types.package;
-        default = pkgs.betterdiscordctl;
-        description = "The default BetterDiscord package.";
-      };
-    };
-
-    vencord.enable = mkEnableOption "Vencord integration";
-
-    openASAR.enable = mkEnableOption "openASAR integration";
-
     tts.enable = mkEnableOption "TTS support";
   };
 
   config = mkIf cfg.enable {
-    home.packages =
-      [
-        finalPackage
-      ]
-      ++ (lists.optional cfg.betterdiscord.enable cfg.betterdiscord.package);
+    home.packages = [
+      finalPackage
+    ];
   };
 }

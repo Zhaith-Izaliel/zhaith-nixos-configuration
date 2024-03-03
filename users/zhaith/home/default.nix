@@ -98,7 +98,6 @@
     tools = {
       discord = {
         enable = true;
-        openASAR.enable = true;
         tts.enable = true;
       };
       office.enable = true;

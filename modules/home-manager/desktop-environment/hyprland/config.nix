@@ -74,7 +74,7 @@ in {
       windowrulev2 = flatten [
         (
           optionals config.hellebore.tools.discord.enable
-          (mkWindowOrLayerRule "class:(discord)" [
+          (mkWindowOrLayerRule "class:(discord|vesktop)" [
             "workspace 3 silent"
             "noinitialfocus"
           ])
