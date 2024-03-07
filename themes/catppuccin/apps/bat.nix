@@ -4,19 +4,19 @@
   inputs,
 }: let
   package = pkgs.stdenvNoCC.mkDerivation {
-    pname = "bat-catppuccin";
+    pname = "catppuccin-bat";
     version = inputs.catppuccin-bat.rev;
 
     src = inputs.catppuccin-bat;
 
     installPhase = ''
-      mkdir -p $out
-      cp -r *.tmTheme $out
+      mkdir -p "$out"
+      cp -r themes/* "$out"
     '';
   };
 in {
   inherit package;
-  inherit (package) src;
-  name = "catppuccin-macchiato";
-  file = "Catppuccin-macchiato.tmTheme";
+  src = "${package}";
+  name = "Catppuccin Macchiato";
+  file = "Catppuccin Macchiato.tmTheme";
 }

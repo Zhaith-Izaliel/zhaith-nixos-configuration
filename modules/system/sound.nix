@@ -1,12 +1,10 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 with lib; let
   cfg = config.hellebore.sound;
-  json = pkgs.formats.json {};
   toPeriod = quantum: "${toString quantum}/${toString cfg.lowLatency.rate}";
 in {
   options.hellebore.sound = {
@@ -53,15 +51,8 @@ in {
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-    };
 
-    hardware = {
-      # IMPORTANT: disable pulseaudio when using pipewire
-      pulseaudio.enable = false;
-    };
-
-    environment.etc = mkIf cfg.lowLatency.enable {
-      "pipewire/pipewire-pulse.d/92-low-latency.conf".source = json.generate "92-low-latency.conf" {
+      extraConfig.pipewire."92-low-latency" = mkIf cfg.lowLatency.enable {
         context = {
           properties = {
             default.clock.rate = cfg.lowLatency.rate;
@@ -87,6 +78,11 @@ in {
           resample.quality = 1;
         };
       };
+    };
+
+    hardware = {
+      # IMPORTANT: disable pulseaudio when using pipewire
+      pulseaudio.enable = false;
     };
   };
 }

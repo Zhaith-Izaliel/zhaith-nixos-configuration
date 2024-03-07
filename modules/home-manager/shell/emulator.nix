@@ -16,7 +16,15 @@
         export __EGL_VENDOR_LIBRARY_FILENAMES=${pkgs.mesa.drivers}/share/glvnd/egl_vendor.d/50_mesa.json
       ''
     )
-    (getExe cfg.package)
+    ''
+      ${pkgs.procps}/bin/pgrep "alacritty" &> /dev/null
+      local exit_code="$?"
+      if [ "$exit_code" = "0" ]; then
+        ${getExe cfg.package} msg create-window
+      else
+        ${getExe cfg.package}
+      fi
+    ''
   ]);
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
@@ -27,7 +35,7 @@ in {
       (extra-types.font {
         size = config.hellebore.font.size;
         sizeDescription = "Set the terminal emulator font size.";
-        name = "Fira Code";
+        name = "FiraCode Nerd Font";
         nameDescription = "Set the terminal emulator font family.";
       })
       // {
@@ -55,7 +63,7 @@ in {
 
     package = mkOption {
       type = types.package;
-      default = pkgs.wezterm;
+      default = pkgs.alacritty;
       description = "The default terminal emulator package.";
     };
 
@@ -68,42 +76,78 @@ in {
   };
 
   config = mkIf cfg.enable {
-    programs.wezterm = {
-      inherit (cfg) enable package;
+    # programs.wezterm = {
+    #   inherit (cfg) enable package;
 
-      enableBashIntegration = config.programs.bash.enable;
-      enableZshIntegration = config.programs.zsh.enable;
+    #   enableBashIntegration = config.programs.bash.enable;
+    #   enableZshIntegration = config.programs.zsh.enable;
 
-      extraConfig = ''
-        local wezterm = require("wezterm");
+    #   extraConfig = ''
+    #     local wezterm = require("wezterm");
 
-        return {
-          font = wezterm.font {
-            family = "${cfg.font.name}",
-            harfbuzz_features = { 'liga=${
-          if cfg.font.enableLigatures
-          then toString 1
-          else toString 0
-        }' },
-          },
-          font_size = ${toString cfg.font.size},
-          hide_tab_bar_if_only_one_tab = true,
-          color_scheme = "${theme.wezterm.theme}",
-          window_background_opacity = 0.9,
-          skip_close_confirmation_for_processes_named = {
-            'bash',
-            'zellij',
-            'sh',
-            'zsh',
-            'fish',
-            'tmux',
-            'nu',
-            'cmd.exe',
-            'pwsh.exe',
-            'powershell.exe',
-          },
-        }
-      '';
+    #     return {
+    #       font = wezterm.font {
+    #         family = "${cfg.font.name}",
+    #         harfbuzz_features = { 'liga=${
+    #       if cfg.font.enableLigatures
+    #       then toString 1
+    #       else toString 0
+    #     }' },
+    #       },
+    #       font_size = ${toString cfg.font.size},
+    #       hide_tab_bar_if_only_one_tab = true,
+    #       color_scheme = "${theme.wezterm.theme}",
+    #       window_background_opacity = 0.9,
+    #       skip_close_confirmation_for_processes_named = {
+    #         'bash',
+    #         'zellij',
+    #         'sh',
+    #         'zsh',
+    #         'fish',
+    #         'tmux',
+    #         'nu',
+    #         'cmd.exe',
+    #         'pwsh.exe',
+    #         'powershell.exe',
+    #       },
+    #     }
+    #   '';
+    # };
+    programs.alacritty = {
+      enable = true;
+      package = cfg.package;
+
+      settings = {
+        import = [
+          (theme.alacritty.file)
+        ];
+
+        window = {
+          decorations = "None";
+          opacity = 0.8;
+        };
+
+        font = {
+          normal = {
+            family = "${cfg.font.name}";
+            style = "Regular";
+          };
+
+          size = cfg.font.size;
+        };
+
+        cursor = {
+          style = {
+            shape = "Beam";
+            blinking = "Always";
+          };
+
+          vi_mode_style = {
+            shape = "Block";
+            blinking = "Always";
+          };
+        };
+      };
     };
   };
 }
