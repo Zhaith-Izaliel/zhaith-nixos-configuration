@@ -33,13 +33,13 @@ in {
     keyboard = {
       layout = mkOption {
         type = types.str;
-        default = config.hellebore.locale.keyboard.defaultLayout;
+        default = config.hellebore.locale.keyboard.layout;
         description = "Keyboard layout used in the Display Manager.";
       };
 
       variant = mkOption {
         type = types.str;
-        default = config.hellebore.locale.keyboard.defaultVariant;
+        default = config.hellebore.locale.keyboard.variant;
         description = "Keyboard variant used in the Display Manager.";
       };
     };

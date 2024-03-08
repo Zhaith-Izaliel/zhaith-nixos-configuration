@@ -62,15 +62,8 @@ in {
     };
 
     input = {
-      kbLayout = mkOption {
-        type = types.str;
-        default = os-config.hellebore.locale.keyboard.defaultLayout;
-        description = "Keyboard layout for Hyprland.";
-      };
-      kbVariant = mkOption {
-        type = types.str;
-        default = os-config.hellebore.locale.keyboard.defaultVariant;
-        description = "Keyboard variant for Hyprland.";
+      keyboard = extra-types.keyboard {
+        inherit (config.hellebore.locale.keyboard) layout variant;
       };
 
       mouse = {

@@ -76,6 +76,22 @@ in rec {
     };
   };
 
+  keyboard = {
+    layout,
+    variant,
+  }: {
+    layout = mkOption {
+      type = types.nonEmptyStr;
+      default = layout;
+      description = "Defines the keyboard layout.";
+    };
+    variant = mkOption {
+      type = types.nonEmptyStr;
+      default = variant;
+      description = "Defines the keyboard variant.";
+    };
+  };
+
   monitors = mkOption {
     default = [];
     type = types.listOf monitor;

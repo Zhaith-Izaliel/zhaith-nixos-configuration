@@ -27,6 +27,8 @@ with lib; let
     pkgs.writeShellScriptBin "game-run"
     ''
       #!/usr/bin/env bash
+      export XKB_DEFAULT_LAYOUT="${config.hellebore.locale.keyboard.layout}"
+      export XKB_DEFAULT_VARIANT="${config.hellebore.locale.keyboard.variant}"
 
       main() {
         case "$1" in
@@ -43,15 +45,17 @@ with lib; let
       main "$@"
     '';
 
-  gamescope-args = [
-    "-f"
-    "--adaptive-sync"
-    "--force-composition"
-    "-W ${toString gameMonitor.width}"
-    "-H ${toString gameMonitor.height}"
-    "-w ${toString gameMonitor.width}"
-    "-h ${toString gameMonitor.height}"
-  ];
+  gamescope-args =
+    lists.optional config.programs.hyprland.enable "--expose-wayland"
+    ++ [
+      "-f"
+      "--adaptive-sync"
+      "--force-composition"
+      "-W ${toString gameMonitor.width}"
+      "-H ${toString gameMonitor.height}"
+      "-w ${toString gameMonitor.width}"
+      "-h ${toString gameMonitor.height}"
+    ];
 
   gameMonitor = builtins.elemAt config.hellebore.monitors cfg.monitorID;
 in {
@@ -129,7 +133,6 @@ in {
     programs = {
       gamescope = {
         enable = true;
-        args = lists.optional config.programs.hyprland.enable "--expose-wayland";
       };
 
       steam = {

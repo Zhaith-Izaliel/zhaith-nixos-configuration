@@ -1,10 +1,11 @@
 {
   config,
+  extra-types,
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption types mkOption mkIf;
   cfg = config.hellebore.locale;
 in {
   options.hellebore.locale = {
@@ -16,18 +17,9 @@ in {
       description = "Define the console keymap.";
     };
 
-    keyboard = {
-      defaultLayout = mkOption {
-        type = types.str;
-        default = "fr";
-        description = "The default keyboard layout for XKB.";
-      };
-
-      defaultVariant = mkOption {
-        type = types.str;
-        default = "oss_latin9";
-        description = "The default keyboard variant for XKB.";
-      };
+    keyboard = extra-types.keyboard {
+      layout = "fr";
+      variant = "oss_latin9";
     };
   };
 
@@ -43,8 +35,8 @@ in {
     };
 
     environment.variables = {
-      XKB_DEFAULT_LAYOUT = cfg.keyboard.defaultLayout;
-      XKB_DEFAULT_VARIANT = cfg.keyboard.defaultVariant;
+      XKB_DEFAULT_LAYOUT = cfg.keyboard.layout;
+      XKB_DEFAULT_VARIANT = cfg.keyboard.variant;
     };
 
     console = {

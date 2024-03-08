@@ -247,8 +247,8 @@ in {
       ];
 
       input = {
-        kb_layout = "${cfg.input.kbLayout}";
-        kb_variant = "${cfg.input.kbVariant}";
+        kb_layout = cfg.input.keyboard.layout;
+        kb_variant = cfg.input.keyboard.variant;
 
         follow_mouse = 1;
 

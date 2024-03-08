@@ -14,12 +14,14 @@ in {
       size = 12;
       sizeDescription = ''
         Define a global font size for applications. Each
-              application's font size can be changed granularly, or set globally using
-              this option.'';
+        application's font size can be changed granularly, or set globally using
+        this option.
+      '';
       nameDescription = ''
         Define a global font family for applications. Each
-              application's font family can be changed granularly, or set globally using
-              this option.'';
+        application's font family can be changed granularly, or set globally using
+        this option.
+      '';
     };
 
     theme = {

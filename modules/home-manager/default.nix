@@ -32,6 +32,7 @@
   };
   imports = [
     ./development
+    ./locale.nix
     ./shell
     ./desktop-environment
     ./games.nix

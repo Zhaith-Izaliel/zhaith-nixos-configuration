@@ -6,6 +6,8 @@
   hellebore = {
     theme.name = "catppuccin";
 
+    locale.enable = true;
+
     desktop-environment = {
       clipboard.enable = true;
 
