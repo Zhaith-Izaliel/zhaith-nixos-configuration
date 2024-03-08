@@ -31,7 +31,7 @@ with lib; let
       main() {
         case "$1" in
           --gamescope)
-            ${nvidia-command} gamemoderun gamescope "''${@:2}"
+            ${nvidia-command} gamemoderun gamescope ${concatStringsSep " " gamescope-args} "''${@:2}"
           ;;
 
           *)
@@ -43,17 +43,15 @@ with lib; let
       main "$@"
     '';
 
-  gamescope-args =
-    lists.optional config.programs.hyprland.enable "--expose-wayland"
-    ++ [
-      "-f"
-      "--adaptive-sync"
-      "--force-composition"
-      "-W ${toString gameMonitor.width}"
-      "-H ${toString gameMonitor.height}"
-      "-w ${toString gameMonitor.width}"
-      "-h ${toString gameMonitor.height}"
-    ];
+  gamescope-args = [
+    "-f"
+    "--adaptive-sync"
+    "--force-composition"
+    "-W ${toString gameMonitor.width}"
+    "-H ${toString gameMonitor.height}"
+    "-w ${toString gameMonitor.width}"
+    "-h ${toString gameMonitor.height}"
+  ];
 
   gameMonitor = builtins.elemAt config.hellebore.monitors cfg.monitorID;
 in {
@@ -131,7 +129,7 @@ in {
     programs = {
       gamescope = {
         enable = true;
-        args = gamescope-args;
+        args = lists.optional config.programs.hyprland.enable "--expose-wayland";
       };
 
       steam = {

@@ -76,6 +76,7 @@
       nvidia = {
         enable = true;
         power-profiles.enable = true;
+        power-management.enable = true;
         modesetting.enable = false;
         forceWaylandOnMesa = true;
         deviceFilterName = "RTX 3060";
@@ -218,28 +219,6 @@
       };
 
       username = "zhaith";
-    };
-  };
-
-  specialisation = {
-    wacom.configuration = {
-      hellebore = {
-        vm.enable = lib.mkForce false;
-
-        hardware = {
-          nvidia = {
-            forceWaylandOnMesa = lib.mkForce false;
-            prime = {
-              offload.enable = lib.mkForce false;
-              reverseSync.enable = lib.mkForce false;
-            };
-          };
-          graphics-tablet = {
-            enable = true;
-            isWacom = true;
-          };
-        };
-      };
     };
   };
 
