@@ -17,7 +17,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    environment.variables = {
+    home.sessionVariables = {
       XKB_DEFAULT_LAYOUT = cfg.keyboard.layout;
       XKB_DEFAULT_VARIANT = cfg.keyboard.variant;
     };

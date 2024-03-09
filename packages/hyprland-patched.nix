@@ -27,6 +27,6 @@ in
 
     text = ''
       export PATH="''${PATH:-}:${lib.makeBinPath [stdenv.cc binutils pciutils]}"
-      ${lib.getLib stdenv.cc.libc}/lib/ld-linux-x86-64.so.2 --preload ${accepthack}/lib/accepthack.so ${hyprland}/bin/.Hyprland-wrapped "$@"
+      ${lib.getLib stdenv.cc.libc}/lib/ld-linux-x86-64.so.2 --preload ${accepthack}/lib/accepthack.so ${hyprland}/bin/Hyprland "$@"
     '';
   }

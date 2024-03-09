@@ -3,50 +3,34 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) optionalString concatStringsSep optional types mkEnableOption mkOption mkIf optionals mdDoc;
   cfg = config.hellebore.games;
-  gamemode-icon = cleanSource ../../assets/images/icons/gamemode.svg;
-  notify-send-gamemode = message: "${pkgs.libnotify}/bin/notify-send -u critical -i ${gamemode-icon} -t 4000 '${message}'";
 
-  # Gamemode Start/Stop scripts
-  gamemode-start-script = pkgs.writeShellScriptBin "gamemode-start" ''
-    ${notify-send-gamemode "GameMode Started"}
+  nvidia-command = optionalString config.hardware.nvidia.prime.offload.enableOffloadCmd ''DXVK_FILTER_DEVICE_NAME="${config.hellebore.hardware.nvidia.deviceFilterName}" nvidia-offload'';
+
+  game-run-script = pkgs.writeShellScriptBin "game-run" ''
+    #!/usr/bin/env bash
+    export XKB_DEFAULT_LAYOUT="${config.hellebore.locale.keyboard.layout}"
+    export XKB_DEFAULT_VARIANT="${config.hellebore.locale.keyboard.variant}"
+
+    main() {
+      case "$1" in
+        --gamescope)
+          ${nvidia-command} gamemoderun gamescope ${concatStringsSep " " gamescope-args} "''${@:2}"
+        ;;
+
+        *)
+          ${nvidia-command} gamemoderun "$@"
+        ;;
+      esac
+    }
+
+    main "$@"
   '';
-
-  gamemode-stop-script = pkgs.writeShellScriptBin "gamemode-stop" ''
-    ${notify-send-gamemode "GameMode Stopped"}
-  '';
-
-  game-run-script = let
-    nvidia-command =
-      strings.optionalString
-      config.hardware.nvidia.prime.offload.enableOffloadCmd
-      ''DXVK_FILTER_DEVICE_NAME="${config.hellebore.hardware.nvidia.deviceFilterName}" nvidia-offload'';
-  in
-    pkgs.writeShellScriptBin "game-run"
-    ''
-      #!/usr/bin/env bash
-      export XKB_DEFAULT_LAYOUT="${config.hellebore.locale.keyboard.layout}"
-      export XKB_DEFAULT_VARIANT="${config.hellebore.locale.keyboard.variant}"
-
-      main() {
-        case "$1" in
-          --gamescope)
-            ${nvidia-command} gamemoderun gamescope ${concatStringsSep " " gamescope-args} "''${@:2}"
-          ;;
-
-          *)
-            ${nvidia-command} gamemoderun "$@"
-          ;;
-        esac
-      }
-
-      main "$@"
-    '';
 
   gamescope-args =
-    lists.optional config.programs.hyprland.enable "--expose-wayland"
+    optional config.programs.hyprland.enable "--expose-wayland"
     ++ [
       "-f"
       "--adaptive-sync"
@@ -154,11 +138,6 @@ in {
             reaper_freq = 5;
             igpu_desiredgov = "powersave";
           };
-
-          custom = {
-            start = "${gamemode-start-script}";
-            end = "${gamemode-stop-script}";
-          };
         };
       };
     };
@@ -176,12 +155,12 @@ in {
         winetricks
         game-run-script
       ]
-      ++ lists.optionals config.programs.hyprland.enable
+      ++ optionals config.programs.hyprland.enable
       [
         winePackages.waylandFull
         wine64Packages.waylandFull
         wine-wayland
       ]
-      ++ lists.optional cfg.minecraft.enable prismlauncher;
+      ++ optional cfg.minecraft.enable prismlauncher;
   };
 }
