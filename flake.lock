@@ -19,11 +19,11 @@
     "catppuccin-bat": {
       "flake": false,
       "locked": {
-        "lastModified": 1709693326,
-        "narHash": "sha256-zWRk6HaQl+2M9LuFTjz56jGzHQ8nuG7w1JXYe3cLxH4=",
+        "lastModified": 1709859202,
+        "narHash": "sha256-PWX8LR3xTgNBUpk+xBIGpEBQCNJHre8cRX4OTSWkZvs=",
         "owner": "catppuccin",
         "repo": "bat",
-        "rev": "e5c2f64eab91deb1750233cd64356b26cb985a21",
+        "rev": "a875b71dc5514b2eae9174b0591ef421887aa99f",
         "type": "github"
       },
       "original": {
