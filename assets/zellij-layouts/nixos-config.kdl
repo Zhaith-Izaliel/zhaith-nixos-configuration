@@ -6,18 +6,22 @@ layout {
   pane split_direction="vertical" {
     pane
     pane split_direction="horizontal" {
-      cargo { args "check"; }
-      cargo { args "run"; }
-      cargo { args "test"; }
+      command {
+        command "nixos-rebuild"
+        args "switch" "--flake ."
+      }
+      command {
+        command "home-manager"
+        args "switch" "--flake ." "-b backup"
+      }
     }
   }
 
   pane size=2 borderless=true {
     plugin location="zellij:status-bar"
   }
-  
-  pane_template name="cargo" {
-    command "cargo"
+
+  pane_template name="command" {
     start_suspended true
   }
 }
