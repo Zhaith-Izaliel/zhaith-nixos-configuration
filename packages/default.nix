@@ -7,4 +7,5 @@
 in {
   inherit nodejs-packages;
   kando = pkgs.callPackage ./kando.nix {};
+  fusion = pkgs.callPackage ./fusion.nix {};
 }

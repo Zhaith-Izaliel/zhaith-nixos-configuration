@@ -3,7 +3,7 @@
   lib,
   inputs,
   colors,
-}: {
+}: rec {
   alacritty = import ./alacritty.nix {inherit pkgs inputs;};
   bat = import ./bat.nix {inherit pkgs lib inputs;};
   dunst = import ./dunst.nix {inherit colors;};
@@ -19,5 +19,6 @@
   waybar = modules: import ./waybar {inherit colors inputs modules lib;};
   wezterm = import ./wezterm.nix {};
   wlogout = import ./wlogout.nix {inherit colors lib;};
+  yazi = import ./yazi.nix {inherit inputs pkgs bat;};
   zellij = import ./zellij.nix {};
 }
