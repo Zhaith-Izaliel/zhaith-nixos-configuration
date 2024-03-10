@@ -29,10 +29,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    zhaith-neovim = {
-      url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # zhaith-neovim = {
+    #   url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     zhaith-helix = {
       url = "gitlab:Zhaith-Izaliel/helix-config/develop";
@@ -40,7 +40,7 @@
     };
 
     hyprland = {
-      url = "github:hyprwm/Hyprland";
+      url = "github:hyprwm/Hyprland/v0.36.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

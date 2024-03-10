@@ -48,6 +48,21 @@ in {
 
       settings = {
         inherit (theme) theme;
+        keybinds = {
+          "shared_except \"locked\"" = {
+            "bind \"Ctrl g\"" = {SwitchToMode = "Locked";};
+            "bind \"Ctrl q\"" = {Quit = {};};
+            "bind \"Alt n\"" = {NewPane = {};};
+            "bind \"Alt h\" \"Alt Left\"" = {MoveFocusOrTab = "Left";};
+            "bind \"Alt l\" \"Alt Right\"" = {MoveFocusOrTab = "Right";};
+            "bind \"Alt j\" \"Alt Down\"" = {MoveFocus = "Down";};
+            "bind \"Alt k\" \"Alt Up\"" = {MoveFocus = "Up";};
+            "bind \"Alt -\"" = {Resize = "Decrease";};
+            "bind \"Alt =\" \"Alt +\"" = {Resize = "Increase";};
+            "bind \"Alt [\"" = {PreviousSwapLayout = {};};
+            "bind \"Alt ]\"" = {NextSwapLayout = {};};
+          };
+        };
       };
     };
   };

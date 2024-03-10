@@ -4,7 +4,6 @@
 {
   pkgs,
   config,
-  lib,
   ...
 }: {
   imports = [
@@ -170,7 +169,7 @@
       enable = true;
       enableSwaylockPam = true;
       enableEvolution = true;
-      useHack = true;
+      # useHack = true;
     };
 
     display-manager = {
