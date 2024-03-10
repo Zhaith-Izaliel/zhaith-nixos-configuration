@@ -67,19 +67,6 @@ in {
       options nouveau modeset=0
     '';
 
-    boot.kernel.sysctl = mkIf cfg.useHack {
-      "net.core.wmem_max" = 16777216;
-    };
-
-    services.xserver.displayManager.session = optional cfg.useHack {
-      manage = "desktop";
-      name = "hyprland-patched";
-      start = ''
-        ${getExe pkgs.hyprland-patched} &
-        waitPID=$!
-      '';
-    };
-
     programs.hyprland = {
       enable = true;
       package = cfg.package;
