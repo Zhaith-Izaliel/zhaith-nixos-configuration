@@ -12,7 +12,7 @@ in {
 
     package = mkOption {
       type = types.package;
-      default = pkgs.cz-cli;
+      default = pkgs.commitizen;
       description = "The default commitizen package to use.";
     };
 
@@ -26,7 +26,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = [cfg.package];
     home.shellAliases = mkIf cfg.setUpAlias {
-      gc = "cz";
+      gc = "cz commit";
     };
   };
 }
