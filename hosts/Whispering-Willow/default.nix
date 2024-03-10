@@ -169,7 +169,6 @@
       enable = true;
       enableSwaylockPam = true;
       enableEvolution = true;
-      # useHack = true;
     };
 
     display-manager = {
@@ -197,7 +196,7 @@
     };
 
     vm = {
-      enable = !config.hellebore.hyprland.useHack;
+      enable = true;
 
       useSecureBoot = true;
 

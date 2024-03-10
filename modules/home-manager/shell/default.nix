@@ -58,17 +58,12 @@ in {
         enableCompletion = true;
         syntaxHighlighting.enable = true;
 
-        shellAliases =
-          {
-            ls = "ls --color=auto";
-            ll = "ls --color=auto -lh";
-            grep = "grep --color=auto";
-            ip = "ip --color=auto";
-          }
-          // (mkIf config.programs.kitty.enable {
-            kssh = "kitty_ssh";
-            icat = "kitty +kitten icat";
-          });
+        shellAliases = {
+          ls = "ls --color=auto";
+          ll = "ls --color=auto -lh";
+          grep = "grep --color=auto";
+          ip = "ip --color=auto";
+        };
 
         inherit (cfg) dirHashes;
 
@@ -90,18 +85,6 @@ in {
             # Nix shell integration
             ${lib.getExe pkgs.any-nix-shell} zsh | source /dev/stdin
           ''
-
-          (strings.optionalString config.programs.kitty.enable
-            ''
-              # Special functions
-              kitty_ssh() {
-                if [ "$TERM" = "xterm-kitty" ]; then
-                  ${pkgs.kitty}/bin/kitty +kitten ssh $*
-                  return $!
-                fi
-                ${pkgs.openssh}/bin/ssh $*
-              }
-            '')
         ];
 
         oh-my-zsh = {

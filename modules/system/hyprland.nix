@@ -19,25 +19,12 @@ in {
     enableSwaylockPam = mkEnableOption "Swaylock PAM configuration";
 
     enableEvolution = mkEnableOption "Evolution PIM";
-
-    useHack = mkEnableOption "Use a patched Hyprland version to fix wayland's socket buffer size overflowing (TEMP)";
   };
 
   config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = cfg.useHack -> !config.hellebore.vm.enable;
-        message = "Using the patched version of Hyprland conflicts with virt-manager.";
-      }
+    environment.systemPackages = with pkgs; [
+      gtk3
     ];
-
-    warnings = optional cfg.useHack "Using a patched Hyprland version is a hack in itself and should be removed after https://github.com/swaywm/sway/issues/7645 is fixed, or https://gitlab.freedesktop.org/wayland/wayland/-/merge_requests/188 is merged and deployed on Wayland.";
-
-    environment.systemPackages = with pkgs;
-      [
-        gtk3
-      ]
-      ++ optional cfg.useHack pkgs.hyprland-patched;
 
     qt.enable = true;
 

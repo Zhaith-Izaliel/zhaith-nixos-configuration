@@ -125,6 +125,10 @@
       git = {
         enable = true;
         gitui.enable = true;
+        commitizen = {
+          enable = true;
+          setUpAlias = true;
+        };
         commitlint.enable = true;
         h.enable = true;
       };

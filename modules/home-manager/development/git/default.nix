@@ -12,6 +12,7 @@ in {
   imports = [
     ./commitlint.nix
     ./h.nix
+    ./commitizen.nix
   ];
 
   options.hellebore.development.git = {
