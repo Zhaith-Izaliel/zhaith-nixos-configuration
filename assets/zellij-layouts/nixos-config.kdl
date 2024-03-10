@@ -6,13 +6,13 @@ layout {
   pane split_direction="vertical" {
     pane
     pane split_direction="horizontal" {
-      command {
-        command "nixos-rebuild"
+      pane command="nixos-rebuild" {
         args "switch" "--flake ."
+        start_suspended true
       }
-      command {
-        command "home-manager"
+      pane command="home-manager" {
         args "switch" "--flake ." "-b backup"
+        start_suspended true
       }
     }
   }
@@ -21,7 +21,4 @@ layout {
     plugin location="zellij:status-bar"
   }
 
-  pane_template name="command" {
-    start_suspended true
-  }
 }
