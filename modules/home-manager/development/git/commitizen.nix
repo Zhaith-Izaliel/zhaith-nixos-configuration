@@ -26,7 +26,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = [cfg.package];
     home.shellAliases = mkIf cfg.setUpAlias {
-      gc = "cz commit";
+      gcz = "cz commit";
     };
   };
 }

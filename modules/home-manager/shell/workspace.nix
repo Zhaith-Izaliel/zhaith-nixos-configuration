@@ -5,10 +5,11 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkIf mkOption types mkEnableOption;
+  inherit (lib) mkIf mkOption types mkEnableOption cleanSource;
 
   cfg = config.hellebore.shell.workspace;
   theme = config.hellebore.theme.themes.${cfg.theme}.zellij;
+  layouts = cleanSource ../../../assets/zellij-layouts;
 in {
   options.hellebore.shell.workspace = {
     enable = mkEnableOption "Hellebore's Terminal Workspace/Multiplexer";
@@ -36,6 +37,12 @@ in {
     home.sessionVariables = {
       ZELLIJ_AUTO_ATTACH = "true";
       # ZELLIJ_AUTO_EXIT = "true";
+    };
+
+    xdg.configFile."zellij/layouts".source = layouts;
+
+    home.shellAliases = {
+      zlayout = "zellij action new-tab --layout";
     };
 
     programs.zellij = {
