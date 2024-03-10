@@ -107,6 +107,11 @@
       url = "github:catppuccin/starship";
       flake = false;
     };
+
+    catppuccin-yazi = {
+      url = "github:catppuccin/yazi";
+      flake = false;
+    };
   };
 
   outputs = {

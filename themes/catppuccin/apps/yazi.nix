@@ -3,11 +3,13 @@
   bat,
   pkgs,
 }: let
-  extraThemeProperties = ''
-    [manager]
-
-    syntect_theme="${bat.src}/${bat.file}"
-  '';
+  extraThemeProperties = pkgs.writeTextFile {
+    name = "yazi-highlight-theme-location.toml";
+    text = ''
+      [manager]
+      syntect_theme="${bat.src}/${bat.file}"
+    '';
+  };
 in rec {
   package = pkgs.stdenv.mkDerivation {
     pname = "catppuccin-yazi";
@@ -20,13 +22,7 @@ in rec {
     ];
 
     installPhase = ''
-      runHook preInstall
       mkdir -p $out
-      cp themes/macchiato.toml $out
-      runHook postInstall
-    '';
-
-    postInstallPhase = ''
       fusion toml themes/macchiato.toml ${extraThemeProperties} -o $out/macchiato.toml
     '';
   };

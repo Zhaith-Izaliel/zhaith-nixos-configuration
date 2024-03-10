@@ -105,6 +105,7 @@
       office.enable = true;
       tasks.enable = true;
       docs.enable = true;
+      yazi.enable = true;
     };
 
     multimedia = {
