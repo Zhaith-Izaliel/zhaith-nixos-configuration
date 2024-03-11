@@ -94,6 +94,8 @@ in {
     hardware.nvidia = {
       inherit (cfg) modesetting open;
 
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+
       powerManagement = mkIf cfg.power-management.enable {
         enable = true;
         finegrained = true;
