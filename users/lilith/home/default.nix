@@ -1,6 +1,6 @@
 {...}: {
   hellebore = {
-    theme.name = "catppuccin";
+    theme.name = "catppuccin-macchiato";
     font.size = 12;
 
     development = {

@@ -30,7 +30,7 @@
   hellebore = rec {
     font.size = 12;
 
-    theme.name = "catppuccin";
+    theme.name = "catppuccin-macchiato";
 
     monitors = [
       {

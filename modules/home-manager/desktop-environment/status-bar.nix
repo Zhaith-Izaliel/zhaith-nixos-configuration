@@ -20,7 +20,7 @@
     concatStringsSep
     ;
   cfg = config.hellebore.desktop-environment.status-bar;
-  theme = config.hellebore.theme.themes.${config.hellebore.theme.name};
+  theme = config.hellebore.theme.themes.${cfg.theme};
   waybar-theme = theme.waybar modules;
   modules = {
     modules = flatten [
@@ -61,6 +61,11 @@ in {
       name = theme.gtk.font.name;
       sizeDescription = "Set the status bar font size.";
       nameDescription = "Set the status bar font family.";
+    };
+
+    theme = extra-types.theme.name {
+      default = config.hellebore.theme.name;
+      description = "Set the status bar theme used.";
     };
 
     tray = {

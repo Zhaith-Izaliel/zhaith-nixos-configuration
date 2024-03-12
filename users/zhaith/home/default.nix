@@ -4,7 +4,7 @@
   ];
 
   hellebore = {
-    theme.name = "catppuccin";
+    theme.name = "catppuccin-macchiato";
 
     locale.enable = true;
 
