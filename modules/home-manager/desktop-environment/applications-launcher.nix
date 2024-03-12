@@ -126,10 +126,11 @@ in {
       ];
 
       extraConfig = {
-        modi = "drun,calc";
+        # modi = "drun,calc";
+        modi = "drun";
         show-icons = true;
         display-drun = " Apps";
-        display-calc = "󰲒 Calc";
+        # display-calc = "󰲒 Calc";
         drun-display-format = "{name}";
         icon-theme = theme.gtk.iconTheme.name;
         window-format = "{w} · {c} · {t}";
