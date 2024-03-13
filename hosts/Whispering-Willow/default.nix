@@ -158,7 +158,6 @@
     hyprland = {
       enable = true;
       enableSwaylockPam = true;
-      enableEvolution = true;
     };
 
     display-manager = {

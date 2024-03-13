@@ -17,8 +17,6 @@ in {
     };
 
     enableSwaylockPam = mkEnableOption "Swaylock PAM configuration";
-
-    enableEvolution = mkEnableOption "Evolution PIM";
   };
 
   config = mkIf cfg.enable {
@@ -39,8 +37,6 @@ in {
     services.gnome.gnome-settings-daemon.enable = true;
 
     programs.dconf.enable = true;
-
-    programs.evolution.enable = cfg.enableEvolution;
 
     security.pam.services.swaylock.text = strings.optionalString cfg.enableSwaylockPam ''
       # PAM configuration file for the swaylock screen locker. By default, it includes

@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) types mkEnableOption mkIf mkMerge mkOption optionals;
+  inherit (lib) types mkEnableOption mkIf mkMerge mkOption;
 
   cfg = config.hellebore.hardware.graphics-tablet;
 in {
@@ -18,18 +18,18 @@ in {
     };
   };
 
-  config = mkMerge (optionals cfg.enable [
-    (mkIf (!cfg.isWacom) {
+  config = mkMerge [
+    (mkIf (cfg.enable && !cfg.isWacom) {
       hardware.opentabletdriver = {
         enable = true;
         daemon.enable = true;
       };
     })
 
-    (mkIf (cfg.isWacom) {
+    (mkIf (cfg.enable && cfg.isWacom) {
       boot.kernelModules = ["wacom"];
       environment.systemPackages = with pkgs; [wacomtablet];
       services.xserver.wacom.enable = true;
     })
-  ]);
+  ];
 }
