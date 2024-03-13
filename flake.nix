@@ -14,11 +14,6 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
-
     grub2-themes = {
       url = "github:/vinceliuice/grub2-themes";
       inputs.nixpkgs.follows = "nixpkgs";

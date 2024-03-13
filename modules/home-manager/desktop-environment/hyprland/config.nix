@@ -81,7 +81,7 @@ in {
         )
         (
           optionals config.hellebore.desktop-environment.mail.enable
-          (mkWindowOrLayerRule "class:(evolution)" [
+          (mkWindowOrLayerRule "class:(thunderbird)" [
             "workspace 4 silent"
           ])
         )

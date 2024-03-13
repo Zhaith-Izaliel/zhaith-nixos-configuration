@@ -4,8 +4,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkIf mkEnableOption mkOption types optional getExe;
   cfg = config.hellebore.desktop-environment.mail;
 in {
   options.hellebore.desktop-environment.mail = {
@@ -15,8 +15,14 @@ in {
       type = types.bool;
     };
 
+    package = mkOption {
+      default = pkgs.thunderbird-bin;
+      type = types.package;
+      description = "Set the package use for the mail client.";
+    };
+
     bin = mkOption {
-      default = "${pkgs.evolution}/bin/evolution";
+      default = getExe cfg.package;
       type = types.str;
       description = "Get the package binary";
       readOnly = true;
@@ -34,11 +40,11 @@ in {
       }
     ];
 
-    home.packages = lists.optional cfg.protonmail.enable pkgs.protonmail-bridge;
+    home.packages = optional cfg.protonmail.enable pkgs.protonmail-bridge;
 
     programs.thunderbird = {
+      inherit (cfg) package;
       enable = true;
-      package = pkgs.thunderbird-bin;
       profiles."zhaith".isDefault = true;
     };
 

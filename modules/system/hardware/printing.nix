@@ -14,9 +14,12 @@ in {
       description = "Drivers packages in case your printer doesn't support the
       IPP everywhere protocol";
     };
+    numerization.enable = mkEnableOption "Numerization support";
   };
 
   config = mkIf cfg.enable {
+    hardware.sane.enable = cfg.numerization.enable;
+
     services = {
       printing = {
         enable = true;

@@ -17,18 +17,14 @@ in {
     environment.systemPackages = with pkgs;
       [
         gotop
-        qview
         ripgrep
         repgrep
-        jq
-        neofetch
         zip
         unzip
         pstree
         pciutils
         wget
         curl
-        tree
         rar
         unrar
         erdtree

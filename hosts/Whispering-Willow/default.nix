@@ -1,11 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -89,14 +85,11 @@
 
       ntfs.enable = true;
 
-      bluetooth = {
-        enable = true;
-      };
-
-      numerization.enable = true;
+      bluetooth.enable = true;
 
       printing = {
         enable = true;
+        numerization.enable = true;
         drivers = with pkgs; [
           epson-escpr
           (epson-escpr2.overrideAttrs (final: prev: {
@@ -114,14 +107,11 @@
         cameraBus = "3-13";
       };
 
-      logitech = {
+      gaming = {
         enable = true;
-        wireless.enable = true;
+        steam.enable = true;
+        logitech.wireless.enable = true;
       };
-
-      gaming.enable = true;
-
-      steam.enable = true;
     };
 
     bootloader = {
