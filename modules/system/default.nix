@@ -40,7 +40,6 @@ in {
     ./games.nix
     ./hardware
     ./hyprland.nix
-    ./kernel.nix
     ./locale.nix
     ./network.nix
     ./opengl.nix

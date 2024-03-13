@@ -23,6 +23,8 @@
     "electron-12.2.3" # Etcher
   ];
 
+  # boot.kernelPackages = pkgs.linuxPackages_zen;
+
   hellebore = rec {
     font.size = 12;
 
