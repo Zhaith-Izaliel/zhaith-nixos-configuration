@@ -32,19 +32,19 @@
 
   # Based of the "darker()" function GTK CSS;
   darken = {
-    rosewater = "#C7877A";
-    flamingo = "#C37070";
-    pink = "#CD63B1";
-    mauve = "#874DD0";
-    red = "#C34154";
-    maroon = "#C44E57";
-    peach = "#CD6D37";
-    yellow = "#C49E52";
-    green = "#6BAB56";
-    teal = "#53A498";
-    sky = "#4EA7B6";
-    sapphire = "#4391B4";
-    blue = "#3F6ECC";
-    lavender = "#5B66D3";
+    rosewater = "#c7877a";
+    flamingo = "#c37070";
+    pink = "#cd63b1";
+    mauve = "#874dd0";
+    red = "#c34154";
+    maroon = "#c44e57";
+    peach = "#cd6d37";
+    yellow = "#c49e52";
+    green = "#6bab56";
+    teal = "#53a498";
+    sky = "#4ea7b6";
+    sapphire = "#4391b4";
+    blue = "#3f6ecc";
+    lavender = "#5b66d3";
   };
 }

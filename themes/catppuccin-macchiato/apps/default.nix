@@ -17,7 +17,6 @@
   shell = import ./shell.nix {inherit colors;};
   swaylock = import ./swaylock.nix {inherit lib colors;};
   waybar = modules: import ./waybar {inherit colors inputs modules lib;};
-  wezterm = import ./wezterm.nix {};
   wlogout = import ./wlogout.nix {inherit colors lib;};
   yazi = import ./yazi.nix {inherit inputs pkgs bat;};
   zellij = import ./zellij.nix {};

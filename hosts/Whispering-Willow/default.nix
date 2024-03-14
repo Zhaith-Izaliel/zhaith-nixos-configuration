@@ -130,8 +130,6 @@
 
     shell.enable = true;
 
-    kernel.enable = true;
-
     locale.enable = true;
 
     development = {

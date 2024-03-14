@@ -76,43 +76,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # programs.wezterm = {
-    #   inherit (cfg) enable package;
-
-    #   enableBashIntegration = config.programs.bash.enable;
-    #   enableZshIntegration = config.programs.zsh.enable;
-
-    #   extraConfig = ''
-    #     local wezterm = require("wezterm");
-
-    #     return {
-    #       font = wezterm.font {
-    #         family = "${cfg.font.name}",
-    #         harfbuzz_features = { 'liga=${
-    #       if cfg.font.enableLigatures
-    #       then toString 1
-    #       else toString 0
-    #     }' },
-    #       },
-    #       font_size = ${toString cfg.font.size},
-    #       hide_tab_bar_if_only_one_tab = true,
-    #       color_scheme = "${theme.wezterm.theme}",
-    #       window_background_opacity = 0.9,
-    #       skip_close_confirmation_for_processes_named = {
-    #         'bash',
-    #         'zellij',
-    #         'sh',
-    #         'zsh',
-    #         'fish',
-    #         'tmux',
-    #         'nu',
-    #         'cmd.exe',
-    #         'pwsh.exe',
-    #         'powershell.exe',
-    #       },
-    #     }
-    #   '';
-    # };
     programs.alacritty = {
       enable = true;
       package = cfg.package;

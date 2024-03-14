@@ -30,8 +30,14 @@ in {
       supportedLocales = [
         "ja_JP.UTF-8/UTF-8"
         "en_US.UTF-8/UTF-8"
+        "en_GB.UTF-8/UTF-8"
         "fr_FR.UTF-8/UTF-8"
       ];
+
+      extraLocaleSettings = {
+        LC_MEASUREMENT = "en_GB.UTF-8";
+        LC_TIME = "en_GB.UTF-8";
+      };
     };
 
     environment.variables = {
