@@ -201,6 +201,7 @@
         nativeBuildInputs = with pkgs; [
           alejandra
           home-manager
+          gnumake
         ];
       };
     };

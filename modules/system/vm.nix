@@ -112,9 +112,13 @@ in {
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> (builtins.length cfg.pcisBinding.vendorIds) > 0;
+        assertion = builtins.length cfg.pcisBinding.vendorIds > 0;
         message = "You need at least one PCI to allow GPU passthrough.";
       }
+      # {
+      #   assertion = builtins.length cfg.pcisBinding.pcis > 0;
+      #   message = "You need at least one PCI to allow GPU passthrough.";
+      # }
     ];
 
     environment.systemPackages = with pkgs; [
@@ -191,18 +195,23 @@ in {
             "nvidia_uvm"
             "nvidia_drm"
           ];
+
+        # preDeviceCommands = concatStringsSep "\n" [
+        #   ''
+        #     for DEV in ${concatStringsSep " " cfg.pcisBinding.pcis}; do
+        #     echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
+        #     done
+        #   ''
+        #   (optionalString (!cfg.pcisBinding.enableDynamicBinding) "modprobe -i vfio-pci")
+        #   (optionalString (cfg.pcisBinding.enableDynamicBinding) "modprobe -i nvidia")
+        # ];
       };
 
       extraModprobeConfig = concatStringsSep "\n" [
-        ''
-          blacklist nouveau
-          # blacklist xpad
-        ''
-        (optionalString (!cfg.pcisBinding.enableDynamicBinding) "options nouveau modeset=0")
-        (optionalString cfg.pcisBinding.enableDynamicBinding ''
-          remove vfio_pci
-          install nvidia_drm
-        '')
+        # (optionalString cfg.pcisBinding.enableDynamicBinding ''
+        #   remove vfio_pci
+        #   install nvidia
+        # '')
       ];
     };
   };
