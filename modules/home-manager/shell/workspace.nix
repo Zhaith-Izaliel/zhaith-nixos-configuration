@@ -8,7 +8,7 @@
   inherit (lib) mkIf mkOption types mkEnableOption cleanSource;
 
   cfg = config.hellebore.shell.workspace;
-  theme = config.hellebore.theme.themes.${cfg.theme}.zellij;
+  theme = config.hellebore.theme.themes.${cfg.theme};
   layouts = cleanSource ../../../assets/zellij-layouts;
 in {
   options.hellebore.shell.workspace = {
@@ -54,7 +54,7 @@ in {
       enableBashIntegration = config.programs.bash.enable;
 
       settings = {
-        inherit (theme) theme;
+        inherit (theme.zellij) theme;
         keybinds = {
           "shared_except \"locked\"" = {
             "bind \"Ctrl g\"" = {SwitchToMode = "Locked";};

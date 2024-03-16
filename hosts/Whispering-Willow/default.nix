@@ -23,7 +23,10 @@
     "electron-12.2.3" # Etcher
   ];
 
-  # boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot = {
+    kernelPackages = pkgs.pkgs.linuxPackages_latest;
+    initrd.kernelModules = ["i915"];
+  };
 
   hellebore = rec {
     font.size = 12;
@@ -32,7 +35,7 @@
 
     monitors = [
       {
-        name = "eDP-2";
+        name = "eDP-1";
         width = 2560;
         height = 1440;
         refreshRate = 165;
