@@ -206,11 +206,6 @@
           "10de:2520" # GPU
           "10de:228e" # Audio
         ];
-
-        # pcis = [
-        #   "0000:01:00.0" # GPU
-        #   "0000:01:00.1" # Audio
-        # ];
       };
 
       username = "zhaith";

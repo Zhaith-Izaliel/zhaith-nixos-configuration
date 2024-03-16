@@ -47,6 +47,21 @@
       fi
     fi
   '';
+
+  kernelModules =
+    [
+      "kvm-intel"
+      "vfio"
+      "vfio_iommu_type1"
+      "vfio_pci"
+      "vhost-net"
+    ]
+    ++ optionals cfg.pcisBinding.enableDynamicBinding [
+      "nvidia"
+      "nvidia_modeset"
+      "nvidia_uvm"
+      "nvidia_drm"
+    ];
 in {
   options.hellebore.vm = {
     enable = mkEnableOption "Hellebore KVM VM (*Works only with an Intel CPU and
@@ -87,13 +102,6 @@ in {
       enableDynamicBinding = mkEnableOption "PCIs dynamic binding on VM run
       (Nvidia only)";
 
-      # pcis = mkOption {
-      #   type = types.listOf types.nonEmptyStr;
-      #   default = [];
-      #   description = "List of the PCIs to isolate the GPU (should contain
-      #   everything available in its IOMMU group).";
-      # };
-
       vendorIds = mkOption {
         type = types.listOf types.nonEmptyStr;
         default = [];
@@ -115,10 +123,6 @@ in {
         assertion = builtins.length cfg.pcisBinding.vendorIds > 0;
         message = "You need at least one PCI to allow GPU passthrough.";
       }
-      # {
-      #   assertion = builtins.length cfg.pcisBinding.pcis > 0;
-      #   message = "You need at least one PCI to allow GPU passthrough.";
-      # }
     ];
 
     environment.systemPackages = with pkgs; [
@@ -162,57 +166,15 @@ in {
     ];
 
     boot = {
-      kernelModules =
-        [
-          "kvm-intel"
-          "vfio"
-          "vfio_iommu_type1"
-          "vfio_pci"
-          "vhost-net"
-        ]
-        ++ optionals cfg.pcisBinding.enableDynamicBinding [
-          "nvidia"
-          "nvidia_modeset"
-          "nvidia_uvm"
-          "nvidia_drm"
-        ];
+      inherit kernelModules;
       kernelParams = [
         "intel_iommu=on"
         "iommu=pt"
         ("vfio-pci.ids=" + concatStringsSep "," cfg.pcisBinding.vendorIds)
       ];
       initrd = {
-        availableKernelModules =
-          [
-            "vfio"
-            "vfio_iommu_type1"
-            "vfio_pci"
-            "vhost-net"
-          ]
-          ++ optionals cfg.pcisBinding.enableDynamicBinding [
-            "nvidia"
-            "nvidia_modeset"
-            "nvidia_uvm"
-            "nvidia_drm"
-          ];
-
-        # preDeviceCommands = concatStringsSep "\n" [
-        #   ''
-        #     for DEV in ${concatStringsSep " " cfg.pcisBinding.pcis}; do
-        #     echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
-        #     done
-        #   ''
-        #   (optionalString (!cfg.pcisBinding.enableDynamicBinding) "modprobe -i vfio-pci")
-        #   (optionalString (cfg.pcisBinding.enableDynamicBinding) "modprobe -i nvidia")
-        # ];
+        availableKernelModules = kernelModules;
       };
-
-      extraModprobeConfig = concatStringsSep "\n" [
-        # (optionalString cfg.pcisBinding.enableDynamicBinding ''
-        #   remove vfio_pci
-        #   install nvidia
-        # '')
-      ];
     };
   };
 }
