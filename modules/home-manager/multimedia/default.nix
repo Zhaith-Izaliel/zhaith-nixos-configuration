@@ -3,12 +3,11 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.hellebore.multimedia;
 in {
   imports = [
-    ./anime.nix
     ./art.nix
     ./mpd.nix
     ./obs.nix
@@ -24,9 +23,6 @@ in {
       vlc
       kid3
       ffmpeg
-      pavucontrol
-      blueberry
-      power-management
     ];
   };
 }

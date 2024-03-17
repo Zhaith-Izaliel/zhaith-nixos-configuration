@@ -8,19 +8,6 @@
 }: let
   inherit (lib) types mkOption mkEnableOption mkIf;
   cfg = config.hellebore.desktop-environment.hyprland;
-  configure-gtk = gtkTheme: let
-    schema = pkgs.gsettings-desktop-schemas;
-    datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-  in
-    pkgs.writeShellScriptBin "configure-gtk" ''
-      #!/usr/bin/env bash
-      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-      local gnome_schema=org.gnome.desktop.interface
-      gsettings set $gnome_schema gtk-theme ${gtkTheme.theme.name}
-      gsettings set $gnome_schema icon-theme ${gtkTheme.iconTheme.name}
-      gsettings set $gnome_schema cursor-theme ${gtkTheme.cursorTheme.name}
-      gsettings set $gnome_schema font-name ${gtkTheme.font.name}
-    '';
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
   imports = [
@@ -122,7 +109,7 @@ in {
         grimblast
         volume-brightness
         screenshot
-        (configure-gtk theme.gtk)
+        power-management
         gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
       ]
       ++ theme.gtk.packages;

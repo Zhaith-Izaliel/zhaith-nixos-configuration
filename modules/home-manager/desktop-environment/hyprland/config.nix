@@ -24,6 +24,20 @@
   theme =
     config.hellebore.theme.themes.${cfg.theme};
 
+  configure-gtk = gtkTheme: let
+    schema = pkgs.gsettings-desktop-schemas;
+    datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+  in
+    pkgs.writeShellScriptBin "configure-gtk" ''
+      #!/usr/bin/env bash
+      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+      local gnome_schema=org.gnome.desktop.interface
+      gsettings set $gnome_schema gtk-theme ${gtkTheme.theme.name}
+      gsettings set $gnome_schema icon-theme ${gtkTheme.iconTheme.name}
+      gsettings set $gnome_schema cursor-theme ${gtkTheme.cursorTheme.name}
+      gsettings set $gnome_schema font-name ${gtkTheme.font.name}
+    '';
+
   mkWindowOrLayerRule = window: rules: (map (rule: "${rule},${window}") rules);
 
   mkMonitor = monitor: let
@@ -131,7 +145,7 @@ in {
         "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
         "swayosd --max-volume 150"
         "hyprctl setcursor ${theme.gtk.cursorTheme.name} 24"
-        (optionalString config.gtk.enable "configure-gtk")
+        (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
         (optional config.hellebore.desktop-environment.browsers.enable
           "[workspace 1] ${getExe pkgs.firefox}")
         (optional config.hellebore.shell.emulator.enable

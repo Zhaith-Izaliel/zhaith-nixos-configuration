@@ -4,14 +4,14 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkOption types mkIf optionalString;
   visualizer = {
     type = "fifo";
     name = "visualizer";
     path = "/tmp/mpd.fifo";
     format = "44100:16:2";
-  }; # TODO: might need to move that into the config
+  };
   cfg = config.hellebore.multimedia.mpd;
 in {
   options.hellebore.multimedia.mpd = {
@@ -72,7 +72,7 @@ in {
               name "MPD-Pipewire-Output"
             }
           ''
-          + strings.optionalString cfg.visualizer.enable
+          + optionalString cfg.visualizer.enable
           ''
             # Visualizer
             audio_output {

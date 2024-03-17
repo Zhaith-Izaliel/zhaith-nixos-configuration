@@ -10,7 +10,6 @@ with lib; let
   theme = config.hellebore.theme.themes.${cfg.gitui.theme};
 in {
   imports = [
-    ./commitlint.nix
     ./h.nix
     ./commitizen.nix
   ];

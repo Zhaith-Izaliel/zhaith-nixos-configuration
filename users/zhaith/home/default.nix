@@ -130,7 +130,6 @@
           enable = true;
           setUpAlias = true;
         };
-        commitlint.enable = true;
         h.enable = true;
       };
       erdtree = {
