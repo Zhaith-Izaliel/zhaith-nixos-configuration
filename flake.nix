@@ -114,7 +114,6 @@
     nixpkgs-stable,
     grub2-themes,
     nix-alien,
-    zhaith-neovim,
     hyprland,
     hyprland-contrib,
     hypridle,
@@ -186,7 +185,7 @@
           inherit system overlays extraModules;
           username = "zhaith";
           hostname = "Whispering-Willow";
-          stateVersion = "22.05";
+          stateVersion = "23.11";
         };
 
         "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
@@ -199,6 +198,7 @@
 
       devShells.${system}.default = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [
+	  git
           alejandra
           home-manager
           gnumake

@@ -78,7 +78,7 @@ in {
 
     font = extra-types.font {
       size = config.hellebore.font.size;
-      name = "FiraCode Nerd Font Mono";
+      name = "FiraMono Nerd Font Mono";
       nameDescription = "Defines the font family used on the
       applications launcher.";
       sizeDescription = "Defines the font size used on the
@@ -130,7 +130,7 @@ in {
         modi = "drun";
         show-icons = true;
         display-drun = " Apps";
-        # display-calc = "󰲒 Calc";
+        display-calc = "󰲒 Calc";
         drun-display-format = "{name}";
         icon-theme = theme.gtk.iconTheme.name;
         window-format = "{w} · {c} · {t}";

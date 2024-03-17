@@ -1,5 +1,5 @@
 rebuild:
-	nixos-rebuild switch --flake . --use-remote-sudo
+	nixos-rebuild boot --flake . --use-remote-sudo
 	
 rebuild-home:
 	rm -f /home/zhaith/.mozilla/firefox/zhaith/search.json.mozlz4.backup
@@ -19,7 +19,7 @@ up:
 # upp:
 # 	nix flake lock --update-input $(i)
 
-fix-bootloader:
+rescue-bootloader:
 	NIXOS_INSTALL_BOOTLOADER=1 /nix/var/nix/profiles/system/bin/switch-to-configuration boot
 
 history:

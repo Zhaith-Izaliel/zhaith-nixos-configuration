@@ -181,9 +181,16 @@ in {
 
         battery = {
           format = "{icon} {capacity}%";
-          format-charging = "󰂄 {capacity}%";
+          format-discharging = "⇣{icon} {capacity}%";
+          format-charging = "⇡󰂄 {capacity}%";
           format-plugged = " {capacity}%";
           format-icons = ["󰁺" "󰁻" "󰁼" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+          states = {
+            full = 100;
+            good = 95;
+            warning = 30;
+            critical = 20;
+          };
         };
 
         clock = {

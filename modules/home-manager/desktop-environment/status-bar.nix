@@ -176,14 +176,6 @@ in {
             on-scroll-down = "${getExe pkgs.volume-brightness} -b 1%-";
           };
 
-          battery = {
-            states = {
-              good = 95;
-              warning = 30;
-              critical = 20;
-            };
-          };
-
           clock = {
             timezone = os-config.time.timeZone;
           };
@@ -201,7 +193,7 @@ in {
         ''
           * {
             font-size: ${toString cfg.font.size}pt;
-            font-family: "${cfg.font.name}", "Fira Code Nerd Font Mono";
+            font-family: "${cfg.font.name}", "FiraMono Nerd Font Mono";
           }
         ''
         waybar-theme.style

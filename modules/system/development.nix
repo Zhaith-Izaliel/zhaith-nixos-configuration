@@ -23,6 +23,7 @@ in {
       [
         helix
         git
+        gnumake
       ]
       ++ (lists.optional cfg.enableDocker pkgs.docker-compose)
       ++ (lists.optionals cfg.enableDocumentation (with pkgs; [
