@@ -1,9 +1,10 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf optional;
   cfg = config.hellebore.desktop-environment.clipboard;
 in {
   options.hellebore.desktop-environment.clipboard = {
@@ -11,6 +12,8 @@ in {
   };
 
   config = mkIf cfg.enable {
+    home.packages = optional config.wayland.windowManager.hyprland.enable pkgs.wl-clipboard;
+
     services.copyq.enable = true;
   };
 }

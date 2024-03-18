@@ -126,7 +126,20 @@
   } @ inputs: let
     system = "x86_64-linux";
     customHelpers = import ./utils {inherit inputs;};
-    modules = import ./modules {};
+    modules = import ./modules {
+      extraSystemModules = [
+        grub2-themes.nixosModules.default
+        sddm-sugar-candy-nix.nixosModules.default
+      ];
+
+      extraHomeManagerModules = [
+        zhaith-helix.homeManagerModules.default
+        rofi-applets.homeManagerModules.default
+        hypridle.homeManagerModules.default
+      ];
+
+      extraServerModules = [];
+    };
     customOverlay = import ./overlay {inherit inputs;};
   in
     with import nixpkgs {inherit system;}; {
@@ -136,8 +149,6 @@
           hostname = "Whispering-Willow";
           users = ["zhaith"];
           extraModules = [
-            grub2-themes.nixosModules.default
-            sddm-sugar-candy-nix.nixosModules.default
             modules.system
           ];
           overlays = [
@@ -160,17 +171,13 @@
             })
           ];
           extraModules = [
-            grub2-themes.nixosModules.default
             modules.server
           ];
         };
       };
       homeConfigurations = let
         extraModules = [
-          zhaith-helix.homeManagerModules.default
           modules.home-manager
-          rofi-applets.homeManagerModules.default
-          hypridle.homeManagerModules.default
         ];
         overlays = [
           hyprland.overlays.default
@@ -198,7 +205,7 @@
 
       devShells.${system}.default = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [
-	  git
+          git
           alejandra
           home-manager
           gnumake

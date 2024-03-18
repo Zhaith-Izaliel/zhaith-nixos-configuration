@@ -9,6 +9,21 @@
   inherit (lib) types mkOption mkEnableOption mkIf;
   cfg = config.hellebore.desktop-environment.hyprland;
   theme = config.hellebore.theme.themes.${cfg.theme};
+  extraRulesType = types.submodule {
+    options = {
+      rules = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "Defines the rules to apply to the game window";
+      };
+
+      regex = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "Defines the regular expression used to find the window or layer on Hyprland. See: https://wiki.hyprland.org/Configuring/Window-Rules/#window-rules-v2 and https://wiki.hyprland.org/Configuring/Window-Rules/#layer-rules";
+      };
+    };
+  };
 in {
   imports = [
     ./config.nix
@@ -48,6 +63,18 @@ in {
       description = "Set the wallpaper.";
     };
 
+    extraWindowRules = mkOption {
+      type = types.listOf extraRulesType;
+      default = [];
+      description = "Defines a list of extra rules for windows to be applied.";
+    };
+
+    extraLayerRules = mkOption {
+      type = types.listOf extraRulesType;
+      default = [];
+      description = "Defines a list of extra rules for windows to be applied.";
+    };
+
     input = {
       keyboard = extra-types.keyboard {
         inherit (config.hellebore.locale.keyboard) layout variant;
@@ -81,11 +108,11 @@ in {
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> os-config.programs.hyprland.enable;
+        assertion = os-config.programs.hyprland.enable;
         message = "Hyprland must be enabled in your system configuration";
       }
       {
-        assertion = cfg.enable -> os-config.programs.hyprland.xwayland.enable;
+        assertion = os-config.programs.hyprland.xwayland.enable;
         message = "Hyprland XWayland must be enabled in your system configuration";
       }
     ];

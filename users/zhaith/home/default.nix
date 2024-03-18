@@ -14,6 +14,25 @@
       hyprland = {
         enable = true;
         mirrorFirstMonitor = true;
+        extraWindowRules = [
+          {
+            regex = "class:(steam_app_).*";
+            rules = [
+              "workspace 5"
+              "idleinhibit"
+            ];
+          }
+          {
+            regex = "class:(gw2).*";
+            rules = [
+              "workspace 5"
+              "idleinhibit"
+              "noblur"
+              "noborder"
+              "noshadow"
+            ];
+          }
+        ];
       };
 
       lockscreen = {
@@ -28,6 +47,7 @@
 
       logout = {
         enable = true;
+        useLayerBlur = true;
         font.size = 20;
       };
 

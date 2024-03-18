@@ -6,7 +6,7 @@ rebuild-home:
 	home-manager switch --flake . -b backup
 
 debug:
-	nixos-rebuild switch --flake . --use-remote-sudo --show-trace --verbose
+	nixos-rebuild dry-activate --flake . --use-remote-sudo --show-trace --verbose
 
 debug-home:
 	home-manager switch --flake . --show-trace --verbose

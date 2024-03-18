@@ -53,6 +53,12 @@
 
   mkMonitors = monitors: builtins.map mkMonitor monitors;
 
+  mkExtraRules = rules: builtins.map (item: mkWindowOrLayerRule item.regex item.rules) rules;
+
+  extraWindowRules = mkExtraRules cfg.extraWindowRules;
+
+  extraLayerRules = mkExtraRules cfg.extraLayerRules;
+
   getMonitor = index: builtins.elemAt cfg.monitors index;
 
   maxPersistentWorkspaces = count (x: x) [
@@ -116,10 +122,6 @@ in {
           (mkWindowOrLayerRule "class:^.*(heroic).*$" [
             "workspace 5"
           ])
-          (mkWindowOrLayerRule "class:(steam_app_).*" [
-            "workspace 5"
-            "idleinhibit"
-          ])
         ])
         (optionals os-config.hellebore.vm.enable [
           (mkWindowOrLayerRule "title:(${os-config.hellebore.vm.name})class:(looking-glass-client)" [
@@ -131,13 +133,15 @@ in {
             "workspace 6"
           ])
         ])
+        extraWindowRules
       ];
 
       layerrule = flatten [
-        (optionals config.hellebore.desktop-environment.logout.useLayerBlur (mkWindowOrLayerRule "gtk-layer-shell" [
+        (optionals config.hellebore.desktop-environment.logout.useLayerBlur (mkWindowOrLayerRule "logout_dialog" [
           "blur"
           "xray off"
         ]))
+        extraLayerRules
       ];
 
       exec-once = flatten [
