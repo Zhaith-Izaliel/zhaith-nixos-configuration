@@ -123,16 +123,19 @@ in {
           };
         };
 
-        bluetooth = {
+        bluetooth = let
+          controller-format = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
+          device-format = "󰥰 {device_alias} - {device_address}";
+        in {
           format = "󰂯 On";
           format-off = "${mkBig "󰂲"} Off";
           format-disabled = "󰂳 Disabled";
           format-connected = "${mkBig "󰂱"} {device_alias}";
           format-connected-battery = "${mkBig "󰂱"} {device_alias} {device_battery_percentage}%";
-          tooltip-format = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected";
-          tooltip-format-connected = "󰂯 {controller_alias} - {controller_address}\n󰂰 {num_connections} connected\n\n{device_enumerate}";
-          tooltip-format-enumerate-connected = "󰥰 {device_alias} - {device_address}";
-          tooltip-format-enumerate-connected-battery = "󰥰 {device_alias} - {device_address} (󰁹 {device_battery_percentage}%)";
+          tooltip-format = controller-format;
+          tooltip-format-connected = "${controller-format}\n\n{device_enumerate}";
+          tooltip-format-enumerate-connected = device-format;
+          tooltip-format-enumerate-connected-battery = "${device-format} (󰁹 {device_battery_percentage}%)";
         };
 
         "hyprland/window" = {
@@ -218,13 +221,13 @@ in {
         };
 
         network = let
-          speedFormat = "󰮏 {bandwidthDownBits}⎹ 󰸇 {bandwidthUpBits}";
+          speedFormat = "<span color='${colors.normal.teal}'><b>󰮏</b> {bandwidthDownBits}</span> <b>|</b> <span color='${colors.normal.sapphire}'><b>󰸇</b> {bandwidthUpBits}</span>";
         in {
           format-wifi = "${mkBig "{icon}"} {essid}";
           format-ethernet = "${mkBig "󰈀"} {ipaddr}/{cidr}";
           format-linked = "${mkBig ""} {ifname}";
           format-disconnected = "${mkBig "󰒏"} Disconnected";
-          tooltip-format-wifi = "{essid} - {icon} {signalStrength}%\n${speedFormat}";
+          tooltip-format-wifi = "{essid} - <span color='${colors.normal.mauve}'><b>{icon}</b> {signalStrength}%</span>\n${speedFormat}";
           tooltip-format-disconnected = "Disconnected";
           tooltip-format-ethernet = "{ifname}\n${speedFormat}";
           tooltip-format-linked = speedFormat;

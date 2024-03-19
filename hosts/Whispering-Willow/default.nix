@@ -28,7 +28,7 @@
     initrd.kernelModules = ["i915"];
   };
 
-  hellebore = rec {
+  hellebore = {
     font.size = 12;
 
     theme.name = "catppuccin-macchiato";
@@ -181,6 +181,7 @@
 
       upower = {
         enable = true;
+        notify = true;
         percentageLow = 15;
         percentageCritical = 10;
         percentageAction = 5;

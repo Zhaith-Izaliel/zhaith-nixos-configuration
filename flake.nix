@@ -172,6 +172,7 @@
           ];
           extraModules = [
             modules.server
+            modules.system
           ];
         };
       };
