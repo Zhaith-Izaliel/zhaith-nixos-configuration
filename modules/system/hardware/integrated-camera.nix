@@ -1,10 +1,9 @@
 {
   config,
   lib,
-  pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkOption mkIf types;
   cfg = config.hellebore.hardware.integratedCamera;
   usbBusDevices = "/sys/bus/usb/devices";
 in {

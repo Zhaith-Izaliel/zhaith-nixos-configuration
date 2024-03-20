@@ -4,8 +4,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.hellebore.desktop-environment.network;
 in {
   options.hellebore.desktop-environment.network = {
@@ -15,7 +15,7 @@ in {
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> os-config.networking.networkmanager.enable;
+        assertion = os-config.networking.networkmanager.enable;
         message = "Network Manager should be enabled to allow Hellebore's
         network support.";
       }

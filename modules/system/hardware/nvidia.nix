@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkOption types mkIf;
   cfg = config.hellebore.hardware.nvidia;
 in {
   options.hellebore.hardware.nvidia = {

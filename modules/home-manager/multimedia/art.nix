@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf optionals;
   cfg = config.hellebore.multimedia.art;
 in {
   options.hellebore.multimedia.art = {
@@ -21,15 +21,11 @@ in {
         krita
         drawio
       ]
-      ++ (
-        if cfg.gmic.enable
-        then
-          with pkgs; [
-            gmic
-            gmic-qt
-            gimpPlugins.gmic
-          ]
-        else []
-      );
+      ++ optionals cfg.gmic.enable
+      [
+        gmic
+        gmic-qt
+        gimpPlugins.gmic
+      ];
   };
 }

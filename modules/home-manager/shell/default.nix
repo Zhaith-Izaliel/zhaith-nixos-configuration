@@ -4,8 +4,8 @@
   pkgs,
   extra-types,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf mkOption types optionals concatStringsSep;
   cfg = config.hellebore.shell;
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
@@ -67,7 +67,7 @@ in {
 
         inherit (cfg) dirHashes;
 
-        envExtra = strings.concatStringsSep "\n" [
+        envExtra = concatStringsSep "\n" [
           ''
             # Vi mode
             export VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
@@ -80,7 +80,7 @@ in {
           ''
         ];
 
-        initExtra = strings.concatStringsSep "\n" [
+        initExtra = concatStringsSep "\n" [
           ''
             # Nix shell integration
             ${lib.getExe pkgs.any-nix-shell} zsh | source /dev/stdin
@@ -96,7 +96,7 @@ in {
               "colored-man-pages"
               "command-not-found"
             ]
-            ++ (lists.optionals config.hellebore.development.git.enable [
+            ++ (optionals config.hellebore.development.git.enable [
               "git"
               "git-flow-avh"
             ]);

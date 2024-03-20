@@ -5,7 +5,7 @@
   extra-types,
   ...
 }: let
-  inherit (lib) concatStringsSep optionalString mkOption mkEnableOption getExe types mkIf;
+  inherit (lib) concatStringsSep optionalString mkOption mkEnableOption getExe types mkIf mkPackageOption;
 
   cfg = config.hellebore.shell.emulator;
   emulator-bin = pkgs.writeScriptBin "emulator-bin" (concatStringsSep "\n" [
@@ -61,11 +61,7 @@ in {
       };
     };
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.alacritty;
-      description = "The default terminal emulator package.";
-    };
+    package = mkPackageOption pkgs "alacritty" {};
 
     bin = mkOption {
       type = types.str;

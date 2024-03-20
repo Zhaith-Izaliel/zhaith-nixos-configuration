@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkIf mkEnableOption;
   cfg = config.hellebore.desktop-environment.disks;
 in {
   options.hellebore.desktop-environment.disks = {

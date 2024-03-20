@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkOption mkEnableOption mkPackageOption mkIf types;
   cfg = config.hellebore.tools.discord;
   finalPackage = cfg.package.override {
     withTTS = cfg.tts.enable;
@@ -13,11 +13,7 @@ in {
   options.hellebore.tools.discord = {
     enable = mkEnableOption "discord Hellebore's config";
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.vesktop;
-      description = "The default Discord package.";
-    };
+    package = mkPackageOption pkgs "vesktop" {};
 
     finalPackage = mkOption {
       type = types.package;

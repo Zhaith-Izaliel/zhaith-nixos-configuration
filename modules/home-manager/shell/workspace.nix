@@ -5,7 +5,7 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkIf mkOption types mkEnableOption cleanSource;
+  inherit (lib) mkIf mkPackageOption mkEnableOption cleanSource;
 
   cfg = config.hellebore.shell.workspace;
   theme = config.hellebore.theme.themes.${cfg.theme};
@@ -14,11 +14,7 @@ in {
   options.hellebore.shell.workspace = {
     enable = mkEnableOption "Hellebore's Terminal Workspace/Multiplexer";
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.zellij;
-      description = "The package of the Terminal Workspace/Multiplexer";
-    };
+    package = mkPackageOption pkgs "zellij" {};
 
     font = extra-types.font {
       size = config.hellebore.font.size;

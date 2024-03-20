@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkIf mkEnableOption mkOption types optional getExe;
+  inherit (lib) mkIf mkEnableOption mkOption types optional getExe mkPackageOption;
   cfg = config.hellebore.desktop-environment.mail;
 in {
   options.hellebore.desktop-environment.mail = {
@@ -15,11 +15,7 @@ in {
       type = types.bool;
     };
 
-    package = mkOption {
-      default = pkgs.thunderbird-bin;
-      type = types.package;
-      description = "Set the package use for the mail client.";
-    };
+    package = mkPackageOption pkgs "thunderbird-bin" {};
 
     bin = mkOption {
       default = getExe cfg.package;

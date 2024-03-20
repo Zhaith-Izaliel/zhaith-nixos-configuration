@@ -4,8 +4,8 @@
   pkgs,
   extra-types,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf mkOption mkPackageOption types;
   cfg = config.hellebore.development.git;
   theme = config.hellebore.theme.themes.${cfg.gitui.theme};
 in {
@@ -16,6 +16,8 @@ in {
 
   options.hellebore.development.git = {
     enable = mkEnableOption "Hellebore's Git configuration";
+
+    package = mkPackageOption pkgs "git" {};
 
     userName = mkOption {
       type = types.str;
@@ -37,11 +39,7 @@ in {
         description = "Defines GitUI theme name.";
       };
 
-      package = mkOption {
-        type = types.package;
-        default = pkgs.gitui;
-        description = "Override Gitui default package";
-      };
+      package = mkPackageOption pkgs "gitui" {};
     };
   };
 
@@ -52,7 +50,7 @@ in {
     ];
 
     programs.git = {
-      inherit (cfg) userEmail userName;
+      inherit (cfg) userEmail userName package;
       enable = true;
       extraConfig = {
         push.autoSetupRemote = true;

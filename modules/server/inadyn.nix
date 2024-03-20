@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkOption mkIf mkEnableOption mkPackageOption types literalExpression optional;
   cfg = config.services.inadyn;
 
   configText = pkgs.writeText "inadyn.conf" (''
@@ -36,14 +36,7 @@ in {
   options.services.inadyn = {
     enable = mkEnableOption "Inadyn dynamic DNS client";
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.inadyn;
-      defaultText = literalExpression "pkgs.inadyn";
-      description = ''
-        Inadyn package to install.
-      '';
-    };
+    package = mkPackageOption pkgs "inadyn" {};
 
     settings = mkOption {
       type = types.str;

@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf optional optionals;
   cfg = config.hellebore.desktop-environment.files-manager;
 in {
   options.hellebore.desktop-environment.files-manager = {
@@ -24,16 +24,15 @@ in {
       [
         cinnamon.nemo
       ]
-      ++ lists.optionals cfg.supports.images (with pkgs; [
+      ++ optionals cfg.supports.images (with pkgs; [
         qview
-        gthumb
       ])
-      ++ lists.optionals cfg.supports.archives (with pkgs; [
+      ++ optionals cfg.supports.archives (with pkgs; [
         cinnamon.nemo-fileroller
         gnome.file-roller
         zip
         unzip
       ])
-      ++ lists.optional cfg.supports.torrents pkgs.fragments;
+      ++ optional cfg.supports.torrents pkgs.fragments;
   };
 }

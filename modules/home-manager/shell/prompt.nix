@@ -4,19 +4,15 @@
   pkgs,
   extra-types,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkPackageOption mkIf;
   cfg = config.hellebore.shell.prompt;
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
   options.hellebore.shell.prompt = {
     enable = mkEnableOption "Starship Hellebore's config";
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.starship;
-      description = "Override default Starship package.";
-    };
+    package = mkPackageOption pkgs "starship" {};
 
     theme = extra-types.theme.name {
       default = config.hellebore.theme.name;

@@ -3,27 +3,28 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf mkPackageOption;
   cfg = config.hellebore.desktop-environment.browsers;
 in {
   options.hellebore.desktop-environment.browsers = {
     enable = mkEnableOption "Hellebore Browsers configuration";
 
+    package = mkPackageOption pkgs "firefox" {};
+
     profiles.zhaith = {
       enable = mkEnableOption "Zhaith's Firefox profile";
     };
-
-    firefoxDev.enable = mkEnableOption "Firefox developper edition";
   };
 
   config = mkIf cfg.enable {
     programs.chromium.enable = true;
 
     programs.firefox = {
+      inherit (cfg) package;
+
       enable = true;
-      # package = if cfg.firefoxDev.enable then pkgs.firefox-devedition else
-      # pkgs.firefox;
+
       profiles."zhaith" = mkIf cfg.profiles.zhaith.enable {
         isDefault = true;
         search = {

@@ -5,8 +5,8 @@
   pkgs,
   extra-types,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkOption mkIf types getExe mkPackageOption;
   cfg = config.hellebore.desktop-environment.lockscreen;
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
@@ -37,11 +37,7 @@ in {
       password, in seconds.";
     };
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.swaylock-effects;
-      description = "Defines the package used for the lockscreen.";
-    };
+    package = mkPackageOption pkgs "swaylock-effects" {};
 
     timeouts = {
       dim = {

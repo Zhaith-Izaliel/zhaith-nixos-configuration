@@ -15,6 +15,7 @@
     types
     optionalString
     recursiveUpdate
+    mkPackageOption
     ;
 
   cfg = config.hellebore.desktop-environment.applications-launcher;
@@ -54,11 +55,7 @@
       sizeDescription = "Defines the applet's font size to scale the UI on.";
     };
 
-    package = mkOption {
-      type = types.package;
-      default = config.programs.rofi.applets.${name}.package;
-      description = "Defines the package of the applet.";
-    };
+    package = mkPackageOption config.programs.rofi.applets [name "package"] {};
   };
 
   mkAppletTheme = name: let
@@ -75,6 +72,8 @@ in {
     inherit width height;
 
     enable = mkEnableOption "Hellebore Applications Launcher configuration";
+
+    package = mkPackageOption pkgs "rofi-wayland" {};
 
     font = extra-types.font {
       size = config.hellebore.font.size;
@@ -110,9 +109,8 @@ in {
 
   config = mkIf cfg.enable {
     programs.rofi = {
+      inherit (cfg) package;
       enable = true;
-
-      package = pkgs.rofi-wayland;
 
       font = "${cfg.font.name} ${toString cfg.font.size}";
 

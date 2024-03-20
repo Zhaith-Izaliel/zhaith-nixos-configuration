@@ -4,17 +4,13 @@
   config,
   ...
 }: let
-  inherit (lib) mkOption mkEnableOption mkIf types;
+  inherit (lib) mkEnableOption mkIf mkPackageOption;
   cfg = config.hellebore.development.git.commitizen;
 in {
   options.hellebore.development.git.commitizen = {
     enable = mkEnableOption "Hellebore's Commitizen support";
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.commitizen;
-      description = "The default commitizen package to use.";
-    };
+    package = mkPackageOption pkgs "commitizen" {};
 
     setUpAlias =
       mkEnableOption null

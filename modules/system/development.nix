@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf optionals optional;
   cfg = config.hellebore.development;
 in {
   options.hellebore.development = {
@@ -25,10 +25,10 @@ in {
         git
         gnumake
       ]
-      ++ (lists.optional cfg.enableDocker pkgs.docker-compose)
-      ++ (lists.optionals cfg.enableDocumentation (with pkgs; [
+      ++ (optional cfg.enableDocker pkgs.docker-compose)
+      ++ (optionals cfg.enableDocumentation [
         man-pages
         man-pages-posix
-      ]));
+      ]);
   };
 }

@@ -4,16 +4,15 @@
   pkgs,
   extra-types,
   ...
-}:
-with lib; let
-  inherit (lib) mkEnableOption mkOption mkIf getExe optionalString;
+}: let
+  inherit (lib) mkEnableOption mkOption mkIf getExe types mkPackageOption;
 
   cfg = config.hellebore.desktop-environment.logout;
 
-  package =
+  package-name =
     if cfg.useLayerBlur
-    then pkgs.wlogout
-    else pkgs.wlogout-blur;
+    then "wlogout"
+    else "wlogout-blur";
 
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
@@ -31,15 +30,11 @@ in {
       description = "Defines the logout screen theme.";
     };
 
-    package = mkOption {
-      type = types.package;
-      default = package;
-      description = "Defines the WLogout package.";
-    };
+    package = mkPackageOption pkgs package-name {};
 
     bin = mkOption {
       type = types.str;
-      default = "${getExe package} --protocol layer-shell -b 5 -T 400 -B 400";
+      default = "${getExe cfg.package} --protocol layer-shell -b 5 -T 400 -B 400";
       readOnly = true;
       description = "Define the command to run the logout screen.";
     };
