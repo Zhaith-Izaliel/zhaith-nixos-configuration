@@ -103,6 +103,25 @@ in {
         };
       };
     };
+
+    picture-in-picture = {
+      enable = mkEnableOption "Firefox's Picture-in-Picture support";
+
+      position = mkOption {
+        type = types.enum [
+          "bottom-left"
+          "center-left"
+          "top-left"
+          "bottom-center"
+          "top-center"
+          "bottom-right"
+          "center-right"
+          "top-right"
+        ];
+        default = "bottom-left";
+        description = "Defines the initial position of the Picture-in-Picture window.";
+      };
+    };
   };
 
   config = mkIf cfg.enable {

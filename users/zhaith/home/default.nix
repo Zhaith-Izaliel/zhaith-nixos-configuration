@@ -14,6 +14,10 @@
       hyprland = {
         enable = true;
         mirrorFirstMonitor = true;
+        picture-in-picture = {
+          enable = true;
+          position = "top-right";
+        };
         extraWindowRules = [
           {
             regex = "class:(steam_app_).*";
@@ -129,6 +133,7 @@
 
     multimedia = {
       enable = true;
+      mpris.enable = true;
       art.enable = true;
       obs.enable = true;
       mpd = {

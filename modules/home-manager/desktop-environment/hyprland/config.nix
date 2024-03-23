@@ -70,6 +70,17 @@
   ];
 
   appletsConfig = config.programs.rofi.applets;
+
+  pInPPositions = {
+    bottom-left = "5 86%";
+    center-left = "5 40%";
+    top-left = "5 6%";
+    bottom-center = "40% 86%";
+    top-center = "40% 6%";
+    bottom-right = "87% 86%";
+    center-right = "87% 40%";
+    top-right = "87% 6%";
+  };
 in {
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland.settings = recursiveUpdate theme.hyprland.settings {
@@ -133,6 +144,14 @@ in {
             "workspace 6"
           ])
         ])
+        (optionals cfg.picture-in-picture.enable (mkWindowOrLayerRule "class:^.*(firefox).*$, title:^.*(Picture-in-Picture).*$" [
+          "float"
+          "pin"
+          "size ${toString ((getMonitor 0).width / 8)} ${toString ((getMonitor 0).height / 8)}"
+          "suppressevent fullscreen maximize"
+          "noinitialfocus"
+          "move ${pInPPositions.${cfg.picture-in-picture.position}}"
+        ]))
         extraWindowRules
       ];
 

@@ -27,6 +27,8 @@ in {
       erdtree
       nix-alien
       file
+      bandwhich
+      dust
     ];
 
     programs.nix-ld.enable = true;

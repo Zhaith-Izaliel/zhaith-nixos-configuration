@@ -210,6 +210,7 @@
           alejandra
           home-manager
           gnumake
+          helix
         ];
       };
     };

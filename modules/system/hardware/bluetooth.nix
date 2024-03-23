@@ -14,10 +14,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    services.blueman = {
-      enable = true;
-    };
-
     hardware.bluetooth = {
       inherit (cfg) package;
       enable = true;

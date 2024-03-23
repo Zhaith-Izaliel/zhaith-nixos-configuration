@@ -165,8 +165,7 @@ in {
         script = "${upower-notify}/bin/upower-notify --notification-expiration 3s";
 
         wantedBy = [
-          "graphical.target"
-          "multi-user.target"
+          "graphical-session.target"
         ];
 
         wants = [

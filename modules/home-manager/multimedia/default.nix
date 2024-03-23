@@ -15,6 +15,8 @@ in {
 
   options.hellebore.multimedia = {
     enable = mkEnableOption "Hellebore's multimedia packages";
+
+    mpris.enable = mkEnableOption "MPRIS support";
   };
 
   config = mkIf cfg.enable {
@@ -24,5 +26,7 @@ in {
       kid3
       ffmpeg
     ];
+
+    services.mpris-proxy.enable = cfg.mpris.enable;
   };
 }
