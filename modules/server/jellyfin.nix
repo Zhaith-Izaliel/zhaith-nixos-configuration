@@ -16,7 +16,7 @@ in {
 
   config = mkIf cfg.enable {
     services.jellyfin = {
-      inherit (cfg) port group;
+      inherit (cfg) group;
       enable = true;
     };
 
