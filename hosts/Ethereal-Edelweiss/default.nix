@@ -86,12 +86,14 @@ in {
       nextcloud = {
         enable = true;
         subdomain = "nextcloud";
+        acmeEmail = "virgil.ribeyre@protonmail.com";
       };
 
       jellyfin = {
         enable = true;
         group = "nextcloud";
         subdomain = "jellyfin";
+        acmeEmail = "virgil.ribeyre@protonmail.com";
       };
 
       calibre-web = {
@@ -99,6 +101,7 @@ in {
         group = "nextcloud";
         library = "/mnt/datas/nextcloud/data/Zhaith/files/Books";
         subdomain = "books";
+        acmeEmail = "virgil.ribeyre@protonmail.com";
       };
 
       fail2ban.enable = true;
