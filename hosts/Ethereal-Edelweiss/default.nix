@@ -30,9 +30,9 @@ in {
   services.inadyn = let
     inherit (config.networking) domain;
     domains = [
-      "${config.hellebore.nextcloud.subdomain}.${domain}"
-      "${config.hellebore.books.subdomain}.${domain}"
-      "${config.hellebore.jellyfin.subdomain}.${domain}"
+      "${config.hellebore.server.nextcloud.subdomain}.${domain}"
+      "${config.hellebore.server.calibre-web.subdomain}.${domain}"
+      "${config.hellebore.server.jellyfin.subdomain}.${domain}"
       domain
     ];
   in {
