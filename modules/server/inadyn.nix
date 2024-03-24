@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkOption mkIf mkEnableOption mkPackageOption types literalExpression optional concatStringsSep mapAttrsToList;
+  inherit (lib) mkOption mkIf mkEnableOption mkPackageOption types literalExpression optional concatStringsSep mapAttrsToList getExe;
   cfg = config.services.inadyn;
 
   configText = pkgs.writeText "inadyn.conf" (''
@@ -19,7 +19,7 @@
 
   replace-secret = concatStringsSep "\n" (
     mapAttrsToList (
-      name: value: ''${pkgs.replace-secret}/bin/replace-secret" "${name}" "${value}" "${configFile}"''
+      name: value: ''${getExe pkgs.replace-secret} "${name}" "${value}" "${configFile}"''
     )
     cfg.passwords
   );
