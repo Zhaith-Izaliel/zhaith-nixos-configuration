@@ -128,7 +128,7 @@
 
     tools = {
       enable = true;
-      # etcher.enable = true;
+      nix-alien.enable = true;
     };
 
     shell.enable = true;
