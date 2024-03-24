@@ -19,8 +19,7 @@
 
   replace-secret = concatStringsSep "\n" (
     mapAttrsToList (
-      name: value:
-        "${pkgs.replace-secret}/bin/replace-secret" "${name}" "${value}" "${configFile}"
+      name: value: ''${pkgs.replace-secret}/bin/replace-secret" "${name}" "${value}" "${configFile}"''
     )
     cfg.passwords
   );
