@@ -109,7 +109,7 @@ in {
 
     network = {
       enable = true;
-      domain = "nextcloud.ethereal-edelweiss.cloud";
+      domain = "ethereal-edelweiss.cloud";
       interfaces = [
         "enp4s0"
         "wlp3s0"
