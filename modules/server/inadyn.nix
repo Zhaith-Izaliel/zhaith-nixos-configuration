@@ -26,7 +26,7 @@
   );
 
   preStart =
-    if (cfg.passwordFile != null)
+    if (cfg.passwords != null)
     then ''
       mkdir -p "/run/inadyn"
       install --mode=600 --owner=$USER ${configText} ${configFile}
@@ -63,8 +63,8 @@ in {
     };
 
     passwords = mkOption {
-      type = types.attrsOf types.path;
-      default = {};
+      type = types.nullOr (types.attrsOf types.path);
+      default = null;
       description = ''
         Defines passwords for Inadyn in the form `{ placeholder = "passwordFile" }` where:
         - `placeholder` corresponds to the placeholder used in your `settings` for the corresponding password
