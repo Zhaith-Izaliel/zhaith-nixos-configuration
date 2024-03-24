@@ -42,7 +42,7 @@ in {
         ssl = true
         username = virgilribeyre.com-zhaith
         password = "@password_placeholder@"
-        hostname = { www.virgilribeyre.com, virgilribeyre.com }
+        hostname = { virgilribeyre.com }
       }
     '';
     passwordFile = "/mnt/datas/inadyn/inadyn-password";
@@ -55,7 +55,6 @@ in {
     forceSSL = true;
 
     serverAliases = [
-      "virgilribeyre.com"
       "www.virgilribeyre.com"
     ];
 
