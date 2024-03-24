@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }: let
@@ -19,7 +18,7 @@ in {
 
   config = mkIf cfg.enable {
     services.fail2ban = {
-      inherit (cfg) maxrety;
+      inherit (cfg) maxretry;
       enable = true;
       ignoreIP = [
         "127.0.0.0/8"
