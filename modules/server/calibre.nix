@@ -1,47 +1,49 @@
 {
   config,
   lib,
-  pkgs,
+  extra-types,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption types mkPackageOption mkIf cleanSource;
+  inherit (lib) mkOption types mkIf cleanSource;
   cfg = config.hellebore.server.calibre-web;
+  domain = "${cfg.subdomain}.${config.networking.domain}";
 in {
-  options.hellebore.server.calibre-web = {
-    enable = mkEnableOption "Hellebore's Calibre-Web configuration";
-
-    package = mkPackageOption pkgs "calibre-web" {};
-
-    group = mkOption {
-      type = types.nonEmptyStr;
-      default = "";
-      description = "Defines the user group to access the library.";
+  options.hellebore.server.calibre-web =
+    {
+      library = mkOption {
+        type = types.path;
+        default = cleanSource /var/calibre/library;
+        description = "";
+      };
+    }
+    // extra-types.server-app {
+      name = "Calibre Web";
+      package = "calibre-web";
+      port = 8083;
     };
-
-    library = mkOption {
-      type = types.path;
-      default = cleanSource /var/calibre/library;
-      description = "";
-    };
-
-    subdomain = mkOption {
-      type = types.nonEmptyStr;
-      default = "calibre";
-      description = "Defines the subdomain on which Calibre-Web is running.";
-    };
-
-    acmeEmail = mkOption {
-      type = types.nonEmptyStr;
-      default = "";
-      description = "Defines the email used for ACME SSL certificates.";
-    };
-  };
 
   config = mkIf cfg.enable {
     services.calibre-web = {
+      inherit (cfg) group port package;
       enable = true;
-      group = "nextcloud";
-      options.calibreLibrary = "/mnt/datas/nextcloud/data/Zhaith/files/Books";
+      options.calibreLibrary = cfg.library;
+    };
+
+    hellebore.server.nginx.enable = true;
+    services.nginx.virtualHosts.${domain} = {
+      enableACME = true;
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://localhost:${toString cfg.port}";
+      };
+    };
+
+    security.acme = {
+      acceptTerms = true;
+      certs = {
+        ${domain}.email = cfg.acmeEmail;
+      };
     };
   };
 }

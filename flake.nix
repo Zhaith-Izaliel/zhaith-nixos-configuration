@@ -211,6 +211,7 @@
           home-manager
           gnumake
           helix
+          nil
         ];
       };
     };
