@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkOption mkIf mkEnableOption mkPackageOption types literalExpression optional;
+  inherit (lib) mkOption mkIf mkEnableOption mkPackageOption types literalExpression optional concatStringsSep mapAttrsToList;
   cfg = config.services.inadyn;
 
   configText = pkgs.writeText "inadyn.conf" (''
@@ -17,12 +17,20 @@
 
   configFile = "/run/inadyn/inadyn.conf";
 
+  replace-secret = concatStringsSep "\n" (
+    mapAttrsToList (
+      name: value:
+        "${pkgs.replace-secret}/bin/replace-secret" "${name}" "${value}" "${configFile}"
+    )
+    cfg.passwords
+  );
+
   preStart =
     if (cfg.passwordFile != null)
     then ''
       mkdir -p "/run/inadyn"
       install --mode=600 --owner=$USER ${configText} ${configFile}
-      "${pkgs.replace-secret}/bin/replace-secret" "${cfg.passwordPlaceholder}" "${cfg.passwordFile}" "${configFile}"
+      ${replace-secret}
     ''
     else "";
 
@@ -54,19 +62,13 @@ in {
       '';
     };
 
-    passwordPlaceholder = mkOption {
-      default = "@password_placeholder@";
-      type = types.nonEmptyStr;
-      description = "The password placeholder to use with the password file.";
-      example = "@secret_password@";
-    };
-
-    passwordFile = mkOption {
-      default = null;
-      type = types.nullOr types.str;
-      description = lib.mdDoc ''
-        A file containing the password for your `@password_placeholder@` field
-          in `services.inadyn.settings`.
+    passwords = {
+      type = types.attrsOf types.path;
+      default = {};
+      description = ''
+        Defines passwords for Inadyn in the form `{ placeholder = "passwordFile" }` where:
+        - `placeholder` corresponds to the placeholder used in your `settings` for the corresponding password
+        - `passwordFile` corresponds to the file containing the password. The file must be only read accessible to root.
       '';
     };
 

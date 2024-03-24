@@ -45,8 +45,10 @@ in {
         hostname = { virgilribeyre.com }
       }
     '';
-    passwordFile = "/mnt/datas/inadyn/inadyn-password";
-    passwordPlaceholder = "@password_placeholder@";
+
+    passwords = {
+      "@password_placeholder@" = "/mnt/datas/inadyn/inadyn-password";
+    };
   };
 
   # virgilribeyre.com
