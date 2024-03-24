@@ -2,7 +2,7 @@
   colors,
   lib,
 }: let
-  getImage = name: lib.cleanSource ../../../assets/images/wlogout/${name};
+  getImage = name: lib.cleanSource ./assets/${name};
   images = {
     lock = {
       default = getImage "lock.png";
@@ -40,7 +40,7 @@ in {
       background-position: center;
       background-size: 25%;
       border: none;
-      background-color: rgba(24, 25, 38, 0.5);
+      background-color: rgba(24, 25, 38, 0);
       margin: 5px;
       transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
     }

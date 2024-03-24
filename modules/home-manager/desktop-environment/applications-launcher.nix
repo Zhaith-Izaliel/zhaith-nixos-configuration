@@ -15,6 +15,7 @@
     types
     optionalString
     recursiveUpdate
+    mkPackageOption
     ;
 
   cfg = config.hellebore.desktop-environment.applications-launcher;
@@ -54,11 +55,7 @@
       sizeDescription = "Defines the applet's font size to scale the UI on.";
     };
 
-    package = mkOption {
-      type = types.package;
-      default = config.programs.rofi.applets.${name}.package;
-      description = "Defines the package of the applet.";
-    };
+    package = mkPackageOption config.programs.rofi.applets [name "package"] {};
   };
 
   mkAppletTheme = name: let
@@ -76,9 +73,11 @@ in {
 
     enable = mkEnableOption "Hellebore Applications Launcher configuration";
 
+    package = mkPackageOption pkgs "rofi-wayland" {};
+
     font = extra-types.font {
       size = config.hellebore.font.size;
-      name = "FiraCode Nerd Font Mono";
+      name = "FiraMono Nerd Font Mono";
       nameDescription = "Defines the font family used on the
       applications launcher.";
       sizeDescription = "Defines the font size used on the
@@ -110,9 +109,8 @@ in {
 
   config = mkIf cfg.enable {
     programs.rofi = {
+      inherit (cfg) package;
       enable = true;
-
-      package = pkgs.rofi-wayland;
 
       font = "${cfg.font.name} ${toString cfg.font.size}";
 
@@ -130,7 +128,7 @@ in {
         modi = "drun";
         show-icons = true;
         display-drun = " Apps";
-        # display-calc = "󰲒 Calc";
+        display-calc = "󰲒 Calc";
         drun-display-format = "{name}";
         icon-theme = theme.gtk.iconTheme.name;
         window-format = "{w} · {c} · {t}";

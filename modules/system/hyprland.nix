@@ -3,18 +3,14 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkPackageOption optionalString mkIf;
   cfg = config.hellebore.hyprland;
 in {
   options.hellebore.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.hyprland;
-      description = "Override default Hyprland package";
-    };
+    package = mkPackageOption pkgs "hyprland" {};
 
     enableSwaylockPam = mkEnableOption "Swaylock PAM configuration";
   };
@@ -26,10 +22,6 @@ in {
 
     qt.enable = true;
 
-    qt.platformTheme = "gtk2";
-
-    qt.style = "gtk2";
-
     services.gvfs.enable = true;
 
     services.gnome.gnome-keyring.enable = true;
@@ -38,7 +30,7 @@ in {
 
     programs.dconf.enable = true;
 
-    security.pam.services.swaylock.text = strings.optionalString cfg.enableSwaylockPam ''
+    security.pam.services.swaylock.text = optionalString cfg.enableSwaylockPam ''
       # PAM configuration file for the swaylock screen locker. By default, it includes
       # the 'login' configuration file (see /etc/pam.d/login)
       auth include login

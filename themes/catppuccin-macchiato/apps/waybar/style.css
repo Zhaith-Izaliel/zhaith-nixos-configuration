@@ -18,15 +18,27 @@
 }
 
 @keyframes battery-blink {
-  0% { color: @red; }
-  50% { color: @rosemary; }
-  100% { color: @red; }
+  0% {
+    color: @red;
+  }
+  50% {
+    color: @rosemary;
+  }
+  100% {
+    color: @red;
+  }
 }
 
 @keyframes gamemode-activated {
-  0% { color: @mauve; }
-  50% { color: @blue; }
-  100% { color: @mauve; }
+  0% {
+    color: @mauve;
+  }
+  50% {
+    color: @blue;
+  }
+  100% {
+    color: @mauve;
+  }
 }
 
 @keyframes workspace-blink {
@@ -54,7 +66,7 @@ tooltip {
 }
 
 tooltip label {
-  margin: .4rem;
+  margin: 0.4rem;
   opacity: 1;
   color: @text;
 }
@@ -70,7 +82,7 @@ tooltip label {
 .modules-left > * > *, /* We need the 2nd child of the modules box */
 .modules-center > * > *,
 .modules-right > * > * {
-  margin: .2em .3em;
+  margin: 0.2em 0.3em;
 }
 
 .modules-center,
@@ -78,7 +90,7 @@ tooltip label {
 .modules-right {
   border: 2px solid @mantle;
   border-radius: 10px;
-  padding: 0 .5em;
+  padding: 0 0.5em;
   background: @crust;
 }
 
@@ -86,8 +98,7 @@ tooltip label {
 
 #clock,
 #workspaces,
-#mpd
-{
+#mpd {
   border-left: 2px solid @surface0;
 }
 
@@ -108,10 +119,10 @@ tooltip label {
 /* GRANULAR MODULES STYLE */
 
 #custom-power-profiles {
-  padding: 0 .4em;
-  margin: .3em .5em;
+  padding: 0 0.4em;
+  margin: 0.3em 0.5em;
   transition-property: all;
-  transition-duration: .5s;
+  transition-duration: 0.5s;
   transition-timing-function: ease-in-out;
 }
 
@@ -135,32 +146,29 @@ tooltip label {
   color: @maroon;
 }
 
-
 /* CLOCK */
 
 #clock {
-  padding-left: .6em;
+  padding-left: 0.6em;
 }
 
 /* WEATHER */
 
 #custom-weather {
-  margin-right: .4em;
+  margin-right: 0.4em;
 }
 
-/* ------------------------------ */
-/* ----------WORKSPACES---------- */
-/* ------------------------------ */
+/* WORKSPACES */
 
 #workspaces {
-  padding-left: .8em;
+  padding-left: 0.8em;
   border-left: 2px solid @surface0;
 }
 
 #workspaces button {
-  padding: 0px .3em;
-  margin-right: .3em;
-  transition: all .5s ease-in-out;
+  padding: 0px 0.3em;
+  margin-right: 0.3em;
+  transition: all 0.5s ease-in-out;
 }
 
 #workspaces button.empty {
@@ -189,8 +197,8 @@ tooltip label {
 /* MPD */
 
 #mpd {
-  transition: color .5s ease-in-out;
-  padding-left: .6em;
+  transition: color 0.5s ease-in-out;
+  padding-left: 0.6em;
 }
 
 #mpd.playing {
@@ -212,17 +220,17 @@ tooltip label {
 /* WINDOW MODULE */
 
 #window {
-  margin-left: .5em;
-  margin-right: .5em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 
 /* NOTIFICATIONS */
 
 #custom-notifications {
-  padding: 0 .4em;
-  margin: .3em .5em;
+  padding: 0 0.4em;
+  margin: 0.3em 0.5em;
   transition-property: all;
-  transition-duration: .5s;
+  transition-duration: 0.5s;
   transition-timing-function: ease-in-out;
 }
 
@@ -244,17 +252,17 @@ tooltip label {
   border-style: solid;
   border-color: @surface0;
   border-right-width: 2px;
-  padding-left: .5em;
-  padding-right: .5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 
 /* IDLE INHIBITOR */
 
 #idle_inhibitor {
-  padding: 0 .4em;
-  margin: .3em .5em;
+  padding: 0 0.4em;
+  margin: 0.3em 0.5em;
   transition-property: all;
-  transition-duration: .5s;
+  transition-duration: 0.5s;
   transition-timing-function: ease-in-out;
 }
 
@@ -267,11 +275,6 @@ tooltip label {
 #idle_inhibitor.deactivated {
   color: @text;
 }
-
-/* #idle_inhibitor:hover { */
-/*   color: @flamingo; */
-/*   border-color: @flamingo; */
-/* } */
 
 /* GAMEMODE */
 
@@ -302,7 +305,6 @@ tooltip label {
   color: @sapphire;
 }
 
-
 /* NETWORK */
 
 #network {
@@ -323,20 +325,16 @@ tooltip label {
 
 /* BATTERY */
 
-#battery {
-  color: @sky;
-}
-
-#battery.good,
-#battery.charging {
+#battery.charging,
+#battery.full {
   color: @teal;
 }
 
-#battery.discharging {
-  color: @peach;
+#battery.good:not(.charging) {
+  color: @lavender;
 }
 
-#battery.warning {
+#battery.warning:not(.charging) {
   color: @maroon;
 }
 
@@ -353,9 +351,9 @@ tooltip label {
 
 #power {
   border-radius: 10px;
-  margin-top: .3em;
-  margin-bottom: .3em;
-  margin-left: .5em;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+  margin-left: 0.5em;
   margin-right: 0;
 }
 
@@ -363,7 +361,7 @@ tooltip label {
 #custom-lock,
 #custom-logout,
 #custom-reboot {
-  padding: 0 .5em;
+  padding: 0 0.5em;
 }
 
 #custom-lock,
@@ -371,4 +369,3 @@ tooltip label {
 #custom-reboot {
   border-right: 1px solid @text;
 }
-

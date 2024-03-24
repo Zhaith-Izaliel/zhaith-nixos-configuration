@@ -3,9 +3,17 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkOption types mkMerge mkIf getExe;
   cfg = config.hellebore.power-management;
+  upower-notify = pkgs.go-upower-notify.overrideAttrs (prev: {
+    src = pkgs.fetchFromGitHub {
+      owner = "omeid";
+      repo = "upower-notify";
+      rev = "7013b0d4d2687e03554b1287e566dc8979896ea5";
+      sha256 = "sha256-8kGMeWIyM6ML1ffQ6L+SNzuBb7e5Y5I5QKMkyEjSVEA=";
+    };
+  });
 in {
   options.hellebore.power-management = {
     enable = mkEnableOption "Hellebore's power management module";
@@ -36,6 +44,8 @@ in {
 
     upower = {
       enable = mkEnableOption "UPower support";
+
+      notify = mkEnableOption "UPower to send desktop notifications.";
 
       percentageLow = mkOption {
         type = types.ints.unsigned;
@@ -143,6 +153,24 @@ in {
           ;
         enable = true;
         usePercentageForPolicy = true;
+      };
+
+      systemd.user.services.upower-notify = {
+        enable = cfg.upower.notify;
+
+        path = with pkgs; [
+          dbus
+        ];
+
+        script = "${upower-notify}/bin/upower-notify --notification-expiration 3s";
+
+        wantedBy = [
+          "graphical-session.target"
+        ];
+
+        wants = [
+          "upower.service"
+        ];
       };
     })
   ];

@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkOption mkIf mkEnableOption mkPackageOption types literalExpression optional concatStringsSep mapAttrsToList getExe;
   cfg = config.services.inadyn;
 
   configText = pkgs.writeText "inadyn.conf" (''
@@ -17,12 +17,19 @@ with lib; let
 
   configFile = "/run/inadyn/inadyn.conf";
 
+  replace-secret = concatStringsSep "\n" (
+    mapAttrsToList (
+      name: value: ''${getExe pkgs.replace-secret} "${name}" "${value}" "${configFile}"''
+    )
+    cfg.passwords
+  );
+
   preStart =
-    if (cfg.passwordFile != null)
+    if (cfg.passwords != null)
     then ''
       mkdir -p "/run/inadyn"
       install --mode=600 --owner=$USER ${configText} ${configFile}
-      "${pkgs.replace-secret}/bin/replace-secret" "${cfg.passwordPlaceholder}" "${cfg.passwordFile}" "${configFile}"
+      ${replace-secret}
     ''
     else "";
 
@@ -36,14 +43,7 @@ in {
   options.services.inadyn = {
     enable = mkEnableOption "Inadyn dynamic DNS client";
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.inadyn;
-      defaultText = literalExpression "pkgs.inadyn";
-      description = ''
-        Inadyn package to install.
-      '';
-    };
+    package = mkPackageOption pkgs "inadyn" {};
 
     settings = mkOption {
       type = types.str;
@@ -61,19 +61,13 @@ in {
       '';
     };
 
-    passwordPlaceholder = mkOption {
-      default = "@password_placeholder@";
-      type = types.nonEmptyStr;
-      description = "The password placeholder to use with the password file.";
-      example = "@secret_password@";
-    };
-
-    passwordFile = mkOption {
+    passwords = mkOption {
+      type = types.nullOr (types.attrsOf types.path);
       default = null;
-      type = types.nullOr types.str;
-      description = lib.mdDoc ''
-        A file containing the password for your `@password_placeholder@` field
-          in `services.inadyn.settings`.
+      description = ''
+        Defines passwords for Inadyn in the form `{ placeholder = "passwordFile" }` where:
+        - `placeholder` corresponds to the placeholder used in your `settings` for the corresponding password
+        - `passwordFile` corresponds to the file containing the password. The file must be only read accessible to root.
       '';
     };
 

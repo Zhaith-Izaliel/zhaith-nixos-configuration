@@ -6,7 +6,7 @@ rebuild-home:
 	home-manager switch --flake . -b backup
 
 debug:
-	nixos-rebuild switch --flake . --use-remote-sudo --show-trace --verbose
+	nixos-rebuild dry-activate --flake . --use-remote-sudo --show-trace --verbose
 
 debug-home:
 	home-manager switch --flake . --show-trace --verbose
@@ -19,7 +19,7 @@ up:
 # upp:
 # 	nix flake lock --update-input $(i)
 
-fix-bootloader:
+rescue-bootloader:
 	NIXOS_INSTALL_BOOTLOADER=1 /nix/var/nix/profiles/system/bin/switch-to-configuration boot
 
 history:

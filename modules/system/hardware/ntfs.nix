@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkIf mkEnableOption;
   cfg = config.hellebore.hardware.ntfs;
 in {
   options.hellebore.hardware.ntfs = {

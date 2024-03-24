@@ -21,6 +21,8 @@ in {
     home.packages = optionals cfg.enable (with pkgs; [
       onefetch
       nix-npm-install
+      hyperfine
+      tokei
     ]);
 
     home.sessionVariables = mkIf (!cfg.direnv.enableLogs) {

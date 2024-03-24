@@ -28,6 +28,7 @@ in {
       inherit (extra-types.theme) themes;
       name = extra-types.theme.name {
         description = "Defines the name of the theme applied globally";
+        default = "catppuccin-macchiato";
       };
     };
   };

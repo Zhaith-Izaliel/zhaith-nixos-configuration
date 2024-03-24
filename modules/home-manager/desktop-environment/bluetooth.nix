@@ -4,8 +4,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.hellebore.desktop-environment.bluetooth;
 in {
   options.hellebore.desktop-environment.bluetooth = {
@@ -15,7 +15,7 @@ in {
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> os-config.hardware.bluetooth.enable;
+        assertion = os-config.hardware.bluetooth.enable;
         message = "Bluetooth needs to be enabled in your system configuration
         for Hellebore's bluetooth support to work.";
       }

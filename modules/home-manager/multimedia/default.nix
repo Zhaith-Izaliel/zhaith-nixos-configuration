@@ -3,12 +3,11 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.hellebore.multimedia;
 in {
   imports = [
-    ./anime.nix
     ./art.nix
     ./mpd.nix
     ./obs.nix
@@ -16,6 +15,8 @@ in {
 
   options.hellebore.multimedia = {
     enable = mkEnableOption "Hellebore's multimedia packages";
+
+    mpris.enable = mkEnableOption "MPRIS support";
   };
 
   config = mkIf cfg.enable {
@@ -24,9 +25,8 @@ in {
       vlc
       kid3
       ffmpeg
-      pavucontrol
-      blueberry
-      power-management
     ];
+
+    services.mpris-proxy.enable = cfg.mpris.enable;
   };
 }

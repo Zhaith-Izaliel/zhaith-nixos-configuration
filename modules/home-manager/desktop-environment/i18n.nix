@@ -4,8 +4,8 @@
   pkgs,
   extra-types,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf optional;
   cfg = config.hellebore.desktop-environment.i18n;
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
@@ -39,7 +39,7 @@ in {
           pkgs.fcitx5-gtk
           pkgs.libsForQt5.fcitx5-qt
         ]
-        ++ lists.optional cfg.enableAnthy pkgs.fcitx5-anthy;
+        ++ optional cfg.enableAnthy pkgs.fcitx5-anthy;
     };
 
     xdg.configFile."fcitx5/conf/classicui.conf".text =

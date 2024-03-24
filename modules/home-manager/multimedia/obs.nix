@@ -4,8 +4,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf optional;
   cfg = config.hellebore.multimedia.obs;
 in {
   options.hellebore.multimedia.obs = {
@@ -15,9 +15,7 @@ in {
   config = mkIf cfg.enable {
     programs.obs-studio = {
       enable = true;
-      plugins = lists.optionals os-config.hellebore.vm.enable [
-        pkgs.obs-studio-plugins.looking-glass-obs
-      ];
+      plugins = optional os-config.hellebore.vm.enable pkgs.obs-studio-plugins.looking-glass-obs;
     };
   };
 }

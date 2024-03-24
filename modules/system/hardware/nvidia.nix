@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkOption types mkIf;
   cfg = config.hellebore.hardware.nvidia;
 in {
   options.hellebore.hardware.nvidia = {
@@ -94,7 +94,7 @@ in {
     hardware.nvidia = {
       inherit (cfg) modesetting open;
 
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.production;
 
       powerManagement = mkIf cfg.power-management.enable {
         enable = true;

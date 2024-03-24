@@ -3,7 +3,7 @@
   inputs,
   pkgs,
 }: let
-  inherit (lib) types mkOption;
+  inherit (lib) types mkOption mkPackageOption mkEnableOption;
   themes = import ../themes {inherit lib pkgs inputs;};
 in rec {
   monitor = types.submodule {
@@ -114,6 +114,40 @@ in rec {
       type = types.attrsOf types.anything;
       description = "The attribut set containing the theme elements. Read only.";
       readOnly = true;
+    };
+  };
+
+  server-app = {
+    name,
+    package,
+    port ? null,
+  }: {
+    enable = mkEnableOption "Hellebore's ${name} configuration";
+
+    package = mkPackageOption pkgs package {};
+
+    group = mkOption {
+      type = types.nonEmptyStr;
+      default = "";
+      description = "Defines the user group for ${name}.";
+    };
+
+    port = mkOption {
+      type = types.nullOr types.ints.unsigned;
+      default = port;
+      description = "Defines the port on which ${name} runs on.";
+    };
+
+    subdomain = mkOption {
+      type = types.nonEmptyStr;
+      default = "";
+      description = "Defines the subdomain on which ${name} is served.";
+    };
+
+    acmeEmail = mkOption {
+      type = types.nonEmptyStr;
+      default = "";
+      description = "Defines the email used for ACME SSL certificates.";
     };
   };
 }

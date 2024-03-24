@@ -5,18 +5,14 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf types mkOption;
+  inherit (lib) mkEnableOption mkIf mkPackageOption;
   cfg = config.hellebore.tools.yazi;
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
   options.hellebore.tools.yazi = {
     enable = mkEnableOption "Hellebore's Yazi configuration";
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.yazi;
-      description = "Defines the default Yazi package.";
-    };
+    package = mkPackageOption pkgs "yazi" {};
 
     theme = extra-types.theme.name {
       default = config.hellebore.theme.name;

@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkOption types mkIf mkMerge optional;
   cfg = config.hellebore.network;
 in {
   options.hellebore.network = {
@@ -61,8 +61,8 @@ in {
 
     environment.systemPackages =
       []
-      ++ lists.optional cfg.enableNetworkManager pkgs.openvpn
-      ++ lists.optional cfg.enableSambaMounting pkgs.cifs-utils;
+      ++ optional cfg.enableNetworkManager pkgs.openvpn
+      ++ optional cfg.enableSambaMounting pkgs.cifs-utils;
 
     networking = {
       inherit (cfg) domain;

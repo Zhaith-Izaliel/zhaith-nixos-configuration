@@ -114,7 +114,6 @@
     nixpkgs-stable,
     grub2-themes,
     nix-alien,
-    zhaith-neovim,
     hyprland,
     hyprland-contrib,
     hypridle,
@@ -127,7 +126,20 @@
   } @ inputs: let
     system = "x86_64-linux";
     customHelpers = import ./utils {inherit inputs;};
-    modules = import ./modules {};
+    modules = import ./modules {
+      extraSystemModules = [
+        grub2-themes.nixosModules.default
+        sddm-sugar-candy-nix.nixosModules.default
+      ];
+
+      extraHomeManagerModules = [
+        zhaith-helix.homeManagerModules.default
+        rofi-applets.homeManagerModules.default
+        hypridle.homeManagerModules.default
+      ];
+
+      extraServerModules = [];
+    };
     customOverlay = import ./overlay {inherit inputs;};
   in
     with import nixpkgs {inherit system;}; {
@@ -137,8 +149,6 @@
           hostname = "Whispering-Willow";
           users = ["zhaith"];
           extraModules = [
-            grub2-themes.nixosModules.default
-            sddm-sugar-candy-nix.nixosModules.default
             modules.system
           ];
           overlays = [
@@ -161,17 +171,14 @@
             })
           ];
           extraModules = [
-            grub2-themes.nixosModules.default
             modules.server
+            modules.system
           ];
         };
       };
       homeConfigurations = let
         extraModules = [
-          zhaith-helix.homeManagerModules.default
           modules.home-manager
-          rofi-applets.homeManagerModules.default
-          hypridle.homeManagerModules.default
         ];
         overlays = [
           hyprland.overlays.default
@@ -186,7 +193,7 @@
           inherit system overlays extraModules;
           username = "zhaith";
           hostname = "Whispering-Willow";
-          stateVersion = "22.05";
+          stateVersion = "23.11";
         };
 
         "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
@@ -199,9 +206,12 @@
 
       devShells.${system}.default = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [
+          git
           alejandra
           home-manager
           gnumake
+          helix
+          nil
         ];
       };
     };

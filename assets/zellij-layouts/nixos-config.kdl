@@ -6,12 +6,12 @@ layout {
   pane split_direction="vertical" {
     pane
     pane split_direction="horizontal" {
-      pane command="sudo" {
-        args "nixos-rebuild" "switch" "--flake" "." "--show-trace"
+      pane command="make" {
+        args "rebuild"
         start_suspended true
       }
-      pane command="home-manager" {
-        args "switch" "--flake" "." "-b" "backup" "--show-trace"
+      pane command="make" {
+        args "rebuild-home"
         start_suspended true
       }
     }

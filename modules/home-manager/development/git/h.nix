@@ -3,12 +3,14 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkOption mkIf types mkPackageOption;
   cfg = config.hellebore.development.git.h;
 in {
   options.hellebore.development.git.h = {
-    enable = mkEnableOption "H git utility";
+    enable = mkEnableOption "h git utility";
+
+    package = mkPackageOption pkgs "h" {};
 
     codeDirectory = mkOption {
       type = types.nonEmptyStr;

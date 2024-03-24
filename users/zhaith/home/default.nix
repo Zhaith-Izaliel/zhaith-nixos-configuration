@@ -14,6 +14,29 @@
       hyprland = {
         enable = true;
         mirrorFirstMonitor = true;
+        picture-in-picture = {
+          enable = true;
+          position = "top-right";
+        };
+        extraWindowRules = [
+          {
+            regex = "class:(steam_app_).*";
+            rules = [
+              "workspace 5"
+              "idleinhibit"
+            ];
+          }
+          {
+            regex = "class:(gw2).*";
+            rules = [
+              "workspace 5"
+              "idleinhibit"
+              "noblur"
+              "noborder"
+              "noshadow"
+            ];
+          }
+        ];
       };
 
       lockscreen = {
@@ -28,6 +51,7 @@
 
       logout = {
         enable = true;
+        useLayerBlur = true;
         font.size = 20;
       };
 
@@ -93,7 +117,6 @@
       browsers = {
         enable = true;
         profiles.zhaith.enable = true;
-        firefoxDev.enable = true;
       };
     };
 
@@ -110,6 +133,7 @@
 
     multimedia = {
       enable = true;
+      mpris.enable = true;
       art.enable = true;
       obs.enable = true;
       mpd = {
@@ -130,7 +154,6 @@
           enable = true;
           setUpAlias = true;
         };
-        commitlint.enable = true;
         h.enable = true;
       };
       erdtree = {

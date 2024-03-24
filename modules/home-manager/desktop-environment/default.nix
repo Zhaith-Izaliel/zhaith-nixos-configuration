@@ -15,6 +15,6 @@
     ./notifications.nix
     ./applications-launcher.nix
     ./status-bar.nix
-    ./widget
+    ./sound.nix
   ];
 }

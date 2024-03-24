@@ -8,20 +8,22 @@
 }: let
   inherit (lib) types mkOption mkEnableOption mkIf;
   cfg = config.hellebore.desktop-environment.hyprland;
-  configure-gtk = gtkTheme: let
-    schema = pkgs.gsettings-desktop-schemas;
-    datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-  in
-    pkgs.writeShellScriptBin "configure-gtk" ''
-      #!/usr/bin/env bash
-      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-      local gnome_schema=org.gnome.desktop.interface
-      gsettings set $gnome_schema gtk-theme ${gtkTheme.theme.name}
-      gsettings set $gnome_schema icon-theme ${gtkTheme.iconTheme.name}
-      gsettings set $gnome_schema cursor-theme ${gtkTheme.cursorTheme.name}
-      gsettings set $gnome_schema font-name ${gtkTheme.font.name}
-    '';
   theme = config.hellebore.theme.themes.${cfg.theme};
+  extraRulesType = types.submodule {
+    options = {
+      rules = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "Defines the rules to apply to the game window";
+      };
+
+      regex = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "Defines the regular expression used to find the window or layer on Hyprland. See: https://wiki.hyprland.org/Configuring/Window-Rules/#window-rules-v2 and https://wiki.hyprland.org/Configuring/Window-Rules/#layer-rules";
+      };
+    };
+  };
 in {
   imports = [
     ./config.nix
@@ -61,6 +63,18 @@ in {
       description = "Set the wallpaper.";
     };
 
+    extraWindowRules = mkOption {
+      type = types.listOf extraRulesType;
+      default = [];
+      description = "Defines a list of extra rules for windows to be applied.";
+    };
+
+    extraLayerRules = mkOption {
+      type = types.listOf extraRulesType;
+      default = [];
+      description = "Defines a list of extra rules for windows to be applied.";
+    };
+
     input = {
       keyboard = extra-types.keyboard {
         inherit (config.hellebore.locale.keyboard) layout variant;
@@ -89,16 +103,35 @@ in {
         };
       };
     };
+
+    picture-in-picture = {
+      enable = mkEnableOption "Firefox's Picture-in-Picture support";
+
+      position = mkOption {
+        type = types.enum [
+          "bottom-left"
+          "center-left"
+          "top-left"
+          "bottom-center"
+          "top-center"
+          "bottom-right"
+          "center-right"
+          "top-right"
+        ];
+        default = "bottom-left";
+        description = "Defines the initial position of the Picture-in-Picture window.";
+      };
+    };
   };
 
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> os-config.programs.hyprland.enable;
+        assertion = os-config.programs.hyprland.enable;
         message = "Hyprland must be enabled in your system configuration";
       }
       {
-        assertion = cfg.enable -> os-config.programs.hyprland.xwayland.enable;
+        assertion = os-config.programs.hyprland.xwayland.enable;
         message = "Hyprland XWayland must be enabled in your system configuration";
       }
     ];
@@ -122,7 +155,7 @@ in {
         grimblast
         volume-brightness
         screenshot
-        (configure-gtk theme.gtk)
+        power-management
         gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
       ]
       ++ theme.gtk.packages;

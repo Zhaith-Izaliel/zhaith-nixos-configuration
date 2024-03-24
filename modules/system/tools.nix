@@ -3,14 +3,14 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf optional;
   cfg = config.hellebore.tools;
 in {
   options.hellebore.tools = {
     enable = mkEnableOption "Hellebore tools packages";
 
-    etcher.enable = mkEnableOption "Balena Etcher";
+    nix-alien.enable = mkEnableOption "Nix Alien";
   };
 
   config = mkIf cfg.enable {
@@ -28,11 +28,12 @@ in {
         rar
         unrar
         erdtree
-        nix-alien
         file
+        bandwhich
+        dust
       ]
-      ++ lists.optional cfg.etcher.enable pkgs.etcher;
+      ++ optional cfg.nix-alien.enable nix-alien;
 
-    programs.nix-ld.enable = true;
+    programs.nix-ld.enable = cfg.nix-alien.enable;
   };
 }

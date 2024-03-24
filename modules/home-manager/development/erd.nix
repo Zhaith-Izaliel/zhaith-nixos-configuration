@@ -3,8 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkIf mkPackageOption mkEnableOption mkOption types;
   erdConfig = ''
     # Human readable sizes
     --human
@@ -26,12 +26,7 @@ in {
     and general purpose filesystem and disk-usage utility that is aware of
     .gitignore and hidden file rules";
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.erdtree;
-      defaultText = literalExpression "pkgs.erdtree";
-      description = "Erdtree package to install";
-    };
+    package = mkPackageOption pkgs "erdtree" {};
 
     settings = mkOption {
       type = types.str;

@@ -3,8 +3,8 @@
   config,
   lib,
   ...
-}:
-with lib; let
+}: let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.hellebore.desktop-environment.cloud;
 in {
   options.hellebore.desktop-environment.cloud = {
