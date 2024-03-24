@@ -1,6 +1,8 @@
 {
   pkgs,
   inputs,
+  lib,
+  config,
   ...
 }: let
   virgilribeyre-package = inputs.virgilribeyre-com.packages.${pkgs.system}.default;
@@ -25,7 +27,15 @@ in {
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE72R8aIght+Ci0DjXvXJ4l1UZ2f7/phFHc5gfqJ16E4 virgil.ribeyre@protonmail.com"
   ];
 
-  services.inadyn = {
+  services.inadyn = let
+    inherit (config.networking) domain;
+    domains = [
+      "${config.hellebore.nextcloud.subdomain}.${domain}"
+      "${config.hellebore.books.subdomain}.${domain}"
+      "${config.hellebore.jellyfin.subdomain}.${domain}"
+      domain
+    ];
+  in {
     enable = true;
     settings = ''
       period          = 300
@@ -33,9 +43,9 @@ in {
 
       provider default@ovh.com {
         ssl         = true
-        username    = ethereal-edelweiss.cloud-zhaith
+        username    = ${domain}-zhaith
         password    = "@password_placeholder@"
-        hostname    = { nextcloud.ethereal-edelweiss.cloud, jellyfin.ethereal-edelweiss.cloud, books.ethereal-edelweiss.cloud, ethereal-edelweiss.cloud }
+        hostname    = { ${lib.concatStringsSep ", " domains} }
       }
 
       provider default@ovh.com {
