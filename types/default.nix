@@ -121,7 +121,7 @@ in rec {
     name,
     package,
     port ? null,
-  }: rec {
+  }: {
     enable = mkEnableOption "Hellebore's ${name} configuration";
 
     package = mkPackageOption pkgs package {};
