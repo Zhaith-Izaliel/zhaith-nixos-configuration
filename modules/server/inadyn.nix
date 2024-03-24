@@ -62,7 +62,7 @@ in {
       '';
     };
 
-    passwords = {
+    passwords = mkOption {
       type = types.attrsOf types.path;
       default = {};
       description = ''
