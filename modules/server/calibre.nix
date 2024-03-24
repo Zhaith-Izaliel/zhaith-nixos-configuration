@@ -24,8 +24,9 @@ in {
 
   config = mkIf cfg.enable {
     services.calibre-web = {
-      inherit (cfg) group port package;
+      inherit (cfg) group package;
       enable = true;
+      listen.port = cfg.port;
       options.calibreLibrary = cfg.library;
     };
 
