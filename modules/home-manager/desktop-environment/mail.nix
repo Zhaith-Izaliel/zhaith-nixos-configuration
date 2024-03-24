@@ -1,15 +1,24 @@
-{ osConfig, config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.desktop-environment.mail;
-in
 {
+  os-config,
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkIf mkEnableOption mkOption types optional getExe mkPackageOption;
+  cfg = config.hellebore.desktop-environment.mail;
+in {
   options.hellebore.desktop-environment.mail = {
-    enable = mkEnableOption "Hellebore Mail clients";
+    enable = mkOption {
+      default = os-config.programs.evolution.enable;
+      description = "Enable Hellebore Mail client";
+      type = types.bool;
+    };
+
+    package = mkPackageOption pkgs "thunderbird-bin" {};
+
     bin = mkOption {
-      default = "${pkgs.evolution}/bin/evolution";
+      default = getExe cfg.package;
       type = types.str;
       description = "Get the package binary";
       readOnly = true;
@@ -21,15 +30,19 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.protonmail.enable -> osConfig.services.gnome.gnome-keyring.enable;
+        assertion = cfg.protonmail.enable -> os-config.services.gnome.gnome-keyring.enable;
         message = "Gnome keyring needs to be enable to allow Protonmail-Bridge
         to store passwords locally";
       }
     ];
 
-    home.packages = [
-      pkgs.evolution
-    ] ++ lists.optional cfg.protonmail.enable pkgs.protonmail-bridge;
+    home.packages = optional cfg.protonmail.enable pkgs.protonmail-bridge;
+
+    programs.thunderbird = {
+      inherit (cfg) package;
+      enable = true;
+      profiles."zhaith".isDefault = true;
+    };
 
     systemd.user.services.protonmail-bridge = mkIf cfg.protonmail.enable {
       Unit = {
@@ -48,9 +61,8 @@ in
       };
 
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = ["graphical-session.target"];
       };
     };
   };
 }
-

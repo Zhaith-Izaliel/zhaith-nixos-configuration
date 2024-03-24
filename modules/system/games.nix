@@ -1,67 +1,48 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) optionalString concatStringsSep optional types mkEnableOption mkOption mkIf optionals mdDoc;
   cfg = config.hellebore.games;
-  gamemode-icon = cleanSource ../../assets/images/icons/gamemode.svg;
-  notify-send-gamemode = message:
-    "${pkgs.libnotify}/bin/notify-send -u critical -i ${gamemode-icon} -t 4000 '${message}'";
 
-  # Gamemode Start/Stop scripts
-  gamemode-start-script = pkgs.writeShellScriptBin "gamemode-start" ''
-  ${notify-send-gamemode "GameMode Started"}
+  nvidia-command = optionalString config.hardware.nvidia.prime.offload.enableOffloadCmd ''DXVK_FILTER_DEVICE_NAME="${config.hellebore.hardware.nvidia.deviceFilterName}" nvidia-offload'';
+
+  game-run-script = pkgs.writeShellScriptBin "game-run" ''
+    #!/usr/bin/env bash
+    export XKB_DEFAULT_LAYOUT="${config.hellebore.locale.keyboard.layout}"
+    export XKB_DEFAULT_VARIANT="${config.hellebore.locale.keyboard.variant}"
+
+    main() {
+      case "$1" in
+        --gamescope)
+          ${nvidia-command} gamemoderun gamescope ${concatStringsSep " " gamescope-args} "''${@:2}"
+        ;;
+
+        *)
+          ${nvidia-command} gamemoderun "$@"
+        ;;
+      esac
+    }
+
+    main "$@"
   '';
 
-  gamemode-stop-script = pkgs.writeShellScriptBin "gamemode-stop" ''
-  ${notify-send-gamemode "GameMode Stopped"}
-  '';
-
-  game-run-script =
-  let
-    nvidia-command = strings.optionalString
-      config.hardware.nvidia.prime.offload.enableOffloadCmd
-      "nvidia-offload"
-    ;
-  in
-  pkgs.writeShellScriptBin "game-run"
-  ''
-  #!/usr/bin/env bash
-
-  main() {
-    case "$1" in
-      --gamescope)
-        ${nvidia-command} gamemoderun gamescope "''${@:2}"
-      ;;
-
-      --gamescope-steam)
-        ${nvidia-command} gamemoderun gamescope -e "''${@:2}"
-      ;;
-
-      *)
-        ${nvidia-command} gamemoderun "$@"
-      ;;
-    esac
-  }
-
-  main "$@"
-  '';
-
-  gamescope-args = lists.optional config.programs.hyprland.enable "--expose-wayland"
-  ++ [
-    "-f"
-    "--force-grab-cursor"
-    "--adaptive-sync"
-    "--force-composition"
-    "-W ${toString gameMonitor.width}"
-    "-H ${toString gameMonitor.height}"
-    "-w ${toString gameMonitor.width}"
-    "-h ${toString gameMonitor.height}"
-  ];
+  gamescope-args =
+    optional config.programs.hyprland.enable "--expose-wayland"
+    ++ [
+      "-f"
+      "--adaptive-sync"
+      "--force-composition"
+      "-W ${toString gameMonitor.width}"
+      "-H ${toString gameMonitor.height}"
+      "-w ${toString gameMonitor.width}"
+      "-h ${toString gameMonitor.height}"
+    ];
 
   gameMonitor = builtins.elemAt config.hellebore.monitors cfg.monitorID;
-in
-{
+in {
   options.hellebore.games = {
     enable = mkEnableOption "Hellebore's games support";
 
@@ -84,7 +65,7 @@ in
       };
       env = mkOption {
         type = types.attrsOf types.str;
-        default = { };
+        default = {};
         description = mdDoc ''
           Environmental variables to be passed to GameScope for the session.
         '';
@@ -95,9 +76,11 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> config.hardware.opengl.enable &&
-        config.hardware.opengl.driSupport &&
-        config.hardware.opengl.driSupport32Bit;
+        assertion =
+          cfg.enable
+          -> config.hardware.opengl.enable
+          && config.hardware.opengl.driSupport
+          && config.hardware.opengl.driSupport32Bit;
         message = "You need to enable OpenGl with DRI Support (both 64 and 32
         bits) to run games.";
       }
@@ -105,26 +88,28 @@ in
 
     nixpkgs.overlays = [
       (final: prev: {
-        steam = prev.steam.override ({ extraPkgs ? pkgs': [], ... }: {
-          extraPkgs = pkgs': (extraPkgs pkgs') ++ (with pkgs'; [
-            libgdiplus
-            gamemode
-            glib
-            gvfs
-            dconf
+        steam = prev.steam.override ({extraPkgs ? pkgs': [], ...}: {
+          extraPkgs = pkgs':
+            (extraPkgs pkgs')
+            ++ (with pkgs'; [
+              libgdiplus
+              gamemode
+              glib
+              gvfs
+              dconf
 
-            # Gamescope
-            xorg.libXcursor
-            xorg.libXi
-            xorg.libXinerama
-            xorg.libXScrnSaver
-            libpng
-            libpulseaudio
-            libvorbis
-            stdenv.cc.cc.lib
-            libkrb5
-            keyutils
-          ]);
+              # Gamescope
+              xorg.libXcursor
+              xorg.libXi
+              xorg.libXinerama
+              xorg.libXScrnSaver
+              libpng
+              libpulseaudio
+              libvorbis
+              stdenv.cc.cc.lib
+              libkrb5
+              keyutils
+            ]);
         });
       })
     ];
@@ -132,7 +117,6 @@ in
     programs = {
       gamescope = {
         enable = true;
-        args = gamescope-args;
       };
 
       steam = {
@@ -154,28 +138,29 @@ in
             reaper_freq = 5;
             igpu_desiredgov = "powersave";
           };
-
-          custom = {
-            start = "${gamemode-start-script}";
-            end = "${gamemode-stop-script}";
-          };
         };
       };
     };
 
-    environment.systemPackages = with pkgs; [
-      lutris
-      cartridges
-      protontricks
-      wineWowPackages.stable
-      wine
-      (wine.override { wineBuild = "wine64"; })
-      wineWowPackages.staging
-      winetricks
-      game-run-script
-    ] ++ lists.optional config.programs.hyprland.enable
-    wineWowPackages.waylandFull
-    ++ lists.optional cfg.minecraft.enable prismlauncher;
+    environment.systemPackages = with pkgs;
+      [
+        lutris
+        cartridges
+        protontricks
+        wineWowPackages.stable
+        heroic
+        wine
+        (wine.override {wineBuild = "wine64";})
+        wineWowPackages.staging
+        winetricks
+        game-run-script
+      ]
+      ++ optionals config.programs.hyprland.enable
+      [
+        winePackages.waylandFull
+        wine64Packages.waylandFull
+        wine-wayland
+      ]
+      ++ optional cfg.minecraft.enable prismlauncher;
   };
 }
-

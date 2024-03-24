@@ -1,14 +1,16 @@
-{ config, lib, pkgs, theme, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.hyprland;
-  # isNvidia = elem "nvidia" config.services.xserver.videoDrivers;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkEnableOption mkPackageOption optionalString mkIf;
+  cfg = config.hellebore.hyprland;
+in {
   options.hellebore.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
+
+    package = mkPackageOption pkgs "hyprland" {};
 
     enableSwaylockPam = mkEnableOption "Swaylock PAM configuration";
   };
@@ -16,13 +18,9 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       gtk3
-    ] ++ theme.gtk.packages;
+    ];
 
     qt.enable = true;
-
-    qt.platformTheme = "gtk2";
-
-    qt.style = "gtk2";
 
     services.gvfs.enable = true;
 
@@ -32,17 +30,17 @@ in
 
     programs.dconf.enable = true;
 
-    security.pam.services.swaylock.text = strings.optionalString cfg.enableSwaylockPam ''
-    # PAM configuration file for the swaylock screen locker. By default, it includes
-    # the 'login' configuration file (see /etc/pam.d/login)
-    auth include login
+    security.pam.services.swaylock.text = optionalString cfg.enableSwaylockPam ''
+      # PAM configuration file for the swaylock screen locker. By default, it includes
+      # the 'login' configuration file (see /etc/pam.d/login)
+      auth include login
     '';
 
     systemd.user.services.polkit-gnome-authentication-agent-1 = {
       description = "polkit-gnome-authentication-agent-1";
-      wantedBy = [ "graphical-session.target" ];
-      wants = [ "graphical-session.target" ];
-      after = [ "graphical-session.target" ];
+      wantedBy = ["graphical-session.target"];
+      wants = ["graphical-session.target"];
+      after = ["graphical-session.target"];
       serviceConfig = {
         Type = "simple";
         ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
@@ -57,14 +55,12 @@ in
       options nouveau modeset=0
     '';
 
-
     programs.hyprland = {
       enable = true;
+      package = cfg.package;
       xwayland = {
         enable = true;
       };
-      # enableNvidiaPatches = isNvidia;
     };
   };
 }
-

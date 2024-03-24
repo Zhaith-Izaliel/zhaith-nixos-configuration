@@ -1,12 +1,14 @@
-{ config, lib, theme, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  extra-types,
+  ...
+}: let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+  theme = config.hellebore.theme.themes.${cfg.theme};
   cfg = config.hellebore.display-manager;
   defaultMonitor = builtins.elemAt config.hellebore.monitors 0;
-in
-{
+in {
   options.hellebore.display-manager = {
     enable = mkEnableOption "Hellebore's Display Manager";
 
@@ -16,10 +18,10 @@ in
       description = "Width of the screen.";
     };
 
-    fontSize = mkOption {
-      type = types.int;
-      default = config.hellebore.fontSize;
-      description = "Set SDDM font size";
+    font = extra-types.font {
+      inherit (config.hellebore.font) size name;
+      sizeDescription = "Set the display manager font size.";
+      nameDescription = "Set the display manager font family.";
     };
 
     screenHeight = mkOption {
@@ -28,26 +30,33 @@ in
       description = "Height of the screen.";
     };
 
-    keyboardLayout = mkOption {
-      type = types.str;
-      default = config.hellebore.locale.keyboard.defaultLayout;
-      description = "Keyboard layout used in the Display Manager.";
+    keyboard = {
+      layout = mkOption {
+        type = types.str;
+        default = config.hellebore.locale.keyboard.layout;
+        description = "Keyboard layout used in the Display Manager.";
+      };
+
+      variant = mkOption {
+        type = types.str;
+        default = config.hellebore.locale.keyboard.variant;
+        description = "Keyboard variant used in the Display Manager.";
+      };
     };
 
-    keyboardVariant = mkOption {
-      type = types.str;
-      default = config.hellebore.locale.keyboard.defaultVariant;
-      description = "Keyboard variant used in the Display Manager.";
+    theme = extra-types.theme.name {
+      default = config.hellebore.theme.name;
+      description = "Defines the display manager theme.";
     };
 
     background = {
-      path  = mkOption {
-        type = types.oneOf [ types.path types.str ];
+      path = mkOption {
+        type = types.oneOf [types.path types.str];
         default = "";
         description = "The path to the background image to use in the greeter.";
       };
       fit = mkOption {
-        type = types.enum [ "Fill" "Contain" "Cover" "ScaleDown" ];
+        type = types.enum ["Fill" "Contain" "Cover" "ScaleDown"];
         default = "Contain";
         description = "How the background image covers the screen if the aspect
         ratio doesn't match";
@@ -58,8 +67,9 @@ in
   config = mkIf cfg.enable {
     services.xserver = {
       enable = true;
-      layout = cfg.keyboardLayout;
-      xkbVariant = cfg.keyboardVariant;
+      xkb = {
+        inherit (cfg.keyboard) layout variant;
+      };
       displayManager.sddm = {
         enable = true;
         wayland.enable = true;
@@ -67,29 +77,23 @@ in
           Theme = {
             CursorTheme = theme.gtk.cursorTheme.name;
             CursorSize = 24;
-            Font = cfg.fontSize;
+            Font = cfg.font.size;
           };
         };
 
         sugarCandyNix = {
           enable = true;
-          settings = {
-            ScreenWidth = cfg.screenWidth;
-            ScreenHeight = cfg.screenHeight;
-            FormPosition = "left";
-            HaveFormBackground = true;
-            PartialBlur = true;
-            AccentColor = theme.colors.mauve;
-            BackgroundColor = theme.colors.base;
-            Font = theme.gtk.font.name;
-            FontSize = toString cfg.fontSize;
-            MainColor = theme.colors.text;
-            ForceHideCompletePassword = true;
-            Background = cfg.background.path;
-          };
+          settings =
+            {
+              ScreenWidth = cfg.screenWidth;
+              ScreenHeight = cfg.screenHeight;
+              Font = cfg.font.name;
+              FontSize = toString cfg.font.size;
+              Background = cfg.background.path;
+            }
+            // theme.sddm.settings;
         };
       };
     };
   };
 }
-

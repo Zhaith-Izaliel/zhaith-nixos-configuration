@@ -1,11 +1,13 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.hardware.graphics-tablet;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) types mkEnableOption mkIf mkMerge mkOption;
+
+  cfg = config.hellebore.hardware.graphics-tablet;
+in {
   options.hellebore.hardware.graphics-tablet = {
     enable = mkEnableOption "Hellebore's graphics tablet support";
 
@@ -25,10 +27,9 @@ in
     })
 
     (mkIf (cfg.enable && cfg.isWacom) {
-      boot.kernelModules = [ "wacom" ];
-      environment.systemPackages = with pkgs; [ wacomtablet ];
+      boot.kernelModules = ["wacom"];
+      environment.systemPackages = with pkgs; [wacomtablet];
       services.xserver.wacom.enable = true;
     })
   ];
 }
-

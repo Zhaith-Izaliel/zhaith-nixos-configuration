@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.development.tools;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkIf mkEnableOption optionals;
+  cfg = config.hellebore.development.tools;
+in {
   options.hellebore.development.tools = {
     enable = mkEnableOption "Hellebore development tools";
 
@@ -16,11 +17,13 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+  config = {
+    home.packages = optionals cfg.enable (with pkgs; [
       onefetch
-      universal-ctags
-    ];
+      nix-npm-install
+      hyperfine
+      tokei
+    ]);
 
     home.sessionVariables = mkIf (!cfg.direnv.enableLogs) {
       DIRENV_LOG_FORMAT = "";
@@ -32,4 +35,3 @@ in
     };
   };
 }
-

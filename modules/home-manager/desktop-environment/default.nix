@@ -1,8 +1,7 @@
-{ ... }:
-
-{
+{...}: {
   imports = [
     ./browsers.nix
+    ./clipboard.nix
     ./mail.nix
     ./disks.nix
     ./files-manager.nix
@@ -11,6 +10,11 @@
     ./i18n.nix
     ./network.nix
     ./hyprland
+    ./logout.nix
+    ./lockscreen.nix
+    ./notifications.nix
+    ./applications-launcher.nix
+    ./status-bar.nix
+    ./sound.nix
   ];
 }
-

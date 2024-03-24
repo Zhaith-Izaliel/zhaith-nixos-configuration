@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.network;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkEnableOption mkOption types mkIf mkMerge optional;
+  cfg = config.hellebore.network;
+in {
   options.hellebore.network = {
     enable = mkEnableOption "Hellebore network configuration";
 
@@ -58,10 +59,10 @@ in
       indicator = false;
     };
 
-    environment.systemPackages = []
-      ++ lists.optional cfg.enableNetworkManager pkgs.openvpn
-      ++ lists.optional cfg.enableSambaMounting pkgs.cifs-utils
-    ;
+    environment.systemPackages =
+      []
+      ++ optional cfg.enableNetworkManager pkgs.openvpn
+      ++ optional cfg.enableSambaMounting pkgs.cifs-utils;
 
     networking = {
       inherit (cfg) domain;
@@ -70,11 +71,11 @@ in
         inherit (cfg) allowedTCPPorts allowedUDPPorts;
       };
 
-      interfaces = mkMerge (builtins.map
-        (item: { ${item}.useDHCP = true; })
+      interfaces = mkMerge (
+        builtins.map
+        (item: {${item}.useDHCP = true;})
         cfg.interfaces
       );
     };
   };
 }
-

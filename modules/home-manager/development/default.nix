@@ -1,9 +1,10 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.hellebore.development;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.hellebore.development;
+in {
   options.hellebore.development = {
     codeDirectory = lib.mkOption {
       type = lib.types.nonEmptyStr;
@@ -19,4 +20,3 @@ in
     ./tools.nix
   ];
 }
-

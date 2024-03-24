@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.tools.office;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkIf mkEnableOption;
+  cfg = config.hellebore.tools.office;
+in {
   options.hellebore.tools.office = {
     enable = mkEnableOption "Hellebore office tools";
   };
@@ -18,7 +19,7 @@ in
       calibre
       obsidian
       gnome.simple-scan
+      fontpreview
     ];
   };
 }
-

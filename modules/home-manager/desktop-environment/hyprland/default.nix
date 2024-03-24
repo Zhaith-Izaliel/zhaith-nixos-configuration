@@ -1,37 +1,61 @@
-{ osConfig, config, theme, lib, pkgs, extraTypes, ... }:
-
-let
+{
+  os-config,
+  config,
+  lib,
+  pkgs,
+  extra-types,
+  ...
+}: let
   inherit (lib) types mkOption mkEnableOption mkIf;
   cfg = config.hellebore.desktop-environment.hyprland;
-in
-{
+  theme = config.hellebore.theme.themes.${cfg.theme};
+  extraRulesType = types.submodule {
+    options = {
+      rules = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "Defines the rules to apply to the game window";
+      };
+
+      regex = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "Defines the regular expression used to find the window or layer on Hyprland. See: https://wiki.hyprland.org/Configuring/Window-Rules/#window-rules-v2 and https://wiki.hyprland.org/Configuring/Window-Rules/#layer-rules";
+      };
+    };
+  };
+in {
   imports = [
     ./config.nix
-    ./logout.nix
-    ./lockscreen.nix
-    ./notifications.nix
-    ./applications-launcher
-    ./status-bar
-    ./widget
   ];
 
   options.hellebore.desktop-environment.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
-    monitors = extraTypes.monitors // {
-      default = config.hellebore.monitors;
+    monitors =
+      extra-types.monitors
+      // {
+        default = config.hellebore.monitors;
+      };
+
+    layout = mkOption {
+      type = types.enum ["dwindle" "master"];
+      description = "Defines the layout used in Hyprland.";
+      default = "dwindle";
     };
 
-    mirrorFirstMonitor = mkEnableOption null // {
-      description = "Allow Hyprland to mirror the first monitor defined in its
+    theme = extra-types.theme.name {
+      default = config.hellebore.theme.name;
+      description = "Defines the theme applied to Hyprland and GTK/QT based
+      applications.";
+    };
+
+    mirrorFirstMonitor =
+      mkEnableOption null
+      // {
+        description = "Allow Hyprland to mirror the first monitor defined in its
       monitors list when connecting an unknown monitor.";
-    };
-
-    package = mkOption {
-      type = types.package;
-      default = pkgs.hyprland;
-      description = "Override default Hyprland package";
-    };
+      };
 
     wallpaper = mkOption {
       type = types.path;
@@ -39,16 +63,21 @@ in
       description = "Set the wallpaper.";
     };
 
+    extraWindowRules = mkOption {
+      type = types.listOf extraRulesType;
+      default = [];
+      description = "Defines a list of extra rules for windows to be applied.";
+    };
+
+    extraLayerRules = mkOption {
+      type = types.listOf extraRulesType;
+      default = [];
+      description = "Defines a list of extra rules for windows to be applied.";
+    };
+
     input = {
-      kbLayout = mkOption {
-        type = types.str;
-        default = osConfig.hellebore.locale.keyboard.defaultLayout;
-        description = "Keyboard layout for Hyprland.";
-      };
-      kbVariant = mkOption {
-        type = types.str;
-        default = osConfig.hellebore.locale.keyboard.defaultVariant;
-        description = "Keyboard variant for Hyprland.";
+      keyboard = extra-types.keyboard {
+        inherit (config.hellebore.locale.keyboard) layout variant;
       };
 
       mouse = {
@@ -74,16 +103,35 @@ in
         };
       };
     };
+
+    picture-in-picture = {
+      enable = mkEnableOption "Firefox's Picture-in-Picture support";
+
+      position = mkOption {
+        type = types.enum [
+          "bottom-left"
+          "center-left"
+          "top-left"
+          "bottom-center"
+          "top-center"
+          "bottom-right"
+          "center-right"
+          "top-right"
+        ];
+        default = "bottom-left";
+        description = "Defines the initial position of the Picture-in-Picture window.";
+      };
+    };
   };
 
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> osConfig.programs.hyprland.enable;
+        assertion = os-config.programs.hyprland.enable;
         message = "Hyprland must be enabled in your system configuration";
       }
       {
-        assertion = cfg.enable -> osConfig.programs.hyprland.xwayland.enable;
+        assertion = os-config.programs.hyprland.xwayland.enable;
         message = "Hyprland XWayland must be enabled in your system configuration";
       }
     ];
@@ -92,22 +140,25 @@ in
       GDK_BACKEND = "wayland,x11";
       QT_QPA_PLATFORM = "wayland;xcb";
       CLUTTER_BACKEND = "wayland";
-      XDG_CURRENT_DESKTOP = "Hyprland";
+      # XDG_CURRENT_DESKTOP = "Hyprland";
       XDG_SESSION_TYPE = "wayland";
-      XDG_SESSION_DESKTOP = "Hyprland";
+      # XDG_SESSION_DESKTOP = "Hyprland";
       WLR_NO_HARDWARE_CURSORS = "1";
     };
 
-
-    home.packages = with pkgs; [
-      swww
-      swayosd
-      wl-clipboard
-      power-management
-      hyprpicker
-      grimblast
-      volume-brightness
-    ] ++ theme.gtk.packages;
+    home.packages = with pkgs;
+      [
+        swww
+        swayosd
+        power-management
+        hyprpicker
+        grimblast
+        volume-brightness
+        screenshot
+        power-management
+        gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
+      ]
+      ++ theme.gtk.packages;
 
     gtk = {
       enable = true;
@@ -115,25 +166,15 @@ in
 
       font = {
         inherit (theme.gtk.font) name package;
-        size = config.hellebore.fontSize;
-      };
-
-      gtk3.extraConfig = {
-        gtk-application-prefer-dark-theme = 1;
-      };
-
-      gtk4.extraConfig = {
-        gtk-application-prefer-dark-theme = 1;
+        size = config.hellebore.font.size;
       };
     };
 
     wayland.windowManager.hyprland = {
       enable = true;
-      package = cfg.package;
+      package = os-config.programs.hyprland.package;
       xwayland.enable = true;
-      # enableNvidiaPatches = osConfig.programs.hyprland.enableNvidiaPatches;
       systemd.enable = true;
     };
   };
 }
-

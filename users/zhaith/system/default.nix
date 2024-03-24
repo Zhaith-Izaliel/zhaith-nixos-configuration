@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   # Define user accounts. Don't forget to set a password with ‘passwd’.
 
   users.groups.zhaith = {
@@ -12,6 +10,7 @@
     extraGroups = [
       "wheel" # 'wheel' Enable ‘sudo’ for the user.
       "kvm"
+      "libvirt"
       "libvirtd"
       "qemu-libvirtd"
       "scanner"
@@ -24,4 +23,3 @@
     shell = pkgs.zsh;
   };
 }
-

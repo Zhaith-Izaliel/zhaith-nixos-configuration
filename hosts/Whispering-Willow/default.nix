@@ -1,10 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -24,11 +21,17 @@
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3" # Etcher
-    "electron-19.1.9" # TODO: Needs to fine which package depends on it
   ];
 
+  boot = {
+    # kernelPackages = pkgs.pkgs.linuxPackages_latest;
+    initrd.kernelModules = ["i915"];
+  };
+
   hellebore = {
-    fontSize = 14;
+    font.size = 12;
+
+    theme.name = "catppuccin-macchiato";
 
     monitors = [
       {
@@ -40,6 +43,19 @@
         yOffset = 0;
         scaling = 1.0;
       }
+      # {
+      #   name = "";
+      #   width = 1920;
+      #   height = 1080;
+      #   refreshRate = 60;
+      #   xOffset = 0;
+      #   yOffset = 0;
+      #   scaling = 1.0;
+      #   extraArgs = [
+      #     "mirror"
+      #     (builtins.elemAt monitors 0).name
+      #   ];
+      # }
     ];
 
     network = {
@@ -60,11 +76,13 @@
       nvidia = {
         enable = true;
         power-profiles.enable = true;
+        power-management.enable = true;
+        modesetting.enable = false;
+        forceWaylandOnMesa = true;
         deviceFilterName = "RTX 3060";
+        open = false;
         prime = {
-          enable = true;
           offload.enable = true;
-          reverseSync.enable = true;
           intelBusId = "PCI:0:2:0";
           nvidiaBusId = "PCI:1:0:0";
         };
@@ -72,16 +90,21 @@
 
       ntfs.enable = true;
 
-      bluetooth = {
-        enable = true;
-        enablePowerSupport = true;
-      };
-
-      numerization.enable = true;
+      bluetooth.enable = true;
 
       printing = {
         enable = true;
-        drivers = with pkgs; [ epson-escpr epson-escpr2 ];
+        numerization.enable = true;
+        drivers = with pkgs; [
+          epson-escpr
+          (epson-escpr2.overrideAttrs (final: prev: {
+            nativeBuildInputs = with pkgs; [
+              coreutils # HACK: fixes `stat` missing some common arguments
+              # (like `--printf`)
+              busybox
+            ];
+          }))
+        ];
       };
 
       integratedCamera = {
@@ -89,17 +112,11 @@
         cameraBus = "3-13";
       };
 
-      graphics-tablet = {
+      gaming = {
         enable = true;
-        isWacom = true;
+        steam.enable = true;
+        logitech.wireless.enable = true;
       };
-
-      logitech = {
-        enable = true;
-        wireless.enable = true;
-      };
-
-      gaming.enable = true;
     };
 
     bootloader = {
@@ -111,12 +128,10 @@
 
     tools = {
       enable = true;
-      # etcher.enable = true;
+      nix-alien.enable = true;
     };
 
     shell.enable = true;
-
-    kernel.enable = true;
 
     locale.enable = true;
 
@@ -129,28 +144,6 @@
     ssh.enable = true;
 
     tex.enable = true;
-
-    vm = {
-      enable = false;
-
-      cpuIsolation = {
-        totalCores = "0-15";
-        hostCores = "0-3,8-11";
-        variableName = "ISOLATE_CPUS";
-      };
-
-      name = "Luminous-Rafflesia";
-
-      pcisBinding = {
-        enableDynamicBinding = false;
-        pcis = [
-          "0000:01:00.0"
-          "0000:01:00.1"
-        ];
-      };
-
-      username = "zhaith";
-    };
 
     sound = {
       enable = true;
@@ -188,10 +181,35 @@
 
       upower = {
         enable = true;
+        notify = true;
         percentageLow = 15;
         percentageCritical = 10;
         percentageAction = 5;
       };
+    };
+
+    vm = {
+      enable = true;
+
+      useSecureBoot = true;
+
+      cpuIsolation = {
+        totalCores = "0-15";
+        hostCores = "0-3,8-11";
+        variableName = "ISOLATE_CPUS";
+      };
+
+      name = "Luminous-Rafflesia";
+
+      pcisBinding = {
+        enableDynamicBinding = true;
+        vendorIds = [
+          "10de:2520" # GPU
+          "10de:228e" # Audio
+        ];
+      };
+
+      username = "zhaith";
     };
   };
 
@@ -201,6 +219,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
 }
-

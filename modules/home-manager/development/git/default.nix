@@ -1,19 +1,23 @@
-{ config, lib, pkgs, theme, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.development.git;
-in
 {
+  config,
+  lib,
+  pkgs,
+  extra-types,
+  ...
+}: let
+  inherit (lib) mkEnableOption mkIf mkOption mkPackageOption types;
+  cfg = config.hellebore.development.git;
+  theme = config.hellebore.theme.themes.${cfg.gitui.theme};
+in {
   imports = [
-    ./commitlint.nix
     ./h.nix
-    ./ghq.nix
+    ./commitizen.nix
   ];
 
   options.hellebore.development.git = {
     enable = mkEnableOption "Hellebore's Git configuration";
+
+    package = mkPackageOption pkgs "git" {};
 
     userName = mkOption {
       type = types.str;
@@ -30,11 +34,12 @@ in
     gitui = {
       enable = mkEnableOption "Hellebore's Gitui configuration";
 
-      package = mkOption {
-        type = types.package;
-        default = pkgs.gitui;
-        description = "Override Gitui default package";
+      theme = extra-types.theme.name {
+        default = config.hellebore.theme.name;
+        description = "Defines GitUI theme name.";
       };
+
+      package = mkPackageOption pkgs "gitui" {};
     };
   };
 
@@ -45,7 +50,7 @@ in
     ];
 
     programs.git = {
-      inherit (cfg) userEmail userName;
+      inherit (cfg) userEmail userName package;
       enable = true;
       extraConfig = {
         push.autoSetupRemote = true;
@@ -61,4 +66,3 @@ in
     };
   };
 }
-

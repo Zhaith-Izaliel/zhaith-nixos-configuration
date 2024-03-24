@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.fonts;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkEnableOption mkIf;
+  cfg = config.hellebore.fonts;
+in {
   options.hellebore.fonts = {
     enable = mkEnableOption "Hellebore fonts configuration";
   };
@@ -17,16 +18,23 @@ in
         noto-fonts-emoji
         noto-fonts-cjk-sans
         twitter-color-emoji
-        powerline-fonts
         cantarell-fonts
         ubuntu_font_family
         corefonts
-        nerdfonts
+        (nerdfonts.override {
+          fonts = [
+            "Ubuntu"
+            "UbuntuMono"
+            "FiraMono"
+            "FiraCode"
+            "Noto"
+            "Terminus"
+          ];
+        })
         fira-code
         fira-code-symbols
         rictydiminished-with-firacode
         terminus_font
-        font-awesome
       ];
 
       fontconfig = {
@@ -34,10 +42,10 @@ in
         antialias = true;
         includeUserConf = true;
         defaultFonts = {
-          sansSerif = [ "Noto Sans" ];
-          serif = [ "Noto Serif" ];
-          monospace = [ "Noto Sans Mono" ];
-          emoji = [ "Twitter Color Emoji" ];
+          sansSerif = ["Noto Sans"];
+          serif = ["Noto Serif"];
+          monospace = ["FiraCode Nerd Font"];
+          emoji = ["Twitter Color Emoji"];
         };
       };
 
@@ -45,4 +53,3 @@ in
     };
   };
 }
-

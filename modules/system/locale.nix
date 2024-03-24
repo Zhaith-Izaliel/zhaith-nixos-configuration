@@ -1,11 +1,13 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-   cfg = config.hellebore.locale;
-in
 {
+  config,
+  extra-types,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkEnableOption types mkOption mkIf;
+  cfg = config.hellebore.locale;
+in {
   options.hellebore.locale = {
     enable = mkEnableOption "Hellebore locales configuration";
 
@@ -15,18 +17,9 @@ in
       description = "Define the console keymap.";
     };
 
-    keyboard = {
-      defaultLayout = mkOption {
-        type = types.str;
-        default = "fr";
-        description = "The default keyboard layout for XKB.";
-      };
-
-      defaultVariant = mkOption {
-        type = types.str;
-        default = "oss_latin9";
-        description = "The default keyboard variant for XKB.";
-      };
+    keyboard = extra-types.keyboard {
+      layout = "fr";
+      variant = "oss_latin9";
     };
   };
 
@@ -37,13 +30,19 @@ in
       supportedLocales = [
         "ja_JP.UTF-8/UTF-8"
         "en_US.UTF-8/UTF-8"
+        "en_GB.UTF-8/UTF-8"
         "fr_FR.UTF-8/UTF-8"
       ];
+
+      extraLocaleSettings = {
+        LC_MEASUREMENT = "en_GB.UTF-8";
+        LC_TIME = "en_GB.UTF-8";
+      };
     };
 
     environment.variables = {
-      XKB_DEFAULT_LAYOUT = cfg.keyboard.defaultLayout;
-      XKB_DEFAULT_VARIANT = cfg.keyboard.defaultVariant;
+      XKB_DEFAULT_LAYOUT = cfg.keyboard.layout;
+      XKB_DEFAULT_VARIANT = cfg.keyboard.variant;
     };
 
     console = {
@@ -59,4 +58,3 @@ in
     ];
   };
 }
-

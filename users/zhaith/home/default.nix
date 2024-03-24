@@ -1,85 +1,139 @@
-{ config, ... }:
+{config, ...}: {
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-25.9.0" # Obsidian
+  ];
 
-{
   hellebore = {
+    theme.name = "catppuccin-macchiato";
 
-    fontSize = 14;
-
-    monitors = [
-      {
-        name = "eDP-1";
-        width = 2560;
-        height = 1440;
-        refreshRate = 165;
-        xOffset = 0;
-        yOffset = 0;
-        scaling = 1.0;
-      }
-    ];
+    locale.enable = true;
 
     desktop-environment = {
+      clipboard.enable = true;
+
       hyprland = {
         enable = true;
         mirrorFirstMonitor = true;
-        lockscreen = {
+        picture-in-picture = {
           enable = true;
-          fontSize = config.hellebore.fontSize + 10;
+          position = "top-right";
         };
-        logout = {
-          enable = true;
-          fontSize = 20;
-        };
-        applications-launcher = {
-          enable = true;
-        };
-        notifications.enable = true;
-        status-bar = {
-          enable = true;
-          fontSize = 12;
-          backlight-device = "intel_backlight";
+        extraWindowRules = [
+          {
+            regex = "class:(steam_app_).*";
+            rules = [
+              "workspace 5"
+              "idleinhibit"
+            ];
+          }
+          {
+            regex = "class:(gw2).*";
+            rules = [
+              "workspace 5"
+              "idleinhibit"
+              "noblur"
+              "noborder"
+              "noshadow"
+            ];
+          }
+        ];
+      };
+
+      lockscreen = {
+        enable = true;
+        font.size = config.hellebore.font.size + 10;
+        timeouts = {
+          dim.enable = true;
+          lock.enable = true;
+          powerSaving.enable = true;
         };
       };
+
+      logout = {
+        enable = true;
+        useLayerBlur = true;
+        font.size = 20;
+      };
+
+      applications-launcher = {
+        enable = true;
+        font.name = "NotoMono Nerd Font";
+
+        applets = let
+          defaultAppletSettings = {
+            font = {
+              inherit (config.hellebore.desktop-environment.applications-launcher.font) size;
+              name = "FiraCode Nerd Font Mono";
+            };
+            width = "1000px";
+            height = "600px";
+          };
+        in {
+          favorites = defaultAppletSettings;
+          quicklinks = defaultAppletSettings;
+          bluetooth = defaultAppletSettings;
+          mpd = defaultAppletSettings;
+          power-profiles = defaultAppletSettings;
+        };
+      };
+
+      notifications.enable = true;
+
+      status-bar = {
+        enable = true;
+        font.size = 11;
+        backlight-device = "intel_backlight";
+        tray = {
+          icon-size = 22;
+          spacing = 5;
+        };
+      };
+
       bluetooth.enable = true;
       network.enable = true;
       cloud.enable = true;
+
       i18n = {
         enable = true;
         enableAnthy = true;
       };
+
       files-manager = {
         enable = true;
         supports = {
           images = true;
           torrents = true;
           archives = true;
-          fonts-viewer = true;
         };
       };
+
       disks.enable = true;
+
       mail = {
         enable = true;
         protonmail.enable = true;
       };
+
       browsers = {
         enable = true;
         profiles.zhaith.enable = true;
-        firefoxDev.enable = true;
       };
     };
 
     tools = {
       discord = {
         enable = true;
-        openASAR.enable = true;
         tts.enable = true;
       };
       office.enable = true;
       tasks.enable = true;
       docs.enable = true;
+      yazi.enable = true;
     };
 
     multimedia = {
       enable = true;
+      mpris.enable = true;
       art.enable = true;
       obs.enable = true;
       mpd = {
@@ -92,22 +146,14 @@
       };
     };
 
-    games = {
-      dxvk = {
-        enable = true;
-        config = ''
-          [HuntGame.exe]
-          dxvk.enableGraphicsPipelineLibrary = True
-        '';
-      };
-    };
-
     development = {
       git = {
         enable = true;
         gitui.enable = true;
-        commitlint.enable = true;
-        ghq.enable = true;
+        commitizen = {
+          enable = true;
+          setUpAlias = true;
+        };
         h.enable = true;
       };
       erdtree = {
@@ -124,8 +170,8 @@
 
     shell = {
       enable = true;
-      motd.enable = true;
       prompt.enable = true;
+      workspace.enable = true;
       emulator = {
         enable = true;
         integratedGPU = {
@@ -136,6 +182,9 @@
     };
   };
 
-  programs.neovim.zhaith-config.enable = true;
+  # programs.neovim.zhaith-config.enable = true;
+  programs.helix.zhaith-configuration = {
+    enable = true;
+    defaultEditor = true;
+  };
 }
-

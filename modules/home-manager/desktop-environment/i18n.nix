@@ -1,20 +1,29 @@
-{ config, lib, pkgs, theme, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.desktop-environment.i18n;
-in
 {
+  config,
+  lib,
+  pkgs,
+  extra-types,
+  ...
+}: let
+  inherit (lib) mkEnableOption mkIf optional;
+  cfg = config.hellebore.desktop-environment.i18n;
+  theme = config.hellebore.theme.themes.${cfg.theme};
+in {
   options.hellebore.desktop-environment.i18n = {
     enable = mkEnableOption "Hellebore's Fcitx5 configuration";
 
     enableAnthy = mkEnableOption "Anthy input method";
 
-    fontSize = mkOption {
-      type = types.int;
-      default = config.hellebore.fontSize;
-      description = "Set Fcitx5 client font size.";
+    font = extra-types.font {
+      size = config.hellebore.font.size;
+      name = config.hellebore.font.name;
+      sizeDescription = "Set Fcitx5 client font size.";
+      nameDescription = "Set Fcitx5 client font family.";
+    };
+
+    theme = extra-types.theme.name {
+      default = config.hellebore.theme.name;
+      description = "Defines the terminal emulator theme.";
     };
   };
 
@@ -25,52 +34,49 @@ in
 
     i18n.inputMethod = {
       enabled = "fcitx5";
-      fcitx5.addons = [
-        pkgs.fcitx5-gtk
-        pkgs.libsForQt5.fcitx5-qt
-      ] ++ lists.optional cfg.enableAnthy pkgs.fcitx5-anthy;
+      fcitx5.addons =
+        [
+          pkgs.fcitx5-gtk
+          pkgs.libsForQt5.fcitx5-qt
+        ]
+        ++ optional cfg.enableAnthy pkgs.fcitx5-anthy;
     };
 
-    xdg.configFile."fcitx5/conf/classicui.conf".text = ''
-      # Vertical Candidate List
-      Vertical Candidate List=False
+    xdg.configFile."fcitx5/conf/classicui.conf".text =
+      ''
+        # Vertical Candidate List
+        Vertical Candidate List=False
 
-      # Use Per Screen DPI
-      PerScreenDPI=True
+        # Use Per Screen DPI
+        PerScreenDPI=True
 
-      # Use mouse wheel to go to prev or next page
-      WheelForPaging=True
+        # Use mouse wheel to go to prev or next page
+        WheelForPaging=True
 
-      # Font
-      Font="${theme.gtk.font.name} ${toString cfg.fontSize}"
+        # Font
+        Font="${cfg.font.name} ${toString cfg.font.size}"
 
-      # Menu Font
-      MenuFont="${theme.gtk.font.name} ${toString cfg.fontSize}"
+        # Menu Font
+        MenuFont="${cfg.font.name} ${toString cfg.font.size}"
 
-      # Tray Font
-      TrayFont="${theme.gtk.font.name} Bold ${toString cfg.fontSize}"
+        # Tray Font
+        TrayFont="${cfg.font.name} Bold ${toString cfg.font.size}"
 
-      # Tray Label Outline Color
-      TrayOutlineColor=${theme.colors.mantle}
+        # Prefer Text Icon
+        PreferTextIcon=False
 
-      # Tray Label Text Color
-      TrayTextColor=${theme.colors.text}
+        # Show Layout Name In Icon
+        ShowLayoutNameInIcon=True
 
-      # Prefer Text Icon
-      PreferTextIcon=False
+        # Use input method language to display text
+        UseInputMethodLangaugeToDisplayText=True
 
-      # Show Layout Name In Icon
-      ShowLayoutNameInIcon=True
+        # Theme
+        Theme=${theme.fcitx5.name}
 
-      # Use input method language to display text
-      UseInputMethodLangaugeToDisplayText=True
-
-      # Theme
-      Theme=${theme.fcitx5.name}
-
-      # Force font DPI on Wayland
-      ForceWaylandDPI=0
-    '';
+        # Force font DPI on Wayland
+        ForceWaylandDPI=0
+      ''
+      + theme.fcitx5.extraConfig;
   };
 }
-

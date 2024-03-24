@@ -1,11 +1,11 @@
-{ config, lib, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.bootloader;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  inherit (lib) mkEnableOption mkIf;
+  cfg = config.hellebore.bootloader;
+in {
   options.hellebore.bootloader = {
     enable = mkEnableOption "Hellebore bootloader configuration";
 
@@ -23,12 +23,12 @@ in
         device = "nodev";
         copyKernels = true;
         extraEntries = ''
-        menuentry "Reboot" --class restart {
-          reboot
-        }
-        menuentry "Poweroff" --class shutdown {
-          halt
-        }
+          menuentry "Reboot" --class restart {
+            reboot
+          }
+          menuentry "Poweroff" --class shutdown {
+            halt
+          }
         '';
         entryOptions = "--class nixos --unrestricted";
         subEntryOptions = "--class recovery";
@@ -44,4 +44,3 @@ in
     };
   };
 }
-

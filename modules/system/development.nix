@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hellebore.development;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkEnableOption mkIf optionals optional;
+  cfg = config.hellebore.development;
+in {
   options.hellebore.development = {
     enable = mkEnableOption "Hellebore development packages";
 
@@ -18,15 +19,16 @@ in
     virtualisation.docker.enable = cfg.enableDocker;
     documentation.dev.enable = cfg.enableDocumentation;
 
-    environment.systemPackages = with pkgs; [
-      neovim
-      git
-    ]
-    ++ (lists.optional cfg.enableDocker pkgs.docker-compose)
-    ++ (lists.optionals cfg.enableDocumentation (with pkgs; [
-      man-pages
-      man-pages-posix
-    ]));
+    environment.systemPackages = with pkgs;
+      [
+        helix
+        git
+        gnumake
+      ]
+      ++ (optional cfg.enableDocker pkgs.docker-compose)
+      ++ (optionals cfg.enableDocumentation [
+        man-pages
+        man-pages-posix
+      ]);
   };
 }
-
