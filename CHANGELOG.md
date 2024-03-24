@@ -1,3 +1,57 @@
+## v6.0.0 (2024-03-24)
+
+### Feat
+
+- **modules/server/inadyn**: allow multiple passwords to be defined
+- **modules/system/tools**: move nix-alien behind its own enable option
+- Add some server configuration, add a lot of stuff
+- add upower-notify service, refactor module system, update waybar theme, change alacritty background
+- **home/hyprland**: add support for extra window rules and layer rules
+- update styles, fixes a bunch of problems
+- add makefile, fix vm (?)
+- add makefile, fix kernel, change zellij
+- **theme**: add catppuccin-mocha, remove unused themes and config options
+- **theme**: change catppuccin theme to catppuccin-machiato
+- **flake**: update flake lock
+- **yazi**: add yazi module with theme
+- **zellij-layouts**: add nixos-config layout
+- **home**: add zellij-layouts support
+- add commitizen
+
+### Fix
+
+- **hosts/Ethereal-Edelweiss**: fix inadyn config
+- **modules/server/inadyn**: fix getting exe of replace-secret
+- **modules/server/inadyn**: fix incorrect function return
+- **modules/server/inadyn**: allow unspecified passwords
+- **modules/server/inadyn**: fix passwords option
+- **hosts/Ethereal-Edelweiss**: fix inadyn updating an unknown domain
+- **hosts/Ethereal-Edelweiss**: fix domain name
+- **hosts/Ethereal-Edelweiss**: add missing acmeEmail value
+- **modules/server/jellyfin**: remove incorrect usage of port option
+- **modules/server/fail2ban**: fix incorrect import of maxretry option
+- **modules/server/calibre**: fix port option
+- **types/server-app**: remove incorrect recursion
+- **kernel**: fix kernel panic (hopefully)
+- **hardware/graphics-tablet**: fix infinite recursion
+- **system/hardware/nvidia**: switch to stable driver
+- **yazi**: fix yazi theme building and module import
+- **zellij-layouts**: fix nixos-config layout command panes
+- **hyprland**: remove unused hack
+
+### Refactor
+
+- **hosts/Ethereal-Edelweiss**: refactor domains in inadyn config
+- **host/Ethereal-Edelweiss**: remove unused config files
+- **modules/server**: Move server app into their own modules and switch Ethereal-Edelweiss config to a single file
+- **modules**: remove unsafe `with lib;` statements, add missing `package` option, move to mkPackageOption for consistency
+- **theme**: refactor wlogout assets and fix minor typo in waybar styles
+- **modules**: refactor part of the module system, remove unused packages, move packages around
+- **packages**: refactor packages import in overlay
+- **kernel**: remove unused kernel module
+- **modules**: refactor modules and clean up some unused options
+- **home/desktop-environment**: refactor images and some components
+
 ## v5.0.0 (2024-03-10)
 
 ### Feat
