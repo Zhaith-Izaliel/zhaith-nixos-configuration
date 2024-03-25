@@ -147,7 +147,6 @@
       obs.enable = true;
       mpd = {
         enable = true;
-        enableDiscordRPC = true;
         visualizer = {
           enable = true;
           spectrumSmoothLook = true;

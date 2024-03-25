@@ -289,9 +289,12 @@ in {
 
         follow_mouse = 1;
 
+        # scroll_factor = cfg.input.mouse.scrollFactor;
+
         touchpad = {
           natural_scroll = toString cfg.input.touchpad.naturalScroll;
           tap-to-click = toString cfg.input.touchpad.tapToClick;
+          scroll_factor = cfg.input.touchpad.scrollFactor;
         };
 
         sensitivity = toString cfg.input.mouse.sensitivity; # -1.0 - 1.0, 0 means no modification.

@@ -17,8 +17,6 @@ in {
   options.hellebore.multimedia.mpd = {
     enable = mkEnableOption "Hellebore's MPD config";
 
-    enableDiscordRPC = mkEnableOption "MPD integration with Discord RPC";
-
     musicDirectory = mkOption {
       type = types.path;
       default = /${config.home.homeDirectory}/Music;
@@ -83,10 +81,6 @@ in {
             }
           '';
         network.startWhenNeeded = false;
-      };
-
-      mpd-discord-rpc = {
-        enable = cfg.enableDiscordRPC;
       };
 
       mpdris2 = {
