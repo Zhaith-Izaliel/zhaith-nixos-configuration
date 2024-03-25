@@ -21,7 +21,7 @@ in {
 
       user = mkOption {
         default = "invoiceshelf";
-        types = types.nonEmptyStr;
+        type = types.nonEmptyStr;
         description = "Defines the user running InvoiceShelf.";
       };
 
@@ -49,6 +49,11 @@ in {
     };
 
   config = mkIf cfg.enable {
+    users.users.${cfg.user} = {
+      inherit (cfg) group;
+      isSystemUser = true;
+    };
+
     services.phpfpm.pools.invoiceshelf = {
       phpOptions = ''
         file_uploads = On

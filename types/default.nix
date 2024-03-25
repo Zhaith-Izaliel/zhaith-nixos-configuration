@@ -129,7 +129,7 @@ in rec {
 
     group = mkOption {
       type = types.nonEmptyStr;
-      default = "";
+      default = group;
       description = "Defines the user group for ${name}.";
     };
 
