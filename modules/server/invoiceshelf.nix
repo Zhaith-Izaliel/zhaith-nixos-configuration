@@ -84,7 +84,8 @@ in {
         "/".tryFiles = "$uri $uri/ /index.php?$query_string";
 
         "~ \\.php$".extraConfig = ''
-          php_fastcgi unix/${fpm.socket};
+          fastcgi_pass unix:${fpm.socket};
+          include fastcgi_params;
         '';
       };
     };
