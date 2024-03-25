@@ -14,7 +14,7 @@ in {
   options.hellebore.server.postgresql = {
     enable = mkEnableOption "Hellebore's PostgreSQL configuration";
 
-    package = mkPackageOption pkgs "postgresql_15";
+    package = mkPackageOption pkgs "postgresql_15" {};
   };
 
   config = mkIf cfg.enable {
