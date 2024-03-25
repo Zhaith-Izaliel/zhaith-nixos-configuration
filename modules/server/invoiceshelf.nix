@@ -132,19 +132,19 @@ in {
     # };
 
     systemd.tmpfiles.rules = [
-      "d ${cfg.dataDir}                            0711 ${webserver.user} ${webserver.group} - -"
-      "f ${cfg.dataDir}/database.sqlite            0700 ${webserver.user} ${webserver.group} - -"
-      "d ${cfg.dataDir}/public                     0755 ${webserver.user} ${webserver.group} - -"
-      "d ${cfg.dataDir}/storage                    0711 ${webserver.user} ${webserver.group} - -"
-      "d ${cfg.dataDir}/storage/app                0711 ${webserver.user} ${webserver.group} - -"
-      "d ${cfg.dataDir}/storage/fonts              0700 ${webserver.user} ${webserver.group} - -"
+      "d ${cfg.dataDir}                            0775 ${webserver.user} ${webserver.group} - -"
+      "f ${cfg.dataDir}/database.sqlite            0775 ${webserver.user} ${webserver.group} - -"
+      "d ${cfg.dataDir}/public                     0775 ${webserver.user} ${webserver.group} - -"
+      "d ${cfg.dataDir}/storage                    0775 ${webserver.user} ${webserver.group} - -"
+      "d ${cfg.dataDir}/storage/app                0775 ${webserver.user} ${webserver.group} - -"
+      "d ${cfg.dataDir}/storage/fonts              0775 ${webserver.user} ${webserver.group} - -"
       "d ${cfg.dataDir}/storage/framework          0775 ${webserver.user} ${webserver.group} - -"
-      "d ${cfg.dataDir}/storage/framework/cache    0700 ${webserver.user} ${webserver.group} - -"
-      "d ${cfg.dataDir}/storage/framework/sessions 0700 ${webserver.user} ${webserver.group} - -"
-      "d ${cfg.dataDir}/storage/framework/views    0700 ${webserver.user} ${webserver.group} - -"
+      "d ${cfg.dataDir}/storage/framework/cache    0775 ${webserver.user} ${webserver.group} - -"
+      "d ${cfg.dataDir}/storage/framework/sessions 0775 ${webserver.user} ${webserver.group} - -"
+      "d ${cfg.dataDir}/storage/framework/views    0775 ${webserver.user} ${webserver.group} - -"
       "d ${cfg.dataDir}/storage/logs               0775 ${webserver.user} ${webserver.group} - -"
-      "C ${cfg.dataDir}/.env                       0700 ${webserver.user} ${webserver.group} - ${package}/.env.example"
-      "d ${cfg.dataDir}/bootstrap                  0711 ${webserver.user} ${webserver.group} - -"
+      "C ${cfg.dataDir}/.env                       0775 ${webserver.user} ${webserver.group} - ${package}/.env.example"
+      "d ${cfg.dataDir}/bootstrap                  0775 ${webserver.user} ${webserver.group} - -"
       "d ${cfg.dataDir}/bootstrap/cache            0775 ${webserver.user} ${webserver.group} - -"
     ];
   };
