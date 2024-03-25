@@ -5,7 +5,7 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkIf types mkOption;
+  inherit (lib) mkIf types mkOption mkDefault;
   cfg = config.hellebore.server.invoiceshelf;
   fpm = config.services.phpfpm.pools.invoiceshelf;
   package = pkgs.invoiceshelf.override {dataDir = cfg.dataDir;};
@@ -54,7 +54,7 @@ in {
       isSystemUser = true;
     };
 
-    users.groups.${cfg.group} = {};
+    users.groups.${cfg.group}.members = [cfg.user config.services.nginx.user];
 
     services.phpfpm.pools.invoiceshelf = {
       phpOptions = ''
@@ -63,29 +63,28 @@ in {
         post_max_size = 64M
       '';
 
-      user = cfg.user;
-      group = cfg.group;
+      user = config.services.nginx.user;
+      group = config.services.nginx.group;
 
       settings =
         {
           "listen.mode" = "${toString cfg.port}";
-          "listen.owner" = cfg.user;
-          "listen.group" = cfg.group;
+          "listen.owner" = config.services.nginx.user;
+          "listen.group" = config.services.nginx.group;
         }
         // cfg.poolConfig;
     };
 
-    hellebore.server.nginx.enable = true;
+    hellebore.server.nginx.enable = mkDefault true;
 
     services.nginx.virtualHosts.${domain} = {
       # forceSSL = true;
       root = "/${package}/public";
       locations = {
-        "/".tryFiles = "$uri $uri/ /index.php?$query_string";
+        "/".tryFiles = "$uri $uri/ /index.php$request_uri";
 
-        "~ \\.php$".extraConfig = ''
+        "~ \\.php".extraConfig = ''
           fastcgi_pass unix:${fpm.socket};
-          include fastcgi_params;
         '';
       };
     };
