@@ -24,6 +24,7 @@ stdenv.mkDerivation rec {
 
     # symlink mutable data into the nix store due to crater path requirements
     rm -r $out/storage $out/bootstrap/cache
+    ln -s ${dataDir}/.env $out/.env
     ln -s ${dataDir}/storage $out/storage
     ln -s ${dataDir}/public/storage $out/public/storage
     ln -s ${dataDir}/bootstrap/cache $out/bootstrap/cache
