@@ -33,6 +33,7 @@ in {
       "${config.hellebore.server.nextcloud.subdomain}.${domain}"
       "${config.hellebore.server.calibre-web.subdomain}.${domain}"
       "${config.hellebore.server.jellyfin.subdomain}.${domain}"
+      "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
       domain
     ];
   in {
@@ -97,6 +98,12 @@ in {
       nextcloud = {
         enable = true;
         subdomain = "nextcloud";
+        acmeEmail = "virgil.ribeyre@protonmail.com";
+      };
+
+      invoiceshelf = {
+        enable = true;
+        subdomain = "invoices";
         acmeEmail = "virgil.ribeyre@protonmail.com";
       };
 
