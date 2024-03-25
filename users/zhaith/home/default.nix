@@ -1,6 +1,14 @@
-{config, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   nixpkgs.config.permittedInsecurePackages = [
     "electron-25.9.0" # Obsidian
+  ];
+
+  home.packages = with pkgs; [
+    affine
   ];
 
   hellebore = {
@@ -14,6 +22,7 @@
       hyprland = {
         enable = true;
         mirrorFirstMonitor = true;
+        input.mouse.scrollFactor = 0.8;
         picture-in-picture = {
           enable = true;
           position = "top-right";
