@@ -81,7 +81,7 @@ in {
       # forceSSL = true;
       root = "/${package}/public";
       locations = {
-        "/".tryFiles = "$uri $uri/ =404";
+        "/".tryFiles = "$uri $uri/ /index.php?$query_string";
 
         "~ \\.php$".extraConfig = ''
           php_fastcgi unix/${fpm.socket};
