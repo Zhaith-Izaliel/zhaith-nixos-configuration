@@ -89,12 +89,12 @@ in {
       };
     };
 
-    security.acme = {
-      acceptTerms = true;
-      certs = {
-        ${domain}.email = cfg.acmeEmail;
-      };
-    };
+    # security.acme = {
+    #   acceptTerms = true;
+    #   certs = {
+    #     ${domain}.email = cfg.acmeEmail;
+    #   };
+    # };
 
     systemd.tmpfiles.rules = [
       "d ${cfg.dataDir}                            0711 ${cfg.user} ${cfg.group} - -"
