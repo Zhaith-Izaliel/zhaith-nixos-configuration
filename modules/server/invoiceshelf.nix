@@ -78,23 +78,30 @@ in {
     hellebore.server.nginx.enable = mkDefault true;
 
     services.nginx.virtualHosts.${domain} = {
-      # forceSSL = true;
+      forceSSL = true;
       root = "/${package}/public";
+      index = "index.php";
       locations = {
-        "/".tryFiles = "$uri $uri/ /index.php$request_uri";
+        "/".tryFiles = "$uri $uri/ /index.php?$query_string";
 
-        "~ \\.php".extraConfig = ''
+        "~ \\.php$".extraConfig = ''
           fastcgi_pass unix:${fpm.socket};
+          fastcgi_inde index.php;
+        '';
+
+        "/favicon.ico".extraConfig = ''
+          access_log off;
+          log_not_found off;
         '';
       };
     };
 
-    # security.acme = {
-    #   acceptTerms = true;
-    #   certs = {
-    #     ${domain}.email = cfg.acmeEmail;
-    #   };
-    # };
+    security.acme = {
+      acceptTerms = true;
+      certs = {
+        ${domain}.email = cfg.acmeEmail;
+      };
+    };
 
     systemd.tmpfiles.rules = [
       "d ${cfg.dataDir}                            0711 ${cfg.user} ${cfg.group} - -"
