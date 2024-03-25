@@ -93,6 +93,11 @@ in {
     theme.name = "catppuccin-macchiato";
 
     server = {
+      postgresql = {
+        enable = true;
+        package = pkgs.postgresql_15;
+      };
+
       nginx.enable = true;
 
       nextcloud = {
@@ -105,6 +110,7 @@ in {
         enable = true;
         subdomain = "invoices";
         acmeEmail = "virgil.ribeyre@protonmail.com";
+        dataDir = "/mnt/datas/invoiceshelf";
       };
 
       jellyfin = {
