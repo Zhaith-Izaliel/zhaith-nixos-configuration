@@ -80,14 +80,19 @@ in {
     services.nginx.virtualHosts.${domain} = {
       forceSSL = true;
       root = "/${package}/public";
-      index = "index.php";
       locations = {
-        "/".tryFiles = "$uri $uri/ /index.php?$query_string";
+        "/" = {
+          tryFiles = "$uri $uri/ /index.php?$query_string";
+          index = "index.php";
+        };
 
-        "~ \\.php$".extraConfig = ''
-          fastcgi_pass unix:${fpm.socket};
-          fastcgi_inde index.php;
-        '';
+        "~ \\.php$" = {
+          extraConfig = ''
+            fastcgi_pass unix:${fpm.socket};
+            fastcgi_inde index.php;
+          '';
+          index = "index.php";
+        };
 
         "/favicon.ico".extraConfig = ''
           access_log off;
