@@ -169,6 +169,7 @@
             (final: prev: {
               power-management = virgutils.packages.${system}.power-management;
             })
+            customOverlay
           ];
           extraModules = [
             modules.server

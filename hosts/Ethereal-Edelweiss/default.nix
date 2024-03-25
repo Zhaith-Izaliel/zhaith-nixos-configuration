@@ -33,6 +33,7 @@ in {
       "${config.hellebore.server.nextcloud.subdomain}.${domain}"
       "${config.hellebore.server.calibre-web.subdomain}.${domain}"
       "${config.hellebore.server.jellyfin.subdomain}.${domain}"
+      "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
       domain
     ];
   in {
@@ -92,12 +93,24 @@ in {
     theme.name = "catppuccin-macchiato";
 
     server = {
+      postgresql = {
+        enable = true;
+        package = pkgs.postgresql_15;
+      };
+
       nginx.enable = true;
 
       nextcloud = {
         enable = true;
         subdomain = "nextcloud";
         acmeEmail = "virgil.ribeyre@protonmail.com";
+      };
+
+      invoiceshelf = {
+        enable = true;
+        subdomain = "invoices";
+        acmeEmail = "virgil.ribeyre@protonmail.com";
+        dataDir = "/mnt/datas/invoiceshelf";
       };
 
       jellyfin = {

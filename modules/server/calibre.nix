@@ -4,7 +4,7 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkOption types mkIf cleanSource;
+  inherit (lib) mkOption types mkIf cleanSource mkDefault;
   cfg = config.hellebore.server.calibre-web;
   domain = "${cfg.subdomain}.${config.networking.domain}";
 in {
@@ -30,7 +30,7 @@ in {
       options.calibreLibrary = cfg.library;
     };
 
-    hellebore.server.nginx.enable = true;
+    hellebore.server.nginx.enable = mkDefault true;
     services.nginx.virtualHosts.${domain} = {
       enableACME = true;
       forceSSL = true;

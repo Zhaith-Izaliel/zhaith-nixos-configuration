@@ -120,6 +120,7 @@ in rec {
   server-app = {
     name,
     package,
+    group ? "",
     port ? null,
   }: {
     enable = mkEnableOption "Hellebore's ${name} configuration";
@@ -128,7 +129,7 @@ in rec {
 
     group = mkOption {
       type = types.nonEmptyStr;
-      default = "";
+      default = group;
       description = "Defines the user group for ${name}.";
     };
 

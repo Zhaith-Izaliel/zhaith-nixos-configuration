@@ -6,7 +6,7 @@
   extra-types,
   ...
 }: let
-  inherit (lib) types mkOption mkEnableOption mkIf;
+  inherit (lib) types mkOption mkEnableOption mkIf mkPackageOption;
   cfg = config.hellebore.desktop-environment.hyprland;
   theme = config.hellebore.theme.themes.${cfg.theme};
   extraRulesType = types.submodule {
@@ -31,6 +31,8 @@ in {
 
   options.hellebore.desktop-environment.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
+
+    package = mkPackageOption pkgs "hyprland" {};
 
     monitors =
       extra-types.monitors
@@ -87,6 +89,12 @@ in {
           description = "Defines the mouse sensitivity in Hyprland (between -1.0
           and 1.0 inclusive)";
         };
+
+        scrollFactor = mkOption {
+          type = types.float;
+          default = 1.0;
+          description = "Multiplier added to scroll movement for external mice. Note that there is a separate setting for touchpad.";
+        };
       };
 
       touchpad = {
@@ -94,6 +102,12 @@ in {
           type = types.bool;
           default = true;
           description = "Enable touchpad's natural scroll.";
+        };
+
+        scrollFactor = mkOption {
+          type = types.float;
+          default = 1.0;
+          description = "Multiplier added to scroll movement for external mice. Note that there is a separate setting for external mice.";
         };
 
         tapToClick = mkOption {
@@ -171,8 +185,8 @@ in {
     };
 
     wayland.windowManager.hyprland = {
+      inherit (cfg) package;
       enable = true;
-      package = os-config.programs.hyprland.package;
       xwayland.enable = true;
       systemd.enable = true;
     };
