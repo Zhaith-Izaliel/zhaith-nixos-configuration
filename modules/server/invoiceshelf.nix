@@ -80,6 +80,7 @@ in {
 
     services.nginx.virtualHosts.${domain} = {
       forceSSL = true;
+      enableACME = true;
       root = "/${package}/public";
       locations = {
         "/" = {
