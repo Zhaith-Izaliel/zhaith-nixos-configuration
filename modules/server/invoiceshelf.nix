@@ -78,7 +78,7 @@ in {
     hellebore.server.nginx.enable = true;
 
     services.nginx.virtualHosts.${domain} = {
-      forceSSL = true;
+      # forceSSL = true;
       root = "/${package}/public";
       locations = {
         "/".tryFiles = "$uri $uri/ =404";
