@@ -78,35 +78,49 @@ in {
     hellebore.server.nginx.enable = mkDefault true;
 
     services.nginx.virtualHosts.${domain} = {
-      forceSSL = true;
+      # forceSSL = true;
       root = "/${package}/public";
       locations = {
         "/" = {
+          priority = 1600;
           tryFiles = "$uri $uri/ /index.php?$query_string";
-          index = "index.php";
         };
 
         "~ \\.php$" = {
+          priority = 500;
           extraConfig = ''
             fastcgi_pass unix:${fpm.socket};
-            fastcgi_inde index.php;
+            fastcgi_index index.php;
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include ${config.services.nginx.package}/conf/fastcgi.conf;
           '';
-          index = "index.php";
         };
 
-        "/favicon.ico".extraConfig = ''
-          access_log off;
-          log_not_found off;
-        '';
+        "/favicon.ico" = {
+          priority = 100;
+          extraConfig = ''
+            access_log off;
+            log_not_found off;
+          '';
+        };
+
+        "/robots.txt" = {
+          priority = 100;
+          extraConfig = ''
+            access_log off;
+            log_not_found off;
+          '';
+        };
       };
     };
 
-    security.acme = {
-      acceptTerms = true;
-      certs = {
-        ${domain}.email = cfg.acmeEmail;
-      };
-    };
+    # security.acme = {
+    #   acceptTerms = true;
+    #   certs = {
+    #     ${domain}.email = cfg.acmeEmail;
+    #   };
+    # };
 
     systemd.tmpfiles.rules = [
       "d ${cfg.dataDir}                            0711 ${cfg.user} ${cfg.group} - -"
