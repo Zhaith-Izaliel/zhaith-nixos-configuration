@@ -6,17 +6,23 @@
   ...
 }: let
   inherit (lib) mkIf types mkOption;
-  cfg = config.services.invoiceshelf;
+  cfg = config.hellebore.server.invoiceshelf;
   fpm = config.services.phpfpm.pools.invoiceshelf;
   package = pkgs.invoiceshelf.override {dataDir = cfg.dataDir;};
   domain = "${cfg.subdomain}.${config.networking.domain}";
 in {
-  options.services.crater =
+  options.hellebore.server.invoiceshelf =
     {
       dataDir = mkOption {
         default = "/var/lib/crater";
         description = lib.mdDoc "Directory to store Crater state/data files.";
         type = types.str;
+      };
+
+      user = mkOption {
+        default = "invoiceshelf";
+        types = types.nonEmptyStr;
+        description = "Defines the user running InvoiceShelf.";
       };
 
       poolConfig = mkOption {
@@ -38,6 +44,7 @@ in {
     // extra-types.server-app {
       inherit package;
       name = "InvoiceShelf";
+      group = "www-data";
       port = 0660;
     };
 

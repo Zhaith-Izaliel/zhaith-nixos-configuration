@@ -120,6 +120,7 @@ in rec {
   server-app = {
     name,
     package,
+    group ? "",
     port ? null,
   }: {
     enable = mkEnableOption "Hellebore's ${name} configuration";
