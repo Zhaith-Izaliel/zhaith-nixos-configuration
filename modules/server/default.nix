@@ -7,5 +7,6 @@
     ./jellyfin.nix
     ./nextcloud.nix
     ./nginx.nix
+    ./postgresql.nix
   ];
 }

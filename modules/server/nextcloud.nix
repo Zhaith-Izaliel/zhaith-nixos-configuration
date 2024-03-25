@@ -5,7 +5,7 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkIf;
+  inherit (lib) mkIf mkDefault;
   cfg = config.hellebore.server.nextcloud;
   domain = "${cfg.subdomain}.${config.networking.domain}";
 in {
@@ -71,19 +71,6 @@ in {
       };
     };
 
-    services.postgresql = {
-      enable = true;
-      package = pkgs.postgresql_15;
-      ensureDatabases = ["nextcloud"];
-      ensureUsers = [
-        {
-          name = "nextcloud";
-          # ensurePermissions."DATABASE \"nextcloud\"" = "ALL PRIVILEGES";
-          ensureDBOwnership = true;
-        }
-      ];
-    };
-
     # ensure that postgres is running *before* running the setup
     systemd.services."nextcloud-setup" = {
       requires = ["postgresql.service"];
@@ -98,7 +85,7 @@ in {
       ];
     };
 
-    hellebore.server.nginx.enable = true;
+    hellebore.server.nginx.enable = mkDefault true;
     services.nginx.virtualHosts.${domain} = {
       # Nextcloud
       enableACME = true;

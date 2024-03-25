@@ -79,7 +79,7 @@ in {
     hellebore.server.nginx.enable = mkDefault true;
 
     services.nginx.virtualHosts.${domain} = {
-      # forceSSL = true;
+      forceSSL = true;
       root = "/${package}/public";
       locations = {
         "/" = {
@@ -124,12 +124,12 @@ in {
       '';
     };
 
-    # security.acme = {
-    #   acceptTerms = true;
-    #   certs = {
-    #     ${domain}.email = cfg.acmeEmail;
-    #   };
-    # };
+    security.acme = {
+      acceptTerms = true;
+      certs = {
+        ${domain}.email = cfg.acmeEmail;
+      };
+    };
 
     systemd.tmpfiles.rules = [
       "d ${cfg.dataDir}                            0775 ${webserver.user} ${webserver.group} - -"

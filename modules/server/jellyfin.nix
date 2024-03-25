@@ -20,7 +20,7 @@ in {
       enable = true;
     };
 
-    hellebore.server.nginx.enable = true;
+    hellebore.server.nginx.enable = mkDefault true;
 
     services.nginx.virtualHosts.${domain} = {
       enableACME = true;
