@@ -44,7 +44,7 @@ in {
     // extra-types.server-app {
       inherit package;
       name = "InvoiceShelf";
-      group = "www-data";
+      group = "invoiceshelf";
       port = 0660;
     };
 
@@ -53,6 +53,8 @@ in {
       inherit (cfg) group;
       isSystemUser = true;
     };
+
+    users.groups.${cfg.group} = {};
 
     services.phpfpm.pools.invoiceshelf = {
       phpOptions = ''
