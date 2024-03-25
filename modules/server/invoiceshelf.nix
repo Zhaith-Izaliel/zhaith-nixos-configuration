@@ -83,43 +83,44 @@ in {
       locations = {
         "/" = {
           priority = 1600;
-          tryFiles = "$uri $uri/ /index.php?$query_string";
+          proxyPass = "http://localhost:${toString cfg.port}";
+          # tryFiles = "$uri $uri/ /index.php?$query_string";
         };
 
-        "~ \\.php$" = {
-          priority = 500;
-          extraConfig = ''
-            fastcgi_pass unix:${fpm.socket};
-            fastcgi_index index.php;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            include ${config.services.nginx.package}/conf/fastcgi.conf;
-          '';
-        };
+        # "~ \\.php$" = {
+        #   priority = 500;
+        #   extraConfig = ''
+        #     fastcgi_pass unix:${fpm.socket};
+        #     fastcgi_index index.php;
+        #     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        #     include ${config.services.nginx.package}/conf/fastcgi.conf;
+        #   '';
+        # };
 
-        "/favicon.ico" = {
-          priority = 100;
-          extraConfig = ''
-            access_log off;
-            log_not_found off;
-          '';
-        };
+        # "/favicon.ico" = {
+        #   priority = 100;
+        #   extraConfig = ''
+        #     access_log off;
+        #     log_not_found off;
+        #   '';
+        # };
 
-        "/robots.txt" = {
-          priority = 100;
-          extraConfig = ''
-            access_log off;
-            log_not_found off;
-          '';
-        };
+        # "/robots.txt" = {
+        #   priority = 100;
+        #   extraConfig = ''
+        #     access_log off;
+        #     log_not_found off;
+        #   '';
+        # };
       };
-      extraConfig = ''
-        add_header X-Content-Type-Options nosniff;
-        add_header X-XSS-Protection "1; mode=block";
-        add_header X-Robots-Tag none;
-        add_header Content-Security-Policy "frame-ancestors 'self'";
-        index index.php;
-        charset utf-8;
-      '';
+      # extraConfig = ''
+      #   add_header X-Content-Type-Options nosniff;
+      #   add_header X-XSS-Protection "1; mode=block";
+      #   add_header X-Robots-Tag none;
+      #   add_header Content-Security-Policy "frame-ancestors 'self'";
+      #   index index.php;
+      #   charset utf-8;
+      # '';
     };
 
     # security.acme = {
