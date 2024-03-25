@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkPackageOption mkDefault any mapAttrsToList mkIf;
+  inherit (lib) mkEnableOption mkPackageOption mapAttrsToList mkIf;
   cfg = config.hellebore.server.postgresql;
   servicesRequiringPostgresql = {
     nextcloud = config.hellebore.server.nextcloud.enable;
@@ -20,7 +20,7 @@ in {
   config = mkIf cfg.enable {
     services.postgresql = {
       inherit (cfg) package;
-      enable = mkDefault (any (mapAttrsToList (name: value: value) servicesRequiringPostgresql));
+      enable = true;
       ensureDatabases = mapAttrsToList (name: value: name) servicesRequiringPostgresql;
       ensureUsers =
         mapAttrsToList (name: value: {
