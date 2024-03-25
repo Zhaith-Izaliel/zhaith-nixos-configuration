@@ -4,7 +4,7 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkIf;
+  inherit (lib) mkIf mkDefault;
   cfg = config.hellebore.server.jellyfin;
   domain = "${cfg.subdomain}.${config.networking.domain}";
 in {
