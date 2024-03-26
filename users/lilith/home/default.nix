@@ -16,14 +16,11 @@
       };
     };
 
+    tools.docs.enable = true;
+
     shell = {
       enable = true;
       prompt.enable = true;
     };
-  };
-
-  programs.helix.zhaith-configuration = {
-    enable = true;
-    defaultEditor = true;
   };
 }
