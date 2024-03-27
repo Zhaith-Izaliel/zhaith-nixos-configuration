@@ -45,12 +45,6 @@ in {
               extraOptions = ''
                 experimental-features = nix-command flakes
               '';
-
-              # Add each input as a registry
-              registry =
-                inputs.nixpkgs.lib.mapAttrs'
-                (n: v: inputs.nixpkgs.lib.nameValuePair n {flake = v;})
-                inputs;
             };
           }
         ]
@@ -99,6 +93,7 @@ in {
                 allowUnfreePredicate = _: true;
               };
             };
+
             programs = {
               home-manager.enable = true;
               git.enable = true;

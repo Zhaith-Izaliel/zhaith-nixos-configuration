@@ -34,16 +34,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland/v0.36.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    hyprland-contrib = {
-      url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     hypridle = {
       url = "github:/hyprwm/hypridle";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -114,8 +104,6 @@
     nixpkgs-stable,
     grub2-themes,
     nix-alien,
-    hyprland,
-    hyprland-contrib,
     hypridle,
     sddm-sugar-candy-nix,
     virgutils,
@@ -141,23 +129,21 @@
       extraServerModules = [];
     };
     customOverlay = import ./overlay {inherit inputs;};
+    overlays = [
+      nix-alien.overlays.default
+      sddm-sugar-candy-nix.overlays.default
+      virgutils.overlays.${system}.default
+      customOverlay
+    ];
   in
     with import nixpkgs {inherit system;}; {
       nixosConfigurations = {
         Whispering-Willow = customHelpers.mkSystem {
-          inherit system;
+          inherit system overlays;
           hostname = "Whispering-Willow";
           users = ["zhaith"];
           extraModules = [
             modules.system
-          ];
-          overlays = [
-            nix-alien.overlays.default
-            hyprland.overlays.default
-            hyprland-contrib.overlays.default
-            sddm-sugar-candy-nix.overlays.default
-            virgutils.overlays.${system}.default
-            customOverlay
           ];
         };
         Ethereal-Edelweiss = customHelpers.mkSystem {
@@ -180,14 +166,6 @@
       homeConfigurations = let
         extraModules = [
           modules.home-manager
-        ];
-        overlays = [
-          hyprland.overlays.default
-          hyprland-contrib.overlays.default
-          virgutils.overlays.${system}.default
-          rofi-applets.overlays.default
-          hypridle.overlays.default
-          customOverlay
         ];
       in {
         "zhaith@Whispering-Willow" = customHelpers.mkHome {
