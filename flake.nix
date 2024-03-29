@@ -178,6 +178,7 @@
         "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
           inherit system overlays extraModules;
           nixpkgs = nixpkgs-stable;
+          home-manager = home-manager-stable;
           username = "lilith";
           hostname = "Ethereal-Edelweiss";
           stateVersion = "22.05";
