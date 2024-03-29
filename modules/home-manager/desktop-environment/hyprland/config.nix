@@ -289,7 +289,7 @@ in {
 
         follow_mouse = 1;
 
-        # scroll_factor = cfg.input.mouse.scrollFactor;
+        scroll_factor = cfg.input.mouse.scrollFactor;
 
         touchpad = {
           natural_scroll = toString cfg.input.touchpad.naturalScroll;

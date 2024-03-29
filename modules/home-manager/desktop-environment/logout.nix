@@ -5,7 +5,7 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption mkIf getExe types mkPackageOption;
+  inherit (lib) mkEnableOption mkOption mkIf getExe types mkPackageOption concatStringsSep;
 
   cfg = config.hellebore.desktop-environment.logout;
 
@@ -34,9 +34,20 @@ in {
 
     bin = mkOption {
       type = types.str;
-      default = "${getExe cfg.package} --protocol layer-shell -b 5 -T 400 -B 400";
+      default = "${getExe cfg.package} ${concatStringsSep " " cfg.extraArgs}";
       readOnly = true;
       description = "Define the command to run the logout screen.";
+    };
+
+    extraArgs = mkOption {
+      type = types.listOf types.nonEmptyStr;
+      default = [
+        "--protocol layer-shell"
+        "-b 5"
+        "-T 400"
+        "-B 400"
+      ];
+      description = "Extra Arguments to pass to wlogout.";
     };
 
     useLayerBlur = mkEnableOption "use Hyprland layer rules to blur background, instead of a screenshot";

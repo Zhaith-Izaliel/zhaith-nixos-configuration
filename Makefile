@@ -11,7 +11,7 @@ debug:
 debug-home:
 	home-manager switch --flake . --show-trace --verbose
 
-up:
+update:
 	nix flake update
 
 # Update specific input

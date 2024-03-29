@@ -1,14 +1,17 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
-  inherit (lib) mkIf mkEnableOption mkOption types;
+  inherit (lib) mkIf mkEnableOption mkOption types optional;
   cfg = config.hellebore.sound;
   toPeriod = quantum: "${toString quantum}/${toString cfg.lowLatency.rate}";
 in {
   options.hellebore.sound = {
     enable = mkEnableOption "Hellebore sound configuration";
+
+    extraBluetoothCodecs.enable = mkEnableOption "the mSBC and SBC-XQ bluetooth codec in Wireplumber.";
 
     lowLatency = {
       enable = mkEnableOption "PipeWire low-latency configuration";
@@ -47,7 +50,20 @@ in {
 
     services.pipewire = {
       enable = true;
-      wireplumber.enable = true;
+      wireplumber = {
+        enable = true;
+        configPackages = optional cfg.extraBluetoothCodecs.enable (
+          pkgs.writeTextDir "share/wireplumber/bluetooth.lua.d/51-bluez-config.lua" ''
+            bluez_monitor.properties = {
+            	["bluez5.enable-sbc-xq"] = true,
+            	["bluez5.enable-msbc"] = true,
+            	["bluez5.enable-hw-volume"] = true,
+            	["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
+            }
+          ''
+        );
+      };
+
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
