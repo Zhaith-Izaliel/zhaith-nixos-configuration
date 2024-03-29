@@ -1,0 +1,24 @@
+layout {
+  pane size=1 borderless=true {
+    plugin location="zellij:tab-bar"
+  }
+
+  pane split_direction="vertical" {
+    pane
+    pane split_direction="horizontal" {
+      pane command="docker-compose" {
+        args "up"
+        start_suspended true
+      }
+      pane command="nix-shell" {
+        args "--run" "npm run build && npm run dev-watch"
+        start_suspended true
+      }
+    }
+  }
+
+  pane size=2 borderless=true {
+    plugin location="zellij:status-bar"
+  }
+
+}

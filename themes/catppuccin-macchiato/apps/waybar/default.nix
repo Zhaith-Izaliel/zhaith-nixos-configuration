@@ -138,10 +138,6 @@ in {
           tooltip-format-enumerate-connected-battery = "${device-format} (󰁹 {device_battery_percentage}%)";
         };
 
-        "hyprland/window" = {
-          format = "{}";
-        };
-
         "hyprland/workspaces" = {
           disable-scroll = true;
           all-outputs = true;

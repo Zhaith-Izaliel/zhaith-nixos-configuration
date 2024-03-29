@@ -147,12 +147,13 @@
 
     sound = {
       enable = true;
+      extraBluetoothCodecs.enable = true;
       lowLatency = {
         enable = true;
         rate = 48000;
-        quantum = 64;
-        minQuantum = 64;
-        maxQuantum = 64;
+        quantum = 32;
+        minQuantum = 32;
+        maxQuantum = 32;
       };
     };
 

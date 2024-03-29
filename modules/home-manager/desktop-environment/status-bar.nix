@@ -52,6 +52,8 @@
       "custom/reboot"
     ];
   };
+
+  mkBig = str: "<big>${str}</big>";
 in {
   options.hellebore.desktop-environment.status-bar = {
     enable = mkEnableOption "Hellebore Waybar configuration";
@@ -185,6 +187,16 @@ in {
             on-click-right = "${getExe pkgs.pavucontrol}";
             on-scroll-up = "${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
             on-scroll-down = "${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
+          };
+
+          "hyprland/window" = {
+            format = "{}";
+            rewrite = {
+              "(.*) — Mozilla Firefox" = "${mkBig ""} $1";
+              "Zellij (.*)" = "${mkBig ""} $1";
+              "Discord (.*)" = "${mkBig "󰙯"} Discord";
+              "(.*) - Mozilla Thunderbird" = "${mkBig ""} $1";
+            };
           };
         };
       };
