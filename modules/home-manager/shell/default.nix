@@ -106,7 +106,7 @@ in {
         // (
           if builtins.hasAttr "autosuggestion" options.programs.zsh
           then {autosuggestion.enable = true;}
-          else {enableAutoSuggestions = true;}
+          else {enableAutosuggestions = true;}
         );
     };
   };
