@@ -1,7 +1,8 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -166,7 +167,7 @@
 
     display-manager = {
       enable = true;
-      background.path = ../../assets/images/sddm/greeter.png;
+      background.path = lib.cleanSource ../../assets/images/sddm/greeter.png;
     };
 
     power-management = {
