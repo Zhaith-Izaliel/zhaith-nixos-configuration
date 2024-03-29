@@ -173,8 +173,8 @@ in {
           "[workspace 1] ${getExe pkgs.firefox}")
         (optional config.hellebore.shell.emulator.enable
           "[workspace 1] ${config.hellebore.shell.emulator.bin}")
-        (optional config.hellebore.tools.office.enable
-          "[workspace 2] obsidian")
+        (optional config.hellebore.tools.affine.enable
+          "[workspace 2] affine")
         (optional config.hellebore.tools.discord.enable
           "${getExe config.hellebore.tools.discord.finalPackage}")
         (optional config.hellebore.desktop-environment.mail.enable

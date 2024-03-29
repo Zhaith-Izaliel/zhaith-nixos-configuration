@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./affine.nix
     ./docs.nix
     ./office.nix
     ./discord.nix
