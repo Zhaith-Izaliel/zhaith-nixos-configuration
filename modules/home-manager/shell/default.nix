@@ -1,5 +1,6 @@
 {
   config,
+  options,
   lib,
   pkgs,
   extra-types,
@@ -52,56 +53,61 @@ in {
         enableZshIntegration = true;
       };
 
-      zsh = {
-        enable = true;
-        autosuggestion.enable = true;
-        enableCompletion = true;
-        syntaxHighlighting.enable = true;
-
-        shellAliases = {
-          ls = "ls --color=auto";
-          ll = "ls --color=auto -lh";
-          grep = "grep --color=auto";
-          ip = "ip --color=auto";
-        };
-
-        inherit (cfg) dirHashes;
-
-        envExtra = concatStringsSep "\n" [
-          ''
-            # Vi mode
-            export VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
-            export VI_MODE_SET_CURSOR=true
-          ''
-
-          ''
-            # Zsh autosuggestions
-            export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=${theme.shell.autosuggestions}"
-          ''
-        ];
-
-        initExtra = concatStringsSep "\n" [
-          ''
-            # Nix shell integration
-            ${lib.getExe pkgs.any-nix-shell} zsh | source /dev/stdin
-          ''
-        ];
-
-        oh-my-zsh = {
+      zsh =
+        {
           enable = true;
+          enableCompletion = true;
+          syntaxHighlighting.enable = true;
 
-          plugins =
-            [
-              "vi-mode"
-              "colored-man-pages"
-              "command-not-found"
-            ]
-            ++ (optionals config.hellebore.development.git.enable [
-              "git"
-              "git-flow-avh"
-            ]);
-        };
-      };
+          shellAliases = {
+            ls = "ls --color=auto";
+            ll = "ls --color=auto -lh";
+            grep = "grep --color=auto";
+            ip = "ip --color=auto";
+          };
+
+          inherit (cfg) dirHashes;
+
+          envExtra = concatStringsSep "\n" [
+            ''
+              # Vi mode
+              export VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+              export VI_MODE_SET_CURSOR=true
+            ''
+
+            ''
+              # Zsh autosuggestions
+              export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=${theme.shell.autosuggestions}"
+            ''
+          ];
+
+          initExtra = concatStringsSep "\n" [
+            ''
+              # Nix shell integration
+              ${lib.getExe pkgs.any-nix-shell} zsh | source /dev/stdin
+            ''
+          ];
+
+          oh-my-zsh = {
+            enable = true;
+
+            plugins =
+              [
+                "vi-mode"
+                "colored-man-pages"
+                "command-not-found"
+              ]
+              ++ (optionals config.hellebore.development.git.enable [
+                "git"
+                "git-flow-avh"
+              ]);
+          };
+        }
+        // (
+          if builtins.hasAttr "autosuggestion" options.programs.zsh
+          then {autosuggestion.enable = true;}
+          else {enableAutoSuggestion = true;}
+        );
     };
   };
 }
