@@ -17,6 +17,7 @@ in {
     hardware.bluetooth = {
       inherit (cfg) package;
       enable = true;
+      powerOnBoot = true;
     };
   };
 }
