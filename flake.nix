@@ -191,7 +191,6 @@
           alejandra
           home-manager
           gnumake
-          helix
           nil
         ];
       };

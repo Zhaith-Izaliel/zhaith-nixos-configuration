@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) optionalString concatStringsSep optional types mkEnableOption mkOption mkIf optionals mdDoc;
+  inherit (lib) optionalString concatStringsSep optional types mkEnableOption mkOption mkIf optionals mdDoc mkPackageOption;
   cfg = config.hellebore.games;
 
   nvidia-command = optionalString config.hardware.nvidia.prime.offload.enableOffloadCmd ''DXVK_FILTER_DEVICE_NAME="${config.hellebore.hardware.nvidia.deviceFilterName}" nvidia-offload'';
@@ -42,11 +42,61 @@
     ];
 
   gameMonitor = builtins.elemAt config.hellebore.monitors cfg.monitorID;
+
+  steamPackage = pkgs.steam.override ({extraPkgs ? pkgs': [], ...}: {
+    extraPkgs = pkgs':
+      (extraPkgs pkgs')
+      ++ (with pkgs'; [
+        libgdiplus
+        gamemode
+        glib
+        gvfs
+        dconf
+
+        # Gamescope
+        xorg.libXcursor
+        xorg.libXi
+        xorg.libXinerama
+        xorg.libXScrnSaver
+        libpng
+        libpulseaudio
+        libvorbis
+        stdenv.cc.cc.lib
+        libkrb5
+        keyutils
+      ]);
+  });
 in {
   options.hellebore.games = {
     enable = mkEnableOption "Hellebore's games support";
 
-    minecraft.enable = mkEnableOption "Minecraft Prismlauncher";
+    minecraft = {
+      enable = mkEnableOption "Minecraft Prismlauncher";
+
+      package = mkPackageOption pkgs "prismlauncher" {};
+    };
+
+    steam = {
+      enable = mkEnableOption "Minecraft Prismlauncher";
+
+      package = mkOption {
+        type = types.package;
+        default = steamPackage;
+        description = "The steam package to use.";
+      };
+    };
+
+    lutris = {
+      enable = mkEnableOption "Lutris";
+
+      package = mkPackageOption pkgs "lutris" {};
+    };
+
+    cartridges = {
+      enable = mkEnableOption "Cartridges, an unified game launcher";
+
+      package = mkPackageOption pkgs "cartridges" {};
+    };
 
     monitorID = mkOption {
       type = types.ints.unsigned;
@@ -86,41 +136,14 @@ in {
       }
     ];
 
-    nixpkgs.overlays = [
-      (final: prev: {
-        steam = prev.steam.override ({extraPkgs ? pkgs': [], ...}: {
-          extraPkgs = pkgs':
-            (extraPkgs pkgs')
-            ++ (with pkgs'; [
-              libgdiplus
-              gamemode
-              glib
-              gvfs
-              dconf
-
-              # Gamescope
-              xorg.libXcursor
-              xorg.libXi
-              xorg.libXinerama
-              xorg.libXScrnSaver
-              libpng
-              libpulseaudio
-              libvorbis
-              stdenv.cc.cc.lib
-              libkrb5
-              keyutils
-            ]);
-        });
-      })
-    ];
-
     programs = {
       gamescope = {
         enable = true;
       };
 
       steam = {
-        enable = true;
+        inherit (cfg.steam) enable package;
+        
         gamescopeSession = {
           inherit (cfg.gamescope.session) enable args env;
         };
@@ -144,8 +167,6 @@ in {
 
     environment.systemPackages = with pkgs;
       [
-        lutris
-        cartridges
         protontricks
         wineWowPackages.stable
         heroic
@@ -155,12 +176,14 @@ in {
         winetricks
         game-run-script
       ]
+      ++ optional cfg.cartridges.enable cfg.cartridges.package
+      ++ optional cfg.lutris.enable cfg.lutris.package
       ++ optionals config.programs.hyprland.enable
       [
         winePackages.waylandFull
         wine64Packages.waylandFull
         wine-wayland
       ]
-      ++ optional cfg.minecraft.enable prismlauncher;
+      ++ optional cfg.minecraft.enable cfg.minecraft.package;
   };
 }

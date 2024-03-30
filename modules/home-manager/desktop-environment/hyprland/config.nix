@@ -104,6 +104,12 @@ in {
 
       windowrulev2 = flatten [
         (
+          optionals config.hellebore.tools.affine.enable
+          (mkWindowOrLayerRule "class:(AFFiNE)" [
+            "workspace 2 silent"
+          ])
+        )
+        (
           optionals config.hellebore.tools.discord.enable
           (mkWindowOrLayerRule "class:(discord|vesktop)" [
             "workspace 3 silent"
@@ -174,7 +180,7 @@ in {
         (optional config.hellebore.shell.emulator.enable
           "[workspace 1] ${config.hellebore.shell.emulator.bin}")
         (optional config.hellebore.tools.affine.enable
-          "[workspace 2] affine")
+          "affine")
         (optional config.hellebore.tools.discord.enable
           "${getExe config.hellebore.tools.discord.finalPackage}")
         (optional config.hellebore.desktop-environment.mail.enable

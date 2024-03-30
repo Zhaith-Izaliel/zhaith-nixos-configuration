@@ -14,18 +14,26 @@ in {
       inherit overlays system;
     };
     types = import ../types {inherit lib pkgs inputs;};
+    stable-pkgs = import inputs.nixpkgs-stable {
+      inherit overlays system;
+      config = {
+        allowUnfree = true;
+        allowUnfreePredicate = _: true;
+      };
+    };
+    unstable-pkgs = import inputs.nixpkgs {
+      inherit overlays system;
+      config = {
+        allowUnfree = true;
+        allowUnfreePredicate = _: true;
+      };
+    };
   in
     lib.nixosSystem {
       inherit system;
       specialArgs = {
-        inherit hostname system inputs;
+        inherit hostname system inputs stable-pkgs unstable-pkgs;
         extra-types = types;
-        stable-pkgs = import inputs.nixpkgs-stable {
-          inherit overlays system;
-        };
-        unstable-pkgs = import inputs.nixpkgs {
-          inherit overlays system;
-        };
       };
       modules =
         [
@@ -36,7 +44,10 @@ in {
             # Allow unfree packages
             nixpkgs = {
               inherit overlays;
-              config.allowUnfree = true;
+              config = {
+                allowUnfree = true;
+                allowUnfreePredicate = _: true;
+              };
             };
 
             nix = {
@@ -66,19 +77,27 @@ in {
     pkgs = import nixpkgs {
       inherit overlays system;
     };
+    stable-pkgs = import inputs.nixpkgs-stable {
+      inherit overlays system;
+      config = {
+        allowUnfree = true;
+        allowUnfreePredicate = _: true;
+      };
+    };
+    unstable-pkgs = import inputs.nixpkgs {
+      inherit overlays system;
+      config = {
+        allowUnfree = true;
+        allowUnfreePredicate = _: true;
+      };
+    };
   in
     home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
 
       extraSpecialArgs = {
-        inherit system hostname inputs;
+        inherit system hostname inputs stable-pkgs unstable-pkgs;
         extra-types = types;
-        stable-pkgs = import inputs.nixpkgs-stable {
-          inherit overlays system;
-        };
-        unstable-pkgs = import inputs.nixpkgs {
-          inherit overlays system;
-        };
         os-config = inputs.self.nixosConfigurations.${hostname}.config;
       };
 
