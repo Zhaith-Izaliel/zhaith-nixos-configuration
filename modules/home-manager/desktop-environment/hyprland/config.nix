@@ -106,40 +106,43 @@ in {
         (
           optionals config.hellebore.tools.affine.enable
           (mkWindowOrLayerRule "class:(AFFiNE)" [
-            "workspace 2 silent"
+            "workspace 2"
           ])
         )
         (
           optionals config.hellebore.tools.discord.enable
           (mkWindowOrLayerRule "class:(discord|vesktop)" [
-            "workspace 3 silent"
-            "noinitialfocus"
+            "workspace 3"
           ])
         )
         (
           optionals config.hellebore.desktop-environment.mail.enable
           (mkWindowOrLayerRule "class:(thunderbird)" [
-            "workspace 4 silent"
+            "workspace 4"
           ])
         )
-        (optionals os-config.hellebore.games.enable [
-          (mkWindowOrLayerRule "class:(steam)" [
-            "workspace 5 silent"
-          ])
-          (mkWindowOrLayerRule "class:(.gamescope-wrapped)" [
-            "workspace 5"
-            "idleinhibit"
-          ])
-          (mkWindowOrLayerRule "class:(lutris)" [
-            "workspace 5"
-          ])
-          (mkWindowOrLayerRule "class:^.*(Cartridges).*$" [
-            "workspace 5 silent"
-          ])
-          (mkWindowOrLayerRule "class:^.*(heroic).*$" [
-            "workspace 5"
-          ])
+
+        (optionals os-config.hellebore.games.steam.enable (mkWindowOrLayerRule "class:(steam)" [
+          "workspace 5"
+        ]))
+
+        (optionals os-config.hellebore.games.gamescope.enable (mkWindowOrLayerRule "class:(.gamescope-wrapped)" [
+          "workspace 5"
+          "idleinhibit"
+        ]))
+
+        (optionals os-config.hellebore.games.lutris.enable (mkWindowOrLayerRule "class:(lutris)" [
+          "workspace 5"
+        ]))
+
+        (optionals os-config.hellebore.games.cartridges.enable (mkWindowOrLayerRule "class:^.*(Cartridges).*$" [
+          "workspace 5"
+        ]))
+
+        (mkWindowOrLayerRule "class:^.*(heroic).*$" [
+          "workspace 5"
         ])
+
         (optionals os-config.hellebore.vm.enable [
           (mkWindowOrLayerRule "title:(${os-config.hellebore.vm.name})class:(looking-glass-client)" [
             "fullscreen"
@@ -180,15 +183,15 @@ in {
         (optional config.hellebore.shell.emulator.enable
           "[workspace 1] ${config.hellebore.shell.emulator.bin}")
         (optional config.hellebore.tools.affine.enable
-          "affine")
+          "[workspace 2 silent] affine")
         (optional config.hellebore.tools.discord.enable
-          "${getExe config.hellebore.tools.discord.finalPackage}")
+          "[workspace 3 silent] ${getExe config.hellebore.tools.discord.finalPackage}")
         (optional config.hellebore.desktop-environment.mail.enable
-          "${config.hellebore.desktop-environment.mail.bin}")
-        (optionals os-config.hellebore.games.enable [
-          "cartridges"
-          "steam -silent"
-        ])
+          "[workspace 4 silent] ${config.hellebore.desktop-environment.mail.bin}")
+        (optional os-config.hellebore.games.cartridges.enable 
+          "[workspace 5 silent] ${getExe os-config.hellebore.games.cartridges.package}")
+        (optional os-config.hellebore.games.cartridges.enable 
+          "[workspace 5 silent] ${getExe os-config.hellebore.games.steam.package} -silent")
       ];
 
       bind = flatten [

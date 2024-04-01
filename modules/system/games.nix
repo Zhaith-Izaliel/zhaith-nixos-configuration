@@ -46,25 +46,26 @@
   steamPackage = pkgs.steam.override ({extraPkgs ? pkgs': [], ...}: {
     extraPkgs = pkgs':
       (extraPkgs pkgs')
-      ++ (with pkgs'; [
-        libgdiplus
-        gamemode
-        glib
-        gvfs
-        dconf
-
-        # Gamescope
-        xorg.libXcursor
-        xorg.libXi
-        xorg.libXinerama
-        xorg.libXScrnSaver
-        libpng
-        libpulseaudio
-        libvorbis
-        stdenv.cc.cc.lib
-        libkrb5
-        keyutils
-      ]);
+      ++ (with pkgs';
+        [
+          libgdiplus
+          glib
+          gvfs
+          dconf
+        ]
+        ++ optional cfg.gamemode.enable gamemode
+        ++ optionals cfg.gamescope.enable [
+          xorg.libXcursor
+          xorg.libXi
+          xorg.libXinerama
+          xorg.libXScrnSaver
+          libpng
+          libpulseaudio
+          libvorbis
+          stdenv.cc.cc.lib
+          libkrb5
+          keyutils
+        ]);
   });
 in {
   options.hellebore.games = {
@@ -77,12 +78,30 @@ in {
     };
 
     steam = {
-      enable = mkEnableOption "Minecraft Prismlauncher";
+      enable = mkEnableOption "Steam";
 
       package = mkOption {
         type = types.package;
         default = steamPackage;
         description = "The steam package to use.";
+      };
+
+      gamescope.session = {
+        enable = mkEnableOption "Gamescope standalone session";
+        args =
+          mkOption {
+            type = types.listOf types.str;
+            default = [];
+            description = "List of arguments used when running the gamescope
+        session.";
+          };
+        env = mkOption {
+          type = types.attrsOf types.str;
+          default = {};
+          description = mdDoc ''
+            Environmental variables to be passed to GameScope for the session.
+          '';
+        };
       };
     };
 
@@ -92,34 +111,25 @@ in {
       package = mkPackageOption pkgs "lutris" {};
     };
 
+    gamescope = {
+      enable = mkEnableOption "Lutris";
+
+      package = mkPackageOption pkgs "gamescope" {};
+    };
+
     cartridges = {
       enable = mkEnableOption "Cartridges, an unified game launcher";
 
       package = mkPackageOption pkgs "cartridges" {};
     };
 
+    gamemode.enable = mkEnableOption "Feral's Gamemode";
+
     monitorID = mkOption {
       type = types.ints.unsigned;
       default = 0;
       description = "The monitor ID used for gaming. The ID corresponds to the
       index of the monitor in {option}`config.hellebore.monitors`.";
-    };
-
-    gamescope.session = {
-      enable = mkEnableOption "Gamescope standalone session";
-      args = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        description = "List of arguments used when running the gamescope
-        session.";
-      };
-      env = mkOption {
-        type = types.attrsOf types.str;
-        default = {};
-        description = mdDoc ''
-          Environmental variables to be passed to GameScope for the session.
-        '';
-      };
     };
   };
 
@@ -138,21 +148,21 @@ in {
 
     programs = {
       gamescope = {
-        enable = true;
+        inherit (cfg.gamescope) enable package;
       };
 
       steam = {
         inherit (cfg.steam) enable package;
-        
+
         gamescopeSession = {
-          inherit (cfg.gamescope.session) enable args env;
+          inherit (cfg.steam.gamescope.session) enable args env;
         };
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
       };
 
       gamemode = {
-        enable = true;
+        inherit (cfg.gamemode) enable;
 
         settings = {
           general = {
@@ -177,7 +187,10 @@ in {
         game-run-script
       ]
       ++ optional cfg.cartridges.enable cfg.cartridges.package
-      ++ optional cfg.lutris.enable cfg.lutris.package
+      ++ optionals cfg.lutris.enable [
+        cfg.lutris.package
+        dxvk
+      ]
       ++ optionals config.programs.hyprland.enable
       [
         winePackages.waylandFull

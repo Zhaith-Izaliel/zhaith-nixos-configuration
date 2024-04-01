@@ -1,6 +1,5 @@
 {
   pkgs,
-  stable-pkgs,
   lib,
   ...
 }: {
@@ -26,7 +25,7 @@
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_zen;
+    # kernelPackages = pkgs.linuxPackages_zen;
     initrd.kernelModules = ["i915"];
   };
 
@@ -71,9 +70,12 @@
 
     games = {
       enable = true;
+      steam.enable = true;
       minecraft.enable = true;
       cartridges.enable = true;
       lutris.enable = true;
+      gamemode.enable = true;
+      gamescope.enable = true;
     };
 
     hardware = {
