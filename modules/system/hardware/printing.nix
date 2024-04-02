@@ -34,7 +34,11 @@ in {
           enable = true;
           openFirewall = true;
         }
-        // (if (builtins.hasAttr "nssmdns4" options.services.avahi) then {nssmdns4 = true;} else {});
+        // (
+          if (builtins.hasAttr "nssmdns4" options.services.avahi)
+          then {nssmdns4 = true;}
+          else {}
+        );
     };
   };
 }

@@ -218,11 +218,11 @@
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
-        "lastModified": 1709336216,
-        "narHash": "sha256-Dt/wOWeW6Sqm11Yh+2+t0dfEWxoMxGBvv3JpIocFl9E=",
+        "lastModified": 1712014858,
+        "narHash": "sha256-sB4SWl2lX95bExY2gMFG5HIzvva5AVMJd4Igm+GpZNw=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "f7b3c975cf067e56e7cda6cb098ebe3fb4d74ca2",
+        "rev": "9126214d0a59633752a136528f5f3b9aa8565b7d",
         "type": "github"
       },
       "original": {
@@ -387,11 +387,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1711805282,
-        "narHash": "sha256-HNqoisL+7OlP6nhm0mQi4bhwZNjSbSZWaExkAopiL/4=",
+        "lastModified": 1712024788,
+        "narHash": "sha256-WPZ281AONtJv535GXXFpwSiKohibEOKvl/jVSR3H0Ag=",
         "owner": "helix-editor",
         "repo": "helix",
-        "rev": "2cadec0b1182332338a5a1cc3062776f834d8835",
+        "rev": "bb0bfa23f3bbe20d96d478bdbe4198fb337bfa3b",
         "type": "github"
       },
       "original": {
@@ -607,11 +607,11 @@
     "nixpkgs-lib": {
       "locked": {
         "dir": "lib",
-        "lastModified": 1709237383,
-        "narHash": "sha256-cy6ArO4k5qTx+l5o+0mL9f5fa86tYUX3ozE1S+Txlds=",
+        "lastModified": 1711703276,
+        "narHash": "sha256-iMUFArF0WCatKK6RzfUJknjem0H9m4KgorO/p3Dopkk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1536926ef5621b09bba54035ae2bb6d806d72ac8",
+        "rev": "d8fe5e6c92d0d190646fb9f1056741a229980089",
         "type": "github"
       },
       "original": {
@@ -800,11 +800,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1711436101,
-        "narHash": "sha256-s6aBioqP/zwmPBHeNmNm7Q7cb7dMpHyC6UqwJ3eVm98=",
+        "lastModified": 1712040302,
+        "narHash": "sha256-8BgJGgni3sgsQ+JGBrU00hRA6p1zZDAEWyPu7xFVqDc=",
         "owner": "estin",
         "repo": "simple-completion-language-server",
-        "rev": "b2aebff5935bd5b848b847d2e35b3a0b61cc9b86",
+        "rev": "2c86429321305450f654f0469c7e93a83950bc75",
         "type": "github"
       },
       "original": {
@@ -989,11 +989,11 @@
         "simple-completion-language-server": "simple-completion-language-server"
       },
       "locked": {
-        "lastModified": 1711816621,
-        "narHash": "sha256-zUy6wUF5Ai/+S9HEsX0poyEkEl45eciCvoTh9OzoJT4=",
+        "lastModified": 1712051139,
+        "narHash": "sha256-CgHxPEg+SncXwynVlq1p9VuKya7Qj4cnb0Tr/sJqDi4=",
         "owner": "Zhaith-Izaliel",
         "repo": "helix-config",
-        "rev": "37ede5996ed6fb7f30e1d3e60dc928599325ceaa",
+        "rev": "cc4de86e4d7c3e68a322985eef6fb8523d9626bb",
         "type": "gitlab"
       },
       "original": {
