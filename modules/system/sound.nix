@@ -59,7 +59,7 @@ in {
         alsa.support32Bit = true;
         pulse.enable = true;
       }
-      // (mkIf (builtins.hasAttr "extraConfig" options.services.pipewire) {
+      // (if (builtins.hasAttr "extraConfig" options.services.pipewire) then {
         extraConfig.pipewire."92-low-latency" = mkIf cfg.lowLatency.enable {
           context = {
             properties = {
@@ -86,7 +86,7 @@ in {
             resample.quality = 1;
           };
         };
-      });
+      } else {});
 
     hardware = {
       # IMPORTANT: disable pulseaudio when using pipewire
