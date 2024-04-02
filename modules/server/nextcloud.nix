@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   extra-types,
   ...
 }: let
@@ -62,12 +61,8 @@ in {
         adminpassFile = "/mnt/datas/nextcloud/nextcloud-admin-pass";
         dbpassFile = "/mnt/datas/nextcloud/nextcloud-db-pass";
         adminuser = "Zhaith";
-      };
-
-      settings = {
-        # Further forces Nextcloud to use HTTPS
-        overwriteprotocol = "https";
-        default_phone_region = "FR";
+        defaultPhoneRegion = "FR";
+        overwriteProtocol = "https";
       };
     };
 

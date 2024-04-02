@@ -17,7 +17,6 @@ in {
       evince
       qalculate-gtk
       calibre
-      obsidian
       gnome.simple-scan
       fontpreview
     ];

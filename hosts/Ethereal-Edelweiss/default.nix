@@ -128,7 +128,10 @@ in {
         acmeEmail = "virgil.ribeyre@protonmail.com";
       };
 
-      fail2ban.enable = true;
+      fail2ban = {
+        enable = true;
+        maxretry = 3;
+      };
     };
 
     network = {

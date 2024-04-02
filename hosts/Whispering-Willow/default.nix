@@ -1,7 +1,9 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-{pkgs, ...}: {
+{
+  pkgs,
+  stable-pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -24,7 +26,7 @@
   ];
 
   boot = {
-    # kernelPackages = pkgs.pkgs.linuxPackages_latest;
+    kernelPackages = stable-pkgs.linuxPackages;
     initrd.kernelModules = ["i915"];
   };
 
@@ -69,7 +71,12 @@
 
     games = {
       enable = true;
+      steam.enable = true;
       minecraft.enable = true;
+      cartridges.enable = true;
+      lutris.enable = true;
+      gamemode.enable = true;
+      gamescope.enable = true;
     };
 
     hardware = {
@@ -147,7 +154,6 @@
 
     sound = {
       enable = true;
-      extraBluetoothCodecs.enable = true;
       lowLatency = {
         enable = true;
         rate = 48000;
@@ -166,7 +172,7 @@
 
     display-manager = {
       enable = true;
-      background.path = ../../assets/images/sddm/greeter.png;
+      background.path = lib.cleanSource ../../assets/images/sddm/greeter.png;
     };
 
     power-management = {
@@ -180,13 +186,13 @@
         ];
       };
 
-      upower = {
-        enable = true;
-        notify = true;
-        percentageLow = 15;
-        percentageCritical = 10;
-        percentageAction = 5;
-      };
+      # upower = {
+      #   enable = true;
+      #   notify = true;
+      #   percentageLow = 15;
+      #   percentageCritical = 10;
+      #   percentageAction = 5;
+      # };
     };
 
     vm = {

@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) optionalString concatStringsSep optional types mkEnableOption mkOption mkIf optionals mdDoc;
+  inherit (lib) optionalString concatStringsSep optional types mkEnableOption mkOption mkIf optionals mdDoc mkPackageOption;
   cfg = config.hellebore.games;
 
   nvidia-command = optionalString config.hardware.nvidia.prime.offload.enableOffloadCmd ''DXVK_FILTER_DEVICE_NAME="${config.hellebore.hardware.nvidia.deviceFilterName}" nvidia-offload'';
@@ -42,34 +42,94 @@
     ];
 
   gameMonitor = builtins.elemAt config.hellebore.monitors cfg.monitorID;
+
+  steamPackage = pkgs.steam.override ({extraPkgs ? pkgs': [], ...}: {
+    extraPkgs = pkgs':
+      (extraPkgs pkgs')
+      ++ (with pkgs';
+        [
+          libgdiplus
+          glib
+          gvfs
+          dconf
+        ]
+        ++ optional cfg.gamemode.enable gamemode
+        ++ optionals cfg.gamescope.enable [
+          xorg.libXcursor
+          xorg.libXi
+          xorg.libXinerama
+          xorg.libXScrnSaver
+          libpng
+          libpulseaudio
+          libvorbis
+          stdenv.cc.cc.lib
+          libkrb5
+          keyutils
+        ]);
+  });
 in {
   options.hellebore.games = {
     enable = mkEnableOption "Hellebore's games support";
 
-    minecraft.enable = mkEnableOption "Minecraft Prismlauncher";
+    minecraft = {
+      enable = mkEnableOption "Minecraft Prismlauncher";
+
+      package = mkPackageOption pkgs "prismlauncher" {};
+    };
+
+    steam = {
+      enable = mkEnableOption "Steam";
+
+      package = mkOption {
+        type = types.package;
+        default = steamPackage;
+        description = "The steam package to use.";
+      };
+
+      gamescope.session = {
+        enable = mkEnableOption "Gamescope standalone session";
+        args =
+          mkOption {
+            type = types.listOf types.str;
+            default = [];
+            description = "List of arguments used when running the gamescope
+        session.";
+          };
+        env = mkOption {
+          type = types.attrsOf types.str;
+          default = {};
+          description = mdDoc ''
+            Environmental variables to be passed to GameScope for the session.
+          '';
+        };
+      };
+    };
+
+    lutris = {
+      enable = mkEnableOption "Lutris";
+
+      package = mkPackageOption pkgs "lutris" {};
+    };
+
+    gamescope = {
+      enable = mkEnableOption "Lutris";
+
+      package = mkPackageOption pkgs "gamescope" {};
+    };
+
+    cartridges = {
+      enable = mkEnableOption "Cartridges, an unified game launcher";
+
+      package = mkPackageOption pkgs "cartridges" {};
+    };
+
+    gamemode.enable = mkEnableOption "Feral's Gamemode";
 
     monitorID = mkOption {
       type = types.ints.unsigned;
       default = 0;
       description = "The monitor ID used for gaming. The ID corresponds to the
       index of the monitor in {option}`config.hellebore.monitors`.";
-    };
-
-    gamescope.session = {
-      enable = mkEnableOption "Gamescope standalone session";
-      args = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        description = "List of arguments used when running the gamescope
-        session.";
-      };
-      env = mkOption {
-        type = types.attrsOf types.str;
-        default = {};
-        description = mdDoc ''
-          Environmental variables to be passed to GameScope for the session.
-        '';
-      };
     };
   };
 
@@ -86,50 +146,23 @@ in {
       }
     ];
 
-    nixpkgs.overlays = [
-      (final: prev: {
-        steam = prev.steam.override ({extraPkgs ? pkgs': [], ...}: {
-          extraPkgs = pkgs':
-            (extraPkgs pkgs')
-            ++ (with pkgs'; [
-              libgdiplus
-              gamemode
-              glib
-              gvfs
-              dconf
-
-              # Gamescope
-              xorg.libXcursor
-              xorg.libXi
-              xorg.libXinerama
-              xorg.libXScrnSaver
-              libpng
-              libpulseaudio
-              libvorbis
-              stdenv.cc.cc.lib
-              libkrb5
-              keyutils
-            ]);
-        });
-      })
-    ];
-
     programs = {
       gamescope = {
-        enable = true;
+        inherit (cfg.gamescope) enable package;
       };
 
       steam = {
-        enable = true;
+        inherit (cfg.steam) enable package;
+
         gamescopeSession = {
-          inherit (cfg.gamescope.session) enable args env;
+          inherit (cfg.steam.gamescope.session) enable args env;
         };
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
       };
 
       gamemode = {
-        enable = true;
+        inherit (cfg.gamemode) enable;
 
         settings = {
           general = {
@@ -144,8 +177,6 @@ in {
 
     environment.systemPackages = with pkgs;
       [
-        lutris
-        cartridges
         protontricks
         wineWowPackages.stable
         heroic
@@ -155,12 +186,17 @@ in {
         winetricks
         game-run-script
       ]
+      ++ optional cfg.cartridges.enable cfg.cartridges.package
+      ++ optionals cfg.lutris.enable [
+        cfg.lutris.package
+        dxvk
+      ]
       ++ optionals config.programs.hyprland.enable
       [
         winePackages.waylandFull
         wine64Packages.waylandFull
         wine-wayland
       ]
-      ++ optional cfg.minecraft.enable prismlauncher;
+      ++ optional cfg.minecraft.enable cfg.minecraft.package;
   };
 }

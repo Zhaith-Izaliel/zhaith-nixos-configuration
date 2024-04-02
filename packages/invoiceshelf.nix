@@ -36,7 +36,7 @@ stdenv.mkDerivation rec {
     # Change default sqlite database path to absolute path since symlinks are
     # not followed by crater/lavarel
     substituteInPlace InvoiceShelf/app/Http/Controllers/V1/Installation/DatabaseConfigurationController.php \
-      --replace-fail "database_path('database.sqlite')" "'${dataDir}/database.sqlite'"
+      --replace "database_path('database.sqlite')" "'${dataDir}/database.sqlite'"
 
     # substituteInPlace InvoiceShelf/config/filesystems.php \
     #   --replace-fail "storage_path('app')," "'${dataDir}/app'"
@@ -45,6 +45,6 @@ stdenv.mkDerivation rec {
     #   --replace-fail "storage_path('app/public')" "'${dataDir}/app'"
 
     substituteInPlace InvoiceShelf/config/mail.php \
-      --replace-fail "'sendmail' => '/usr/sbin/sendmail -bs'" "'sendmail' => '${pkgs.system-sendmail}/bin/sendmail -bs'"
+      --replace "'sendmail' => '/usr/sbin/sendmail -bs'" "'sendmail' => '${pkgs.system-sendmail}/bin/sendmail -bs'"
   '';
 }

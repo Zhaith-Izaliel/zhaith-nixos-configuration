@@ -7,10 +7,6 @@
     "electron-25.9.0" # Obsidian
   ];
 
-  home.packages = with pkgs; [
-    affine
-  ];
-
   hellebore = {
     theme.name = "catppuccin-macchiato";
 
@@ -130,6 +126,7 @@
     };
 
     tools = {
+      affine.enable = true;
       discord = {
         enable = true;
         tts.enable = true;

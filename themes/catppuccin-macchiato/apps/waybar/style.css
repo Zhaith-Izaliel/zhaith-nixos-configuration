@@ -74,8 +74,8 @@ tooltip label {
 /* GLOBAL MODULE CONFIG */
 
 .modules-center {
-  margin-left: 1em;
-  margin-right: 1em;
+  margin-left: 3em;
+  margin-right: 3em;
 }
 
 #power, /* TODO: find a way to set group properties without using their ID */
@@ -289,7 +289,7 @@ tooltip label {
 }
 
 #bluetooth.discoverable {
-  color: @lavender;
+  color: @flamingo;
 }
 
 #bluetooth.discovering {

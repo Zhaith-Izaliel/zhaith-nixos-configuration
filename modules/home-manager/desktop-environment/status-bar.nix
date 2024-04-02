@@ -196,6 +196,8 @@ in {
               "Zellij (.*)" = "${mkBig ""} $1";
               "Discord (.*)" = "${mkBig "󰙯"} Discord";
               "(.*) - Mozilla Thunderbird" = "${mkBig ""} $1";
+              "Cartridges" = "${mkBig "󰊗"} Cartridges";
+              "Steam" = "${mkBig "󰓓"} Steam";
             };
           };
         };
