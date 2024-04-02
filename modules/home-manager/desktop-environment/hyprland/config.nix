@@ -188,9 +188,9 @@ in {
           "[workspace 3 silent] ${getExe config.hellebore.tools.discord.finalPackage}")
         (optional config.hellebore.desktop-environment.mail.enable
           "[workspace 4 silent] ${config.hellebore.desktop-environment.mail.bin}")
-        (optional os-config.hellebore.games.cartridges.enable 
+        (optional os-config.hellebore.games.cartridges.enable
           "[workspace 5 silent] ${getExe os-config.hellebore.games.cartridges.package}")
-        (optional os-config.hellebore.games.cartridges.enable 
+        (optional os-config.hellebore.games.cartridges.enable
           "[workspace 5 silent] ${getExe os-config.hellebore.games.steam.package} -silent")
       ];
 

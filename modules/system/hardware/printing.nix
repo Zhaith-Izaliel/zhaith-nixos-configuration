@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  options,
   ...
 }: let
   inherit (lib) mkOption mkEnableOption mkIf types;
@@ -28,11 +29,12 @@ in {
         drivers = cfg.drivers;
       };
 
-      avahi = {
-        enable = true;
-        nssmdns4 = true;
-        openFirewall = true;
-      };
+      avahi =
+        {
+          enable = true;
+          openFirewall = true;
+        }
+        // (mkIf (builtins.hasAttr "nssmdns4" options.services.avahi) {nssmdns4 = true;});
     };
   };
 }
