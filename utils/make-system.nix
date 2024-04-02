@@ -1,6 +1,5 @@
-{inputs}: let
-  lib = inputs.nixpkgs.lib;
-in {
+{inputs}:
+{
   mkSystem = {
     hostname,
     system,
@@ -10,6 +9,7 @@ in {
     ],
     nixpkgs ? inputs.nixpkgs,
   }: let
+    lib = nixpkgs.lib;
     pkgs = import nixpkgs {
       inherit overlays system;
     };
@@ -73,6 +73,7 @@ in {
     nixpkgs ? inputs.nixpkgs,
     home-manager ? inputs.home-manager,
   }: let
+    lib = nixpkgs.lib;
     types = import ../types {inherit lib pkgs inputs;};
     pkgs = import nixpkgs {
       inherit overlays system;

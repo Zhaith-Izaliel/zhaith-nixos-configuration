@@ -23,8 +23,6 @@
     ];
 
     general = {
-      # See https://wiki.hyprland.org/Configuring/Variables/ for more
-
       gaps_in = 5;
       gaps_out = 20;
       border_size = 2;
@@ -33,7 +31,6 @@
     };
 
     decoration = {
-      # See https://wiki.hyprland.org/Configuring/Variables/ for more
       rounding = 10;
 
       blur = {
