@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  inherit (lib) mkIf mkEnableOption mkOption types;
+  inherit (lib) mkIf mkEnableOption mkOption types optionalAttrs;
   cfg = config.hellebore.sound;
   toPeriod = quantum: "${toString quantum}/${toString cfg.lowLatency.rate}";
 in {
@@ -60,8 +60,7 @@ in {
         pulse.enable = true;
       }
       // (
-        if (builtins.hasAttr "extraConfig" options.services.pipewire)
-        then {
+        optionalAttrs (builtins.hasAttr "extraConfig" options.services.pipewire) {
           extraConfig.pipewire."92-low-latency" = mkIf cfg.lowLatency.enable {
             context = {
               properties = {
@@ -89,7 +88,6 @@ in {
             };
           };
         }
-        else {}
       );
 
     hardware = {

@@ -4,7 +4,7 @@
   options,
   ...
 }: let
-  inherit (lib) mkOption mkEnableOption mkIf types;
+  inherit (lib) mkOption mkEnableOption mkIf types optionalAttrs;
   cfg = config.hellebore.hardware.printing;
 in {
   options.hellebore.hardware.printing = {
@@ -34,11 +34,7 @@ in {
           enable = true;
           openFirewall = true;
         }
-        // (
-          if (builtins.hasAttr "nssmdns4" options.services.avahi)
-          then {nssmdns4 = true;}
-          else {}
-        );
+        // (optionalAttrs (builtins.hasAttr "nssmdns4" options.services.avahi) {nssmdns4 = true;});
     };
   };
 }
