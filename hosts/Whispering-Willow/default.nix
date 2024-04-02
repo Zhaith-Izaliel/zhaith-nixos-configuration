@@ -153,7 +153,6 @@
 
     sound = {
       enable = true;
-      extraBluetoothCodecs.enable = true;
       lowLatency = {
         enable = true;
         rate = 48000;
