@@ -42,6 +42,11 @@ in {
         ports = [
           "5432"
         ];
+
+        extraOptions = [
+          "--network"
+          "container:invoiceshelf"
+        ];
       };
 
       invoiceshelf = {
@@ -69,11 +74,6 @@ in {
 
         dependsOn = [
           "invoiceshelf_db"
-        ];
-
-        extraOptions = [
-          "--network"
-          "container:invoiceshelf_db"
         ];
       };
     };
