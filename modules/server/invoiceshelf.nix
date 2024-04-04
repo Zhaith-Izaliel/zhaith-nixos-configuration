@@ -31,7 +31,7 @@ in {
     // extra-types.server-app {
       name = "InvoiceShelf";
       group = "invoiceshelf";
-      port = 0660;
+      port = 80;
     };
 
   config = mkIf cfg.enable {
@@ -71,14 +71,6 @@ in {
           proxyPass = "http://localhost:${toString cfg.port}";
         };
       };
-
-      extraConfig = ''
-        add_header X-Content-Type-Options nosniff;
-        add_header X-XSS-Protection "1; mode=block";
-        add_header X-Robots-Tag none;
-        add_header Content-Security-Policy "frame-ancestors 'self'";
-        charset utf-8;
-      '';
     };
 
     security.acme = {
