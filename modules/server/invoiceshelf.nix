@@ -48,7 +48,7 @@ in {
         DB_PORT = toString config.services.postgresql.port;
         DB_DATABASE = "invoiceshelf";
         DB_USERNAME = cfg.user;
-        STARTUP_DELAY = "30";
+        STARTUP_DELAY = "0";
       };
     };
 
