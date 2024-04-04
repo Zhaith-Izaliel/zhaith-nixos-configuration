@@ -34,10 +34,10 @@ in {
 
       settings = {
         # listen_addresses = mkForce (concatStringsSep "," [
-        #   (optionalString config.virtualisation.docker.enable "172.17.0.1")
         #   "localhost"
+        #   (optionalString config.virtualisation.docker.enable "172.17.0.1")
         # ]);
-        listen_addresses = "*";
+        listen_addresses = mkForce "*";
       };
 
       ensureDatabases = mapAttrsToList (name: value: name) servicesRequiringPostgresql;
