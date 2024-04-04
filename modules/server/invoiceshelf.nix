@@ -50,10 +50,6 @@ in {
         DB_USERNAME = cfg.user;
         STARTUP_DELAY = "0";
       };
-
-      extraOptions = [
-        "--network=host"
-      ];
     };
 
     hellebore.server.nginx.enable = mkDefault true;
