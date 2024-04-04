@@ -119,13 +119,13 @@ in rec {
 
   server-app = {
     name,
-    package,
+    package ? null,
     group ? "",
     port ? null,
   }: {
     enable = mkEnableOption "Hellebore's ${name} configuration";
 
-    package = mkPackageOption pkgs package {};
+    package = mkPackageOption pkgs package {nullable = package == null;};
 
     group = mkOption {
       type = types.nonEmptyStr;

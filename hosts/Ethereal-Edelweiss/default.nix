@@ -110,7 +110,8 @@ in {
         enable = true;
         subdomain = "invoices";
         acmeEmail = "virgil.ribeyre@protonmail.com";
-        dataDir = "/mnt/datas/invoiceshelf";
+        volume = "/mnt/datas/invoiceshelf/volume";
+        dbPasswordFile = "/mnt/datas/invoiceshelf/db-pass";
       };
 
       jellyfin = {
