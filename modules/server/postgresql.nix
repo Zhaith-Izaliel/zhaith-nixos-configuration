@@ -4,8 +4,19 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkPackageOption mapAttrsToList mkIf optionalString mkForce;
+  inherit
+    (lib)
+    mkEnableOption
+    mkPackageOption
+    mapAttrsToList
+    mkIf
+    optionalString
+    mkForce
+    concatStringsSep
+    ;
+
   cfg = config.hellebore.server.postgresql;
+
   servicesRequiringPostgresql = {
     nextcloud = config.hellebore.server.nextcloud.enable;
     invoiceshelf = config.hellebore.server.invoiceshelf.enable;
@@ -22,7 +33,10 @@ in {
       inherit (cfg) package enable;
 
       settings = {
-        listen_addresses = mkForce "${optionalString config.virtualisation.docker.enable "172.17.0.0/16,"}localhost";
+        listen_addresses = mkForce (concatStringsSep [
+          (optionalString config.virtualisation.docker.enable "172.17.0.1")
+          "localhost"
+        ]);
       };
 
       ensureDatabases = mapAttrsToList (name: value: name) servicesRequiringPostgresql;
