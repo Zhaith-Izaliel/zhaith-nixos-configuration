@@ -59,6 +59,10 @@ in {
         DB_PASSWORD_FILE = cfg.dbPasswordFile;
         STARTUP_DELAY = "30";
       };
+
+      extraOptions = [
+        "--publish"
+      ];
     };
 
     hellebore.server.nginx.enable = mkDefault true;
