@@ -38,11 +38,11 @@ stdenv.mkDerivation rec {
     substituteInPlace InvoiceShelf/app/Http/Controllers/V1/Installation/DatabaseConfigurationController.php \
       --replace "database_path('database.sqlite')" "'${dataDir}/database.sqlite'"
 
-    # substituteInPlace InvoiceShelf/config/filesystems.php \
-    #   --replace-fail "storage_path('app')," "'${dataDir}/app'"
+    substituteInPlace InvoiceShelf/config/filesystems.php \
+      --replace "storage_path('app')," "'${dataDir}/app'"
 
-    # substituteInPlace InvoiceShelf/config/filesystems.php \
-    #   --replace-fail "storage_path('app/public')" "'${dataDir}/app'"
+    substituteInPlace InvoiceShelf/config/filesystems.php \
+      --replace "storage_path('app/public')" "'${dataDir}/app/public'"
 
     substituteInPlace InvoiceShelf/config/mail.php \
       --replace "'sendmail' => '/usr/sbin/sendmail -bs'" "'sendmail' => '${pkgs.system-sendmail}/bin/sendmail -bs'"
