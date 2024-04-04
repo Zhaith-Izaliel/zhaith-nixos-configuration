@@ -29,26 +29,47 @@ in {
     };
 
   config = mkIf cfg.enable {
-    virtualisation.oci-containers.containers.invoiceshelf = {
-      image = "invoiceshelf/invoiceshelf";
+    virtualisation.oci-containers.containers = {
+      invoiceshelf_db = {
+        image = "postgres";
 
-      volumes = [
-        "./invoiceshelf/data:${cfg.volume}"
-      ];
+        environment = {
+          POSTGRES_DB = "invoiceshelf";
+          POSTGRES_USER = "invoiceshelf";
+          POSTGRES_PASSWORD = "I_am_the_gate_to_the_invoices_2024";
+        };
 
-      ports = [
-        "${toString cfg.port}:80"
-      ];
+        ports = [
+          "5432"
+        ];
+      };
 
-      environment = {
-        PHP_TZ = config.time.timeZone;
-        TIMEZONE = config.time.timeZone;
-        DB_CONNECTION = "pgsql";
-        DB_HOST = "localhost";
-        DB_PORT = toString config.services.postgresql.port;
-        DB_DATABASE = "invoiceshelf";
-        DB_USERNAME = cfg.user;
-        STARTUP_DELAY = "0";
+      invoiceshelf = {
+        image = "invoiceshelf/invoiceshelf";
+
+        volumes = [
+          "${cfg.volume}:/data"
+        ];
+
+        ports = [
+          "${toString cfg.port}:80"
+        ];
+
+        environment = {
+          PHP_TZ = config.time.timeZone;
+          TIMEZONE = config.time.timeZone;
+          DB_CONNECTION = "pgsql";
+          DB_HOST = "invoiceshelf_db";
+          DB_PORT = toString config.services.postgresql.port;
+          DB_PASSWORD = "I_am_the_gate_to_the_invoices_2024";
+          DB_DATABASE = "invoiceshelf";
+          DB_USERNAME = cfg.user;
+          STARTUP_DELAY = "0";
+        };
+
+        dependsOn = [
+          "invoiceshelf_db"
+        ];
       };
     };
 
