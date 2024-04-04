@@ -38,7 +38,7 @@ in {
     virtualisation.oci-containers.containers.invoiceshelf = {
       image = "invoiceshelf/invoiceshelf";
 
-      user = "${cfg.user}:${cfg.group}";
+      # user = "${cfg.user}:${cfg.group}";
 
       volumes = [
         "./invoiceshelf/data:${cfg.volume}"
