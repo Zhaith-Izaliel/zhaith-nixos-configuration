@@ -52,7 +52,8 @@ in {
       };
 
       extraOptions = [
-        "--add-host host.docker.internal:host-gateway"
+        "--add-host"
+        "host.docker.internal:host-gateway"
       ];
     };
 
