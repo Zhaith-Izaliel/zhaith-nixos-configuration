@@ -33,10 +33,11 @@ in {
       inherit (cfg) package enable;
 
       settings = {
-        listen_addresses = mkForce (concatStringsSep "," [
-          (optionalString config.virtualisation.docker.enable "172.17.0.1")
-          "localhost"
-        ]);
+        # listen_addresses = mkForce (concatStringsSep "," [
+        #   (optionalString config.virtualisation.docker.enable "172.17.0.1")
+        #   "localhost"
+        # ]);
+        listen_addresses = "*";
       };
 
       ensureDatabases = mapAttrsToList (name: value: name) servicesRequiringPostgresql;

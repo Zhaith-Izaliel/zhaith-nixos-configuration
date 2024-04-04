@@ -50,11 +50,6 @@ in {
         DB_USERNAME = cfg.user;
         STARTUP_DELAY = "0";
       };
-
-      extraOptions = [
-        "--add-host"
-        "host.docker.internal:172.17.0.1"
-      ];
     };
 
     hellebore.server.nginx.enable = mkDefault true;
