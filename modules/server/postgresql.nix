@@ -22,7 +22,7 @@ in {
       inherit (cfg) package enable;
 
       settings = {
-        listen_addresses = mkForce "${optionalString config.virtualisation.docker.enable "172.17.0.1/16,"}localhost";
+        listen_addresses = mkForce "${optionalString config.virtualisation.docker.enable "172.17.0.0/16,"}localhost";
       };
 
       ensureDatabases = mapAttrsToList (name: value: name) servicesRequiringPostgresql;
