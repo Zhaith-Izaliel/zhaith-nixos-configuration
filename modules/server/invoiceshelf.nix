@@ -53,11 +53,11 @@ in {
         TIMEZONE = config.time.timeZone;
         DB_CONNECTION = "pgsql";
         DB_HOST = "127.0.0.1";
-        DB_PORT = config.services.postgresql.port;
+        DB_PORT = toString config.services.postgresql.port;
         DB_DATABASE = "invoiceshelf";
         DB_USERNAME = cfg.user;
         DB_PASSWORD_FILE = cfg.dbPasswordFile;
-        STARTUP_DELAY = 30;
+        STARTUP_DELAY = "30";
       };
     };
 
