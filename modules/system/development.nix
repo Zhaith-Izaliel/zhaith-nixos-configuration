@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf optionals optional;
+  inherit (lib) mkEnableOption mkIf optionals optional mkDefault;
   cfg = config.hellebore.development;
 in {
   options.hellebore.development = {
@@ -16,7 +16,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    virtualisation.docker.enable = cfg.enableDocker;
+    virtualisation.docker.enable = mkDefault cfg.enableDocker;
     documentation.dev.enable = cfg.enableDocumentation;
 
     environment.systemPackages = with pkgs;
