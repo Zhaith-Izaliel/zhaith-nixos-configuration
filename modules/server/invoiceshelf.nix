@@ -53,7 +53,7 @@ in {
 
       extraOptions = [
         "--add-host"
-        "host.docker.internal:host-gateway"
+        "host.docker.internal:172.17.0.1"
       ];
     };
 
