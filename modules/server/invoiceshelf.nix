@@ -44,12 +44,16 @@ in {
         PHP_TZ = config.time.timeZone;
         TIMEZONE = config.time.timeZone;
         DB_CONNECTION = "pgsql";
-        DB_HOST = "127.0.0.1";
+        DB_HOST = "localhost";
         DB_PORT = toString config.services.postgresql.port;
         DB_DATABASE = "invoiceshelf";
         DB_USERNAME = cfg.user;
         STARTUP_DELAY = "0";
       };
+
+      extraOptions = [
+        "--network=host"
+      ];
     };
 
     hellebore.server.nginx.enable = mkDefault true;
