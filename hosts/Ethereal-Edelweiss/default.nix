@@ -33,7 +33,7 @@ in {
       "${config.hellebore.server.nextcloud.subdomain}.${domain}"
       "${config.hellebore.server.calibre-web.subdomain}.${domain}"
       "${config.hellebore.server.jellyfin.subdomain}.${domain}"
-      "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
+      # "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
       domain
     ];
   in {
@@ -107,7 +107,7 @@ in {
       };
 
       invoiceshelf = {
-        enable = true;
+        enable = false;
         subdomain = "invoices";
         acmeEmail = "virgil.ribeyre@protonmail.com";
         volume = "/mnt/datas/invoiceshelf/volume";
