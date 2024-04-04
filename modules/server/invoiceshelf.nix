@@ -70,6 +70,11 @@ in {
         dependsOn = [
           "invoiceshelf_db"
         ];
+
+        extraOptions = [
+          "--network"
+          "container:invoiceshelf_db"
+        ];
       };
     };
 
