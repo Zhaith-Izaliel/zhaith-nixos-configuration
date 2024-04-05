@@ -15,7 +15,7 @@
       "qemu-libvirtd"
       "scanner"
       "lp"
-      "docker"
+      "podman"
       "video"
     ];
     group = "zhaith";

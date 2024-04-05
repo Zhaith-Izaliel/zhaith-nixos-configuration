@@ -4,8 +4,19 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkPackageOption mapAttrsToList mkIf;
+  inherit
+    (lib)
+    mkEnableOption
+    mkPackageOption
+    mapAttrsToList
+    mkIf
+    mkForce
+    concatStringsSep
+    optionalString
+    ;
+
   cfg = config.hellebore.server.postgresql;
+
   servicesRequiringPostgresql = {
     nextcloud = config.hellebore.server.nextcloud.enable;
     invoiceshelf = config.hellebore.server.invoiceshelf.enable;
@@ -19,15 +30,23 @@ in {
 
   config = mkIf cfg.enable {
     services.postgresql = {
-      inherit (cfg) package;
-      enable = true;
+      inherit (cfg) package enable;
+
       ensureDatabases = mapAttrsToList (name: value: name) servicesRequiringPostgresql;
+
       ensureUsers =
         mapAttrsToList (name: value: {
           inherit name;
           ensureDBOwnership = true;
         })
         servicesRequiringPostgresql;
+
+      settings = {
+        listen_addresses = mkForce (concatStringsSep "," [
+          "localhost"
+          "10.88.0.1" # Podman bridge
+        ]);
+      };
     };
   };
 }

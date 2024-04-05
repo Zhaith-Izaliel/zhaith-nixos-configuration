@@ -123,7 +123,7 @@ in {
         )
 
         (optionals os-config.hellebore.games.steam.enable (mkWindowOrLayerRule "class:(steam)" [
-          "workspace 5"
+          "workspace 5 silent"
         ]))
 
         (optionals os-config.hellebore.games.gamescope.enable (mkWindowOrLayerRule "class:(.gamescope-wrapped)" [

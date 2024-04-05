@@ -144,7 +144,7 @@
 
     development = {
       enable = true;
-      enableDocker = true;
+      enablePodman = true;
       enableDocumentation = true;
     };
 

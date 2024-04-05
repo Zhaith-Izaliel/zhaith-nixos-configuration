@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  inherit (lib) mkIf mkEnableOption mkOption types;
+  inherit (lib) mkIf mkEnableOption mkOption types optionalAttrs;
   cfg = config.hellebore.sound;
   toPeriod = quantum: "${toString quantum}/${toString cfg.lowLatency.rate}";
 in {
@@ -59,34 +59,36 @@ in {
         alsa.support32Bit = true;
         pulse.enable = true;
       }
-      // (if (builtins.hasAttr "extraConfig" options.services.pipewire) then {
-        extraConfig.pipewire."92-low-latency" = mkIf cfg.lowLatency.enable {
-          context = {
-            properties = {
-              default.clock.rate = cfg.lowLatency.rate;
-              default.clock.quantum = cfg.lowLatency.quantum;
-              default.clock.min-quantum = cfg.lowLatency.minQuantum;
-              default.clock.max-quantum = cfg.lowLatency.maxQuantum;
+      // (
+        optionalAttrs (builtins.hasAttr "extraConfig" options.services.pipewire) {
+          extraConfig.pipewire."92-low-latency" = mkIf cfg.lowLatency.enable {
+            context = {
+              properties = {
+                default.clock.rate = cfg.lowLatency.rate;
+                default.clock.quantum = cfg.lowLatency.quantum;
+                default.clock.min-quantum = cfg.lowLatency.minQuantum;
+                default.clock.max-quantum = cfg.lowLatency.maxQuantum;
+              };
+              modules = [
+                {
+                  name = "libpipewire-module-protocol-pulse";
+                  args = {
+                    pulse.min.req = toPeriod cfg.lowLatency.minQuantum;
+                    pulse.default.req = toPeriod cfg.lowLatency.quantum;
+                    pulse.max.req = toPeriod cfg.lowLatency.maxQuantum;
+                    pulse.min.quantum = toPeriod cfg.lowLatency.minQuantum;
+                    pulse.max.quantum = toPeriod cfg.lowLatency.maxQuantum;
+                  };
+                }
+              ];
             };
-            modules = [
-              {
-                name = "libpipewire-module-protocol-pulse";
-                args = {
-                  pulse.min.req = toPeriod cfg.lowLatency.minQuantum;
-                  pulse.default.req = toPeriod cfg.lowLatency.quantum;
-                  pulse.max.req = toPeriod cfg.lowLatency.maxQuantum;
-                  pulse.min.quantum = toPeriod cfg.lowLatency.minQuantum;
-                  pulse.max.quantum = toPeriod cfg.lowLatency.maxQuantum;
-                };
-              }
-            ];
+            stream.properties = {
+              node.latency = toPeriod cfg.lowLatency.quantum;
+              resample.quality = 1;
+            };
           };
-          stream.properties = {
-            node.latency = toPeriod cfg.lowLatency.quantum;
-            resample.quality = 1;
-          };
-        };
-      } else {});
+        }
+      );
 
     hardware = {
       # IMPORTANT: disable pulseaudio when using pipewire
