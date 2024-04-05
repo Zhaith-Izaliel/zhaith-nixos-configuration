@@ -12,5 +12,6 @@
 
   config = {
     virtualisation.oci-containers.backend = "podman";
+    boot.enableContainers = false;
   };
 }
