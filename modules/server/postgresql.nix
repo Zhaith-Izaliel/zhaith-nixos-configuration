@@ -44,7 +44,7 @@ in {
       settings = {
         listen_addresses = mkForce (concatStringsSep "," [
           "localhost"
-          "169.254.91.181/16" # Test
+          "10.88.0.1/16" # Podman bridge
         ]);
       };
     };
