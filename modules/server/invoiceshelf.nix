@@ -51,6 +51,11 @@ in {
           DB_USERNAME = cfg.user;
           STARTUP_DELAY = "0";
         };
+
+        extraOptions = [
+          "--network"
+          "slirp4netns:allow_host_loopback=true"
+        ];
       };
     };
 
