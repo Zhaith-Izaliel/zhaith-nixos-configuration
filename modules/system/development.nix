@@ -30,7 +30,7 @@ in {
         git
         gnumake
       ]
-      ++ (optional cfg.enablePodman pkgs.docker-compose)
+      ++ (optional cfg.enablePodman pkgs.podman-compose)
       ++ (optionals cfg.enableDocumentation [
         man-pages
         man-pages-posix

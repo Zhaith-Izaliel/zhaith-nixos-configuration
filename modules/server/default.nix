@@ -9,4 +9,8 @@
     ./nginx.nix
     ./postgresql.nix
   ];
+
+  config = {
+    virtualisation.oci-containers.backend = "podman";
+  };
 }
