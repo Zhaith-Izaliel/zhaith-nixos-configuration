@@ -10,6 +10,9 @@
     mkPackageOption
     mapAttrsToList
     mkIf
+    mkForce
+    concatStringsSep
+    optionalString
     ;
 
   cfg = config.hellebore.server.postgresql;
@@ -37,6 +40,13 @@ in {
           ensureDBOwnership = true;
         })
         servicesRequiringPostgresql;
+
+      settings = {
+        listen_addresses = mkForce (concatStringsSep "," [
+          "localhost"
+          "169.254.91.181" # Test
+        ]);
+      };
     };
   };
 }
