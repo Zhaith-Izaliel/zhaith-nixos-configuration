@@ -44,7 +44,7 @@ in {
       settings = {
         listen_addresses = mkForce (concatStringsSep "," [
           "localhost"
-          "169.254.91.181" # Test
+          "169.254.91.181/16" # Test
         ]);
       };
     };

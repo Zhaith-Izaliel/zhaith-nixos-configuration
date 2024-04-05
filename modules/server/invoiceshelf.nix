@@ -67,7 +67,7 @@ in {
     };
 
     services.postgresql.authentication = ''
-      host invoiceshelf invoiceshelf 169.254.91.181 password
+      host invoiceshelf invoiceshelf 169.254.91.181/16 password
     '';
 
     security.acme = {
