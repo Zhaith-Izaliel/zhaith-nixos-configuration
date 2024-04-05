@@ -10,13 +10,18 @@ in {
   options.hellebore.development = {
     enable = mkEnableOption "Hellebore development packages";
 
-    enableDocker = mkEnableOption "Docker service and tools";
+    enablePodman = mkEnableOption "Docker service and tools";
 
     enableDocumentation = mkEnableOption "Documentations and MAN pages";
   };
 
   config = mkIf cfg.enable {
-    virtualisation.docker.enable = mkDefault cfg.enableDocker;
+    virtualisation.podman = {
+      enable = mkDefault cfg.enablePodman;
+      dockerSocket.enable = cfg.enablePodman;
+      dockerCompat = cfg.enablePodman;
+    };
+
     documentation.dev.enable = cfg.enableDocumentation;
 
     environment.systemPackages = with pkgs;
@@ -25,7 +30,7 @@ in {
         git
         gnumake
       ]
-      ++ (optional cfg.enableDocker pkgs.docker-compose)
+      ++ (optional cfg.enablePodman pkgs.docker-compose)
       ++ (optionals cfg.enableDocumentation [
         man-pages
         man-pages-posix

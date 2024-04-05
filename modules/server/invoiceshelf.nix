@@ -30,25 +30,6 @@ in {
 
   config = mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
-      invoiceshelf_db = {
-        image = "postgres";
-
-        environment = {
-          POSTGRES_DB = "invoiceshelf";
-          POSTGRES_USER = "invoiceshelf";
-          POSTGRES_PASSWORD = "I_am_the_gate_to_the_invoices_2024";
-        };
-
-        ports = [
-          "5432"
-        ];
-
-        extraOptions = [
-          "--network"
-          "container:invoiceshelf"
-        ];
-      };
-
       invoiceshelf = {
         image = "invoiceshelf/invoiceshelf";
 
@@ -64,17 +45,12 @@ in {
           PHP_TZ = config.time.timeZone;
           TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
-          DB_HOST = "invoiceshelf_db";
+          DB_HOST = "host.containers.internal";
           DB_PORT = toString config.services.postgresql.port;
-          DB_PASSWORD = "I_am_the_gate_to_the_invoices_2024";
           DB_DATABASE = "invoiceshelf";
           DB_USERNAME = cfg.user;
           STARTUP_DELAY = "0";
         };
-
-        dependsOn = [
-          "invoiceshelf_db"
-        ];
       };
     };
 
