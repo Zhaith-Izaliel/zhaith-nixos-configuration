@@ -34,7 +34,7 @@ in {
       };
 
       sessionDomain = mkOption {
-        default = "host.containers.internal";
+        default = "10.0.2.2";
         type = types.nonEmptyStr;
         description = "Defines the session domain, corresponding to the container IP, usually `host.containers.internal`.";
       };
@@ -60,9 +60,9 @@ in {
 
         environment = {
           APP_ENV = "production";
-          # SESSION_DOMAIN = cfg.sessionDomain;
-          # SANCTUM_STATEFUL_DOMAINS = cfg.sessionDomain;
-          # APP_URL = "http://${cfg.sessionDomain}";
+          SESSION_DOMAIN = cfg.sessionDomain;
+          SANCTUM_STATEFUL_DOMAINS = cfg.sessionDomain;
+          APP_URL = "http://${cfg.sessionDomain}";
           PHP_TZ = config.time.timeZone;
           TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
