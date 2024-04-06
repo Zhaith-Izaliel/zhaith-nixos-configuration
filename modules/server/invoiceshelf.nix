@@ -63,6 +63,7 @@ in {
           SESSION_DOMAIN = domain;
           SANCTUM_STATEFUL_DOMAINS = domain;
           APP_URL = "http://${domain}";
+          APP_FORCE_HTTPS = "true";
           PHP_TZ = config.time.timeZone;
           TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
