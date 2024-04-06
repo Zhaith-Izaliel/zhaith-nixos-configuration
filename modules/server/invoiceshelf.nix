@@ -32,12 +32,6 @@ in {
           ```
         '';
       };
-
-      sessionDomain = mkOption {
-        default = "10.0.2.2";
-        type = types.nonEmptyStr;
-        description = "Defines the session domain, corresponding to the container IP, usually `host.containers.internal`.";
-      };
     }
     // extra-types.server-app {
       name = "InvoiceShelf";
