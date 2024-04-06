@@ -55,8 +55,8 @@ in {
         environment = {
           APP_URL = "https://${domain}";
           APP_ENV = "production";
-          PHP_TZ = config.time.timeZone;
-          TIMEZONE = config.time.timeZone;
+          # PHP_TZ = config.time.timeZone;
+          # TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
           DB_HOST = "10.0.2.2";
           DB_PORT = toString config.services.postgresql.port;
