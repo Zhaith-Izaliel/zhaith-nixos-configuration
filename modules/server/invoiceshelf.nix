@@ -34,9 +34,9 @@ in {
       };
 
       sessionDomain = mkOption {
-        default = "192.168.1.42";
+        default = "host.containers.internal";
         type = types.nonEmptyStr;
-        description = "Defines the session domain, corresponding to the local ip of the server in your router DHCP.";
+        description = "Defines the session domain, corresponding to the container IP, usually `host.containers.internal`.";
       };
     }
     // extra-types.server-app {
