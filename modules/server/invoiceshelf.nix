@@ -31,12 +31,12 @@ in {
             DB_PASSWORD="password"
           ```
         '';
+      };
 
-        sessionDomain = mkOption {
-          default = "192.168.1.42";
-          type = types.nonEmptyStr;
-          description = "Defines the session domain, corresponding to the local ip of the server in your router DHCP.";
-        };
+      sessionDomain = mkOption {
+        default = "192.168.1.42";
+        type = types.nonEmptyStr;
+        description = "Defines the session domain, corresponding to the local ip of the server in your router DHCP.";
       };
     }
     // extra-types.server-app {
