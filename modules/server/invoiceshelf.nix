@@ -53,11 +53,10 @@ in {
         ];
 
         environment = {
-          APP_KEY = "base64:kgk/4DW1vEVy7aEvet5FPp5un6PIGe/so8H0mvoUtW0=";
-          APP_URL = "https://${domain}";
+          APP_URL = "http://localhost";
           APP_ENV = "production";
-          # PHP_TZ = config.time.timeZone;
-          # TIMEZONE = config.time.timeZone;
+          PHP_TZ = config.time.timeZone;
+          TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
           DB_HOST = "10.0.2.2";
           DB_PORT = toString config.services.postgresql.port;
