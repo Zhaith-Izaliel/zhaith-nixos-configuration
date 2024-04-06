@@ -60,9 +60,9 @@ in {
 
         environment = {
           APP_ENV = "production";
-          SESSION_DOMAIN = cfg.sessionDomain;
-          SANCTUM_STATEFUL_DOMAINS = cfg.sessionDomain;
-          APP_URL = "http://${cfg.sessionDomain}";
+          SESSION_DOMAIN = domain;
+          SANCTUM_STATEFUL_DOMAINS = domain;
+          APP_URL = "http://${domain}";
           PHP_TZ = config.time.timeZone;
           TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
