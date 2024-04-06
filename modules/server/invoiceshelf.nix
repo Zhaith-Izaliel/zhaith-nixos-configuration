@@ -31,6 +31,12 @@ in {
             DB_PASSWORD="password"
           ```
         '';
+
+        sessionDomain = mkOption {
+          default = "192.168.1.42";
+          type = types.nonEmptyStr;
+          description = "Defines the session domain, corresponding to the local ip of the server in your router DHCP.";
+        };
       };
     }
     // extra-types.server-app {
@@ -53,9 +59,10 @@ in {
         ];
 
         environment = {
-          APP_URL = "https://${domain}";
-          APP_FORCE_HTTPS = "true";
           APP_ENV = "production";
+          SESSION_DOMAIN = cfg.sessionDomain;
+          SANCTUM_STATEFUL_DOMAINS = cfg.sessionDomain;
+          APP_URL = "http://${cfg.sessionDomain}";
           PHP_TZ = config.time.timeZone;
           TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
