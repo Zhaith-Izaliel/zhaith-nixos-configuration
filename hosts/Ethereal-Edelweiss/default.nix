@@ -165,7 +165,10 @@ in {
 
     locale.enable = true;
 
-    development.enable = true;
+    development = {
+      enable = true;
+      enablePodman = true;
+    };
 
     ssh = {
       enable = true;
