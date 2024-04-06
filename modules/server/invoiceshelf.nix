@@ -53,6 +53,8 @@ in {
         ];
 
         environment = {
+          APP_URL = "https://${domain}";
+          APP_ENV = "production";
           PHP_TZ = config.time.timeZone;
           TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
