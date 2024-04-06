@@ -21,6 +21,17 @@ in {
         type = types.nonEmptyStr;
         description = "Defines the user running InvoiceShelf.";
       };
+
+      dbPasswordFile = mkOption {
+        default = "";
+        type = types.nonEmptyStr;
+        description = ''
+          The env file containing the DB password, in the form:
+          ```
+            DB_PASSWORD="password"
+          ```
+        '';
+      };
     }
     // extra-types.server-app {
       name = "InvoiceShelf";
@@ -51,6 +62,10 @@ in {
           DB_USERNAME = cfg.user;
           STARTUP_DELAY = "0";
         };
+
+        environmentFiles = [
+          cfg.dbPasswordFile
+        ];
 
         extraOptions = [
           "--network"
