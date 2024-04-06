@@ -45,7 +45,7 @@ in {
           PHP_TZ = config.time.timeZone;
           TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
-          DB_HOST = "host.containers.internal";
+          DB_HOST = "10.0.2.2";
           DB_PORT = toString config.services.postgresql.port;
           DB_DATABASE = "invoiceshelf";
           DB_USERNAME = cfg.user;
