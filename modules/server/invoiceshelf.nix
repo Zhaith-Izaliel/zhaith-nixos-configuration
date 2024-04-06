@@ -53,7 +53,8 @@ in {
         ];
 
         environment = {
-          APP_URL = "http://localhost";
+          APP_URL = "https://${domain}";
+          APP_FORCE_HTTPS = "true";
           APP_ENV = "production";
           PHP_TZ = config.time.timeZone;
           TIMEZONE = config.time.timeZone;
