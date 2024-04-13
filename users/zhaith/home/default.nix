@@ -121,6 +121,7 @@
 
       browsers = {
         enable = true;
+        package = pkgs.firefox-bin;
         profiles.zhaith.enable = true;
       };
     };

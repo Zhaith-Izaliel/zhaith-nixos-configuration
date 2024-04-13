@@ -122,8 +122,8 @@ in {
       listeners = [
         (mkIf cfg.timeouts.dim.enable {
           timeout = cfg.timeouts.dim.timer;
-          onTimeout = "${getExe pkgs.dim-on-lock} dim ${toString cfg.timeouts.dim.dimValue}";
-          onResume = "${getExe pkgs.dim-on-lock} undim";
+          onTimeout = "${getExe pkgs.dim-on-lock} --dim ${toString cfg.timeouts.dim.dimValue}";
+          onResume = "${getExe pkgs.dim-on-lock} --undim";
         })
 
         (mkIf cfg.timeouts.lock.enable {
@@ -133,8 +133,8 @@ in {
 
         (mkIf cfg.timeouts.powerSaving.enable {
           timeout = cfg.timeouts.powerSaving.timer;
-          onTimeout = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
-          onResume = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
+          onTimeout = "${getExe pkgs.dim-on-lock} --undim && ${getExe pkgs.dim-on-lock} --no-min --dim 100";
+          onResume = "${getExe pkgs.dim-on-lock} --undim";
         })
       ];
     };

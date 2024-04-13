@@ -186,13 +186,13 @@
         ];
       };
 
-      # upower = {
-      #   enable = true;
-      #   notify = true;
-      #   percentageLow = 15;
-      #   percentageCritical = 10;
-      #   percentageAction = 5;
-      # };
+      upower = {
+        enable = true;
+        notify = true;
+        percentageLow = 15;
+        percentageCritical = 10;
+        percentageAction = 5;
+      };
     };
 
     vm = {

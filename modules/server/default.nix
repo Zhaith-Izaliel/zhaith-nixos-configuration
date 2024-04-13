@@ -8,6 +8,7 @@
     ./nextcloud.nix
     ./nginx.nix
     ./postgresql.nix
+    ./twentycrm.nix
   ];
 
   config = {
