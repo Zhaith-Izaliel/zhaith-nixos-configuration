@@ -72,7 +72,7 @@ in {
           inherit (cfg.keyboard) layout variant;
         };
       }
-      // optionalAttrs (builtins.hasAttr "displayManager" options.services)
+      // optionalAttrs (builtins.hasAttr "sddm" options.services.displayManager)
       {
         displayManager.sddm = {
           enable = true;
