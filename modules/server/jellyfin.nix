@@ -37,12 +37,5 @@ in {
         };
       };
     };
-
-    security.acme = {
-      acceptTerms = true;
-      certs = {
-        ${domain}.email = cfg.acmeEmail;
-      };
-    };
   };
 }

@@ -82,9 +82,9 @@ in {
 
   security.acme = {
     acceptTerms = true;
-    certs = {
-      "virgilribeyre.com".email = "virgil.ribeyre@protonmail.com";
-      "www.virgilribeyre.com".email = "virgil.ribeyre@protonmail.com";
+    defaults = {
+      email = "virgil.ribeyre@protonmail.com";
+      renewInterval = "*-*-* 02:00:00 Europe/Paris";
     };
   };
 
