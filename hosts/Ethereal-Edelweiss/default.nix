@@ -84,6 +84,7 @@ in {
     acceptTerms = true;
     certs = {
       "virgilribeyre.com".email = "virgil.ribeyre@protonmail.com";
+      "www.virgilribeyre.com".email = "virgil.ribeyre@protonmail.com";
     };
   };
 

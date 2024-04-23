@@ -62,7 +62,7 @@ in {
           PORT = toString cfg.port;
           ENABLE_DB_MIGRATIONS = "true";
           SERVER_URL = "https://${domain}";
-          PG_DATABASE_URL = "postgres://twenty:twenty@10.0.2.2${toString config.services.postgresql.port}/default";
+          PG_DATABASE_URL = "postgres://twenty:twenty@10.0.2.2:${toString config.services.postgresql.port}/default";
         };
 
         environmentFiles = [

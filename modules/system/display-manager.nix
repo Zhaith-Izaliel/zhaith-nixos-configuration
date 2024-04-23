@@ -65,11 +65,11 @@ in {
   };
 
   config = mkIf cfg.enable {
-    services.xserver = {
-      enable = true;
-      xkb = {
+    services = {
+      xserver.xkb = {
         inherit (cfg.keyboard) layout variant;
       };
+
       displayManager.sddm = {
         enable = true;
         wayland.enable = true;
