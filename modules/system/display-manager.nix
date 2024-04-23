@@ -1,5 +1,6 @@
 {
   config,
+  options,
   lib,
   extra-types,
   ...
@@ -65,35 +66,41 @@ in {
   };
 
   config = mkIf cfg.enable {
-    services = {
-      xserver.xkb = {
-        inherit (cfg.keyboard) layout variant;
-      };
+    services =
+      {
+        xserver.xkb = {
+          inherit (cfg.keyboard) layout variant;
+        };
+      }
+      // (
+        if builtins.hasAttr "displayManager" options.services
+        then {
+          displayManager.sddm = {
+            enable = true;
+            wayland.enable = true;
+            settings = {
+              Theme = {
+                CursorTheme = theme.gtk.cursorTheme.name;
+                CursorSize = 24;
+                Font = cfg.font.size;
+              };
+            };
 
-      displayManager.sddm = {
-        enable = true;
-        wayland.enable = true;
-        settings = {
-          Theme = {
-            CursorTheme = theme.gtk.cursorTheme.name;
-            CursorSize = 24;
-            Font = cfg.font.size;
+            sugarCandyNix = {
+              enable = true;
+              settings =
+                {
+                  ScreenWidth = cfg.screenWidth;
+                  ScreenHeight = cfg.screenHeight;
+                  Font = cfg.font.name;
+                  FontSize = toString cfg.font.size;
+                  Background = cfg.background.path;
+                }
+                // theme.sddm.settings;
+            };
           };
-        };
-
-        sugarCandyNix = {
-          enable = true;
-          settings =
-            {
-              ScreenWidth = cfg.screenWidth;
-              ScreenHeight = cfg.screenHeight;
-              Font = cfg.font.name;
-              FontSize = toString cfg.font.size;
-              Background = cfg.background.path;
-            }
-            // theme.sddm.settings;
-        };
-      };
-    };
+        }
+        else {}
+      );
   };
 }
