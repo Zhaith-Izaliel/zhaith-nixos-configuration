@@ -73,7 +73,7 @@ in {
         };
       }
       // (
-        if builtins.hasAttr "sddm" options.services.displayManager
+        if builtins.hasAttr "displayManager" options.services
         then {
           displayManager.sddm = {
             enable = true;
