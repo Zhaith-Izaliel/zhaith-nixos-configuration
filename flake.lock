@@ -778,11 +778,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1713915177,
-        "narHash": "sha256-ahE60qFELXeaIBk2sxGJ6X2s8dr4iJQnFCB4ZFVZxuU=",
+        "lastModified": 1713948262,
+        "narHash": "sha256-2BIzRNOE8qviQ7TfOO8gFQiKosdIe+jZDuUhJ9GMWW4=",
         "owner": "Zhaith-Izaliel",
         "repo": "sddm-sugar-candy-nix",
-        "rev": "5adbc917817d0480b70f99a2d497477e802f4d0a",
+        "rev": "62e9acc0adb8c833350820e24b9e39e246e78217",
         "type": "gitlab"
       },
       "original": {

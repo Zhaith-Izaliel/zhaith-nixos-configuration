@@ -1,12 +1,9 @@
 {
   pkgs,
-  inputs,
   lib,
   config,
   ...
-}: let
-  virgilribeyre-package = inputs.virgilribeyre-com.packages.${pkgs.system}.default;
-in {
+}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -62,38 +59,17 @@ in {
     };
   };
 
-  # virgilribeyre.com
-  services.nginx.virtualHosts."virgilribeyre.com" = {
-    enableACME = true;
-    forceSSL = true;
-
-    serverAliases = [
-      "www.virgilribeyre.com"
-    ];
-
-    locations = {
-      "/" = {
-        root = "${virgilribeyre-package}";
-        index = "index.html";
-        tryFiles = "$uri $uri/ /index.html";
-      };
-    };
-  };
-
-  security.acme = {
-    acceptTerms = true;
-    defaults = {
-      email = "virgil.ribeyre@protonmail.com";
-      renewInterval = "*-*-* 02:00:00 Europe/Paris";
-    };
-  };
-
   hellebore = {
     font.size = 12;
 
     theme.name = "catppuccin-macchiato";
 
     server = {
+      acme = {
+        enable = true;
+        email = "virgil.ribeyre@protonmail.com";
+      };
+
       postgresql = {
         enable = true;
         package = pkgs.postgresql_15;
@@ -134,6 +110,8 @@ in {
         enable = true;
         maxretry = 3;
       };
+
+      virgilribeyre-com.enable = true;
     };
 
     network = {
