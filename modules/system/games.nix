@@ -74,7 +74,7 @@ in {
     minecraft = {
       enable = mkEnableOption "Minecraft Prismlauncher";
 
-      package = mkPackageOption pkgs "prismlauncher" {};
+      package = mkPackageOption pkgs "modrinth" {};
     };
 
     steam = {

@@ -23,23 +23,22 @@
           enable = true;
           position = "top-right";
         };
-        extraWindowRules = [
+        extraWindowRules = let
+          gameRules = [
+            "workspace 5"
+            "idleinhibit"
+            "noblur"
+            "noborder"
+            "noshadow"
+          ];
+        in [
           {
             regex = "class:(steam_app_).*";
-            rules = [
-              "workspace 5"
-              "idleinhibit"
-            ];
+            rules = gameRules;
           }
           {
             regex = "class:(gw2).*";
-            rules = [
-              "workspace 5"
-              "idleinhibit"
-              "noblur"
-              "noborder"
-              "noshadow"
-            ];
+            rules = gameRules;
           }
         ];
       };

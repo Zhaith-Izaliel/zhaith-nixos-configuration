@@ -146,7 +146,7 @@ in {
               .fd
             ];
           };
-          runAsRoot = true;
+          runAsRoot = false;
           verbatimConfig = ''
             user = "zhaith"
           '';
