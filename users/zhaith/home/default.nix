@@ -1,12 +1,12 @@
 {
   config,
+  os-config,
+  lib,
   pkgs,
   ...
-}: {
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0" # Obsidian
-  ];
-
+}: let
+  inherit (lib) optional;
+in {
   hellebore = {
     theme.name = "catppuccin-macchiato";
 
@@ -31,16 +31,25 @@
             "noborder"
             "noshadow"
           ];
-        in [
-          {
-            regex = "class:(steam_app_).*";
-            rules = gameRules;
-          }
-          {
-            regex = "class:(gw2).*";
-            rules = gameRules;
-          }
-        ];
+        in
+          [
+            {
+              regex = "class:(steam_app_).*";
+              rules = gameRules;
+            }
+            {
+              regex = "class:(gw2).*";
+              rules = gameRules;
+            }
+          ]
+          ++ optional os-config.hellebore.games.minecraft.enable {
+            regex = "class:(Minecraft).*";
+            rules =
+              gameRules
+              ++ [
+                "fullscreen"
+              ];
+          };
       };
 
       lockscreen = {

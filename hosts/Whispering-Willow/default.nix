@@ -72,7 +72,10 @@
     games = {
       enable = true;
       steam.enable = true;
-      minecraft.enable = true;
+      minecraft = {
+        enable = true;
+        mods.enable = true;
+      };
       cartridges.enable = true;
       lutris.enable = true;
       gamemode.enable = true;

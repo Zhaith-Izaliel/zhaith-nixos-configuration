@@ -74,7 +74,13 @@ in {
     minecraft = {
       enable = mkEnableOption "Minecraft Prismlauncher";
 
-      package = mkPackageOption pkgs "modrinth" {};
+      package = mkPackageOption pkgs "prismlauncher" {};
+
+      mods = {
+        enable = mkEnableOption "Minecraft mods support through Ferium";
+
+        package = mkPackageOption pkgs "ferium" {};
+      };
     };
 
     steam = {
@@ -197,6 +203,7 @@ in {
         wine64Packages.waylandFull
         wine-wayland
       ]
-      ++ optional cfg.minecraft.enable cfg.minecraft.package;
+      ++ optional cfg.minecraft.enable cfg.minecraft.package
+      ++ optional cfg.minecraft.mods.enable cfg.minecraft.mods.package;
   };
 }
