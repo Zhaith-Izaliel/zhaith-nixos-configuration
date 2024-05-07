@@ -21,4 +21,8 @@ in
       sed -i 's/.*Exec.*/Exec=${name}/' $out/share/applications/${name}.desktop
       cp -r ${appimageContents}/usr/share/icons $out/share
     '';
+
+    meta = {
+      mainProgram = name;
+    };
   }
