@@ -79,11 +79,14 @@ in {
 
         font = {
           inherit (cfg.font) size;
+          locator = "fontconfig";
+          text_shaping.engine = "native";
+          strict_spacing = true;
+          render_mode = "gray";
+          builtin_box_drawing = true;
           regular = {
             family = cfg.font.name;
             dpi_scale = 255.0;
-            builtin_box_drawing = false;
-            strict_spacing = false;
           };
         };
 
@@ -95,8 +98,8 @@ in {
         };
 
         background = {
-          opacity = 0.8;
-          blur = true;
+          opacity = 0.75;
+          blur = false;
         };
       };
     };

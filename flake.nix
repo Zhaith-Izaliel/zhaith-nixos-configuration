@@ -26,11 +26,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland/v0.38.1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # zhaith-neovim = {
     #   url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -106,7 +101,6 @@
     nixpkgs-stable,
     grub2-themes,
     nix-alien,
-    hyprland,
     sddm-sugar-candy-nix,
     virgutils,
     rofi-applets,
@@ -134,7 +128,6 @@
       nix-alien.overlays.default
       sddm-sugar-candy-nix.overlays.default
       virgutils.overlays.${system}.default
-      hyprland.overlays.default
       customOverlay
     ];
   in
