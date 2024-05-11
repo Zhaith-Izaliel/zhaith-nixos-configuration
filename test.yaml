@@ -1,0 +1,32 @@
+    catppuccin_macchiato:
+        # Default colours
+        default:
+            background: "#24273A" # base
+            foreground: "#CAD3F5" # text
+
+        # Cursor colour
+        cursor:
+            default: "#F4DBD6" # rosewater
+            text: "#24273A" # base
+
+        # Normal colors
+        normal:
+            black: "#494D64" # surface1
+            red: "#ED8796" # red
+            green: "#A6DA95" # green
+            yellow: "#EED49F" # yellow
+            blue: "#8AADF4" # blue
+            magenta: "#F5BDE6" # pink
+            cyan: "#8BD5CA" # teal
+            white: "#B8C0E0" # subtext1
+
+        # Bright colors
+        bright:
+            black: "#5B6078" # surface2
+            red: "#ED8796" # red
+            green: "#A6DA95" # green
+            yellow: "#EED49F" # yellow
+            blue: "#8AADF4" # blue
+            magenta: "#F5BDE6" # pink
+            cyan: "#8BD5CA" # teal
+            white: "#A5ADCB" # subtext0

@@ -6,6 +6,7 @@
   ...
 }: let
   inherit (lib) concatStringsSep optionalString mkOption mkEnableOption getExe types mkIf mkPackageOption;
+  toYAML = lib.generators.toYAML {};
 
   cfg = config.hellebore.shell.emulator;
   emulator-bin = pkgs.writeScriptBin "emulator-bin" (concatStringsSep "\n" [
@@ -17,13 +18,7 @@
       ''
     )
     ''
-      ${pkgs.procps}/bin/pgrep "alacritty" &> /dev/null
-      local exit_code="$?"
-      if [ "$exit_code" = "0" ]; then
-        ${getExe cfg.package} msg create-window
-      else
-        ${getExe cfg.package}
-      fi
+      ${getExe cfg.package}
     ''
   ]);
   theme = config.hellebore.theme.themes.${cfg.theme};
@@ -31,16 +26,12 @@ in {
   options.hellebore.shell.emulator = {
     enable = mkEnableOption "Hellebore terminal emulator configuration";
 
-    font =
-      (extra-types.font {
-        size = config.hellebore.font.size;
-        sizeDescription = "Set the terminal emulator font size.";
-        name = "FiraCode Nerd Font";
-        nameDescription = "Set the terminal emulator font family.";
-      })
-      // {
-        enableLigatures = mkEnableOption "Font Ligatures for the Terminal Emulator";
-      };
+    font = extra-types.font {
+      size = config.hellebore.font.size;
+      sizeDescription = "Set the terminal emulator font size.";
+      name = "FiraCode Nerd Font";
+      nameDescription = "Set the terminal emulator font family.";
+    };
 
     theme = extra-types.theme.name {
       default = config.hellebore.theme.name;
@@ -61,7 +52,7 @@ in {
       };
     };
 
-    package = mkPackageOption pkgs "alacritty" {};
+    package = mkPackageOption pkgs "contour" {};
 
     bin = mkOption {
       type = types.str;
@@ -72,39 +63,40 @@ in {
   };
 
   config = mkIf cfg.enable {
-    programs.alacritty = {
-      enable = true;
-      package = cfg.package;
+    home.packages = [cfg.package];
+    xdg.configFile."contour/contour.yml".text = toYAML {
+      color_schemes = theme.contour.theme;
+      profiles.main = {
+        colors = theme.contour.name;
+        live_config = true;
 
-      settings = {
-        import = [
-          (theme.alacritty.file)
-        ];
+        bell.sound = "off";
 
-        window = {
-          decorations = "None";
-          opacity = 0.8;
+        terminal_size = {
+          columns = 100;
+          lines = 45;
         };
 
         font = {
-          normal = {
-            family = "${cfg.font.name}";
-            style = "Regular";
+          inherit (cfg.font) size;
+          regular = {
+            family = cfg.font.name;
+            dpi_scale = 255.0;
+            builtin_box_drawing = false;
+            strict_spacing = false;
           };
-
-          size = cfg.font.size;
         };
 
-        cursor = {
-          style = {
-            shape = "Beam";
-            blinking = "Always";
-          };
+        draw_bold_text_with_bright_colors = false;
 
-          vi_mode_style = {
-            shape = "Block";
-            blinking = "Always";
-          };
+        permissions = {
+          change_font = "allow";
+          capture_buffer = "allow";
+        };
+
+        background = {
+          opacity = 0.8;
+          blur = true;
         };
       };
     };
