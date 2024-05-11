@@ -200,7 +200,7 @@ in {
 
         "$mainMod, C, killactive,"
         "$mainMod, E, exec, nemo"
-        "$mainMod, P, exec, hyprpicker -a"
+        "$mainMod, P, exec, ${getExe pkgs.hyprpicker} -a"
 
         "$mainMod, J, togglesplit," # Dwindle
         "$mainMod, M, fullscreen, 1" # Maximize window

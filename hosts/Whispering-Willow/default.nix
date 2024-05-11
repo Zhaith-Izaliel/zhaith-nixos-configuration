@@ -26,7 +26,7 @@
   ];
 
   boot = {
-    kernelPackages = stable-pkgs.linuxPackages;
+    kernelPackages = pkgs.linuxPackages;
     initrd.kernelModules = ["i915"];
   };
 

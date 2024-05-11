@@ -27,19 +27,20 @@
     fsType = "ext4";
   };
 
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/9f181965-f48e-4e6e-8dcf-e00695fda38c";
+  fileSystems."/mnt/games" = {
+    device = "/dev/disk/by-uuid/26582702-96e5-4ec4-a22c-204955b87e93";
     fsType = "ext4";
   };
 
-  fileSystems."/mnt/games" = {
-    device = "/dev/disk/by-uuid/26582702-96e5-4ec4-a22c-204955b87e93";
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/9f181965-f48e-4e6e-8dcf-e00695fda38c";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/5436-8ED6";
     fsType = "vfat";
+    options = ["fmask=0022" "dmask=0022"];
   };
 
   swapDevices = [
@@ -51,11 +52,8 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.br-88c35a4b8fec.useDHCP = lib.mkDefault true;
-  # networking.interfaces.docker0.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp46s0.useDHCP = lib.mkDefault true;
   # networking.interfaces.virbr0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp47s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

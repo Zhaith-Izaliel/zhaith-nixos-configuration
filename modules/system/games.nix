@@ -203,7 +203,11 @@ in {
         wine64Packages.waylandFull
         wine-wayland
       ]
-      ++ optional cfg.minecraft.enable cfg.minecraft.package
+      ++ optionals cfg.minecraft.enable
+      [
+        cfg.minecraft.package
+        # minecraft
+      ]
       ++ optional cfg.minecraft.mods.enable cfg.minecraft.mods.package;
   };
 }
