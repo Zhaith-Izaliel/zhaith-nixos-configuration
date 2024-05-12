@@ -26,7 +26,7 @@
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages;
+    kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
     initrd.kernelModules = ["i915"];
   };
 

@@ -33,6 +33,8 @@ in {
       nameDescription = "Set the terminal emulator font family.";
     };
 
+    enableZshIntegration = mkEnableOption "ZSH integration";
+
     theme = extra-types.theme.name {
       default = config.hellebore.theme.name;
       description = "Defines the terminal emulator theme.";
@@ -64,18 +66,17 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = [cfg.package];
+
+    programs.zsh.initExtra = mkIf cfg.enableZshIntegration ''
+      eval "$(${getExe cfg.package} generate integration shell zsh to -)"
+    '';
+
     xdg.configFile."contour/contour.yml".text = toYAML {
       color_schemes = theme.contour.theme;
       profiles.main = {
         colors = theme.contour.name;
-        live_config = true;
 
         bell.sound = "off";
-
-        terminal_size = {
-          columns = 100;
-          lines = 45;
-        };
 
         font = {
           inherit (cfg.font) size;
@@ -86,7 +87,6 @@ in {
           builtin_box_drawing = true;
           regular = {
             family = cfg.font.name;
-            dpi_scale = 255.0;
           };
         };
 
@@ -98,7 +98,7 @@ in {
         };
 
         background = {
-          opacity = 0.75;
+          opacity = 0.85;
           blur = false;
         };
       };

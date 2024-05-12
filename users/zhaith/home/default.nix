@@ -188,6 +188,7 @@ in {
       workspace.enable = true;
       emulator = {
         enable = true;
+        enableZshIntegration = true;
         integratedGPU = {
           enable = false;
           driver = "iris";
