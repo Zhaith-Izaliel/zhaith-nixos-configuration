@@ -60,6 +60,7 @@ in {
         pulse.enable = true;
       }
       // (
+        # COMPATIBILITY: Should be merged to upper set with 24.05
         optionalAttrs (builtins.hasAttr "extraConfig" options.services.pipewire) {
           extraConfig.pipewire."92-low-latency" = mkIf cfg.lowLatency.enable {
             context = {

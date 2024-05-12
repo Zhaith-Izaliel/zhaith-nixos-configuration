@@ -103,6 +103,7 @@ in {
               ]);
           };
         }
+        # COMPATIBILITY: Compatibility for 23.11
         // (
           if builtins.hasAttr "autosuggestion" options.programs.zsh
           then {autosuggestion.enable = true;}

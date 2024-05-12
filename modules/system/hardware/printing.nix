@@ -34,6 +34,7 @@ in {
           enable = true;
           openFirewall = true;
         }
+        # COMPATIBILITY: Compatibility for 23.11
         // optionalAttrs (builtins.hasAttr "nssmdns4" options.services.avahi) {nssmdns4 = true;};
     };
   };
