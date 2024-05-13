@@ -17,6 +17,8 @@ debug-home:
 update:
 	nix flake update
 
+system-upgrade: update rebuild-boot rebuild-home
+
 # Update specific input
 # usage: make upp i=home-manager
 # upp:

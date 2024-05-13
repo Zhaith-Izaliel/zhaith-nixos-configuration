@@ -26,18 +26,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # zhaith-neovim = {
-    #   url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
     zhaith-helix = {
       url = "gitlab:Zhaith-Izaliel/helix-config/develop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     sddm-sugar-candy-nix = {
-      url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
+      url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix/bugfix/issue-1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

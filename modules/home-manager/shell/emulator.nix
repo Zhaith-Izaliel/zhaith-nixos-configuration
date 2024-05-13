@@ -26,12 +26,20 @@ in {
   options.hellebore.shell.emulator = {
     enable = mkEnableOption "Hellebore terminal emulator configuration";
 
-    font = extra-types.font {
-      size = config.hellebore.font.size;
-      sizeDescription = "Set the terminal emulator font size.";
-      name = "FiraCode Nerd Font";
-      nameDescription = "Set the terminal emulator font family.";
-    };
+    font =
+      extra-types.font {
+        size = config.hellebore.font.size;
+        sizeDescription = "Set the terminal emulator font size.";
+        name = "FiraCode Nerd Font";
+        nameDescription = "Set the terminal emulator font family.";
+      }
+      // {
+        emoji = mkOption {
+          default = "Noto Color Emoji";
+          type = types.nonEmptyStr;
+          description = "Defines the font used to render emojis.";
+        };
+      };
 
     enableZshIntegration = mkEnableOption "ZSH integration";
 
@@ -79,7 +87,7 @@ in {
         bell.sound = "off";
 
         font = {
-          inherit (cfg.font) size;
+          inherit (cfg.font) size emoji;
           locator = "fontconfig";
           text_shaping.engine = "native";
           strict_spacing = true;
