@@ -20,5 +20,6 @@
   waybar = modules: import ./waybar {inherit colors inputs modules lib;};
   wlogout = import ./wlogout {inherit colors lib;};
   yazi = import ./yazi.nix {inherit inputs pkgs bat;};
+  wezterm = import ./wezterm.nix {};
   zellij = import ./zellij.nix {};
 }
