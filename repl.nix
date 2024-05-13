@@ -1,6 +1,6 @@
 let
   nixos = builtins.getFlake "/home/zhaith/Development/gitlab.com/Zhaith-Izaliel/zhaith-nixos-configuration";
-  host = "Whispering-Willow";
+  host = "Ethereal-Edelweiss";
 in rec {
   inherit nixos;
   inherit (nixos) inputs nixosConfigurations;
