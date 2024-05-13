@@ -102,6 +102,7 @@ in {
         config.color_scheme = "${theme.theme}"
         config.window_background_opacity = 0.85
 
+        config.font_size = ${toString cfg.font.size}
         config.font = wezterm.font_with_fallback({
         	{
         		family = "${cfg.font.name}",
