@@ -1,10 +1,11 @@
 {
   config,
+  options,
   lib,
   extra-types,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib) mkEnableOption mkIf mkOption types mkMerge;
   theme = config.hellebore.theme.themes.${cfg.theme};
   cfg = config.hellebore.display-manager;
   defaultMonitor = builtins.elemAt config.hellebore.monitors 0;
@@ -64,36 +65,46 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
-    services = {
-      xserver.xkb = {
+  config = mkIf cfg.enable (mkMerge [
+    {
+      services.xserver.xkb = {
         inherit (cfg.keyboard) layout variant;
       };
+    }
+    (
+      let
+        attr = {
+          enable = true;
+          wayland.enable = true;
+          settings = {
+            Theme = {
+              CursorTheme = theme.gtk.cursorTheme.name;
+              CursorSize = 24;
+              Font = cfg.font.size;
+            };
+          };
 
-      displayManager.sddm = {
-        enable = true;
-        wayland.enable = true;
-        settings = {
-          Theme = {
-            CursorTheme = theme.gtk.cursorTheme.name;
-            CursorSize = 24;
-            Font = cfg.font.size;
+          sugarCandyNix = {
+            enable = true;
+            settings =
+              {
+                ScreenWidth = cfg.screenWidth;
+                ScreenHeight = cfg.screenHeight;
+                Font = cfg.font.name;
+                FontSize = toString cfg.font.size;
+                Background = cfg.background.path;
+              }
+              // theme.sddm.settings;
           };
         };
-
-        sugarCandyNix = {
-          enable = true;
-          settings =
-            {
-              ScreenWidth = cfg.screenWidth;
-              ScreenHeight = cfg.screenHeight;
-              Font = cfg.font.name;
-              FontSize = toString cfg.font.size;
-              Background = cfg.background.path;
-            }
-            // theme.sddm.settings;
-        };
-      };
-    };
-  };
+      in
+        if !(builtins.hasAttr "displayManager" options.services)
+        then {
+          services.displayManager.sddm = attr;
+        }
+        else {
+          services.xserver.displayManager.sddm = attr;
+        }
+    )
+  ]);
 }
