@@ -246,6 +246,13 @@ tooltip label {
   color: @red;
 }
 
+#custom-notifications.paused:hover,
+#custom-notifications.error:hover {
+  border-color: darker(@red);
+  color: @mantle;
+  background-color: @red;
+}
+
 /* TRAY */
 
 #tray {

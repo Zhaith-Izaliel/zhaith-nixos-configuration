@@ -6,7 +6,7 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf mkOption types optionals concatStringsSep;
+  inherit (lib) mkEnableOption mkIf mkOption types optionals optional concatStringsSep;
   cfg = config.hellebore.shell;
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
@@ -38,12 +38,16 @@ in {
       };
       description = "Set ZSH custom directory hashes.";
     };
+
+    enableImageSupport = mkEnableOption "Image Support in terminal with Chafa";
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      any-nix-shell
-    ];
+    home.packages = with pkgs;
+      [
+        any-nix-shell
+      ]
+      ++ optional cfg.enableImageSupport chafa;
 
     programs = {
       command-not-found.enable = true;

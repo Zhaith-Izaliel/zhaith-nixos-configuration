@@ -184,6 +184,7 @@ in {
 
     shell = {
       enable = true;
+      enableImageSupport = true;
       prompt.enable = true;
       workspace.enable = true;
       emulator = {

@@ -27,7 +27,7 @@
 
   boot = {
     kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
-    initrd.kernelModules = ["i915"];
+    # initrd.kernelModules = ["i915"];
   };
 
   hellebore = {
@@ -87,7 +87,7 @@
         enable = true;
         power-profiles.enable = true;
         power-management.enable = true;
-        modesetting.enable = false;
+        modesetting.enable = true;
         forceWaylandOnMesa = true;
         deviceFilterName = "RTX 3060";
         open = false;
@@ -95,6 +95,9 @@
           offload.enable = true;
           intelBusId = "PCI:0:2:0";
           nvidiaBusId = "PCI:1:0:0";
+        };
+        fixes = {
+          usbCDriversWronglyLoaded = true;
         };
       };
 
@@ -199,7 +202,7 @@
     };
 
     vm = {
-      enable = true;
+      enable = false;
 
       useSecureBoot = true;
 
