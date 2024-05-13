@@ -1,11 +1,10 @@
 {
   config,
-  options,
   lib,
   extra-types,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf mkOption types optionalAttrs;
+  inherit (lib) mkEnableOption mkIf mkOption types;
   theme = config.hellebore.theme.themes.${cfg.theme};
   cfg = config.hellebore.display-manager;
   defaultMonitor = builtins.elemAt config.hellebore.monitors 0;
