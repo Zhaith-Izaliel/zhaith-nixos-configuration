@@ -83,8 +83,7 @@ in {
     };
   };
 
-  config =
-    mkIf cfg.enable {
+  config = mkIf cfg.enable ({
       assertions = [
         {
           assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
@@ -125,18 +124,18 @@ in {
         enable = true;
         settings = {
           listeners = [
-            (mkIf cfg.timeouts.dim.enable {
+            (optionalAttrs cfg.timeouts.dim.enable {
               timeout = cfg.timeouts.dim.timer;
               onTimeout = "${getExe pkgs.dim-on-lock} --dim ${toString cfg.timeouts.dim.dimValue}";
               onResume = "${getExe pkgs.dim-on-lock} --undim";
             })
 
-            (mkIf cfg.timeouts.lock.enable {
+            (optionalAttrs cfg.timeouts.lock.enable {
               timeout = cfg.timeouts.lock.timer;
               onTimeout = "${getExe config.programs.swaylock.package} -fF --grace ${toString cfg.gracePeriod}";
             })
 
-            (mkIf cfg.timeouts.powerSaving.enable {
+            (optionalAttrs cfg.timeouts.powerSaving.enable {
               timeout = cfg.timeouts.powerSaving.timer;
               onTimeout = "${getExe pkgs.dim-on-lock} --undim && ${getExe pkgs.dim-on-lock} --no-min --dim 100";
               onResume = "${getExe pkgs.dim-on-lock} --undim";
@@ -144,5 +143,5 @@ in {
           ];
         };
       };
-    };
+    });
 }
