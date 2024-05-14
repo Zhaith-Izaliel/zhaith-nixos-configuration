@@ -727,16 +727,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1715645531,
-        "narHash": "sha256-zagVDFIEUbOhmwo+9G7oyyoPCQ7x1lBwj+azabrYD+g=",
+        "lastModified": 1715646979,
+        "narHash": "sha256-I7Dg+SvVxLZ8jA7XV8ClWp6D/FGtLKOiwaWsGeq7lmc=",
         "owner": "Zhaith-Izaliel",
         "repo": "sddm-sugar-candy-nix",
-        "rev": "989d844ba7d311696f5919faef4923742db50723",
+        "rev": "17960eb3b17863802737361a0e76050c556d7166",
         "type": "gitlab"
       },
       "original": {
         "owner": "Zhaith-Izaliel",
-        "ref": "bugfix/issue-1",
         "repo": "sddm-sugar-candy-nix",
         "type": "gitlab"
       }

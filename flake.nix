@@ -32,7 +32,7 @@
     };
 
     sddm-sugar-candy-nix = {
-      url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix/bugfix/issue-1";
+      url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix/";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

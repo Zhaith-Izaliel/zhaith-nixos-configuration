@@ -1,6 +1,5 @@
 {
   pkgs,
-  stable-pkgs,
   lib,
   ...
 }: {
@@ -90,7 +89,7 @@
         modesetting.enable = true;
         forceWaylandOnMesa = true;
         deviceFilterName = "RTX 3060";
-        open = false;
+        open = true;
         prime = {
           offload.enable = true;
           intelBusId = "PCI:0:2:0";
