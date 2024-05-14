@@ -113,6 +113,8 @@ in {
         	{ family = "${cfg.font.nerd-font}", weight = "Regular" },
         })
 
+        config.window_close_confirmation = "NeverPrompt"
+
         config.window_padding = {
          left = 0,
          right = 0,

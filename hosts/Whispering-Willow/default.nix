@@ -85,11 +85,11 @@
       nvidia = {
         enable = true;
         power-profiles.enable = true;
-        power-management.enable = true;
+        power-management.enable = false;
         modesetting.enable = true;
         forceWaylandOnMesa = true;
         deviceFilterName = "RTX 3060";
-        open = true;
+        open = false;
         prime = {
           offload.enable = true;
           intelBusId = "PCI:0:2:0";
