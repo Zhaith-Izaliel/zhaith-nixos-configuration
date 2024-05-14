@@ -1,12 +1,13 @@
 {
   os-config,
+  options,
   config,
   lib,
   pkgs,
   extra-types,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption mkIf types getExe mkPackageOption;
+  inherit (lib) mkEnableOption mkOption mkIf types getExe mkPackageOption optionalAttrs;
   cfg = config.hellebore.desktop-environment.lockscreen;
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
@@ -82,61 +83,66 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
-        message = "Hyprland must be enabled for Swaylock and Swayidle to
-        properly work";
-      }
-      {
-        assertion = cfg.enable -> os-config.hellebore.hyprland.enableSwaylockPam;
-        message = "PAM service for Swaylock must be enabled to allow Swaylock
-        to properly log you in.";
-      }
-      {
-        assertion =
-          cfg.enable
-          -> cfg.timeouts.dim.timer
-          < cfg.timeouts.lock.timer
-          && cfg.timeouts.lock.timer < cfg.timeouts.powerSaving.timer;
-        message = "Your timers should be in ascending order, such that
-        `dim.timer < lock.timer < powerSaving.timer`";
-      }
-    ];
-
-    programs.swaylock = {
-      inherit (cfg) package;
-      enable = true;
-      settings =
+  config =
+    mkIf cfg.enable {
+      assertions = [
         {
-          indicator-radius = cfg.indicatorRadius;
-          font-size = cfg.font.size;
-          font = cfg.font.name;
+          assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
+          message = "Hyprland must be enabled for Swaylock and Swayidle to
+        properly work";
         }
-        // theme.swaylock.settings;
-    };
-
-    services.hypridle = {
-      enable = true;
-      listeners = [
-        (mkIf cfg.timeouts.dim.enable {
-          timeout = cfg.timeouts.dim.timer;
-          onTimeout = "${getExe pkgs.dim-on-lock} dim ${toString cfg.timeouts.dim.dimValue}";
-          onResume = "${getExe pkgs.dim-on-lock} undim";
-        })
-
-        (mkIf cfg.timeouts.lock.enable {
-          timeout = cfg.timeouts.lock.timer;
-          onTimeout = "${getExe config.programs.swaylock.package} -fF --grace ${toString cfg.gracePeriod}";
-        })
-
-        (mkIf cfg.timeouts.powerSaving.enable {
-          timeout = cfg.timeouts.powerSaving.timer;
-          onTimeout = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
-          onResume = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
-        })
+        {
+          assertion = cfg.enable -> os-config.hellebore.hyprland.enableSwaylockPam;
+          message = "PAM service for Swaylock must be enabled to allow Swaylock
+        to properly log you in.";
+        }
+        {
+          assertion =
+            cfg.enable
+            -> cfg.timeouts.dim.timer
+            < cfg.timeouts.lock.timer
+            && cfg.timeouts.lock.timer < cfg.timeouts.powerSaving.timer;
+          message = "Your timers should be in ascending order, such that
+        `dim.timer < lock.timer < powerSaving.timer`";
+        }
       ];
+
+      programs.swaylock = {
+        inherit (cfg) package;
+        enable = true;
+        settings =
+          {
+            indicator-radius = cfg.indicatorRadius;
+            font-size = cfg.font.size;
+            font = cfg.font.name;
+          }
+          // theme.swaylock.settings;
+      };
+    }
+    # COMPATIBILITY: Unallow Hypridle with 23.11
+    // optionalAttrs (builtins.hasAttr "hypridle" options.services) {
+      services.hypridle = {
+        enable = true;
+        settings = {
+          listeners = [
+            (mkIf cfg.timeouts.dim.enable {
+              timeout = cfg.timeouts.dim.timer;
+              onTimeout = "${getExe pkgs.dim-on-lock} --dim ${toString cfg.timeouts.dim.dimValue}";
+              onResume = "${getExe pkgs.dim-on-lock} --undim";
+            })
+
+            (mkIf cfg.timeouts.lock.enable {
+              timeout = cfg.timeouts.lock.timer;
+              onTimeout = "${getExe config.programs.swaylock.package} -fF --grace ${toString cfg.gracePeriod}";
+            })
+
+            (mkIf cfg.timeouts.powerSaving.enable {
+              timeout = cfg.timeouts.powerSaving.timer;
+              onTimeout = "${getExe pkgs.dim-on-lock} --undim && ${getExe pkgs.dim-on-lock} --no-min --dim 100";
+              onResume = "${getExe pkgs.dim-on-lock} --undim";
+            })
+          ];
+        };
+      };
     };
-  };
 }

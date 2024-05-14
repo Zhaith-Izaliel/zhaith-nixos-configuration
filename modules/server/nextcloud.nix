@@ -86,12 +86,5 @@ in {
       enableACME = true;
       forceSSL = true;
     };
-
-    security.acme = {
-      acceptTerms = true;
-      certs = {
-        ${domain}.email = cfg.acmeEmail;
-      };
-    };
   };
 }

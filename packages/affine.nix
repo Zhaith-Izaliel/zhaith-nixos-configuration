@@ -2,7 +2,7 @@
   appimageTools,
   fetchurl,
 }: let
-  name = "affine";
+  name = "AFFiNE";
 
   version = "0.13.4";
 
@@ -17,8 +17,12 @@ in
     inherit name src version;
 
     extraInstallCommands = ''
-      install -m 444 -D ${appimageContents}/AFFiNE.desktop $out/share/applications/AFFiNE.desktop
-      sed -i 's/.*Exec.*/Exec=affine/' $out/share/applications/AFFiNE.desktop
+      install -m 444 -D ${appimageContents}/${name}.desktop $out/share/applications/${name}.desktop
+      sed -i 's/.*Exec.*/Exec=${name}/' $out/share/applications/${name}.desktop
       cp -r ${appimageContents}/usr/share/icons $out/share
     '';
+
+    meta = {
+      mainProgram = name;
+    };
   }

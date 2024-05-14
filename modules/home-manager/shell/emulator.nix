@@ -17,30 +17,36 @@
       ''
     )
     ''
-      ${pkgs.procps}/bin/pgrep "alacritty" &> /dev/null
-      local exit_code="$?"
-      if [ "$exit_code" = "0" ]; then
-        ${getExe cfg.package} msg create-window
-      else
-        ${getExe cfg.package}
-      fi
+      ${getExe cfg.package}
     ''
   ]);
-  theme = config.hellebore.theme.themes.${cfg.theme};
+  theme = config.hellebore.theme.themes.${cfg.theme}.wezterm;
 in {
   options.hellebore.shell.emulator = {
     enable = mkEnableOption "Hellebore terminal emulator configuration";
 
     font =
-      (extra-types.font {
+      extra-types.font {
         size = config.hellebore.font.size;
         sizeDescription = "Set the terminal emulator font size.";
-        name = "FiraCode Nerd Font";
+        name = "Fira Code";
         nameDescription = "Set the terminal emulator font family.";
-      })
+      }
       // {
-        enableLigatures = mkEnableOption "Font Ligatures for the Terminal Emulator";
+        emoji = mkOption {
+          default = "Noto Color Emoji";
+          type = types.nonEmptyStr;
+          description = "Defines the font used to render emojis.";
+        };
+
+        nerd-font = mkOption {
+          default = "FiraCode Nerd Font";
+          type = types.nonEmptyStr;
+          description = "Defines the font use to render Nerdfonts glyphs.";
+        };
       };
+
+    enableZshIntegration = mkEnableOption "ZSH integration";
 
     theme = extra-types.theme.name {
       default = config.hellebore.theme.name;
@@ -61,7 +67,7 @@ in {
       };
     };
 
-    package = mkPackageOption pkgs "alacritty" {};
+    package = mkPackageOption pkgs "wezterm" {};
 
     bin = mkOption {
       type = types.str;
@@ -72,41 +78,50 @@ in {
   };
 
   config = mkIf cfg.enable {
-    programs.alacritty = {
+    home.packages = [cfg.package];
+
+    programs.wezterm = {
+      inherit (cfg) package;
       enable = true;
-      package = cfg.package;
+      enableZshIntegration = true;
+      enableBashIntegration = true;
 
-      settings = {
-        import = [
-          (theme.alacritty.file)
-        ];
+      extraConfig = ''
+        local wezterm = require("wezterm")
+        local config = wezterm.config_builder() or {}
 
-        window = {
-          decorations = "None";
-          opacity = 0.8;
-        };
+        config.enable_wayland = false
 
-        font = {
-          normal = {
-            family = "${cfg.font.name}";
-            style = "Regular";
-          };
+        -- don't care about tabs
+        config.enable_tab_bar = false
+        config.use_fancy_tab_bar = false
+        config.show_tabs_in_tab_bar = false
+        config.show_new_tab_button_in_tab_bar = false
 
-          size = cfg.font.size;
-        };
+        -- colorscheme
+        config.color_scheme = "${theme.theme}"
+        config.window_background_opacity = 0.85
 
-        cursor = {
-          style = {
-            shape = "Beam";
-            blinking = "Always";
-          };
+        config.font_size = ${toString cfg.font.size}
+        config.font = wezterm.font_with_fallback({
+        	{
+        		family = "${cfg.font.name}",
+        		weight = "Regular",
+        		harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
+        	},
+        	{ family = "${cfg.font.emoji}", weight = "Regular" },
+        	{ family = "${cfg.font.nerd-font}", weight = "Regular" },
+        })
 
-          vi_mode_style = {
-            shape = "Block";
-            blinking = "Always";
-          };
-        };
-      };
+        config.window_padding = {
+         left = 0,
+         right = 0,
+         top = 0,
+         bottom = 0,
+        }
+
+        return config
+      '';
     };
   };
 }

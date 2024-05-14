@@ -21,6 +21,17 @@ in {
         type = types.nonEmptyStr;
         description = "Defines the user running InvoiceShelf.";
       };
+
+      dbPasswordFile = mkOption {
+        default = "";
+        type = types.nonEmptyStr;
+        description = ''
+          The env file containing the DB password, in the form:
+          ```
+            DB_PASSWORD="password"
+          ```
+        '';
+      };
     }
     // extra-types.server-app {
       name = "InvoiceShelf";
@@ -42,15 +53,24 @@ in {
         ];
 
         environment = {
+          APP_ENV = "production";
+          SESSION_DOMAIN = domain;
+          SANCTUM_STATEFUL_DOMAINS = domain;
+          APP_URL = "https://${domain}";
+          APP_FORCE_HTTPS = "true";
           PHP_TZ = config.time.timeZone;
           TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
-          DB_HOST = "host.containers.internal";
+          DB_HOST = "10.0.2.2";
           DB_PORT = toString config.services.postgresql.port;
           DB_DATABASE = "invoiceshelf";
           DB_USERNAME = cfg.user;
           STARTUP_DELAY = "0";
         };
+
+        environmentFiles = [
+          cfg.dbPasswordFile
+        ];
 
         extraOptions = [
           "--network"
@@ -74,12 +94,5 @@ in {
     services.postgresql.authentication = ''
       host invoiceshelf invoiceshelf 10.88.0.0/16 md5
     '';
-
-    security.acme = {
-      acceptTerms = true;
-      certs = {
-        ${domain}.email = cfg.acmeEmail;
-      };
-    };
   };
 }

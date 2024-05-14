@@ -39,12 +39,5 @@ in {
         proxyPass = "http://localhost:${toString cfg.port}";
       };
     };
-
-    security.acme = {
-      acceptTerms = true;
-      certs = {
-        ${domain}.email = cfg.acmeEmail;
-      };
-    };
   };
 }

@@ -17,6 +17,7 @@
       "lp"
       "podman"
       "video"
+      "gamemode"
     ];
     group = "zhaith";
     description = "Virgil Ribeyre";

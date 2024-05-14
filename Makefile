@@ -1,5 +1,8 @@
 rebuild:
 	nixos-rebuild switch --flake . --use-remote-sudo
+
+rebuild-boot:
+	nixos-rebuild boot --flake . --use-remote-sudo
 	
 rebuild-home:
 	rm -f /home/zhaith/.mozilla/firefox/zhaith/search.json.mozlz4.backup
@@ -13,6 +16,8 @@ debug-home:
 
 update:
 	nix flake update
+
+system-upgrade: update rebuild-boot rebuild-home
 
 # Update specific input
 # usage: make upp i=home-manager

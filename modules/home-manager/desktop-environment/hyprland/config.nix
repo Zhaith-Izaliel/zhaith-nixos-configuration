@@ -183,7 +183,7 @@ in {
         (optional config.hellebore.shell.emulator.enable
           "[workspace 1] ${config.hellebore.shell.emulator.bin}")
         (optional config.hellebore.tools.affine.enable
-          "[workspace 2 silent] affine")
+          "[workspace 2 silent] ${getExe config.hellebore.tools.affine.package}")
         (optional config.hellebore.tools.discord.enable
           "[workspace 3 silent] ${getExe config.hellebore.tools.discord.finalPackage}")
         (optional config.hellebore.desktop-environment.mail.enable
@@ -200,7 +200,7 @@ in {
 
         "$mainMod, C, killactive,"
         "$mainMod, E, exec, nemo"
-        "$mainMod, P, exec, hyprpicker -a"
+        "$mainMod, P, exec, ${getExe pkgs.hyprpicker} -a"
 
         "$mainMod, J, togglesplit," # Dwindle
         "$mainMod, M, fullscreen, 1" # Maximize window

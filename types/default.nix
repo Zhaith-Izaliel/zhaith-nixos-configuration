@@ -122,6 +122,7 @@ in rec {
     package ? null,
     group ? "",
     port ? null,
+    database ? null,
   }: {
     enable = mkEnableOption "Hellebore's ${name} configuration";
 
@@ -131,6 +132,12 @@ in rec {
       type = types.nonEmptyStr;
       default = group;
       description = "Defines the user group for ${name}.";
+    };
+
+    database = mkOption {
+      type = types.nonEmptyStr;
+      default = database;
+      description = "The database name for ${name}.";
     };
 
     port = mkOption {

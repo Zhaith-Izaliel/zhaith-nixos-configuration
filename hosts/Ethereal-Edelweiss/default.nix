@@ -1,12 +1,9 @@
 {
   pkgs,
-  inputs,
   lib,
   config,
   ...
-}: let
-  virgilribeyre-package = inputs.virgilribeyre-com.packages.${pkgs.system}.default;
-in {
+}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -62,37 +59,17 @@ in {
     };
   };
 
-  # virgilribeyre.com
-  services.nginx.virtualHosts."virgilribeyre.com" = {
-    enableACME = true;
-    forceSSL = true;
-
-    serverAliases = [
-      "www.virgilribeyre.com"
-    ];
-
-    locations = {
-      "/" = {
-        root = "${virgilribeyre-package}";
-        index = "index.html";
-        tryFiles = "$uri $uri/ /index.html";
-      };
-    };
-  };
-
-  security.acme = {
-    acceptTerms = true;
-    certs = {
-      "virgilribeyre.com".email = "virgil.ribeyre@protonmail.com";
-    };
-  };
-
   hellebore = {
     font.size = 12;
 
     theme.name = "catppuccin-macchiato";
 
     server = {
+      acme = {
+        enable = true;
+        email = "virgil.ribeyre@protonmail.com";
+      };
+
       postgresql = {
         enable = true;
         package = pkgs.postgresql_15;
@@ -111,6 +88,7 @@ in {
         subdomain = "invoices";
         acmeEmail = "virgil.ribeyre@protonmail.com";
         volume = "/mnt/datas/invoiceshelf/volume";
+        dbPasswordFile = "/mnt/datas/invoiceshelf/db-pass";
       };
 
       jellyfin = {
@@ -132,6 +110,8 @@ in {
         enable = true;
         maxretry = 3;
       };
+
+      virgilribeyre-com.enable = true;
     };
 
     network = {
@@ -164,7 +144,10 @@ in {
 
     locale.enable = true;
 
-    development.enable = true;
+    development = {
+      enable = true;
+      enablePodman = true;
+    };
 
     ssh = {
       enable = true;

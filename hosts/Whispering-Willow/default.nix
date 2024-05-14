@@ -26,8 +26,8 @@
   ];
 
   boot = {
-    kernelPackages = stable-pkgs.linuxPackages;
-    initrd.kernelModules = ["i915"];
+    kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
+    # initrd.kernelModules = ["i915"];
   };
 
   hellebore = {
@@ -72,7 +72,10 @@
     games = {
       enable = true;
       steam.enable = true;
-      minecraft.enable = true;
+      minecraft = {
+        enable = true;
+        mods.enable = true;
+      };
       cartridges.enable = true;
       lutris.enable = true;
       gamemode.enable = true;
@@ -84,7 +87,7 @@
         enable = true;
         power-profiles.enable = true;
         power-management.enable = true;
-        modesetting.enable = false;
+        modesetting.enable = true;
         forceWaylandOnMesa = true;
         deviceFilterName = "RTX 3060";
         open = false;
@@ -92,6 +95,9 @@
           offload.enable = true;
           intelBusId = "PCI:0:2:0";
           nvidiaBusId = "PCI:1:0:0";
+        };
+        fixes = {
+          usbCDriversWronglyLoaded = true;
         };
       };
 
@@ -186,17 +192,17 @@
         ];
       };
 
-      # upower = {
-      #   enable = true;
-      #   notify = true;
-      #   percentageLow = 15;
-      #   percentageCritical = 10;
-      #   percentageAction = 5;
-      # };
+      upower = {
+        enable = true;
+        notify = true;
+        percentageLow = 15;
+        percentageCritical = 10;
+        percentageAction = 5;
+      };
     };
 
     vm = {
-      enable = true;
+      enable = false;
 
       useSecureBoot = true;
 

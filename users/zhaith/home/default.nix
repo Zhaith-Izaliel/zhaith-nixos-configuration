@@ -1,12 +1,12 @@
 {
   config,
+  os-config,
+  lib,
   pkgs,
   ...
-}: {
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0" # Obsidian
-  ];
-
+}: let
+  inherit (lib) optional;
+in {
   hellebore = {
     theme.name = "catppuccin-macchiato";
 
@@ -23,25 +23,33 @@
           enable = true;
           position = "top-right";
         };
-        extraWindowRules = [
-          {
-            regex = "class:(steam_app_).*";
-            rules = [
-              "workspace 5"
-              "idleinhibit"
-            ];
-          }
-          {
-            regex = "class:(gw2).*";
-            rules = [
-              "workspace 5"
-              "idleinhibit"
-              "noblur"
-              "noborder"
-              "noshadow"
-            ];
-          }
-        ];
+        extraWindowRules = let
+          gameRules = [
+            "workspace 5"
+            "idleinhibit"
+            "noblur"
+            "noborder"
+            "noshadow"
+          ];
+        in
+          [
+            {
+              regex = "class:(steam_app_).*";
+              rules = gameRules;
+            }
+            {
+              regex = "class:(gw2).*";
+              rules = gameRules;
+            }
+          ]
+          ++ optional os-config.hellebore.games.minecraft.enable {
+            regex = "class:(Minecraft).*";
+            rules =
+              gameRules
+              ++ [
+                "fullscreen"
+              ];
+          };
       };
 
       lockscreen = {
@@ -121,6 +129,7 @@
 
       browsers = {
         enable = true;
+        package = pkgs.firefox-bin;
         profiles.zhaith.enable = true;
       };
     };
@@ -175,10 +184,12 @@
 
     shell = {
       enable = true;
+      enableImageSupport = true;
       prompt.enable = true;
       workspace.enable = true;
       emulator = {
         enable = true;
+        enableZshIntegration = true;
         integratedGPU = {
           enable = false;
           driver = "iris";

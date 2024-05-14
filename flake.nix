@@ -26,23 +26,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # zhaith-neovim = {
-    #   url = "gitlab:Zhaith-Izaliel/neovim-config/develop";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
     zhaith-helix = {
       url = "gitlab:Zhaith-Izaliel/helix-config/develop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hypridle = {
-      url = "github:/hyprwm/hypridle";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     sddm-sugar-candy-nix = {
-      url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
+      url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix/bugfix/issue-1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -106,7 +96,6 @@
     nixpkgs-stable,
     grub2-themes,
     nix-alien,
-    hypridle,
     sddm-sugar-candy-nix,
     virgutils,
     rofi-applets,
@@ -125,7 +114,6 @@
       extraHomeManagerModules = [
         zhaith-helix.homeManagerModules.default
         rofi-applets.homeManagerModules.default
-        hypridle.homeManagerModules.default
       ];
 
       extraServerModules = [];

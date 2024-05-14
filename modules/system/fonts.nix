@@ -20,7 +20,7 @@ in {
         twitter-color-emoji
         cantarell-fonts
         ubuntu_font_family
-        corefonts
+        # corefonts
         (nerdfonts.override {
           fonts = [
             "Ubuntu"

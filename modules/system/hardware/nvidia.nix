@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption types mkIf;
+  inherit (lib) mkEnableOption mkOption types mkIf optionalString;
   cfg = config.hellebore.hardware.nvidia;
 in {
   options.hellebore.hardware.nvidia = {
@@ -53,6 +53,10 @@ in {
       sync.enable = mkEnableOption "Nvidia PRIME sync mode";
 
       reverseSync.enable = mkEnableOption "Nvidia PRIME reverse-sync mode";
+    };
+
+    fixes = {
+      usbCDriversWronglyLoaded = (mkEnableOption null) // {description = "Fixes the USB-C driver for the NVidia Card being loaded while not having USB-C capabilities, creating a Kernel Panic on Shutdowns";};
     };
   };
 
@@ -122,5 +126,10 @@ in {
         };
       };
     };
+
+    # NOTE: Fix Kernel Panics with the Kernel trying to use the USB-C driver on a non-USB-C compatible Nvidia Card.
+    boot.extraModprobeConfig = optionalString cfg.fixes.usbCDriversWronglyLoaded ''
+      blacklist i2c_nvidia_gpu
+    '';
   };
 }
