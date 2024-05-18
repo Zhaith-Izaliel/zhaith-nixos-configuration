@@ -1,3 +1,4 @@
+
 rebuild:
 	nixos-rebuild switch --flake . --use-remote-sudo
 
@@ -39,3 +40,10 @@ clean:
 gc:
 	sudo nix-collect-garbage -d
 	nix-collect-garbage -d
+
+full-gc:
+	nix-store --gc --print-roots | egrep -v "^(/nix/var|/run/\w+-system|\{memory|/proc)" | awk '{ print $$1 }' | grep -vE 'home-manager|flake-registry\.json|\{censored\}|profile-([1-9])*-link' | xargs -L1 unlink
+	$(MAKE) gc
+	nix store optimise
+	sudo nix store optimise
+	

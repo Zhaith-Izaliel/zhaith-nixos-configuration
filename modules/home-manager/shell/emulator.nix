@@ -115,6 +115,10 @@ in {
 
         config.window_close_confirmation = "NeverPrompt"
 
+        config.enable_kitty_keyboard = true
+
+        config.audible_bell = "Disabled";
+
         config.window_padding = {
          left = 0,
          right = 0,
