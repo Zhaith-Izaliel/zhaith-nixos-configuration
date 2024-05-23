@@ -2,14 +2,23 @@
   config,
   lib,
   extra-types,
+  pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption mkIf types recursiveUpdate cleanSource;
+  inherit (lib) mkEnableOption mkOption mkPackageOption mkIf types elemAt splitString;
   cfg = config.hellebore.desktop-environment.notifications;
   theme = config.hellebore.theme.themes.${cfg.theme};
+  finalPositions = let
+    positions = splitString "-" cfg.position;
+  in {
+    x = elemAt positions 1;
+    y = elemAt positions 0;
+  };
 in {
   options.hellebore.desktop-environment.notifications = {
-    enable = mkEnableOption "Hellebore Dunst configuration";
+    enable = mkEnableOption "Hellebore's notifications center configuration";
+
+    package = mkPackageOption pkgs "swaynotificationcenter" {};
 
     font = extra-types.font {
       inherit (config.hellebore.font) name size;
@@ -52,45 +61,55 @@ in {
   };
 
   config = mkIf cfg.enable {
-    services.dunst = {
+    # services.dunst = {
+    #   enable = true;
+    #   inherit (theme.gtk) iconTheme;
+
+    #   settings = recursiveUpdate theme.dunst.settings {
+    #     global = {
+    #       inherit (cfg) width height;
+    #       font = "${cfg.font.name} ${toString cfg.font.size}";
+    #       origin = cfg.position;
+    #       progress_bar = true;
+    #       enable_posix_regex = true;
+    #     };
+
+    #     volume_brightness = {
+    #       summary = "Volume|Brightness";
+    #       history_ignore = true;
+    #       set_stack_tag = "synchronous";
+    #       timeout = 2;
+    #     };
+
+    #     volume_icon = {
+    #       summary = "Volume";
+    #       default_icon = toString (cleanSource ../../../assets/images/icons/volume.png);
+    #     };
+
+    #     volume_onehundred = {
+    #       msg_urgency = "low";
+    #       summary = "Volume";
+    #     };
+
+    #     volume_overamplified = {
+    #       msg_urgency = "critical";
+    #       summary = "Volume";
+    #     };
+
+    #     brightness_icon = {
+    #       summary = "Brightness";
+    #       default_icon = toString (cleanSource ../../../assets/images/icons/brightness.png);
+    #     };
+    #   };
+    # };
+
+    services.swaync = {
+      inherit (cfg) package;
       enable = true;
-      inherit (theme.gtk) iconTheme;
-
-      settings = recursiveUpdate theme.dunst.settings {
-        global = {
-          inherit (cfg) width height;
-          font = "${cfg.font.name} ${toString cfg.font.size}";
-          origin = cfg.position;
-          progress_bar = true;
-          enable_posix_regex = true;
-        };
-
-        volume_brightness = {
-          summary = "Volume|Brightness";
-          history_ignore = true;
-          set_stack_tag = "synchronous";
-          timeout = 2;
-        };
-
-        volume_icon = {
-          summary = "Volume";
-          default_icon = toString (cleanSource ../../../assets/images/icons/volume.png);
-        };
-
-        volume_onehundred = {
-          msg_urgency = "low";
-          summary = "Volume";
-        };
-
-        volume_overamplified = {
-          msg_urgency = "critical";
-          summary = "Volume";
-        };
-
-        brightness_icon = {
-          summary = "Brightness";
-          default_icon = toString (cleanSource ../../../assets/images/icons/brightness.png);
-        };
+      # style = theme.swaync.style;
+      settings = {
+        positionX = finalPositions.x;
+        positionY = finalPositions.y;
       };
     };
   };
