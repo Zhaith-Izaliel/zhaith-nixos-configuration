@@ -52,13 +52,6 @@ in {
       applications.";
     };
 
-    mirrorFirstMonitor =
-      mkEnableOption null
-      // {
-        description = "Allow Hyprland to mirror the first monitor defined in its
-      monitors list when connecting an unknown monitor.";
-      };
-
     wallpaper = mkOption {
       type = types.path;
       default = ../../../../assets/images/wallpaper/wallpaper.png;

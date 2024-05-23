@@ -16,6 +16,11 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    simple-nixos-mail-server = {
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-23.11";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
     grub2-themes = {
       url = "github:/vinceliuice/grub2-themes";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -101,6 +106,7 @@
     rofi-applets,
     zhaith-helix,
     home-manager-stable,
+    simple-nixos-mail-server,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -116,7 +122,9 @@
         rofi-applets.homeManagerModules.default
       ];
 
-      extraServerModules = [];
+      extraServerModules = [
+        simple-nixos-mail-server.nixosModules.default
+      ];
     };
     customOverlay = import ./overlay {inherit inputs;};
     overlays = [

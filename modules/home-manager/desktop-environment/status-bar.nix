@@ -70,6 +70,12 @@ in {
       description = "Set the status bar theme used.";
     };
 
+    monitor = mkOption {
+      type = types.nonEmptyStr;
+      default = (elemAt config.hellebore.monitors 0).name;
+      description = "Defines the monitor on which the status bar should be rendered";
+    };
+
     tray = {
       icon-size = mkOption {
         type = types.ints.unsigned;
@@ -128,7 +134,7 @@ in {
       settings = recursiveUpdate waybar-theme.settings {
         mainBar = {
           inherit (cfg) tray;
-          output = (elemAt config.hellebore.monitors 0).name;
+          output = cfg.monitor;
 
           "custom/weather" = {
             tooltip = true;

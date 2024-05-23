@@ -17,7 +17,6 @@ in {
 
       hyprland = {
         enable = true;
-        mirrorFirstMonitor = true;
         input.mouse.scrollFactor = 0.8;
         picture-in-picture = {
           enable = true;
@@ -39,6 +38,10 @@ in {
             }
             {
               regex = "class:(gw2).*";
+              rules = gameRules;
+            }
+            {
+              regex = "class:(factorio).*";
               rules = gameRules;
             }
           ]

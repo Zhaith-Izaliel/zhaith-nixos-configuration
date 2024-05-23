@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: {
   imports = [
@@ -36,7 +37,7 @@
 
     monitors = [
       {
-        name = "eDP-1";
+        name = "eDP-2";
         width = 2560;
         height = 1440;
         refreshRate = 165;
@@ -44,19 +45,19 @@
         yOffset = 0;
         scaling = 1.0;
       }
-      # {
-      #   name = "";
-      #   width = 1920;
-      #   height = 1080;
-      #   refreshRate = 60;
-      #   xOffset = 0;
-      #   yOffset = 0;
-      #   scaling = 1.0;
-      #   extraArgs = [
-      #     "mirror"
-      #     (builtins.elemAt monitors 0).name
-      #   ];
-      # }
+      {
+        name = "";
+        width = 1920;
+        height = 1080;
+        refreshRate = 60;
+        xOffset = 0;
+        yOffset = 0;
+        scaling = 1.0;
+        extraArgs = [
+          "mirror"
+          (builtins.elemAt config.hellebore.monitors 0).name
+        ];
+      }
     ];
 
     network = {
