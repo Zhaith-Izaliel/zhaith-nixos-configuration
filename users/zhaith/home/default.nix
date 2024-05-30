@@ -22,6 +22,11 @@ in {
           enable = true;
           position = "top-right";
         };
+        switches = {
+          lid = {
+            enable = true;
+          };
+        };
         extraWindowRules = let
           gameRules = [
             "workspace 5"
@@ -193,10 +198,6 @@ in {
       emulator = {
         enable = true;
         enableZshIntegration = true;
-        integratedGPU = {
-          enable = false;
-          driver = "iris";
-        };
       };
     };
   };

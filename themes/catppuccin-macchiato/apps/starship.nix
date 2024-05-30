@@ -124,6 +124,7 @@ in rec {
 
       haskell = {
         symbol = " ";
+        style = "bold fg:${colors.normal.lavender}";
       };
 
       cmake = {

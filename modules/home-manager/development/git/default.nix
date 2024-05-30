@@ -60,8 +60,8 @@ in {
     };
 
     programs.gitui = mkIf cfg.gitui.enable {
+      inherit (cfg.gitui) package;
       enable = true;
-      package = cfg.gitui.package;
       theme = builtins.readFile theme.gitui.file;
     };
   };

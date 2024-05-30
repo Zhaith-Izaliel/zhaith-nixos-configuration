@@ -11,8 +11,8 @@
 
     installPhase = ''
       mkdir -p $out
-      cp -r theme $out
+      cp -r themes $out
     '';
   };
-  file = "${package}/theme/macchiato.ron";
+  file = "${package}/themes/catppuccin-macchiato.ron";
 }
