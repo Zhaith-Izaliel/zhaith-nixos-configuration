@@ -81,6 +81,8 @@
     center-right = "87% 40%";
     top-right = "87% 6%";
   };
+
+  pInPName = "^.*(Picture-in-Picture).*$";
 in {
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland.settings = recursiveUpdate theme.hyprland.settings {
@@ -153,7 +155,7 @@ in {
             "workspace 6"
           ])
         ])
-        (optionals cfg.picture-in-picture.enable (mkWindowOrLayerRule "class:^.*(firefox).*$, title:^.*(Picture-in-Picture).*$" [
+        (optionals cfg.picture-in-picture.enable (mkWindowOrLayerRule "class:^.*(firefox).*$, title:${pInPName}" [
           "float"
           "pin"
           "size ${toString ((getMonitor 0).width / 8)} ${toString ((getMonitor 0).height / 8)}"
@@ -269,6 +271,8 @@ in {
 
         (optional appletsConfig.power-profiles.enable
           "$mainMod, Z, exec, ${getExe appletsConfig.power-profiles.package}")
+
+        (optional cfg.switches.lid.enable ", switch:[${cfg.switches.lid.name}], exec, ${config.hellebore.desktop-environment.lockscreen.bin}")
       ];
 
       bindl = [

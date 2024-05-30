@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: {
   imports = [
@@ -29,6 +30,12 @@
     # initrd.kernelModules = ["i915"];
   };
 
+  # Find vendor and device using `udevadm info /dev/dri/cardX --attribute-walk`
+  services.udev.extraRules = ''
+    KERNEL=="card*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x9a60", SYMLINK+="dri/by-name/intel-tigerlake-h-gt1"
+    KERNEL=="card*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x10de", ATTRS{device}=="0x2520", SYMLINK+="dri/by-name/nvidia-geforce-rtx-3060-mobile"
+  '';
+
   hellebore = {
     font.size = 12;
 
@@ -44,19 +51,19 @@
         yOffset = 0;
         scaling = 1.0;
       }
-      # {
-      #   name = "";
-      #   width = 1920;
-      #   height = 1080;
-      #   refreshRate = 60;
-      #   xOffset = 0;
-      #   yOffset = 0;
-      #   scaling = 1.0;
-      #   extraArgs = [
-      #     "mirror"
-      #     (builtins.elemAt monitors 0).name
-      #   ];
-      # }
+      {
+        name = "";
+        width = 1920;
+        height = 1080;
+        refreshRate = 60;
+        xOffset = 0;
+        yOffset = 0;
+        scaling = 1.0;
+        extraArgs = [
+          "mirror"
+          (builtins.elemAt config.hellebore.monitors 0).name
+        ];
+      }
     ];
 
     network = {
@@ -84,12 +91,12 @@
     hardware = {
       nvidia = {
         enable = true;
+        package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
         power-profiles.enable = true;
-        power-management.enable = true;
+        power-management.enable = false;
         modesetting.enable = true;
-        forceWaylandOnMesa = true;
         deviceFilterName = "RTX 3060";
-        open = true;
+        open = false;
         prime = {
           offload.enable = true;
           intelBusId = "PCI:0:2:0";
@@ -134,6 +141,7 @@
     bootloader = {
       enable = true;
       efiSupport = true;
+      theme.screen = "2k";
     };
 
     fonts.enable = true;
@@ -173,6 +181,13 @@
     hyprland = {
       enable = true;
       enableSwaylockPam = true;
+      renderingCards = {
+        enable = true;
+        defaultCards = [
+          "/dev/dri/by-name/intel-tigerlake-h-gt1"
+          # "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
+        ];
+      };
     };
 
     display-manager = {

@@ -40,6 +40,13 @@ in {
 
     package = mkPackageOption pkgs "swaylock-effects" {};
 
+    bin = mkOption {
+      readOnly = true;
+      type = types.nonEmptyStr;
+      default = "${getExe cfg.package} -fF";
+      description = "Defines the command used for locking the screen. Read-only.";
+    };
+
     timeouts = {
       dim = {
         enable = mkEnableOption "Dim Screen timeout";
@@ -132,7 +139,7 @@ in {
 
             (optionalAttrs cfg.timeouts.lock.enable {
               timeout = cfg.timeouts.lock.timer;
-              onTimeout = "${getExe config.programs.swaylock.package} -fF --grace ${toString cfg.gracePeriod}";
+              onTimeout = "${cfg.bin} --grace ${toString cfg.gracePeriod}";
             })
 
             (optionalAttrs cfg.timeouts.powerSaving.enable {

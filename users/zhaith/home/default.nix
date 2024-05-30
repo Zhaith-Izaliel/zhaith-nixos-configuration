@@ -17,11 +17,15 @@ in {
 
       hyprland = {
         enable = true;
-        mirrorFirstMonitor = true;
         input.mouse.scrollFactor = 0.8;
         picture-in-picture = {
           enable = true;
           position = "top-right";
+        };
+        switches = {
+          lid = {
+            enable = true;
+          };
         };
         extraWindowRules = let
           gameRules = [
@@ -39,6 +43,10 @@ in {
             }
             {
               regex = "class:(gw2).*";
+              rules = gameRules;
+            }
+            {
+              regex = "class:(factorio).*";
               rules = gameRules;
             }
           ]
@@ -190,10 +198,6 @@ in {
       emulator = {
         enable = true;
         enableZshIntegration = true;
-        integratedGPU = {
-          enable = false;
-          driver = "iris";
-        };
       };
     };
   };

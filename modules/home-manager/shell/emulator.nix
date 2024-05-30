@@ -5,21 +5,12 @@
   extra-types,
   ...
 }: let
-  inherit (lib) concatStringsSep optionalString mkOption mkEnableOption getExe types mkIf mkPackageOption;
+  inherit (lib) mkOption mkEnableOption getExe types mkIf mkPackageOption;
 
   cfg = config.hellebore.shell.emulator;
-  emulator-bin = pkgs.writeScriptBin "emulator-bin" (concatStringsSep "\n" [
-    (
-      optionalString cfg.integratedGPU.enable
-      ''
-        export MESA_LOADER_DRIVER_OVERRIDE=${cfg.integratedGPU.driver}
-        export __EGL_VENDOR_LIBRARY_FILENAMES=${pkgs.mesa.drivers}/share/glvnd/egl_vendor.d/50_mesa.json
-      ''
-    )
-    ''
-      ${getExe cfg.package}
-    ''
-  ]);
+  emulator-bin = pkgs.writeScriptBin "emulator-bin" ''
+    ${getExe cfg.package}
+  '';
   theme = config.hellebore.theme.themes.${cfg.theme}.wezterm;
 in {
   options.hellebore.shell.emulator = {
@@ -51,20 +42,6 @@ in {
     theme = extra-types.theme.name {
       default = config.hellebore.theme.name;
       description = "Defines the terminal emulator theme.";
-    };
-
-    integratedGPU = {
-      enable =
-        mkEnableOption null
-        // {
-          description = "Enable the terminal emulator to run on the integrated GPU on a multi GPU
-        setup.";
-        };
-      driver = mkOption {
-        type = types.enum ["i965" "iris" "radeonsi"];
-        default = "";
-        description = "Defines the driver to run the terminal emulator on a multi GPU setup.";
-      };
     };
 
     package = mkPackageOption pkgs "wezterm" {};
@@ -112,6 +89,12 @@ in {
         	{ family = "${cfg.font.emoji}", weight = "Regular" },
         	{ family = "${cfg.font.nerd-font}", weight = "Regular" },
         })
+
+        config.window_close_confirmation = "NeverPrompt"
+
+        config.enable_kitty_keyboard = true
+
+        config.audible_bell = "Disabled";
 
         config.window_padding = {
          left = 0,

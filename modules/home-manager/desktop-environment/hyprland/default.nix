@@ -52,13 +52,6 @@ in {
       applications.";
     };
 
-    mirrorFirstMonitor =
-      mkEnableOption null
-      // {
-        description = "Allow Hyprland to mirror the first monitor defined in its
-      monitors list when connecting an unknown monitor.";
-      };
-
     wallpaper = mkOption {
       type = types.path;
       default = ../../../../assets/images/wallpaper/wallpaper.png;
@@ -134,6 +127,22 @@ in {
         ];
         default = "bottom-left";
         description = "Defines the initial position of the Picture-in-Picture window.";
+      };
+
+      keymaps = {
+        enable = mkEnableOption "keymaps for moving picture-in-picture floating window";
+      };
+    };
+
+    switches = {
+      lid = {
+        enable = mkEnableOption "Lid Switch";
+
+        name = mkOption {
+          default = "Lid Switch";
+          type = types.nonEmptyStr;
+          description = "The name of the lid switch.";
+        };
       };
     };
   };
