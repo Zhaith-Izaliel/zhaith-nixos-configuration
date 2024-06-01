@@ -26,8 +26,8 @@ in {
   options.hellebore.server.factorio =
     {
       modsDir = mkOption {
-        type = types.nullOr types.path;
-        default = null;
+        type = types.path;
+        default = "";
         description = ''
           The directory containing the mods as .zip to install.
         '';
