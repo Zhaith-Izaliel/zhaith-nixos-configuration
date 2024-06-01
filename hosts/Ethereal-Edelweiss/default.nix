@@ -75,7 +75,8 @@
         enable = true;
         subdomain = "factorio";
         admins = [];
-        token = "da7b80b5cda8941d879484b2bfe400";
+        extraSettingsFile = "/mnt/datas/factorio/secret.json";
+        game-name = "Vanilla Maxime-Virgil";
       };
 
       fail2ban = {
@@ -92,7 +93,6 @@
           "${config.hellebore.server.calibre-web.subdomain}.${domain}"
           "${config.hellebore.server.jellyfin.subdomain}.${domain}"
           "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
-          "${config.hellebore.server.factorio.subdomain}.${domain}"
           domain
         ];
       in {

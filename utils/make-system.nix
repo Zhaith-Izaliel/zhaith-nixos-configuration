@@ -80,6 +80,10 @@
     types = import ../types {inherit lib pkgs inputs;};
     pkgs = import nixpkgs {
       inherit overlays system;
+      config = {
+        allowUnfree = true;
+        allowUnfreePredicate = _: true;
+      };
     };
     stable-pkgs = import inputs.nixpkgs-stable {
       inherit overlays system;
