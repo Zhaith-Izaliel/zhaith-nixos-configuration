@@ -72,7 +72,7 @@
       };
 
       factorio = {
-        enable = true;
+        enable = false;
         subdomain = "factorio";
         admins = [
           "Zhaith-Izaliel"
