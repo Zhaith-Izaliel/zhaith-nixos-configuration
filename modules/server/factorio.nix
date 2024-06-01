@@ -50,7 +50,7 @@ in {
         if cfg.modsDir == null
         then []
         else builtins.map modToDrv modList;
-      bind = "factorio.ethereal-edelweiss.cloud";
+      bind = domain;
     };
 
     networking.firewall.allowedUDPPorts = [
