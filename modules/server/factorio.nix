@@ -60,6 +60,8 @@ in {
         listen ${toString cfg.port} udp;
         server_name ${domain};
         proxy_pass localhost:${toString config.services.factorio.port};
+        proxy_responses 0;
+        proxy_bind ${config.services.factorio.bind};
       }
     '';
   };
