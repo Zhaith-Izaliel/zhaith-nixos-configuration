@@ -76,6 +76,8 @@
         subdomain = "factorio";
         admins = [];
         token = "da7b80b5cda8941d879484b2bfe400";
+        extraSettingsFile = lib.cleanSource /mnt/datas/factorio/secret.json;
+        game-name = "Vanilla Maxime-Virgil";
       };
 
       fail2ban = {
