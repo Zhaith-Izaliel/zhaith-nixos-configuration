@@ -5,10 +5,10 @@
   ...
 }: let
   inherit (lib) mkOption types mkIf mkDefault;
-  cfg = config.hellebore.server.calibre-web;
+  cfg = config.hellebore.server.factorio;
   domain = "${cfg.subdomain}.${config.networking.domain}";
 in {
-  options.hellebore.server.calibre-web =
+  options.hellebore.server.factorio =
     {
       mods = mkOption {
         type = types.listOf types.package;
