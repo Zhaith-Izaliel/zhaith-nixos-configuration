@@ -24,41 +24,6 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE72R8aIght+Ci0DjXvXJ4l1UZ2f7/phFHc5gfqJ16E4 virgil.ribeyre@protonmail.com"
   ];
 
-  services.inadyn = let
-    inherit (config.networking) domain;
-    domains = [
-      "${config.hellebore.server.nextcloud.subdomain}.${domain}"
-      "${config.hellebore.server.calibre-web.subdomain}.${domain}"
-      "${config.hellebore.server.jellyfin.subdomain}.${domain}"
-      "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
-      domain
-    ];
-  in {
-    enable = true;
-    settings = ''
-      period          = 300
-      verify-address  = true
-
-      provider default@ovh.com {
-        ssl         = true
-        username    = ${domain}-zhaith
-        password    = "@password_placeholder@"
-        hostname    = { ${lib.concatStringsSep ", " domains} }
-      }
-
-      provider default@ovh.com {
-        ssl = true
-        username = virgilribeyre.com-zhaith
-        password = "@password_placeholder@"
-        hostname = { virgilribeyre.com }
-      }
-    '';
-
-    passwords = {
-      "@password_placeholder@" = "/mnt/datas/inadyn/inadyn-password";
-    };
-  };
-
   hellebore = {
     font.size = 12;
 
@@ -112,6 +77,41 @@
       };
 
       virgilribeyre-com.enable = true;
+
+      inadyn = let
+        inherit (config.networking) domain;
+        domains = [
+          "${config.hellebore.server.nextcloud.subdomain}.${domain}"
+          "${config.hellebore.server.calibre-web.subdomain}.${domain}"
+          "${config.hellebore.server.jellyfin.subdomain}.${domain}"
+          "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
+          domain
+        ];
+      in {
+        enable = true;
+        settings = ''
+          period          = 300
+          verify-address  = true
+
+          provider default@ovh.com {
+            ssl         = true
+            username    = ${domain}-zhaith
+            password    = "@password_placeholder@"
+            hostname    = { ${lib.concatStringsSep ", " domains} }
+          }
+
+          provider default@ovh.com {
+            ssl = true
+            username = virgilribeyre.com-zhaith
+            password = "@password_placeholder@"
+            hostname = { virgilribeyre.com }
+          }
+        '';
+
+        passwords = {
+          "@password_placeholder@" = "/mnt/datas/inadyn/inadyn-password";
+        };
+      };
     };
 
     network = {
