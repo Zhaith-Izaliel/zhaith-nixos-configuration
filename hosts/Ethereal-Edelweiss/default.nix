@@ -74,7 +74,7 @@
       factorio = {
         enable = true;
         subdomain = "factorio";
-        admin = [];
+        admins = [];
       };
 
       fail2ban = {

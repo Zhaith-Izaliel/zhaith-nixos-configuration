@@ -2,24 +2,34 @@
   config,
   lib,
   extra-types,
+  pkgs,
   ...
 }: let
-  inherit (lib) mkOption types mkIf mkDefault;
+  inherit (lib) mkOption types mkIf mkDefault pipe;
   cfg = config.hellebore.server.factorio;
   domain = "${cfg.subdomain}.${config.networking.domain}";
+
+  modList = pipe cfg.modsDir [
+    builtins.readDir
+    (lib.filterAttrs (k: v: v == "regular"))
+    (lib.mapAttrsToList (k: v: k))
+    (builtins.filter (lib.hasSuffix ".zip"))
+  ];
+
+  modToDrv = modFileName:
+    pkgs.runCommand "copy-factorio-mods" {} ''
+      mkdir $out
+      cp ${cfg.modsDir + "/${modFileName}"} $out/${modFileName}
+    ''
+    // {deps = [];};
 in {
   options.hellebore.server.factorio =
     {
-      mods = mkOption {
-        type = types.listOf types.package;
-        default = [];
+      modsDir = mkOption {
+        type = types.nullOr types.path;
+        default = null;
         description = ''
-          Mods the server should install and activate.
-
-          The derivations in this list must "build" the mod by simply copying
-          the .zip, named correctly, into the output directory. Eventually,
-          there will be a way to pull in the most up-to-date list of
-          derivations via nixos-channel. Until then, this is for experts only.
+          The directory containing the mods as .zip to install.
         '';
       };
 
@@ -68,9 +78,10 @@ in {
 
   config = mkIf cfg.enable {
     services.factorio = {
-      inherit (cfg) package port mods admins extraSettingsFile mods-dat;
+      inherit (cfg) package port admins extraSettingsFile mods-dat;
       enable = true;
       openFirewall = true;
+      mods = builtins.map modToDrv modList;
     };
 
     hellebore.server.nginx.enable = mkDefault true;
