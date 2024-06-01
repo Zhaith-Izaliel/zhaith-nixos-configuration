@@ -19,7 +19,7 @@
   modToDrv = modFileName:
     pkgs.runCommand "copy-factorio-mods" {} ''
       mkdir $out
-      cp ${(toString cfg.modsDir) + "/${modFileName}"} $out/${modFileName}
+      cp ${cfg.modsDir + "/${modFileName}"} $out/${modFileName}
     ''
     // {deps = [];};
 in {
@@ -81,7 +81,10 @@ in {
       inherit (cfg) package port admins extraSettingsFile mods-dat;
       enable = true;
       openFirewall = true;
-      mods = builtins.map modToDrv modList;
+      mods =
+        if cfg.modsDir == null
+        then []
+        else builtins.map modToDrv modList;
     };
 
     hellebore.server.nginx.enable = mkDefault true;
