@@ -74,7 +74,9 @@
       factorio = {
         enable = true;
         subdomain = "factorio";
-        admins = [];
+        admins = [
+          "Zhaith-Izaliel"
+        ];
         extraSettingsFile = "/mnt/datas/factorio/secret.json";
         game-name = "Vanilla Maxime-Virgil";
       };
