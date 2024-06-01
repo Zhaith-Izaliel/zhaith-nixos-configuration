@@ -60,7 +60,7 @@ in {
     hellebore.server.nginx.enable = mkDefault true;
     services.nginx.streamConfig = ''
       server {
-        listen ${cfg.port} udp;
+        listen ${toString cfg.port} udp;
         server_name ${domain}
         proxy_pass localhost:${toString config.services.factorio.port};
       }
