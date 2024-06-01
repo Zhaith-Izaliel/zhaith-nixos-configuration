@@ -43,14 +43,14 @@ in {
 
   config = mkIf cfg.enable {
     services.factorio = {
-      inherit (cfg) package admins extraSettingsFile mods-dat;
+      inherit (cfg) package admins extraSettingsFile mods-dat port;
       enable = true;
-      port = 34198;
       requireUserVerification = false;
       mods =
         if cfg.modsDir == null
         then []
         else builtins.map modToDrv modList;
+      bind = "factorio.ethereal-edelweiss.cloud";
     };
 
     networking.firewall.allowedUDPPorts = [
@@ -58,12 +58,12 @@ in {
     ];
 
     hellebore.server.nginx.enable = mkDefault true;
-    services.nginx.streamConfig = ''
-      server {
-        listen ${toString cfg.port} udp;
-        server_name ${domain};
-        proxy_pass localhost:${toString config.services.factorio.port};
-      }
-    '';
+    # services.nginx.streamConfig = ''
+    #   server {
+    #     listen ${toString cfg.port} udp;
+    #     server_name ${domain};
+    #     proxy_pass localhost:${toString config.services.factorio.port};
+    #   }
+    # '';
   };
 }
