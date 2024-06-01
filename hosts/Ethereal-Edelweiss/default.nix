@@ -75,6 +75,7 @@
         enable = true;
         subdomain = "factorio";
         admins = [];
+        token = "da7b80b5cda8941d879484b2bfe400";
       };
 
       fail2ban = {

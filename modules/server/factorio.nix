@@ -1,5 +1,6 @@
 {
   config,
+  options,
   lib,
   extra-types,
   pkgs,
@@ -25,6 +26,7 @@
 in {
   options.hellebore.server.factorio =
     {
+      inherit (options.services.factorio) mods-dat admins extraSettingsFile token;
       modsDir = mkOption {
         type = types.nullOr types.path;
         default = null;
@@ -33,42 +35,42 @@ in {
         '';
       };
 
-      mods-dat = mkOption {
-        type = types.nullOr types.path;
-        default = null;
-        description = ''
-          Mods settings can be changed by specifying a dat file, in the [mod
-          settings file
-          format](https://wiki.factorio.com/Mod_settings_file_format).
-        '';
-      };
+      # mods-dat = mkOption {
+      #   type = types.nullOr types.path;
+      #   default = null;
+      #   description = ''
+      #     Mods settings can be changed by specifying a dat file, in the [mod
+      #     settings file
+      #     format](https://wiki.factorio.com/Mod_settings_file_format).
+      #   '';
+      # };
 
-      admins = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        example = ["username"];
-        description = ''
-          List of player names which will be admin.
-        '';
-      };
+      # admins = mkOption {
+      #   type = types.listOf types.str;
+      #   default = [];
+      #   example = ["username"];
+      #   description = ''
+      #     List of player names which will be admin.
+      #   '';
+      # };
 
-      extraSettingsFile = mkOption {
-        type = types.nullOr types.path;
-        default = null;
-        description = ''
-          File, which is dynamically applied to server-settings.json before
-          startup.
+      # extraSettingsFile = mkOption {
+      #   type = types.nullOr types.path;
+      #   default = null;
+      #   description = ''
+      #     File, which is dynamically applied to server-settings.json before
+      #     startup.
 
-          This option should be used for credentials.
+      #     This option should be used for credentials.
 
-          For example a settings file could contain:
-          ```json
-          {
-            "game-password": "hunter1"
-          }
-          ```
-        '';
-      };
+      #     For example a settings file could contain:
+      #     ```json
+      #     {
+      #       "game-password": "hunter1"
+      #     }
+      #     ```
+      #   '';
+      # };
     }
     // extra-types.server-app {
       name = "Factorio Server";
