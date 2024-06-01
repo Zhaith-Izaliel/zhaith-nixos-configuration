@@ -1,6 +1,5 @@
 {
   os-config,
-  options,
   config,
   lib,
   pkgs,
@@ -90,65 +89,63 @@ in {
     };
   };
 
-  config = mkIf cfg.enable ({
-      assertions = [
-        {
-          assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
-          message = "Hyprland must be enabled for Swaylock and Swayidle to
+  config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
+        message = "Hyprland must be enabled for Swaylock and Swayidle to
         properly work";
-        }
-        {
-          assertion = cfg.enable -> os-config.hellebore.hyprland.enableSwaylockPam;
-          message = "PAM service for Swaylock must be enabled to allow Swaylock
+      }
+      {
+        assertion = cfg.enable -> os-config.hellebore.hyprland.enableSwaylockPam;
+        message = "PAM service for Swaylock must be enabled to allow Swaylock
         to properly log you in.";
-        }
-        {
-          assertion =
-            cfg.enable
-            -> cfg.timeouts.dim.timer
-            < cfg.timeouts.lock.timer
-            && cfg.timeouts.lock.timer < cfg.timeouts.powerSaving.timer;
-          message = "Your timers should be in ascending order, such that
+      }
+      {
+        assertion =
+          cfg.enable
+          -> cfg.timeouts.dim.timer
+          < cfg.timeouts.lock.timer
+          && cfg.timeouts.lock.timer < cfg.timeouts.powerSaving.timer;
+        message = "Your timers should be in ascending order, such that
         `dim.timer < lock.timer < powerSaving.timer`";
+      }
+    ];
+
+    programs.swaylock = {
+      inherit (cfg) package;
+      enable = true;
+      settings =
+        {
+          indicator-radius = cfg.indicatorRadius;
+          font-size = cfg.font.size;
+          font = cfg.font.name;
         }
-      ];
+        // theme.swaylock.settings;
+    };
 
-      programs.swaylock = {
-        inherit (cfg) package;
-        enable = true;
-        settings =
-          {
-            indicator-radius = cfg.indicatorRadius;
-            font-size = cfg.font.size;
-            font = cfg.font.name;
-          }
-          // theme.swaylock.settings;
+    services.hypridle = {
+      enable = true;
+      settings = {
+        listeners = [
+          (optionalAttrs cfg.timeouts.dim.enable {
+            timeout = cfg.timeouts.dim.timer;
+            onTimeout = "${getExe pkgs.dim-on-lock} --dim ${toString cfg.timeouts.dim.dimValue}";
+            onResume = "${getExe pkgs.dim-on-lock} --undim";
+          })
+
+          (optionalAttrs cfg.timeouts.lock.enable {
+            timeout = cfg.timeouts.lock.timer;
+            onTimeout = "${cfg.bin} --grace ${toString cfg.gracePeriod}";
+          })
+
+          (optionalAttrs cfg.timeouts.powerSaving.enable {
+            timeout = cfg.timeouts.powerSaving.timer;
+            onTimeout = "${getExe pkgs.dim-on-lock} --undim && ${getExe pkgs.dim-on-lock} --no-min --dim 100";
+            onResume = "${getExe pkgs.dim-on-lock} --undim";
+          })
+        ];
       };
-    }
-    # COMPATIBILITY: Unallow Hypridle with 23.11
-    // optionalAttrs (builtins.hasAttr "hypridle" options.services) {
-      services.hypridle = {
-        enable = true;
-        settings = {
-          listeners = [
-            (optionalAttrs cfg.timeouts.dim.enable {
-              timeout = cfg.timeouts.dim.timer;
-              onTimeout = "${getExe pkgs.dim-on-lock} --dim ${toString cfg.timeouts.dim.dimValue}";
-              onResume = "${getExe pkgs.dim-on-lock} --undim";
-            })
-
-            (optionalAttrs cfg.timeouts.lock.enable {
-              timeout = cfg.timeouts.lock.timer;
-              onTimeout = "${cfg.bin} --grace ${toString cfg.gracePeriod}";
-            })
-
-            (optionalAttrs cfg.timeouts.powerSaving.enable {
-              timeout = cfg.timeouts.powerSaving.timer;
-              onTimeout = "${getExe pkgs.dim-on-lock} --undim && ${getExe pkgs.dim-on-lock} --no-min --dim 100";
-              onResume = "${getExe pkgs.dim-on-lock} --undim";
-            })
-          ];
-        };
-      };
-    });
+    };
+  };
 }
