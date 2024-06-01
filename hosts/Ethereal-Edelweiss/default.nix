@@ -71,6 +71,13 @@
         acmeEmail = "virgil.ribeyre@protonmail.com";
       };
 
+      factorio = {
+        enable = true;
+        subdomain = "factorio";
+        admins = [];
+        token = "da7b80b5cda8941d879484b2bfe400";
+      };
+
       fail2ban = {
         enable = true;
         maxretry = 3;
@@ -85,6 +92,7 @@
           "${config.hellebore.server.calibre-web.subdomain}.${domain}"
           "${config.hellebore.server.jellyfin.subdomain}.${domain}"
           "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
+          "${config.hellebore.server.factorio.subdomain}.${domain}"
           domain
         ];
       in {
