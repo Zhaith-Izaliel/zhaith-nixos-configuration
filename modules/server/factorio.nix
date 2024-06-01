@@ -61,7 +61,7 @@ in {
     services.nginx.streamConfig = ''
       server {
         listen ${toString cfg.port} udp;
-        server_name ${domain}
+        server_name ${domain};
         proxy_pass localhost:${toString config.services.factorio.port};
       }
     '';
