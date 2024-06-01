@@ -1,10 +1,9 @@
 {
   config,
   lib,
-  options,
   ...
 }: let
-  inherit (lib) mkOption mkEnableOption mkIf types optionalAttrs;
+  inherit (lib) mkOption mkEnableOption mkIf types;
   cfg = config.hellebore.hardware.printing;
 in {
   options.hellebore.hardware.printing = {
@@ -29,13 +28,11 @@ in {
         drivers = cfg.drivers;
       };
 
-      avahi =
-        {
-          enable = true;
-          openFirewall = true;
-        }
-        # COMPATIBILITY: Compatibility for 23.11
-        // optionalAttrs (builtins.hasAttr "nssmdns4" options.services.avahi) {nssmdns4 = true;};
+      avahi = {
+        enable = true;
+        openFirewall = true;
+        nssmdns4 = true;
+      };
     };
   };
 }

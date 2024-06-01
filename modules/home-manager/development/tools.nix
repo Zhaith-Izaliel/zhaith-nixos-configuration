@@ -23,6 +23,7 @@ in {
       nix-npm-install
       hyperfine
       tokei
+      atac
     ]);
 
     home.sessionVariables = mkIf (!cfg.direnv.enableLogs) {
