@@ -12,7 +12,6 @@
     mkIf
     mkForce
     concatStringsSep
-    optionalString
     ;
 
   cfg = config.hellebore.server.postgresql;
