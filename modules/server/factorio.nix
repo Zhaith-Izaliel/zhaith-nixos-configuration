@@ -43,29 +43,14 @@ in {
 
   config = mkIf cfg.enable {
     services.factorio = {
-      inherit (cfg) package admins extraSettingsFile mods-dat;
-      port = 34198;
+      inherit (cfg) package admins extraSettingsFile mods-dat port;
       enable = true;
+      openFirewall = true;
       requireUserVerification = false;
       mods =
         if cfg.modsDir == null
         then []
         else builtins.map modToDrv modList;
     };
-
-    networking.firewall.allowedUDPPorts = [
-      cfg.port
-    ];
-
-    hellebore.server.nginx.enable = mkDefault true;
-    services.nginx.streamConfig = ''
-      server {
-        listen ${toString cfg.port} udp;
-        server_name ${domain};
-        proxy_pass localhost:${toString config.services.factorio.port};
-        proxy_responses 0;
-        proxy_bind ${config.services.factorio.bind};
-      }
-    '';
   };
 }
