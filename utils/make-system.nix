@@ -11,6 +11,10 @@
     lib = nixpkgs.lib;
     pkgs = import nixpkgs {
       inherit overlays system;
+      config = {
+        allowUnfree = true;
+        allowUnfreePredicate = _: true;
+      };
     };
     types = import ../types {inherit lib pkgs inputs;};
     stable-pkgs = import inputs.nixpkgs-stable {
