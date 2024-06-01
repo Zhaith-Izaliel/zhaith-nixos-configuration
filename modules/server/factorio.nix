@@ -6,9 +6,8 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkOption types mkIf mkDefault pipe;
+  inherit (lib) mkOption types mkIf pipe;
   cfg = config.hellebore.server.factorio;
-  domain = "${cfg.subdomain}.${config.networking.domain}";
 
   modList = pipe cfg.modsDir [
     builtins.readDir
@@ -26,7 +25,7 @@
 in {
   options.hellebore.server.factorio =
     {
-      inherit (options.services.factorio) mods-dat admins extraSettingsFile token;
+      inherit (options.services.factorio) mods-dat admins extraSettingsFile token requireUserVerification game-name;
       modsDir = mkOption {
         type = types.nullOr types.path;
         default = null;
@@ -34,6 +33,12 @@ in {
           The directory containing the mods as .zip to install.
         '';
       };
+
+      autosave-interval =
+        options.services.factorio.autosave-interval
+        // {
+          default = 20;
+        };
     }
     // extra-types.server-app {
       name = "Factorio Server";
@@ -43,10 +48,10 @@ in {
 
   config = mkIf cfg.enable {
     services.factorio = {
-      inherit (cfg) package admins extraSettingsFile mods-dat port;
+      inherit (cfg) package admins extraSettingsFile mods-dat port autosave-interval token requireUserVerification game-name;
       enable = true;
       openFirewall = true;
-      requireUserVerification = false;
+      loadLatestSave = true;
       mods =
         if cfg.modsDir == null
         then []

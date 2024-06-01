@@ -92,7 +92,6 @@
           "${config.hellebore.server.calibre-web.subdomain}.${domain}"
           "${config.hellebore.server.jellyfin.subdomain}.${domain}"
           "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
-          "${config.hellebore.server.factorio.subdomain}.${domain}"
           domain
         ];
       in {
