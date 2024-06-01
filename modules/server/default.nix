@@ -2,6 +2,7 @@
   imports = [
     ./acme.nix
     ./calibre.nix
+    ./factorio.nix
     ./fail2ban.nix
     ./inadyn.nix
     ./invoiceshelf.nix
