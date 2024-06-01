@@ -47,12 +47,15 @@ in {
       port = 34198;
       enable = true;
       requireUserVerification = false;
-      openFirewall = true;
       mods =
         if cfg.modsDir == null
         then []
         else builtins.map modToDrv modList;
     };
+
+    networking.firewall.allowedUDPPorts = [
+      cfg.port
+    ];
 
     hellebore.server.nginx.enable = mkDefault true;
     services.nginx.streamConfig = ''
