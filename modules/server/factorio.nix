@@ -19,15 +19,15 @@
   modToDrv = modFileName:
     pkgs.runCommand "copy-factorio-mods" {} ''
       mkdir $out
-      cp ${cfg.modsDir + "/${modFileName}"} $out/${modFileName}
+      cp ${(toString cfg.modsDir) + "/${modFileName}"} $out/${modFileName}
     ''
     // {deps = [];};
 in {
   options.hellebore.server.factorio =
     {
       modsDir = mkOption {
-        type = types.path;
-        default = "";
+        type = types.nullOr types.path;
+        default = null;
         description = ''
           The directory containing the mods as .zip to install.
         '';
