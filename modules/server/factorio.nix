@@ -25,7 +25,7 @@
 in {
   options.hellebore.server.factorio =
     {
-      inherit (options.services.factorio) mods-dat admins extraSettingsFile token requireUserVerification game-name;
+      inherit (options.services.factorio) mods-dat admins extraSettingsFile requireUserVerification game-name;
       modsDir = mkOption {
         type = types.nullOr types.path;
         default = null;
@@ -48,7 +48,7 @@ in {
 
   config = mkIf cfg.enable {
     services.factorio = {
-      inherit (cfg) package admins extraSettingsFile mods-dat port autosave-interval token requireUserVerification game-name;
+      inherit (cfg) package admins extraSettingsFile mods-dat port autosave-interval requireUserVerification game-name;
       enable = true;
       openFirewall = true;
       loadLatestSave = true;
