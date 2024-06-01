@@ -13,7 +13,7 @@ in {
     }
     // extra-types.server-app {
       name = "Nextcloud";
-      package = "nextcloud28";
+      package = "nextcloud29";
     };
 
   config = mkIf cfg.enable {
@@ -61,8 +61,11 @@ in {
         adminpassFile = "/mnt/datas/nextcloud/nextcloud-admin-pass";
         dbpassFile = "/mnt/datas/nextcloud/nextcloud-db-pass";
         adminuser = "Zhaith";
-        defaultPhoneRegion = "FR";
-        overwriteProtocol = "https";
+      };
+
+      settings = {
+        overwriteprotocol = "https";
+        default_phone_region = "FR";
       };
     };
 
