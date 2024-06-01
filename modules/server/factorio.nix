@@ -46,6 +46,7 @@ in {
       inherit (cfg) package admins extraSettingsFile mods-dat;
       enable = true;
       port = 34198;
+      requireUserVerification = false;
       mods =
         if cfg.modsDir == null
         then []
