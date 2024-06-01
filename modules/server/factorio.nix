@@ -46,18 +46,14 @@ in {
       inherit (cfg) package admins extraSettingsFile mods-dat port;
       enable = true;
       requireUserVerification = false;
+      openFirewall = true;
       mods =
         if cfg.modsDir == null
         then []
         else builtins.map modToDrv modList;
-      bind = domain;
     };
 
-    networking.firewall.allowedUDPPorts = [
-      cfg.port
-    ];
-
-    hellebore.server.nginx.enable = mkDefault true;
+    # hellebore.server.nginx.enable = mkDefault true;
     # services.nginx.streamConfig = ''
     #   server {
     #     listen ${toString cfg.port} udp;
