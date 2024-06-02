@@ -79,9 +79,7 @@
           "savaleinart"
         ];
         extraSettingsFile = "/mnt/datas/factorio/secret.json";
-        game-name = "Vanilla Maxime-Virgil";
-        modsDir = "/mnt/datas/factorio/mods";
-        mods-dat = "/mnt/datas/factorio/mods/mod-settings.dat";
+        game-name = "Modded Maxime-Virgil";
       };
 
       fail2ban = {
