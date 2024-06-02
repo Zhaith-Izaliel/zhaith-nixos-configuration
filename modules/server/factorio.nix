@@ -6,10 +6,11 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkOption types mkIf pipe;
+  inherit (lib) mkOption types mkIf pipe cleanSource;
   cfg = config.hellebore.server.factorio;
 
   modList = pipe cfg.modsDir [
+    cleanSource
     builtins.readDir
     (lib.filterAttrs (k: v: v == "regular"))
     (lib.mapAttrsToList (k: v: k))
