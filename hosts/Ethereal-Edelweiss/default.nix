@@ -72,13 +72,16 @@
       };
 
       factorio = {
-        enable = false;
+        enable = true;
         subdomain = "factorio";
         admins = [
           "Zhaith-Izaliel"
+          "savaleinart"
         ];
         extraSettingsFile = "/mnt/datas/factorio/secret.json";
         game-name = "Vanilla Maxime-Virgil";
+        modsDir = "/mnt/datas/factorio/mods";
+        mods-dat = "/mnt/datas/factorio/mods/mod-settings.dat";
       };
 
       fail2ban = {
