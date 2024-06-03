@@ -1004,11 +1004,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1717240508,
-        "narHash": "sha256-W0BIf1ZARtmZnjn9UtF8qBYMM1vecfvr4pQuX+97h30=",
+        "lastModified": 1717410293,
+        "narHash": "sha256-+W7pnkQRVi/V4yaqHgzYNixrJiB9OvI5HUXPfubJ5GA=",
         "owner": "Zhaith-Izaliel",
         "repo": "virgutils",
-        "rev": "b25384551f7e00a9f7432780775860aee7a6e9e3",
+        "rev": "9d619c60c11e72f6986b371c06f4c48207b45e17",
         "type": "gitlab"
       },
       "original": {
