@@ -24,6 +24,7 @@ in {
       hyperfine
       tokei
       atac
+      elasticdump
     ]);
 
     home.sessionVariables = mkIf (!cfg.direnv.enableLogs) {

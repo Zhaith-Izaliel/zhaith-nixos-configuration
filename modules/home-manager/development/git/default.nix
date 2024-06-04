@@ -47,6 +47,7 @@ in {
     home.packages = with pkgs; [
       gitAndTools.gitflow
       git-ignore
+      git-graph
     ];
 
     programs.git = {
