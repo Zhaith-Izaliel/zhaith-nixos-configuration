@@ -1,5 +1,6 @@
 {
   pkgs,
+  stable-pkgs,
   lib,
   config,
   ...
@@ -26,7 +27,7 @@
   ];
 
   boot = {
-    kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
+    kernelPackages = stable-pkgs.linuxPackages;
     # initrd.kernelModules = ["i915"];
   };
 
@@ -93,7 +94,7 @@
         enable = true;
         package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
         power-profiles.enable = true;
-        power-management.enable = false;
+        power-management.enable = true;
         modesetting.enable = true;
         deviceFilterName = "RTX 3060";
         open = false;

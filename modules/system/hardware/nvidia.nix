@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption types mkIf optionalString concatStringsSep;
+  inherit (lib) mkEnableOption mkOption types mkIf optionalString;
   cfg = config.hellebore.hardware.nvidia;
 in {
   options.hellebore.hardware.nvidia = {

@@ -178,7 +178,7 @@ in {
         "${getExe pkgs.swww} init"
         "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
         "swayosd --max-volume 150"
-        "hyprctl setcursor ${theme.gtk.cursorTheme.name} 24"
+        "hyprctl setcursor ${theme.gtk.cursorTheme.name} 32"
         (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
         (optional config.hellebore.desktop-environment.browsers.enable
           "[workspace 1] ${getExe pkgs.firefox}")

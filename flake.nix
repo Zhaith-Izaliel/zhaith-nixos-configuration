@@ -16,6 +16,12 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    hyprpicker = {
+      # HACK: Temporary fix until hyprpicker is merged in 0.3.0 in upstream nixpkgs
+      url = "github:hyprwm/hyprpicker";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     simple-nixos-mail-server = {
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-23.11";
       inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -132,6 +138,7 @@
       sddm-sugar-candy-nix.overlays.default
       virgutils.overlays.${system}.default
       customOverlay
+      inputs.hyprpicker.overlays.default
     ];
   in
     with import nixpkgs {inherit system;}; {

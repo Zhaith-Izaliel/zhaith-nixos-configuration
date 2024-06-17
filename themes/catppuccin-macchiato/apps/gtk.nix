@@ -28,7 +28,7 @@
 
   cursorTheme = {
     package = pkgs.catppuccin-cursors.macchiatoDark;
-    name = "Catppuccin-Macchiato-Dark-Cursors";
+    name = "catppuccin-macchiato-dark-cursors";
   };
 
   iconTheme = {
