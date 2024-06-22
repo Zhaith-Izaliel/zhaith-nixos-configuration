@@ -103,9 +103,9 @@
           intelBusId = "PCI:0:2:0";
           nvidiaBusId = "PCI:1:0:0";
         };
-        fixes = {
-          usbCDriversWronglyLoaded = true;
-        };
+        # fixes = {
+        #   usbCDriversWronglyLoaded = true;
+        # };
       };
 
       ntfs.enable = true;
@@ -117,13 +117,7 @@
         numerization.enable = true;
         drivers = with pkgs; [
           epson-escpr
-          (epson-escpr2.overrideAttrs (final: prev: {
-            nativeBuildInputs = with pkgs; [
-              coreutils # HACK: fixes `stat` missing some common arguments
-              # (like `--printf`)
-              busybox
-            ];
-          }))
+          epson-escpr2
         ];
       };
 
@@ -177,7 +171,7 @@
       };
     };
 
-    opengl.enable = true;
+    graphics.enable = true;
 
     hyprland = {
       enable = true;

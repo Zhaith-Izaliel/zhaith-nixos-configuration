@@ -61,11 +61,8 @@ in {
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion =
-          config.hardware.opengl.enable
-          && config.hardware.opengl.driSupport
-          && config.hardware.opengl.driSupport32Bit;
-        message = "You must enable OpenGL with DRI support (64 bits and 32 bits) to support Nvidia.";
+        assertion = config.hardware.graphics.enable && config.hardware.graphics.enable32Bit;
+        message = "You must enable OpenGL to support Nvidia.";
       }
       {
         assertion = config.hellebore.vm.enable -> cfg.forceWaylandOnMesa;

@@ -43,7 +43,7 @@ in {
     ./hyprland.nix
     ./locale.nix
     ./network.nix
-    ./opengl.nix
+    ./graphics.nix
     ./power-management.nix
     ./shell.nix
     ./sound.nix
