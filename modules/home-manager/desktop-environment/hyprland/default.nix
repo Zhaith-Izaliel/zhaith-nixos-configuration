@@ -167,6 +167,7 @@ in {
       XDG_SESSION_TYPE = "wayland";
       # XDG_SESSION_DESKTOP = "Hyprland";
       WLR_NO_HARDWARE_CURSORS = "1";
+      ADW_DISABLE_PORTAL = "1";
     };
 
     home.packages = with pkgs;
@@ -190,6 +191,14 @@ in {
       font = {
         inherit (theme.gtk.font) name package;
         size = config.hellebore.font.size;
+      };
+
+      gtk3.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
+
+      gtk4.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
       };
     };
 

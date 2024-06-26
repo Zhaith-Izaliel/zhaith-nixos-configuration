@@ -178,6 +178,7 @@ in {
         "${getExe pkgs.swww} init"
         "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
         "swayosd --max-volume 150"
+        "${pkgs.wl-clipboard}/bin/wl-paste --watch ${getExe pkgs.cliphist} store"
         "hyprctl setcursor ${theme.gtk.cursorTheme.name} 32"
         (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
         (optional config.hellebore.desktop-environment.browsers.enable
@@ -271,6 +272,8 @@ in {
 
         (optional appletsConfig.power-profiles.enable
           "$mainMod, Z, exec, ${getExe appletsConfig.power-profiles.package}")
+
+        "$mainMod SHIFT, Q, exec, ${getExe pkgs.qalculate-gtk}"
 
         (optional cfg.switches.lid.enable ", switch:[${cfg.switches.lid.name}], exec, ${config.hellebore.desktop-environment.lockscreen.bin}")
       ];

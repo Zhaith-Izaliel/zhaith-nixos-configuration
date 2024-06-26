@@ -9,7 +9,8 @@
 
   cfg = config.hellebore.shell.emulator;
   emulator-bin = pkgs.writeScriptBin "emulator-bin" ''
-    WAYLAND_DISPLAY=1 ${getExe cfg.package}
+    # WAYLAND_DISPLAY=1
+    ${getExe cfg.package}
   '';
   theme = config.hellebore.theme.themes.${cfg.theme}.wezterm;
 in {
@@ -67,7 +68,7 @@ in {
         local wezterm = require("wezterm")
         local config = wezterm.config_builder() or {}
 
-        config.enable_wayland = true
+        config.enable_wayland = false
 
         -- don't care about tabs
         config.enable_tab_bar = false
