@@ -61,7 +61,8 @@ in {
         image = "twentycrm/twenty";
 
         volumes = [
-          "${cfg.volume}/server-local-data:/app/packages/twenty-server/\${STORAGE_LOCAL_PATH:-.local-storage}"
+          # "${cfg.volume}/server-local-data:/app/packages/twenty-server/\${STORAGE_LOCAL_PATH:-.local-storage}"
+          "${cfg.volume}/server-local-data:/app/packages/twenty-server/.local-storage"
           "${cfg.volume}/docker-data:/app/docker-data"
         ];
 
