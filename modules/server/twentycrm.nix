@@ -11,7 +11,7 @@
   default-env = {
     PORT = toString cfg.port;
     SERVER_URL = "https://${domain}";
-    FRONT_BASE_URL = "\${FRONT_BASE_URL:-$SERVER_URL}";
+    FRONT_BASE_URL = "https://${domain}";
     MESSAGE_QUEUE_TYPE = "pg-boss";
     STORAGE_TYPE = "local";
     PG_DATABASE_HOST = database-host;
