@@ -11,11 +11,10 @@
   default-env = {
     PORT = toString cfg.port;
     SERVER_URL = "https://${domain}";
-    FRONT_BASE_URL = "https://${domain}";
     MESSAGE_QUEUE_TYPE = "pg-boss";
     STORAGE_TYPE = "local";
     PG_DATABASE_HOST = database-host;
-    PG_DATABASE_URL = "postgres://${cfg.user}:${cfg.user}@${database-host}/${cfg.database}";
+    PG_DATABASE_URL = "postgres://${cfg.user}:\$POSTGRES_ADMIN_PASSWORD@${database-host}/${cfg.database}";
   };
 in {
   options.hellebore.server.twentycrm =
@@ -42,6 +41,7 @@ in {
           LOGIN_TOKEN_SECRET="string2"
           REFRESH_TOKEN_SECRET="string3"
           FILE_TOKEN_SECRET="string4"
+          POSTGRES_ADMIN_PASSWORD="db_password"
           ```
 
           Where every strings are generated using `openssl rand -base64 32`.
