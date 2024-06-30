@@ -57,7 +57,7 @@
       };
 
       twentycrm = {
-        enable = false;
+        enable = true;
         subdomain = "crm";
         acmeEmail = "virgil.ribeyre@protonmail.com";
         volume = "/mnt/datas/twentycrm/volume";
