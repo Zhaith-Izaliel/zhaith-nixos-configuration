@@ -14,6 +14,7 @@
     FRONT_BASE_URL = SERVER_URL;
     MESSAGE_QUEUE_TYPE = "pg-boss";
     STORAGE_TYPE = "local";
+    SIGN_IN_PREFILLED = "true";
     PG_DATABASE_HOST = database-host;
     PG_DATABASE_URL = "postgres://${cfg.user}@${database-host}/${cfg.database}";
   };
