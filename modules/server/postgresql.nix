@@ -19,6 +19,7 @@
   servicesRequiringPostgresql = {
     nextcloud = config.hellebore.server.nextcloud.enable;
     invoiceshelf = config.hellebore.server.invoiceshelf.enable;
+    twentycrm = config.hellebore.server.twentycrm.enable;
   };
 in {
   options.hellebore.server.postgresql = {

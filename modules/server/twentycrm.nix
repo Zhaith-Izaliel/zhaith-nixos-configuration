@@ -7,6 +7,16 @@
   inherit (lib) mkIf types mkOption mkDefault;
   cfg = config.hellebore.server.twentycrm;
   domain = "${cfg.subdomain}.${config.networking.domain}";
+  database-host = "10.88.0.1:${toString config.services.postgresql.port}";
+  default-env = {
+    PORT = toString cfg.port;
+    SERVER_URL = "https://${domain}";
+    FRONT_BASE_URL = "\${FRONT_BASE_URL:-$SERVER_URL}";
+    MESSAGE_QUEUE_TYPE = "pg-boss";
+    STORAGE_TYPE = "local";
+    PG_DATABASE_HOST = database-host;
+    PG_DATABASE_URL = "postgres://twentycrm:twentycrm@${database-host}/twentycrm";
+  };
 in {
   options.hellebore.server.twentycrm =
     {
@@ -31,7 +41,7 @@ in {
           ACCESS_TOKEN_SECRET="string1"
           LOGIN_TOKEN_SECRET="string2"
           REFRESH_TOKEN_SECRET="string3"
-          FILE_TOKEN_SECRET="string3"
+          FILE_TOKEN_SECRET="string4"
           ```
 
           Where every strings are generated using `openssl rand -base64 32`.
@@ -51,19 +61,19 @@ in {
         image = "twentycrm/twenty";
 
         volumes = [
-          "${cfg.volume}:/app/\${STORAGE_LOCAL_PATH:-.local-storage}"
+          "${cfg.volume}/server-local-data:/app/packages/twenty-server/\${STORAGE_LOCAL_PATH:-.local-storage}"
+          "${cfg.volume}/docker-data:/app/docker-data"
         ];
 
         ports = [
           "${toString cfg.port}:3000"
         ];
 
-        environment = {
-          PORT = toString cfg.port;
-          ENABLE_DB_MIGRATIONS = "true";
-          SERVER_URL = "https://${domain}";
-          PG_DATABASE_URL = "postgres://twenty:twenty@10.0.2.2:${toString config.services.postgresql.port}/default";
-        };
+        environment =
+          {
+            ENABLE_DB_MIGRATIONS = "true";
+          }
+          // default-env;
 
         environmentFiles = [
           cfg.secretEnvFile
@@ -73,6 +83,32 @@ in {
           "--network"
           "slirp4netns:allow_host_loopback=true"
         ];
+      };
+
+      twentycrm-worker = {
+        image = "twentycrm/twenty";
+
+        cmd = [
+          "yarn"
+          "worker:prod"
+        ];
+
+        environment =
+          {
+            ENABLE_DB_MIGRATIONS = "false"; # it already runs on the server
+          }
+          // default-env;
+
+        environmentFiles = [
+          cfg.secretEnvFile
+        ];
+
+        extraOptions = [
+          "--network"
+          "slirp4netns:allow_host_loopback=true"
+        ];
+
+        dependsOn = ["twentycrm"];
       };
     };
 

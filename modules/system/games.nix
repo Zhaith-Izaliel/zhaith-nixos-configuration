@@ -201,7 +201,6 @@ in {
       ++ optionals cfg.minecraft.enable
       [
         cfg.minecraft.package
-        # minecraft
       ]
       ++ optional cfg.minecraft.mods.enable cfg.minecraft.mods.package;
   };
