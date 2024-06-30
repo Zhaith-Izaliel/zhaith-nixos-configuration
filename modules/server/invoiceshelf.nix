@@ -62,7 +62,7 @@ in {
           TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
           DB_HOST = "10.0.2.2";
-          DB_PORT = toString config.services.postgresql.port;
+          DB_PORT = toString config.services.postgresql.settings.port;
           DB_DATABASE = "invoiceshelf";
           DB_USERNAME = cfg.user;
           STARTUP_DELAY = "0";
