@@ -8,9 +8,10 @@
   cfg = config.hellebore.server.twentycrm;
   domain = "${cfg.subdomain}.${config.networking.domain}";
   database-host = "10.88.0.1:${toString config.services.postgresql.settings.port}";
-  default-env = {
+  default-env = rec {
     PORT = toString cfg.port;
     SERVER_URL = "https://${domain}";
+    FRONT_BASE_URL = SERVER_URL;
     MESSAGE_QUEUE_TYPE = "pg-boss";
     STORAGE_TYPE = "local";
     PG_DATABASE_HOST = database-host;
