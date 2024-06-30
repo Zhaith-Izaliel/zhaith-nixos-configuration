@@ -15,7 +15,7 @@
     MESSAGE_QUEUE_TYPE = "pg-boss";
     STORAGE_TYPE = "local";
     PG_DATABASE_HOST = database-host;
-    PG_DATABASE_URL = "postgres://twentycrm:twentycrm@${database-host}/twentycrm";
+    PG_DATABASE_URL = "postgres://${cfg.user}:${cfg.user}@${database-host}/${cfg.database}";
   };
 in {
   options.hellebore.server.twentycrm =

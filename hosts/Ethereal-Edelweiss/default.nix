@@ -56,6 +56,14 @@
         dbPasswordFile = "/mnt/datas/invoiceshelf/db-pass";
       };
 
+      twentycrm = {
+        enable = true;
+        subdomain = "crm";
+        acmeEmail = "virgil.ribeyre@protonmail.com";
+        volume = "/mnt/datas/twentycrm/volume";
+        secretEnvFile = "/mnt/datas/twentycrm/env.secret";
+      };
+
       jellyfin = {
         enable = true;
         group = "nextcloud";
@@ -96,6 +104,7 @@
           "${config.hellebore.server.calibre-web.subdomain}.${domain}"
           "${config.hellebore.server.jellyfin.subdomain}.${domain}"
           "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
+          "${config.hellebore.server.twentycrm.subdomain}.${domain}"
           domain
         ];
       in {
