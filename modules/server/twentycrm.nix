@@ -7,7 +7,7 @@
   inherit (lib) mkIf types mkOption mkDefault;
   cfg = config.hellebore.server.twentycrm;
   domain = "${cfg.subdomain}.${config.networking.domain}";
-  database-host = "10.88.0.1:${toString config.services.postgresql.settings.port}";
+  database-host = "10.0.2.2:${toString config.services.postgresql.settings.port}";
   default-env = rec {
     PORT = toString cfg.port;
     SERVER_URL = "https://${domain}";
