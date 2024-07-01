@@ -6,8 +6,16 @@
 }: let
   inherit (lib) mkIf types mkOption mkDefault;
   cfg = config.hellebore.server.twentycrm;
+
   domain = "${cfg.subdomain}.${config.networking.domain}";
+
   database-host = "10.0.2.2:${toString config.services.postgresql.settings.port}";
+
+  volumes = [
+    "${cfg.volume}/server-local-data:/app/packages/twenty-server/.local-storage"
+    "${cfg.volume}/docker-data:/app/docker-data"
+  ];
+
   default-env = rec {
     PORT = toString cfg.port;
     SERVER_URL = "https://${domain}";
@@ -60,13 +68,8 @@ in {
   config = mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
       twentycrm = {
+        inherit volumes;
         image = "twentycrm/twenty";
-
-        volumes = [
-          # "${cfg.volume}/server-local-data:/app/packages/twenty-server/\${STORAGE_LOCAL_PATH:-.local-storage}"
-          "${cfg.volume}/server-local-data:/app/packages/twenty-server/.local-storage"
-          "${cfg.volume}/docker-data:/app/docker-data"
-        ];
 
         ports = [
           "${toString cfg.port}:3000"
@@ -85,6 +88,21 @@ in {
         extraOptions = [
           "--network"
           "slirp4netns:allow_host_loopback=true"
+        ];
+
+        dependsOn = ["twentycrm-change-volume-ownership"];
+      };
+
+      twentycrm-change-volume-ownership = {
+        inherit volumes;
+        image = "ubuntu";
+
+        user = "root";
+
+        cmd = [
+          ''
+            bash -c "chown -R 1000:1000 /tmp/server-local-data && chown -R 1000:1000 /tmp/docker-data"
+          ''
         ];
       };
 
