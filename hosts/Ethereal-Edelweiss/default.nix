@@ -65,7 +65,6 @@
         enable = true;
         group = "nextcloud";
         subdomain = "jellyfin";
-        acmeEmail = "virgil.ribeyre@protonmail.com";
       };
 
       calibre-web = {
