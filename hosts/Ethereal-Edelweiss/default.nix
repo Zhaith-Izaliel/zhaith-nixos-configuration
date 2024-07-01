@@ -54,6 +54,13 @@
         secretEnvFile = "/mnt/datas/invoiceshelf/db-pass";
       };
 
+      cozy = {
+        enable = true;
+        subdomain = "cozy";
+        volume = "/mnt/datas/cozy/volume";
+        secretEnvFile = "/mnt/datas/cozy/env.secret";
+      };
+
       jellyfin = {
         enable = true;
         group = "nextcloud";
@@ -93,6 +100,9 @@
           "${config.hellebore.server.calibre-web.subdomain}.${domain}"
           "${config.hellebore.server.jellyfin.subdomain}.${domain}"
           "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
+          # cozy
+          "${config.hellebore.server.cozy.subdomain}.${domain}"
+          ''"*.${config.hellebore.server.cozy.subdomain}.${domain}"''
           domain
         ];
       in {

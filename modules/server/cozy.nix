@@ -11,7 +11,7 @@ in {
   options.hellebore.server.invoiceshelf =
     {
       volume = mkOption {
-        default = "/var/lib/invoiceshelf";
+        default = "/var/lib/cozy";
         description = lib.mdDoc "Directory to store Invoiceshelf volume.";
         type = types.nonEmptyStr;
       };
