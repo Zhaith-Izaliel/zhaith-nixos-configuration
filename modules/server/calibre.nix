@@ -19,8 +19,8 @@ in {
     // extra-types.server-app {
       name = "Calibre Web";
       package = "calibre-web";
-      group = "calibre";
-      user = "calibre";
+      group = "calibre-web";
+      user = "calibre-web";
       port = 8083;
     };
 
