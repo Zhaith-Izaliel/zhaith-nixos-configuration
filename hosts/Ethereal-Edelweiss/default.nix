@@ -56,14 +56,6 @@
         dbPasswordFile = "/mnt/datas/invoiceshelf/db-pass";
       };
 
-      twentycrm = {
-        enable = true;
-        subdomain = "crm";
-        acmeEmail = "virgil.ribeyre@protonmail.com";
-        volume = "/mnt/datas/twentycrm/volume";
-        secretEnvFile = "/mnt/datas/twentycrm/env.secret";
-      };
-
       jellyfin = {
         enable = true;
         group = "nextcloud";

@@ -10,7 +10,6 @@
     ./nextcloud.nix
     ./nginx.nix
     ./postgresql.nix
-    ./twentycrm.nix
     ./virgilribeyre-com.nix
   ];
 
