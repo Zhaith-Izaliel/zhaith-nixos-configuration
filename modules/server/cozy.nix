@@ -5,21 +5,15 @@
   ...
 }: let
   inherit (lib) mkIf types mkOption mkDefault;
-  cfg = config.hellebore.server.invoiceshelf;
+  cfg = config.hellebore.server.cozy;
   domain = "${cfg.subdomain}.${config.networking.domain}";
 in {
-  options.hellebore.server.invoiceshelf =
+  options.hellebore.server.cozy =
     {
       volume = mkOption {
         default = "/var/lib/cozy";
-        description = lib.mdDoc "Directory to store Invoiceshelf volume.";
+        description = lib.mdDoc "Directory to store Cozy volume.";
         type = types.nonEmptyStr;
-      };
-
-      user = mkOption {
-        default = "invoiceshelf";
-        type = types.nonEmptyStr;
-        description = "Defines the user running InvoiceShelf.";
       };
 
       secretEnvFile = mkOption {
@@ -38,7 +32,7 @@ in {
         default = "nested";
         type = types.enum ["nested" "flat"];
         description = ''
-          Application subdomain type for each cozy.
+          Application subdomain type for each Cozy.
           Could be nested (https://<app>.<instance>.<domain>) or flat (https://<instance>-<app>.<domain>)
         '';
       };
@@ -53,7 +47,7 @@ in {
 
   config = mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
-      invoiceshelf = {
+      cozy = {
         image = "cozy/cozy-stack";
 
         volumes = [

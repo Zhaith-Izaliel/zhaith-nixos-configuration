@@ -16,12 +16,6 @@ in {
         type = types.nonEmptyStr;
       };
 
-      user = mkOption {
-        default = "invoiceshelf";
-        type = types.nonEmptyStr;
-        description = "Defines the user running InvoiceShelf.";
-      };
-
       secretEnvFile = mkOption {
         default = "";
         type = types.nonEmptyStr;
