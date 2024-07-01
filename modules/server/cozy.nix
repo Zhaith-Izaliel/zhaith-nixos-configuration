@@ -26,48 +26,52 @@ in {
         default = "";
         type = types.nonEmptyStr;
         description = ''
-          The env file containing the DB password, in the form:
+          The env file containing the secrets for Cozy, in the form:
           ```
-            DB_PASSWORD="password"
+          COUCHDB_PASSWORD="SomeRandomlyGeneratedPassword"
+          COZY_ADMIN_PASSPHRASE="AnotherRandomlyGeneratedPassword"
           ```
+        '';
+      };
+
+      subdomainType = mkOption {
+        default = "nested";
+        type = types.enum ["nested" "flat"];
+        description = ''
+          Application subdomain type for each cozy.
+          Could be nested (https://<app>.<instance>.<domain>) or flat (https://<instance>-<app>.<domain>)
         '';
       };
     }
     // extra-types.server-app {
-      name = "InvoiceShelf";
-      user = "invoiceshelf";
-      database = "invoiceshelf";
-      group = "invoiceshelf";
-      port = 0660;
+      name = "Cozy";
+      user = "cozy";
+      group = "cozy";
+      database = "cozy";
+      port = 8080;
     };
 
   config = mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
       invoiceshelf = {
-        image = "invoiceshelf/invoiceshelf";
+        image = "cozy/cozy-stack";
 
         volumes = [
-          "${cfg.volume}:/data"
+          "${cfg.volume}/data:/var/lib/cozy/data"
+          "${cfg.volume}/config:/etc/cozy"
         ];
 
         ports = [
-          "${toString cfg.port}:80"
+          "${toString cfg.port}:8080"
         ];
 
         environment = {
-          APP_ENV = "production";
-          SESSION_DOMAIN = domain;
-          SANCTUM_STATEFUL_DOMAINS = domain;
-          APP_URL = "https://${domain}";
-          APP_FORCE_HTTPS = "true";
-          PHP_TZ = config.time.timeZone;
-          TIMEZONE = config.time.timeZone;
-          DB_CONNECTION = "pgsql";
-          DB_HOST = "10.0.2.2";
-          DB_PORT = toString config.services.postgresql.settings.port;
-          DB_DATABASE = "invoiceshelf";
-          DB_USERNAME = cfg.user;
-          STARTUP_DELAY = "0";
+          DOMAIN = domain;
+          COUCHDB_PROTOCOL = "http";
+          COUCHDB_HOST = "10.0.2.2";
+          COUCHDB_PORT = toString config.services.couchdb.port;
+          COUCHDB_USER = cfg.user;
+          COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
         };
 
         environmentFiles = [
@@ -83,6 +87,10 @@ in {
 
     hellebore.server.nginx.enable = mkDefault true;
 
+    services.couchdb = {
+      enable = true;
+    };
+
     services.nginx.virtualHosts.${domain} = {
       forceSSL = true;
       enableACME = true;
@@ -92,9 +100,5 @@ in {
         };
       };
     };
-
-    services.postgresql.authentication = ''
-      host ${cfg.database} ${cfg.user} 10.88.0.0/16 md5
-    '';
   };
 }

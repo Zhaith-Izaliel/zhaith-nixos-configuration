@@ -120,9 +120,10 @@ in rec {
   server-app = {
     name,
     package ? null,
+    user ? "",
     group ? "",
     port ? null,
-    database ? null,
+    database ? "",
   }: {
     enable = mkEnableOption "Hellebore's ${name} configuration";
 
@@ -132,6 +133,12 @@ in rec {
       type = types.nonEmptyStr;
       default = group;
       description = "Defines the user group for ${name}.";
+    };
+
+    user = mkOption {
+      type = types.nonEmptyStr;
+      default = user;
+      description = "Defines the user for ${name}";
     };
 
     database = mkOption {
@@ -150,12 +157,6 @@ in rec {
       type = types.nonEmptyStr;
       default = "";
       description = "Defines the subdomain on which ${name} is served.";
-    };
-
-    acmeEmail = mkOption {
-      type = types.nonEmptyStr;
-      default = "";
-      description = "Defines the email used for ACME SSL certificates.";
     };
   };
 }

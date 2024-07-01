@@ -45,15 +45,13 @@
       nextcloud = {
         enable = true;
         subdomain = "nextcloud";
-        acmeEmail = "virgil.ribeyre@protonmail.com";
       };
 
       invoiceshelf = {
         enable = true;
         subdomain = "invoices";
-        acmeEmail = "virgil.ribeyre@protonmail.com";
         volume = "/mnt/datas/invoiceshelf/volume";
-        dbPasswordFile = "/mnt/datas/invoiceshelf/db-pass";
+        secretEnvFile = "/mnt/datas/invoiceshelf/db-pass";
       };
 
       jellyfin = {
@@ -68,7 +66,6 @@
         group = "nextcloud";
         library = "/mnt/datas/nextcloud/data/Zhaith/files/Books";
         subdomain = "books";
-        acmeEmail = "virgil.ribeyre@protonmail.com";
       };
 
       factorio = {

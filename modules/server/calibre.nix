@@ -19,12 +19,14 @@ in {
     // extra-types.server-app {
       name = "Calibre Web";
       package = "calibre-web";
+      group = "calibre";
+      user = "calibre";
       port = 8083;
     };
 
   config = mkIf cfg.enable {
     services.calibre-web = {
-      inherit (cfg) group package;
+      inherit (cfg) group user package;
       enable = true;
       listen.port = cfg.port;
       options.calibreLibrary = cfg.library;
