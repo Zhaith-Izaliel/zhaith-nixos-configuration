@@ -16,7 +16,7 @@
     STORAGE_TYPE = "local";
     SIGN_IN_PREFILLED = "true";
     PG_DATABASE_HOST = database-host;
-    PG_DATABASE_URL = ''postgres://${cfg.user}:''$DB_USER_PASSWORD@${database-host}/${cfg.database}'';
+    PG_DATABASE_URL = ''postgres://${cfg.user}:@${database-host}/${cfg.database}'';
   };
 in {
   options.hellebore.server.twentycrm =
@@ -44,7 +44,6 @@ in {
           REFRESH_TOKEN_SECRET="string3"
           FILE_TOKEN_SECRET="string4"
           POSTGRES_ADMIN_PASSWORD="db_password"
-          DB_USER_PASSWORD="user_password"
           ```
 
           Where every strings are generated using `openssl rand -base64 32`.
