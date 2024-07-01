@@ -16,7 +16,7 @@
     STORAGE_TYPE = "local";
     SIGN_IN_PREFILLED = "true";
     PG_DATABASE_HOST = database-host;
-    PG_DATABASE_URL = ''postgres://${cfg.user}:@${database-host}/${cfg.database}'';
+    PG_DATABASE_URL = ''postgres://${cfg.user}:${cfg.user}@${database-host}/${cfg.database}'';
   };
 in {
   options.hellebore.server.twentycrm =
