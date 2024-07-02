@@ -11,7 +11,7 @@
   environment = {
     DOMAIN = domain;
     COUCHDB_PROTOCOL = "http";
-    COUCHDB_HOST = "cozy-couchdb";
+    COUCHDB_HOST = "localhost";
     COUCHDB_PORT = toString config.services.couchdb.port;
     COUCHDB_USER = cfg.user;
     COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
