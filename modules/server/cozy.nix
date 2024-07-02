@@ -122,7 +122,8 @@ in {
         ];
 
         extraOptions = [
-          "--network=container:cozy-couchdb"
+          "--network"
+          "container:cozy-couchdb"
         ];
       };
 
@@ -130,8 +131,6 @@ in {
         inherit environment;
 
         image = "couchdb:3.3";
-
-        hostname = "cozy-couchdb";
 
         volumes = [
           "${cfg.volume}/couchdb:/opt/couchdb/data"
