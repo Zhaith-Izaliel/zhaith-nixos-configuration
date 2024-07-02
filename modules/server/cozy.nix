@@ -12,7 +12,7 @@
   environment = {
     DOMAIN = domain;
     COUCHDB_PROTOCOL = "http";
-    COUCHDB_HOST = "localhost";
+    COUCHDB_HOST = "cozy-couchdb";
     COUCHDB_PORT = toString config.services.couchdb.port;
     COUCHDB_USER = cfg.user;
     COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
@@ -165,7 +165,7 @@ in {
           "--health-retries=3"
           "--health-start-period=30s"
           "--health-timeout=5s"
-          "--network-alias=couchdb"
+          "--network-alias=cozy-couchdb"
           "--network=cozy_default"
         ];
       };
