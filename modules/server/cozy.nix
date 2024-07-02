@@ -21,7 +21,14 @@ in {
     {
       volume = mkOption {
         default = "/var/lib/cozy";
-        description = lib.mdDoc "Directory to store Cozy volume.";
+        description = ''
+          Directory to store Cozy volume.
+
+          Should contain these subdirectories:
+          - `data`
+          - `config`
+          - `couchdb`
+        '';
         type = types.nonEmptyStr;
       };
 
@@ -37,12 +44,48 @@ in {
         '';
       };
 
+      instanceName = mkOption {
+        default = "";
+        type = types.nonEmptyStr;
+        description = "The cozy instance name to be created";
+      };
+
       subdomainType = mkOption {
-        default = "nested";
+        default = "flat";
         type = types.enum ["nested" "flat"];
         description = ''
           Application subdomain type for each Cozy.
           Could be nested (https://<app>.<instance>.<domain>) or flat (https://<instance>-<app>.<domain>)
+        '';
+      };
+
+      installedApps = mkOption {
+        default = [
+          "home"
+          "banks"
+          "contacts"
+          "drive"
+          "notes"
+          "passwords"
+          "photos"
+          "settings"
+          "store"
+          "mespapiers"
+        ];
+        types = types.listOf (types.enum [
+          "home"
+          "banks"
+          "contacts"
+          "drive"
+          "notes"
+          "passwords"
+          "photos"
+          "settings"
+          "store"
+          "mespapiers"
+        ]);
+        description = ''
+          The apps installed on the instance. Should at least contain `home`, `settings`, `store`.
         '';
       };
     }
@@ -98,7 +141,7 @@ in {
 
     hellebore.server.nginx.enable = mkDefault true;
 
-    services.nginx.virtualHosts."*.${domain}" = {
+    services.nginx.virtualHosts."${domain}" = {
       forceSSL = true;
       enableACME = true;
       locations = {
@@ -106,6 +149,12 @@ in {
           proxyPass = "http://localhost:${toString cfg.port}";
         };
       };
+
+      serverAliases = builtins.map (item:
+        if cfg.subdomainType == "flat"
+        then "${cfg.instanceName}-${item}.${domain}"
+        else "${item}.${cfg.instanceName}.${domain}")
+      cfg.installedApps;
     };
   };
 }

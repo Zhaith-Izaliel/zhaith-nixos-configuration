@@ -58,6 +58,18 @@
         enable = true;
         subdomain = "cozy";
         volume = "/mnt/datas/cozy/volume";
+        instanceName = "zhaith";
+        installedApps = [
+          "home"
+          "banks"
+          "contacts"
+          "drive"
+          "passwords"
+          "photos"
+          "settings"
+          "store"
+          "mespapiers"
+        ];
         secretEnvFile = "/mnt/datas/cozy/env.secret";
       };
 
