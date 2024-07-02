@@ -12,8 +12,8 @@
   environment = {
     DOMAIN = domain;
     COUCHDB_PROTOCOL = "http";
-    COUCHDB_HOST = "couchdb";
-    COUCHDB_PORT = toString config.services.couchdb.port;
+    COUCHDB_HOST = network.couchdbAlias;
+    COUCHDB_PORT = toString 5984;
     COUCHDB_USER = cfg.user;
     COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
   };
@@ -21,6 +21,12 @@
   environmentFiles = [
     cfg.secretEnvFile
   ];
+
+  network = {
+    name = "cozy_default";
+    couchdbAlias = "couchdb";
+    cozyAlias = "cozy";
+  };
 in {
   options.hellebore.server.cozy =
     {
@@ -138,8 +144,8 @@ in {
           "--health-retries=3"
           "--health-start-period=30s"
           "--health-timeout=5s"
-          "--network-alias=cozy"
-          "--network=cozy_default"
+          "--network-alias=${network.cozyAlias}"
+          "--network=${network.name}"
         ];
 
         ports = [
@@ -164,8 +170,8 @@ in {
           "--health-retries=3"
           "--health-start-period=30s"
           "--health-timeout=5s"
-          "--network-alias=couchdb"
-          "--network=cozy_default"
+          "--network-alias=${network.couchdbAlias}"
+          "--network=${network.name}"
         ];
       };
     };
@@ -177,10 +183,10 @@ in {
           Restart = lib.mkOverride 500 "always";
         };
         after = [
-          "podman-network-cozy_default.service"
+          "podman-network-${network.name}.service"
         ];
         requires = [
-          "podman-network-cozy_default.service"
+          "podman-network-${network.name}.service"
         ];
         partOf = [
           "podman-compose-cozy-root.target"
@@ -194,10 +200,10 @@ in {
           Restart = lib.mkOverride 500 "always";
         };
         after = [
-          "podman-network-cozy_default.service"
+          "podman-network-${network.name}.service"
         ];
         requires = [
-          "podman-network-cozy_default.service"
+          "podman-network-${network.name}.service"
         ];
         partOf = [
           "podman-compose-cozy-root.target"
@@ -207,15 +213,15 @@ in {
         ];
       };
 
-      "podman-network-cozy_default" = {
+      "podman-network-${network.name}" = {
         path = [pkgs.podman];
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
-          ExecStop = "${pkgs.podman}/bin/podman network rm -f cozy_default";
+          ExecStop = "${pkgs.podman}/bin/podman network rm -f ${network.name}";
         };
         script = ''
-          podman network inspect cozy_default || podman network create cozy_default
+          podman network inspect ${network.name} || podman network create ${network.name}
         '';
         partOf = ["podman-compose-cozy-root.target"];
         wantedBy = ["podman-compose-cozy-root.target"];
