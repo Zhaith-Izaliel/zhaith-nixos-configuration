@@ -121,7 +121,7 @@ in {
           "cozy-couchdb"
         ];
 
-        extraArgs = [
+        extraOptions = [
           "--network=container:cozy-couchdb"
         ];
       };
