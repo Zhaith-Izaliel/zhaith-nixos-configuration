@@ -11,7 +11,7 @@
   environment = {
     DOMAIN = domain;
     COUCHDB_PROTOCOL = "http";
-    COUCHDB_HOST = "localhost";
+    COUCHDB_HOST = "cozy-couchdb";
     COUCHDB_PORT = toString config.services.couchdb.port;
     COUCHDB_USER = cfg.user;
     COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
@@ -84,6 +84,8 @@ in {
 
         image = "couchdb:3.3";
 
+        hostname = "cozy-couchdb";
+
         volumes = [
           "${cfg.volume}/couchdb:/opt/couchdb/data"
         ];
@@ -96,7 +98,7 @@ in {
 
     hellebore.server.nginx.enable = mkDefault true;
 
-    services.nginx.virtualHosts.${domain} = {
+    services.nginx.virtualHosts."*.${domain}" = {
       forceSSL = true;
       enableACME = true;
       locations = {
