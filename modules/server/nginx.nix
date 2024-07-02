@@ -21,7 +21,7 @@ in {
       recommendedOptimisation = true;
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
-      serverNamesHashBucketSize = 64;
+      serverNamesHashBucketSize = 128;
     };
   };
 }
