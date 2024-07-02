@@ -12,7 +12,7 @@
   environment = {
     DOMAIN = domain;
     COUCHDB_PROTOCOL = "http";
-    COUCHDB_HOST = "cozy-couchdb";
+    COUCHDB_HOST = "couchdb";
     COUCHDB_PORT = toString config.services.couchdb.port;
     COUCHDB_USER = cfg.user;
     COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
@@ -32,8 +32,7 @@ in {
           Should contain these subdirectories:
           - `data`
           - `config`
-          - `couchdb/data`
-          - `couchdb/etc`
+          - `couchdb`
         '';
         type = types.nonEmptyStr;
       };
@@ -165,7 +164,7 @@ in {
           "--health-retries=3"
           "--health-start-period=30s"
           "--health-timeout=5s"
-          "--network-alias=cozy-couchdb"
+          "--network-alias=couchdb"
           "--network=cozy_default"
         ];
       };
