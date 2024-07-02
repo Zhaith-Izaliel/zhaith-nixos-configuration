@@ -45,6 +45,18 @@ in {
         '';
       };
 
+      couchdb.adminConfig = mkOption {
+        default = "";
+        type = types.nonEmptyStr;
+        description = ''
+          The configuration file for couchdb allowing the cozy user defined in `hellebore.server.cozy.user` to be admin with its own password like:
+          ```
+           [admins]
+           ${cfg.user} = SomeRandomlyGeneratedPassword
+          ```
+        '';
+      };
+
       instanceName = mkOption {
         default = "";
         type = types.nonEmptyStr;
@@ -119,33 +131,19 @@ in {
           cfg.secretEnvFile
         ];
 
-        dependsOn = [
-          "cozy-couchdb"
-        ];
-
         extraOptions = [
           "--network"
-          "container:cozy-couchdb"
-        ];
-      };
-
-      cozy-couchdb = {
-        inherit environment;
-        inherit (cfg) user;
-
-        image = "couchdb:3.3";
-
-        volumes = [
-          "${cfg.volume}/couchdb:/opt/couchdb/data"
-        ];
-
-        environmentFiles = [
-          cfg.secretEnvFile
+          "host"
         ];
       };
     };
 
     hellebore.server.nginx.enable = mkDefault true;
+
+    services.couchdb = {
+      enable = true;
+      configFile = cfg.couchdb.adminConfig;
+    };
 
     services.nginx.virtualHosts."${domain}" = {
       forceSSL = true;

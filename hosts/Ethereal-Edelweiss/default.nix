@@ -71,6 +71,7 @@
           "mespapiers"
         ];
         secretEnvFile = "/mnt/datas/cozy/env.secret";
+        couchdb.adminConfig = "/mnt/datas/couchdb/admins.ini";
       };
 
       jellyfin = {
