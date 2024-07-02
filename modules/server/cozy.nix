@@ -131,6 +131,7 @@ in {
 
       cozy-couchdb = {
         inherit environment;
+        inherit (cfg) user;
 
         image = "couchdb:3.3";
 
