@@ -94,7 +94,7 @@ in {
       user = "cozy";
       group = "cozy";
       database = "cozy";
-      port = 8080;
+      port = 8089;
     };
 
   config = mkIf cfg.enable {
@@ -119,6 +119,10 @@ in {
 
         dependsOn = [
           "cozy-couchdb"
+        ];
+
+        extraArgs = [
+          "--network=container:cozy-couchdb"
         ];
       };
 
