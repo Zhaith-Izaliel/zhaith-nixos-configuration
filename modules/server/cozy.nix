@@ -114,7 +114,7 @@ in {
     virtualisation.oci-containers.containers = {
       cozy = {
         inherit environment;
-        inherit (cfg) user;
+        # inherit (cfg) user;
 
         image = "cozy/cozy-stack";
 
@@ -161,14 +161,14 @@ in {
       cfg.installedApps;
     };
 
-    users.groups.${cfg.group} = {
-      name = cfg.group;
-    };
+    # users.groups.${cfg.group} = {
+    #   name = cfg.group;
+    # };
 
-    users.users.${cfg.user} = {
-      inherit (cfg) group;
+    # users.users.${cfg.user} = {
+    #   inherit (cfg) group;
 
-      isSystemUser = true;
-    };
+    #   isSystemUser = true;
+    # };
   };
 }
