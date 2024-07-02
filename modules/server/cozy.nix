@@ -134,8 +134,7 @@ in {
         image = "couchdb:3.3";
 
         volumes = [
-          "${cfg.volume}/couchdb/data:/opt/couchdb/data"
-          "${cfg.volume}/couchdb/etc:/opt/couchdb/etc"
+          "${cfg.volume}/couchdb:/opt/couchdb/data"
         ];
 
         environmentFiles = [
