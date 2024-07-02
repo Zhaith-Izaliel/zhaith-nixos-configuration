@@ -143,7 +143,6 @@ in {
     services.couchdb = {
       enable = true;
       configFile = cfg.couchdb.adminConfig;
-      adminUser = cfg.user;
     };
 
     services.nginx.virtualHosts."${domain}" = {
