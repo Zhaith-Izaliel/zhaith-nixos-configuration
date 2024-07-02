@@ -10,12 +10,12 @@
     ./jellyfin.nix
     ./nextcloud.nix
     ./nginx.nix
+    ./podman.nix
     ./postgresql.nix
     ./virgilribeyre-com.nix
   ];
 
-  config = {
-    virtualisation.oci-containers.backend = "podman";
-    boot.enableContainers = false;
-  };
+  # config = {
+  #   boot.enableContainers = false;
+  # };
 }

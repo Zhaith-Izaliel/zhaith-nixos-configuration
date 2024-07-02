@@ -30,6 +30,8 @@
     theme.name = "catppuccin-macchiato";
 
     server = {
+      podman.enable = true;
+
       acme = {
         enable = true;
         email = "virgil.ribeyre@protonmail.com";
@@ -176,7 +178,6 @@
 
     development = {
       enable = true;
-      enablePodman = true;
     };
 
     ssh = {
