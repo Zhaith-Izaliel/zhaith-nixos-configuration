@@ -114,7 +114,6 @@ in {
     virtualisation.oci-containers.containers = {
       cozy = {
         inherit environment;
-        inherit (cfg) user;
 
         image = "cozy/cozy-stack";
 
