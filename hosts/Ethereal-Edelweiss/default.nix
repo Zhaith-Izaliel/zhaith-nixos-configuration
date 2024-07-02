@@ -55,7 +55,7 @@
       };
 
       cozy = {
-        enable = false;
+        enable = true;
         subdomain = "cozy";
         volume = "/mnt/datas/cozy/volume";
         secretEnvFile = "/mnt/datas/cozy/env.secret";
