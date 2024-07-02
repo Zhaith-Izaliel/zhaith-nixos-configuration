@@ -7,6 +7,15 @@
   inherit (lib) mkIf types mkOption mkDefault;
   cfg = config.hellebore.server.cozy;
   domain = "${cfg.subdomain}.${config.networking.domain}";
+
+  environment = {
+    DOMAIN = domain;
+    COUCHDB_PROTOCOL = "http";
+    COUCHDB_HOST = "localhost";
+    COUCHDB_PORT = toString config.services.couchdb.port;
+    COUCHDB_USER = cfg.user;
+    COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
+  };
 in {
   options.hellebore.server.cozy =
     {
@@ -48,6 +57,8 @@ in {
   config = mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
       cozy = {
+        inherit environment;
+
         image = "cozy/cozy-stack";
 
         volumes = [
@@ -59,15 +70,6 @@ in {
           "${toString cfg.port}:8080"
         ];
 
-        environment = {
-          DOMAIN = domain;
-          COUCHDB_PROTOCOL = "http";
-          COUCHDB_HOST = "localhost";
-          COUCHDB_PORT = toString config.services.couchdb.port;
-          COUCHDB_USER = cfg.user;
-          COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
-        };
-
         environmentFiles = [
           cfg.secretEnvFile
         ];
@@ -78,18 +80,13 @@ in {
       };
 
       cozy-couchdb = {
+        inherit environment;
+
         image = "couchdb:3.3";
 
         volumes = [
           "${cfg.volume}/couchdb:/opt/couchdb/data"
         ];
-
-        environment = {
-          COUCHDB_PROTOCOL = "http";
-          COUCHDB_HOST = "localhost";
-          COUCHDB_PORT = toString config.services.couchdb.port;
-          COUCHDB_USER = cfg.user;
-        };
 
         environmentFiles = [
           cfg.secretEnvFile
@@ -98,11 +95,6 @@ in {
     };
 
     hellebore.server.nginx.enable = mkDefault true;
-
-    services.couchdb = {
-      enable = true;
-      configFile = cfg.couchdb.adminsFile;
-    };
 
     services.nginx.virtualHosts.${domain} = {
       forceSSL = true;
