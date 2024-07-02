@@ -28,20 +28,6 @@ in {
         '';
       };
 
-      couchdb = {
-        adminsFile = mkOption {
-          default = "";
-          type = types.nonEmptyStr;
-          description = ''
-            The ini file containing the admins and their passwords for couchdb, in the form:
-            ```ini
-            [admins]
-            admin = password
-            ```
-          '';
-        };
-      };
-
       subdomainType = mkOption {
         default = "nested";
         type = types.enum ["nested" "flat"];
@@ -76,7 +62,7 @@ in {
         environment = {
           DOMAIN = domain;
           COUCHDB_PROTOCOL = "http";
-          COUCHDB_HOST = "10.0.2.2";
+          COUCHDB_HOST = "localhost";
           COUCHDB_PORT = toString config.services.couchdb.port;
           COUCHDB_USER = cfg.user;
           COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
@@ -86,9 +72,27 @@ in {
           cfg.secretEnvFile
         ];
 
-        extraOptions = [
-          "--network"
-          "slirp4netns:allow_host_loopback=true"
+        dependsOn = [
+          "cozy-couchdb"
+        ];
+      };
+
+      cozy-couchdb = {
+        image = "couchdb:3.3";
+
+        volumes = [
+          "${cfg.volume}/couchdb:/opt/couchdb/data"
+        ];
+
+        environment = {
+          COUCHDB_PROTOCOL = "http";
+          COUCHDB_HOST = "localhost";
+          COUCHDB_PORT = toString config.services.couchdb.port;
+          COUCHDB_USER = cfg.user;
+        };
+
+        environmentFiles = [
+          cfg.secretEnvFile
         ];
       };
     };
