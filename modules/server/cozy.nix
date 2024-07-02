@@ -27,7 +27,8 @@ in {
           Should contain these subdirectories:
           - `data`
           - `config`
-          - `couchdb`
+          - `couchdb/data`
+          - `couchdb/etc`
         '';
         type = types.nonEmptyStr;
       };
@@ -133,7 +134,8 @@ in {
         image = "couchdb:3.3";
 
         volumes = [
-          "${cfg.volume}/couchdb:/opt/couchdb/data"
+          "${cfg.volume}/couchdb/data:/opt/couchdb/data"
+          "${cfg.volume}/couchdb/etc:/opt/couchdb/etc"
         ];
 
         environmentFiles = [
