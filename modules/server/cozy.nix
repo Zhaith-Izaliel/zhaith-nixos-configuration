@@ -165,7 +165,7 @@ in {
       name = cfg.group;
     };
 
-    users.user.${cfg.user} = {
+    users.users.${cfg.user} = {
       inherit (cfg) group;
 
       isSystemUser = true;
