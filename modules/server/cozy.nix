@@ -72,7 +72,7 @@ in {
           "store"
           "mespapiers"
         ];
-        types = types.listOf (types.enum [
+        type = types.listOf (types.enum [
           "home"
           "banks"
           "contacts"
