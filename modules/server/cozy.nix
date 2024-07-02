@@ -28,6 +28,20 @@ in {
         '';
       };
 
+      couchdb = {
+        adminsFile = mkOption {
+          default = "";
+          type = types.nonEmptyStr;
+          description = ''
+            The ini file containing the admins and their passwords for couchdb, in the form:
+            ```ini
+            [admins]
+            admin = password
+            ```
+          '';
+        };
+      };
+
       subdomainType = mkOption {
         default = "nested";
         type = types.enum ["nested" "flat"];
@@ -83,6 +97,7 @@ in {
 
     services.couchdb = {
       enable = true;
+      configFile = cfg.couchdb.adminsFile;
     };
 
     services.nginx.virtualHosts.${domain} = {

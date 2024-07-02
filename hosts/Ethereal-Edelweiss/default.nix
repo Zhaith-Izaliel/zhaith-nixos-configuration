@@ -59,6 +59,7 @@
         subdomain = "cozy";
         volume = "/mnt/datas/cozy/volume";
         secretEnvFile = "/mnt/datas/cozy/env.secret";
+        couchdb.adminsFile = "/mnt/datas/couchdb/admins.ini";
       };
 
       jellyfin = {
