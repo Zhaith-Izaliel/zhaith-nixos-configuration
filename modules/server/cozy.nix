@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkIf types mkOption mkDefault;
+  inherit (lib) mkIf types mkOption mkDefault getExe;
   cfg = config.hellebore.server.cozy;
   domain = "${cfg.subdomain}.${config.networking.domain}";
 
@@ -139,7 +139,7 @@ in {
         log-driver = "journald";
 
         extraOptions = [
-          "--health-cmd=[ \"$(curl -fsSL http://localhost:8080/status | jq -r .status)\" = \"OK\" ]"
+          "--health-cmd=[ \"$(curl -fsSL http://localhost:8080/status | ${getExe pkgs.jq} -r .status)\" = \"OK\" ]"
           "--health-interval=10s"
           "--health-retries=3"
           "--health-start-period=30s"
