@@ -195,7 +195,7 @@ in {
           "podman-compose-cozy-root.target"
         ];
       };
-      "podman-cozy" = {
+      "podman-cozy-stack" = {
         serviceConfig = {
           Restart = lib.mkOverride 500 "always";
         };
