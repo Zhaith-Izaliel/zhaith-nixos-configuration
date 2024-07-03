@@ -24,8 +24,8 @@
 
   network = {
     name = "cozy_default";
-    couchdbAlias = "cozy_couchdb";
-    cozyAlias = "cozy";
+    couchdbAlias = "couchdb";
+    cozyAlias = "stack";
   };
 in {
   options.hellebore.server.cozy =
@@ -122,7 +122,7 @@ in {
 
   config = mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
-      cozy = {
+      cozy-stack = {
         inherit environment environmentFiles;
 
         image = "cozy/cozy-stack";
@@ -133,7 +133,7 @@ in {
         ];
 
         dependsOn = [
-          "cozy_couchdb"
+          "cozy-couchdb"
         ];
 
         log-driver = "journald";
@@ -153,7 +153,7 @@ in {
         ];
       };
 
-      cozy_couchdb = {
+      cozy-couchdb = {
         inherit environment environmentFiles;
 
         image = "couchdb:3.3";
