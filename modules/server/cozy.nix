@@ -12,7 +12,7 @@
   environment = {
     DOMAIN = domain;
     COUCHDB_PROTOCOL = "http";
-    COUCHDB_HOST = "localhost";
+    COUCHDB_HOST = network.couchdbAlias;
     COUCHDB_PORT = toString 5984;
     COUCHDB_USER = cfg.user;
     COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
@@ -146,7 +146,6 @@ in {
           "--health-timeout=5s"
           "--network-alias=${network.cozyAlias}"
           "--network=${network.name}"
-          "--pod=cozy_pod"
         ];
 
         ports = [
@@ -165,6 +164,10 @@ in {
 
         log-driver = "journald";
 
+        ports = [
+          "${environment.COUCHDB_PORT}:${environment.COUCHDB_PORT}"
+        ];
+
         extraOptions = [
           "--health-cmd=[\"curl\",\"-f\",\"://:@:/_up\"]"
           "--health-interval=10s"
@@ -173,7 +176,6 @@ in {
           "--health-timeout=5s"
           "--network-alias=${network.couchdbAlias}"
           "--network=${network.name}"
-          "--pod=new:cozy_pod"
         ];
       };
     };
