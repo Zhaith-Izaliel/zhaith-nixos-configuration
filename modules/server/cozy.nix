@@ -12,8 +12,8 @@
   environment = {
     DOMAIN = domain;
     COUCHDB_PROTOCOL = "http";
-    # COUCHDB_HOST = network.couchdbAlias;
-    COUCHDB_HOST = "localhost";
+    COUCHDB_HOST = network.couchdbAlias;
+    # COUCHDB_HOST = "localhost";
     COUCHDB_PORT = toString 5984;
     COUCHDB_USER = cfg.user;
     COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
@@ -147,9 +147,9 @@ in {
           "--health-retries=3"
           "--health-start-period=30s"
           "--health-timeout=5s"
-          # "--network-alias=${network.cozyAlias}"
-          # "--network=${network.name}"
-          "--network=host"
+          "--network-alias=${network.cozyAlias}"
+          "--network=${network.name}"
+          # "--network=host"
         ];
 
         ports = [
@@ -178,9 +178,9 @@ in {
           "--health-retries=3"
           "--health-start-period=30s"
           "--health-timeout=5s"
-          # "--network-alias=${network.couchdbAlias}"
-          # "--network=${network.name}"
-          "--network=host"
+          "--network-alias=${network.couchdbAlias}"
+          "--network=${network.name}"
+          # "--network=host"
         ];
       };
     };
@@ -264,15 +264,5 @@ in {
         else "${item}.${cfg.instanceName}.${domain}")
       cfg.installedApps;
     };
-
-    # users.groups.${cfg.group} = {
-    #   name = cfg.group;
-    # };
-
-    # users.users.${cfg.user} = {
-    #   inherit (cfg) group;
-
-    #   isSystemUser = true;
-    # };
   };
 }
