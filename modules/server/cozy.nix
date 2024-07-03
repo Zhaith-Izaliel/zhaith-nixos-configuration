@@ -144,8 +144,9 @@ in {
           "--health-retries=3"
           "--health-start-period=30s"
           "--health-timeout=5s"
-          "--network-alias=${network.cozyAlias}"
-          "--network=${network.name}"
+          # "--network-alias=${network.cozyAlias}"
+          # "--network=${network.name}"
+          "--network=host"
         ];
 
         ports = [
@@ -170,8 +171,9 @@ in {
           "--health-retries=3"
           "--health-start-period=30s"
           "--health-timeout=5s"
-          "--network-alias=${network.couchdbAlias}"
-          "--network=${network.name}"
+          # "--network-alias=${network.couchdbAlias}"
+          # "--network=${network.name}"
+          "--network=host"
         ];
       };
     };
