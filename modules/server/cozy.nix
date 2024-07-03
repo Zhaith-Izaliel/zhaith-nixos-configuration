@@ -12,11 +12,12 @@
   environment = {
     DOMAIN = domain;
     COUCHDB_PROTOCOL = "http";
-    # COUCHDB_HOST = network.couchdbAlias;
-    COUCHDB_HOST = "localhost";
+    COUCHDB_HOST = network.couchdbAlias;
     COUCHDB_PORT = toString 5984;
     COUCHDB_USER = cfg.user;
     COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
+    LOCAL_USER_ID = "5984";
+    LOCAL_GROUP_ID = "5984";
   };
 
   environmentFiles = [
@@ -156,7 +157,7 @@ in {
       };
 
       cozy-couchdb = {
-        inherit environment environmentFiles;
+        inherit environmentFiles;
 
         image = "couchdb:3.3";
 
@@ -165,6 +166,10 @@ in {
         ];
 
         log-driver = "journald";
+
+        environment = {
+          inherit (environment) COUCHDB_USER;
+        };
 
         extraOptions = [
           "--health-cmd=[\"curl\",\"-f\",\"://:@:/_up\"]"
