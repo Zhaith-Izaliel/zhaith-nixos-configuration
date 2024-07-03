@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkIf types mkOption mkDefault getExe;
+  inherit (lib) mkIf types mkOption mkDefault;
   cfg = config.hellebore.server.cozy;
   domain = "${cfg.subdomain}.${config.networking.domain}";
 
@@ -24,7 +24,7 @@
 
   network = {
     name = "cozy_default";
-    couchdbAlias = "couchdb";
+    couchdbAlias = "cozy_couchdb";
     cozyAlias = "cozy";
   };
 in {
