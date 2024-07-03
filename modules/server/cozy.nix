@@ -133,7 +133,7 @@ in {
         ];
 
         dependsOn = [
-          "cozy-couchdb"
+          "cozy_couchdb"
         ];
 
         log-driver = "journald";
@@ -153,7 +153,7 @@ in {
         ];
       };
 
-      cozy-couchdb = {
+      cozy_couchdb = {
         inherit environment environmentFiles;
 
         image = "couchdb:3.3";
@@ -163,10 +163,6 @@ in {
         ];
 
         log-driver = "journald";
-
-        ports = [
-          "${environment.COUCHDB_PORT}:${environment.COUCHDB_PORT}"
-        ];
 
         extraOptions = [
           "--health-cmd=[\"curl\",\"-f\",\"://:@:/_up\"]"
