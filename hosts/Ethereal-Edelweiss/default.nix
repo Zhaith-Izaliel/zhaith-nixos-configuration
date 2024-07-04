@@ -56,26 +56,6 @@
         secretEnvFile = "/mnt/datas/invoiceshelf/db-pass";
       };
 
-      cozy = {
-        enable = true;
-        subdomain = "cozy";
-        volume = "/mnt/datas/cozy/volume";
-        instanceName = "zhaith";
-        installedApps = [
-          "home"
-          "banks"
-          "contacts"
-          "drive"
-          "passwords"
-          "photos"
-          "settings"
-          "store"
-          "mespapiers"
-        ];
-        secretEnvFile = "/mnt/datas/cozy/env.secret";
-        couchdb.adminConfig = "/mnt/datas/couchdb/admins.ini";
-      };
-
       jellyfin = {
         enable = true;
         group = "nextcloud";
@@ -123,9 +103,6 @@
           "${config.hellebore.server.jellyfin.subdomain}.${domain}"
           "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
           "${config.hellebore.server.servas.subdomain}.${domain}"
-          # cozy
-          "${config.hellebore.server.cozy.subdomain}.${domain}"
-          ''"*.${config.hellebore.server.cozy.subdomain}.${domain}"''
           domain
         ];
       in {
