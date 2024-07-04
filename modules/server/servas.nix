@@ -68,8 +68,8 @@ in {
             then "true"
             else "false";
           APP_KEY = "";
-          APP_DEBUG = "false";
-          APP_URL = "http://${domain}";
+          APP_DEBUG = "true";
+          APP_URL = "https://${domain}";
           DB_CONNECTION = "sqlite";
           DB_DATABASE = "/var/www/html/database/sqlite/servas.db";
           DB_FOREIGN_KEYS = "true";
