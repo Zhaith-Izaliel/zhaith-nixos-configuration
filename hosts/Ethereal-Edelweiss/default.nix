@@ -120,6 +120,7 @@
           "${config.hellebore.server.calibre-web.subdomain}.${domain}"
           "${config.hellebore.server.jellyfin.subdomain}.${domain}"
           "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
+          "${config.hellebore.server.servas.subdomain}.${domain}"
           # cozy
           "${config.hellebore.server.cozy.subdomain}.${domain}"
           ''"*.${config.hellebore.server.cozy.subdomain}.${domain}"''
