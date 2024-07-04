@@ -12,6 +12,7 @@
     ./nginx.nix
     ./podman.nix
     ./postgresql.nix
+    ./servas.nix
     ./virgilribeyre-com.nix
   ];
 

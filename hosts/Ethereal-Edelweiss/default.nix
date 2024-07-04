@@ -89,6 +89,12 @@
         subdomain = "books";
       };
 
+      servas = {
+        enable = true;
+        volume = "/mnt/datas/servas/volume";
+        subdomain = "bookmarks";
+      };
+
       factorio = {
         enable = true;
         subdomain = "factorio";
