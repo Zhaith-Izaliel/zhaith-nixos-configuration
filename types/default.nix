@@ -127,6 +127,13 @@ in rec {
   }: {
     enable = mkEnableOption "Hellebore's ${name} configuration";
 
+    name = mkOption {
+      type = types.nonEmptyStr;
+      default = name;
+      readOnly = true;
+      description = "Name of the Server App. Read Only.";
+    };
+
     package = mkPackageOption pkgs package {nullable = package == null;};
 
     group = mkOption {
