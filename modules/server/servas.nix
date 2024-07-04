@@ -14,10 +14,6 @@ in {
         default = "/var/lib/servas";
         description = ''
           Directory to store the Servas volume.
-
-          The volume should contain these folders:
-          - `env`
-          -  `data`
         '';
         type = types.nonEmptyStr;
       };
@@ -28,16 +24,19 @@ in {
         description = "Allow external users to register to Servas.";
       };
 
-      # secretEnvFile = mkOption {
-      #   default = "";
-      #   type = types.nonEmptyStr;
-      #   description = ''
-      #     The env file containing the DB password, in the form:
-      #     ```
-      #       DB_PASSWORD="password"
-      #     ```
-      #   '';
-      # };
+      secretEnvFile = mkOption {
+        default = "";
+        type = types.nonEmptyStr;
+        description = ''
+          The env file containing the App Key, in the form:
+          ```
+            APP_KEY="base64:key"
+          ```
+
+          It should be generated the first time with
+          `sudo podman exec -it servas php artisan key:generate --force`
+        '';
+      };
     }
     // extra-types.server-app {
       name = "Servas";
@@ -52,8 +51,8 @@ in {
         image = "beromir/servas";
 
         volumes = [
-          "${cfg.volume}/data:/var/www/html/database/sqlite"
-          "${cfg.volume}/env:/var/www/html/.env"
+          "${cfg.volume}:/var/www/html/database/sqlite"
+          "${cfg.secretEnvFile}:/var/www/html/.env"
         ];
 
         ports = [
@@ -67,13 +66,16 @@ in {
             if cfg.allowRegistration
             then "true"
             else "false";
-          APP_KEY = "";
-          APP_DEBUG = "true";
+          APP_DEBUG = "false";
           APP_URL = "https://${domain}";
           DB_CONNECTION = "sqlite";
           DB_DATABASE = "/var/www/html/database/sqlite/servas.db";
           DB_FOREIGN_KEYS = "true";
         };
+
+        environmentFiles = [
+          cfg.secretEnvFile
+        ];
       };
     };
 
