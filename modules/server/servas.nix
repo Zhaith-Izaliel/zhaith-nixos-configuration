@@ -24,7 +24,7 @@ in {
 
       allowRegistration = mkOption {
         default = true;
-        type = types.boolean;
+        type = types.bool;
         description = "Allow external users to register to Servas.";
       };
 
