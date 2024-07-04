@@ -93,6 +93,7 @@
         enable = true;
         volume = "/mnt/datas/servas/volume";
         secretEnvFile = "/mnt/datas/servas/env.secret";
+        allowRegistration = false;
         subdomain = "bookmarks";
       };
 
