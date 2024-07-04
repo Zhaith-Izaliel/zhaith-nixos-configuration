@@ -181,22 +181,38 @@ in {
           "--health-timeout=5s"
           "--network-alias=${podConfig.couchdbAlias}"
           "--network=${podConfig.network}"
-          # "--podConfig=host"
+          "--pod=${podConfig.name}"
         ];
       };
     };
 
     # networks
     systemd.services = {
+      "podman-pod-${podConfig.name}" = {
+        path = [pkgs.podman];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStop = "${pkgs.podman}/bin/podman pod rm -f ${podConfig.name}";
+        };
+        script = ''
+          podman pod inspect ${podConfig.name} || podman pod create ${podConfig.name}
+        '';
+        partOf = ["podman-compose-cozy-root.target"];
+        wantedBy = ["podman-compose-cozy-root.target"];
+      };
+
       "podman-cozy-couchdb" = {
         serviceConfig = {
           Restart = lib.mkOverride 500 "always";
         };
         after = [
           "podman-network-${podConfig.network}.service"
+          "podman-pod-${podConfig.name}"
         ];
         requires = [
           "podman-network-${podConfig.network}.service"
+          "podman-pod-${podConfig.name}"
         ];
         partOf = [
           "podman-compose-cozy-root.target"
@@ -205,15 +221,18 @@ in {
           "podman-compose-cozy-root.target"
         ];
       };
+
       "podman-cozy-stack" = {
         serviceConfig = {
           Restart = lib.mkOverride 500 "always";
         };
         after = [
           "podman-network-${podConfig.network}.service"
+          "podman-pod-${podConfig.name}"
         ];
         requires = [
           "podman-network-${podConfig.network}.service"
+          "podman-pod-${podConfig.name}"
         ];
         partOf = [
           "podman-compose-cozy-root.target"
