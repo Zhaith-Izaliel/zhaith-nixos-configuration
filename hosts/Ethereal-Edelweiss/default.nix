@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  unstable-pkgs,
   ...
 }: {
   imports = [
@@ -80,6 +81,7 @@
       factorio = {
         enable = true;
         subdomain = "factorio";
+        package = unstable-pkgs.factorio-headless;
         admins = [
           "Zhaith-Izaliel"
           "savaleinart"
