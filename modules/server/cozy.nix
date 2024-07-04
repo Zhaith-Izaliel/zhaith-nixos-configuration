@@ -228,11 +228,11 @@ in {
         };
         after = [
           "podman-network-${podConfig.network}.service"
-          "podman-pod-${podConfig.name}"
+          "podman-pod-${podConfig.name}.service"
         ];
         requires = [
           "podman-network-${podConfig.network}.service"
-          "podman-pod-${podConfig.name}"
+          "podman-pod-${podConfig.name}.service"
         ];
         partOf = [
           "podman-compose-cozy-root.target"
