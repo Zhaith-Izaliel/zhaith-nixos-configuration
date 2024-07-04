@@ -12,8 +12,8 @@
   environment = {
     DOMAIN = domain;
     COUCHDB_PROTOCOL = "http";
-    # COUCHDB_HOST = podConfig.couchdbAlias;
-    COUCHDB_HOST = "localhost";
+    COUCHDB_HOST = podConfig.couchdbAlias;
+    # COUCHDB_HOST = "localhost";
     COUCHDB_PORT = toString 5984;
     COUCHDB_USER = cfg.user;
     COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
