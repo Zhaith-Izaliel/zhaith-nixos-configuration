@@ -180,7 +180,7 @@ in {
         volume-brightness
         screenshot
         power-management
-        gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
+        gnome-themes-extra # Add default Gnome theme as well for Adwaita
       ]
       ++ theme.gtk.packages;
 

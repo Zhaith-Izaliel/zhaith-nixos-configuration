@@ -36,6 +36,7 @@
       gsettings set $gnome_schema icon-theme ${gtkTheme.iconTheme.name}
       gsettings set $gnome_schema cursor-theme ${gtkTheme.cursorTheme.name}
       gsettings set $gnome_schema font-name ${gtkTheme.font.name}
+      gsettings set $gnome_schema color-scheme "prefer-dark"
     '';
 
   mkWindowOrLayerRule = window: rules: (map (rule: "${rule},${window}") rules);

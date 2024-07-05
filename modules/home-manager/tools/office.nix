@@ -18,7 +18,7 @@ in {
       evince
       qalculate-gtk
       calibre
-      gnome.simple-scan
+      simple-scan
       fontpreview
     ];
   };

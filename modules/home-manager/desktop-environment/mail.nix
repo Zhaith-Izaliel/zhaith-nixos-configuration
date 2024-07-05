@@ -56,7 +56,7 @@ in {
       Service = {
         Type = "simple";
         Restart = "always";
-        Environment = "PATH=${pkgs.gnome.gnome-keyring}/bin";
+        Environment = "PATH=${pkgs.gnome-keyring}/bin";
         ExecStart = "${pkgs.protonmail-bridge}/bin/protonmail-bridge --grpc --log-level info";
       };
 
