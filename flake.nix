@@ -16,10 +16,9 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    hyprpicker = {
-      # HACK: Temporary fix until hyprpicker is merged in 0.3.0 in upstream nixpkgs
-      url = "github:hyprwm/hyprpicker";
-      inputs.nixpkgs.follows = "nixpkgs";
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     simple-nixos-mail-server = {
@@ -113,6 +112,7 @@
     zhaith-helix,
     home-manager-stable,
     simple-nixos-mail-server,
+    agenix,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -121,11 +121,13 @@
       extraSystemModules = [
         grub2-themes.nixosModules.default
         sddm-sugar-candy-nix.nixosModules.default
+        agenix.nixosModules.default
       ];
 
       extraHomeManagerModules = [
         zhaith-helix.homeManagerModules.default
         rofi-applets.homeManagerModules.default
+        agenix.homeManagerModules.default
       ];
 
       extraServerModules = [
@@ -137,8 +139,8 @@
       nix-alien.overlays.default
       sddm-sugar-candy-nix.overlays.default
       virgutils.overlays.${system}.default
+      agenix.overlays.default
       customOverlay
-      inputs.hyprpicker.overlays.default
     ];
   in
     with import nixpkgs {inherit system;}; {

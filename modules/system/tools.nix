@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  unstable-pkgs,
   ...
 }: let
   inherit (lib) mkEnableOption mkIf optional;
@@ -32,7 +31,8 @@ in {
         erdtree
         file
         bandwhich
-        unstable-pkgs.dust
+        dust
+        agenix
       ]
       ++ optional cfg.nix-alien.enable nix-alien;
 
