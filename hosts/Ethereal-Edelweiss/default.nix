@@ -125,8 +125,9 @@
           "${config.hellebore.server.jellyfin.subdomain}.${domain}"
           "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
           "${config.hellebore.server.servas.subdomain}.${domain}"
+          # Cozy
+          "${config.hellebore.server.cozy.admin.subdomain}.${config.hellebore.server.cozy.subdomain}.${domain}"
           "${config.hellebore.server.cozy.subdomain}.${domain}"
-          ''"*.${config.hellebore.server.cozy.subdomain}.${domain}"''
           domain
         ];
       in {

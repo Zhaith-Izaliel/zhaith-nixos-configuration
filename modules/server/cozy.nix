@@ -8,7 +8,7 @@
   inherit (lib) mkIf types mkOption mkDefault;
   cfg = config.hellebore.server.cozy;
   domain = "${cfg.subdomain}.${config.networking.domain}";
-  adminDomain = "${cfg.admin.subdomain}.${config.networking.domain}";
+  adminDomain = "${cfg.admin.subdomain}.${domain}";
 
   environment = {
     DOMAIN = domain;
@@ -39,7 +39,7 @@ in {
         };
 
         port = mkOption {
-          type = types.integers.unsigned;
+          type = types.ints.unsigned;
           default = 6060;
           description = "Defines the port of the admin interface";
         };
@@ -166,8 +166,8 @@ in {
         ];
 
         ports = [
-          "${cfg.port}:8080/tcp"
-          "${cfg.admin.port}:6060/tcp"
+          "${toString cfg.port}:8080/tcp"
+          "${toString cfg.admin.port}:6060/tcp"
         ];
 
         dependsOn = [
