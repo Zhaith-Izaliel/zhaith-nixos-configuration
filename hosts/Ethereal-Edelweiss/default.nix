@@ -130,7 +130,7 @@
         '';
 
         passwords = {
-          "@password_placeholder@" = "/mnt/datas/inadyn/inadyn-password";
+          "@password_placeholder@" = config.age.secrets.inadyn.path;
         };
       };
     };
