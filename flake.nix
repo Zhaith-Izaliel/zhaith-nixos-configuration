@@ -21,6 +21,11 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    compose2nix = {
+      url = "github:aksiksi/compose2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     simple-nixos-mail-server = {
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-23.11";
       inputs.nixpkgs.follows = "nixpkgs-stable";
