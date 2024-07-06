@@ -13,7 +13,8 @@
   environment = {
     DOMAIN = domain;
     COUCHDB_PROTOCOL = "http";
-    COUCHDB_HOST = network.couchdbAlias;
+    # COUCHDB_HOST = network.couchdbAlias;
+    COUCHDB_HOST = "localhost";
     COUCHDB_PORT = toString 5984;
     COUCHDB_USER = cfg.user;
     COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
@@ -25,7 +26,7 @@
 
   network = {
     name = "cozy_default";
-    couchdbAlias = "cozy-couchdb";
+    couchdbAlias = "couchdb";
     cozyAlias = "cozy-stack";
   };
 in {
@@ -144,8 +145,8 @@ in {
           "--health-retries=3"
           "--health-start-period=30s"
           "--health-timeout=5s"
-          "--network-alias=${network.couchdbAlias}"
-          "--network=${network.name}"
+          # "--network-alias=${network.couchdbAlias}"
+          "--network=host"
         ];
       };
 
@@ -156,8 +157,8 @@ in {
         cmd = [
           "cozy-stack"
           "serve"
-          "--couchdb-url"
-          "${environment.COUCHDB_PROTOCOL}://${environment.COUCHDB_HOST}:${environment.COUCHDB_PORT}"
+          # "--couchdb-url"
+          # ''${environment.COUCHDB_PROTOCOL}://${environment.COUCHDB_HOST}:${environment.COUCHDB_PORT}''
         ];
 
         volumes = [
@@ -182,8 +183,8 @@ in {
           "--health-retries=3"
           "--health-start-period=30s"
           "--health-timeout=5s"
-          "--network-alias=${network.cozyAlias}"
-          "--network=${network.name}"
+          # "--network-alias=${network.cozyAlias}"
+          "--network=host"
         ];
       };
     };
@@ -193,12 +194,12 @@ in {
         serviceConfig = {
           Restart = lib.mkOverride 500 "always";
         };
-        after = [
-          "podman-network-${network.name}.service"
-        ];
-        requires = [
-          "podman-network-${network.name}.service"
-        ];
+        # after = [
+        #   "podman-network-${network.name}.service"
+        # ];
+        # requires = [
+        #   "podman-network-${network.name}.service"
+        # ];
         partOf = [
           "podman-compose-cozy-root.target"
         ];
@@ -211,12 +212,12 @@ in {
         serviceConfig = {
           Restart = lib.mkOverride 500 "always";
         };
-        after = [
-          "podman-network-${network.name}.service"
-        ];
-        requires = [
-          "podman-network-${network.name}.service"
-        ];
+        # after = [
+        #   "podman-network-${network.name}.service"
+        # ];
+        # requires = [
+        #   "podman-network-${network.name}.service"
+        # ];
         partOf = [
           "podman-compose-cozy-root.target"
         ];
@@ -226,19 +227,19 @@ in {
       };
 
       # Networks
-      "podman-network-${network.name}" = {
-        path = [pkgs.podman];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          ExecStop = "${pkgs.podman}/bin/podman network rm -f ${network.name}";
-        };
-        script = ''
-          podman network inspect ${network.name} || podman network create ${network.name}
-        '';
-        partOf = ["podman-compose-cozy-root.target"];
-        wantedBy = ["podman-compose-cozy-root.target"];
-      };
+      # "podman-network-${network.name}" = {
+      #   path = [pkgs.podman];
+      #   serviceConfig = {
+      #     Type = "oneshot";
+      #     RemainAfterExit = true;
+      #     ExecStop = "${pkgs.podman}/bin/podman network rm -f ${network.name}";
+      #   };
+      #   script = ''
+      #     podman network inspect ${network.name} || podman network create ${network.name}
+      #   '';
+      #   partOf = ["podman-compose-cozy-root.target"];
+      #   wantedBy = ["podman-compose-cozy-root.target"];
+      # };
     };
 
     # Root service
@@ -255,30 +256,37 @@ in {
 
     services.nginx.virtualHosts = {
       "${domain}" = {
-        forceSSL = true;
-        enableACME = true;
+        serverName = "*.${domain} ${domain}";
+        # forceSSL = true;
+        # enableACME = true;
+        extraConfig = ''
+          add_header Strict-Transport-Security "max-age=31536000; includeSubDomains;";
+          client_max_body_size 1g;
+        '';
+
         locations = {
           "/" = {
             proxyPass = "http://localhost:${toString cfg.port}";
-          };
-        };
-
-        serverAliases = builtins.map (item:
-          if cfg.subdomainType == "flat"
-          then "${cfg.instanceName}-${item}.${domain}"
-          else "${item}.${cfg.instanceName}.${domain}")
-        cfg.installedApps;
-      };
-
-      "${adminDomain}" = {
-        forceSSL = true;
-        enableACME = true;
-        locations = {
-          "/" = {
-            proxyPass = "http://localhost:${toString cfg.admin.port}";
+            extraConfig = ''
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade \$http_upgrade;
+              proxy_set_header Connection "upgrade";
+              proxy_set_header Host \$host;
+              proxy_set_header X-Forwarded-For \$remote_addr;
+            '';
           };
         };
       };
+
+      # "${adminDomain}" = {
+      #   forceSSL = true;
+      #   enableACME = true;
+      #   locations = {
+      #     "/" = {
+      #       proxyPass = "http://localhost:${toString cfg.admin.port}";
+      #     };
+      #   };
+      # };
     };
   };
 }

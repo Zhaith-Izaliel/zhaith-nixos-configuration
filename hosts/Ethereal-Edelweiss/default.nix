@@ -65,7 +65,7 @@
       };
 
       cozy = {
-        enable = true;
+        enable = false;
         subdomain = "cozy";
         volume = "/mnt/datas/cozy/volume";
         instanceName = "zhaith";
