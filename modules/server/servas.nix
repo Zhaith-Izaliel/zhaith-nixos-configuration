@@ -26,7 +26,7 @@ in {
 
       secretEnvFile = mkOption {
         default = "";
-        type = types.nonEmptyStr;
+        type = types.path;
         description = ''
           The env file containing the App Key, in the form:
           ```

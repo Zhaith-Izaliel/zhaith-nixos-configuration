@@ -4,7 +4,11 @@
     font.size = 12;
 
     development = {
-      git.enable = true;
+      git = {
+        enable = true;
+        gitui.enable = true;
+      };
+
       erdtree.enable = true;
 
       bat.enable = true;

@@ -55,7 +55,7 @@
         enable = true;
         subdomain = "invoices";
         volume = "/mnt/datas/invoiceshelf/volume";
-        secretEnvFile = "/mnt/datas/invoiceshelf/db-pass";
+        secretEnvFile = config.age.secrets.invoiceshelf-env.path;
       };
 
       jellyfin = {
@@ -74,7 +74,7 @@
       servas = {
         enable = true;
         volume = "/mnt/datas/servas/volume";
-        secretEnvFile = "/mnt/datas/servas/env.secret";
+        secretEnvFile = config.age.secrets.servas-env.path;
         allowRegistration = false;
         subdomain = "bookmarks";
       };
@@ -87,7 +87,7 @@
           "Zhaith-Izaliel"
           "savaleinart"
         ];
-        extraSettingsFile = "/mnt/datas/factorio/secret.json";
+        extraSettingsFile = config.age.secrets.factorio.path;
         game-name = "Modded Maxime-Virgil";
       };
 
