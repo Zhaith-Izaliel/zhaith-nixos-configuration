@@ -64,6 +64,25 @@
         subdomain = "jellyfin";
       };
 
+      cozy = {
+        enable = true;
+        subdomain = "cozy";
+        volume = "/mnt/datas/cozy/volume";
+        instanceName = "zhaith";
+        installedApps = [
+          "home"
+          "banks"
+          "contacts"
+          "drive"
+          "passwords"
+          "photos"
+          "settings"
+          "store"
+          "mespapiers"
+        ];
+        secretEnvFile = config.age.secrets.cozy-env.path;
+      };
+
       calibre-web = {
         enable = true;
         group = "nextcloud";
@@ -106,6 +125,8 @@
           "${config.hellebore.server.jellyfin.subdomain}.${domain}"
           "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
           "${config.hellebore.server.servas.subdomain}.${domain}"
+          "${config.hellebore.server.cozy.subdomain}.${domain}"
+          ''"*.${config.hellebore.server.cozy.subdomain}.${domain}"''
           domain
         ];
       in {

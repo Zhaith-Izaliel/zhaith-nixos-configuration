@@ -34,7 +34,7 @@ in {
       admin = {
         subdomain = mkOption {
           type = types.nonEmptyStr;
-          default = "";
+          default = "admin";
           description = "Defines the admin interface subdomain.";
         };
 
