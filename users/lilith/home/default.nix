@@ -23,4 +23,9 @@
       prompt.enable = true;
     };
   };
+
+  programs.helix.zhaith-configuration = {
+    enable = true;
+    defaultEditor = true;
+  };
 }
