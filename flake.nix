@@ -167,6 +167,7 @@
             (final: prev: {
               power-management = virgutils.packages.${system}.power-management;
             })
+            agenix.overlays.default
             customOverlay
           ];
           extraModules = [
