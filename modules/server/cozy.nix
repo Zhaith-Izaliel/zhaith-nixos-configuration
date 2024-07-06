@@ -80,7 +80,7 @@ in {
       };
 
       subdomainType = mkOption {
-        default = "flat";
+        default = "nested";
         type = types.enum ["nested" "flat"];
         description = ''
           Application subdomain type for each Cozy.
