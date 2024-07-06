@@ -23,7 +23,7 @@
       size = "standard";
       variant = "macchiato";
     };
-    name = "catppuccin-macchiato-lavender-standard+default";
+    name = "catppuccin-macchiato-lavender-standard";
   };
 
   cursorTheme = {
