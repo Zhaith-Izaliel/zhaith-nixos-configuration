@@ -29,11 +29,13 @@ in {
       locations = {
         "/" = {
           proxyPass = "http://localhost:${toString cfg.port}";
+          recommendedProxyConfig = true;
         };
 
         "/socket" = {
           proxyPass = "http://localhost:${toString cfg.port}";
           proxyWebsockets = true;
+          recommendedProxyConfig = true;
         };
       };
     };

@@ -39,6 +39,7 @@ in {
 
       locations."/" = {
         proxyPass = "http://localhost:${toString cfg.port}";
+        recommendedProxyConfig = true;
       };
     };
   };
