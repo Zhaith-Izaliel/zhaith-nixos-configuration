@@ -24,6 +24,10 @@ in {
 
     documentation.dev.enable = cfg.enableDocumentation;
 
+    environment.variables = {
+      EDITOR = "hx";
+    };
+
     environment.systemPackages = with pkgs;
       [
         helix

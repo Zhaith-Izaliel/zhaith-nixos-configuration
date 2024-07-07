@@ -83,6 +83,13 @@
         secretEnvFile = config.age.secrets.cozy-env.path;
       };
 
+      radicale = {
+        enable = true;
+        storage = "/mnt/datas/radicale";
+        subdomain = "radicale";
+        auth.file = config.age.secrets.radicale.path;
+      };
+
       calibre-web = {
         enable = true;
         group = "nextcloud";
@@ -120,15 +127,15 @@
       inadyn = let
         inherit (config.networking) domain;
         domains = [
+          domain
           "${config.hellebore.server.nextcloud.subdomain}.${domain}"
           "${config.hellebore.server.calibre-web.subdomain}.${domain}"
           "${config.hellebore.server.jellyfin.subdomain}.${domain}"
           "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
           "${config.hellebore.server.servas.subdomain}.${domain}"
+          "${config.hellebore.server.radicale.subdomain}.${domain}"
           # Cozy
-          "${config.hellebore.server.cozy.admin.subdomain}.${config.hellebore.server.cozy.subdomain}.${domain}"
           "${config.hellebore.server.cozy.subdomain}.${domain}"
-          domain
         ];
       in {
         enable = true;

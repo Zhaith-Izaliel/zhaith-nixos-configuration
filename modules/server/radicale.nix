@@ -4,7 +4,7 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkOption types mkIf cleanSource mkDefault;
+  inherit (lib) mkOption types mkIf mkDefault;
   cfg = config.hellebore.server.radicale;
   domain = "${cfg.subdomain}.${config.networking.domain}";
 in {
@@ -12,7 +12,7 @@ in {
     {
       storage = mkOption {
         type = types.path;
-        default = /var/calibre/library;
+        default = /var/radicale/storage;
         description = "The storage location for Radicale.";
       };
 
@@ -48,7 +48,9 @@ in {
       enable = true;
 
       settings = {
-        hosts = ["localhost:${toString cfg.port}"];
+        server = {
+          hosts = ["localhost:${toString cfg.port}"];
+        };
 
         auth = {
           type = "htpasswd";
@@ -70,7 +72,6 @@ in {
 
       locations."/" = {
         proxyPass = "http://localhost:${toString cfg.port}/";
-        recommendedProxyConfig = true;
         extraConfig = ''
           proxy_pass_header Authorization;
           proxy_set_header  X-Script-Name /;
