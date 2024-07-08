@@ -18,7 +18,7 @@ in {
   options.hellebore.server.couchdb = {
     enable = mkEnableOption "Hellebore's couchdb configuration";
 
-    package = mkPackageOption pkgs "couchdb" {};
+    package = mkPackageOption pkgs "couchdb3" {};
 
     passwordFile = mkOption {
       default = "";

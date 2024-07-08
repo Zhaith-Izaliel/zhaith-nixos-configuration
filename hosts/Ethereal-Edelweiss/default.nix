@@ -64,11 +64,15 @@
         subdomain = "jellyfin";
       };
 
+      couchdb = {
+        enable = true;
+        passwordFile = config.age.secrets.couchdb.path;
+      };
+
       cozy = {
         enable = false;
         subdomain = "cozy";
         volume = "/mnt/datas/cozy/volume";
-        instanceName = "zhaith";
         installedApps = [
           "home"
           "banks"
@@ -136,6 +140,7 @@
           "${config.hellebore.server.radicale.subdomain}.${domain}"
           # Cozy
           "${config.hellebore.server.cozy.subdomain}.${domain}"
+          "*.${config.hellebore.server.cozy.subdomain}.${domain}"
         ];
       in {
         enable = true;

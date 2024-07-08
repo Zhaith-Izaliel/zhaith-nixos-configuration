@@ -107,10 +107,17 @@ in {
       user = "cozy";
       group = "cozy";
       database = "cozy";
-      port = 8089;
+      port = 8080;
     };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = config.services.couchdb.enable;
+        message = "Cozy needs CouchDB to be enable to work.";
+      }
+    ];
+
     # Containers
     virtualisation.oci-containers.containers = {
       "cozy-stack" = {
@@ -156,6 +163,13 @@ in {
         locations = {
           "/" = {
             proxyPass = "http://localhost:${toString cfg.port}";
+            # recommendedProxySettings = false;
+            extraConfig = ''
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade \$http_upgrade;
+              proxy_set_header Connection "upgrade";
+              proxy_set_header X-Forwarded-For \$remote_addr;
+            '';
           };
         };
       };
