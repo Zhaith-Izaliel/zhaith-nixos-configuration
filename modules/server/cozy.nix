@@ -11,9 +11,8 @@
   environment = {
     DOMAIN = domain;
     COUCHDB_PROTOCOL = "http";
-    # COUCHDB_HOST = network.couchdbAlias;
     COUCHDB_HOST = "localhost";
-    COUCHDB_PORT = toString 5984;
+    COUCHDB_PORT = toString config.services.couchdb.port;
     COUCHDB_USER = cfg.user;
     COZY_SUBDOMAIN_TYPE = cfg.subdomainType;
   };
@@ -57,7 +56,6 @@ in {
         description = ''
           The env file containing the secrets for Cozy, in the form:
           ```
-          COUCHDB_PASSWORD="SomeRandomlyGeneratedPassword"
           COZY_ADMIN_PASSPHRASE="AnotherRandomlyGeneratedPassword"
           ```
 
@@ -129,10 +127,6 @@ in {
           "${toString cfg.admin.port}:6060/tcp"
         ];
 
-        dependsOn = [
-          "cozy-couchdb"
-        ];
-
         log-driver = "journald";
 
         extraOptions = [
@@ -141,7 +135,6 @@ in {
           "--health-retries=3"
           "--health-start-period=30s"
           "--health-timeout=5s"
-          # "--network-alias=${network.cozyAlias}"
           "--network=host"
         ];
       };

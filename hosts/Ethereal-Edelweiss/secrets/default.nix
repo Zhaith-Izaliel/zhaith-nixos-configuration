@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   age.secrets = {
     factorio.file = ./factorio.age;
 
@@ -14,6 +14,12 @@
       file = ./radicale.age;
       owner = "radicale";
       group = "radicale";
+    };
+
+    couchdb = {
+      file = ./couchdb.age;
+      owner = config.services.couchdb.user;
+      group = config.services.couchdb.group;
     };
   };
 }
