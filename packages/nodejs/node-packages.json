@@ -1,5 +1,3 @@
 [
-  "elasticdump",
-  "JSONStream",
-  "request"
+  "ghost-cli"
 ]
