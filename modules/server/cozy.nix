@@ -158,8 +158,7 @@ in {
           client_max_body_size 1g;
         '';
 
-        # serverAliases = builtins.map (item: "${item}.${domain}") cfg.installedApps;
-        serverAliases = ["*.${domain}"];
+        serverAliases = builtins.map (item: "${item}.${domain}") cfg.installedApps;
 
         locations = {
           "/" = {
