@@ -1,29 +1,50 @@
-{config, ...}: {
+{
+  config,
+  lib,
+  ...
+}: let
+  inherit (lib) mkIf;
+
+  cfg = config.hellebore.server;
+  enableSecret = service: attrs: mkIf cfg.${service}.enable attrs;
+in {
   age.secrets = {
-    factorio.file = ./apps/factorio.age;
+    factorio = enableSecret "factorio" {
+      file = ./apps/factorio.age;
+    };
 
-    invoiceshelf-env.file = ./apps/invoiceshelf-env.age;
+    invoiceshelf-env = enableSecret "invoiceshelf" {
+      file = ./apps/invoiceshelf-env.age;
+    };
 
-    servas-env.file = ./apps/servas-env.age;
+    servas-env = enableSecret "servas" {
+      file = ./apps/servas-env.age;
+    };
 
-    inadyn.file = ./services/inadyn.age;
+    inadyn = enableSecret "inadyn" {
+      file = ./services/inadyn.age;
+    };
 
-    cozy-env.file = ./apps/cozy-env.age;
+    cozy-env = enableSecret "cozy" {
+      file = ./apps/cozy-env.age;
+    };
 
-    radicale = {
+    radicale = enableSecret "radicale" {
       file = ./apps/radicale.age;
       owner = "radicale";
       group = "radicale";
     };
 
-    couchdb = {
+    couchdb = enableSecret "couchdb" {
       file = ./services/couchdb.age;
       owner = config.services.couchdb.user;
       group = config.services.couchdb.group;
     };
 
-    "mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud" = {
-      file = ./mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud.age;
-    };
+    # "mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud" = {
+    #   file = ./mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud.age;
+    #   owner = config.mailserver.vmailUserName;
+    #   group = config.mailserver.vmailGroupName;
+    # };
   };
 }
