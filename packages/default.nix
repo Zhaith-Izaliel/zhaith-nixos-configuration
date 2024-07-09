@@ -4,26 +4,35 @@
     inherit (pkgs) stdenv;
     nodejs = pkgs.nodejs;
   };
-in {
-  kando = pkgs.callPackage ./kando.nix {};
+in rec {
   fusion = pkgs.callPackage ./fusion.nix {};
-  elasticdump = nodejs-packages.elasticdump.overrideAttrs (
+  ghost-cli = nodejs-packages.ghost-cli.overrideAttrs (
     final: prev: {
-      buildInputs =
+      buildInputs = with pkgs;
         [
-          nodejs-packages.JSONStream
-          nodejs-packages.request
+          vips
         ]
         ++ prev.buildInputs;
-
-      installPhase =
-        prev.installPhase
-        + ''
-
-          mkdir -p $out/node_modules
-          ln -s ${nodejs-packages.JSONStream}/lib/node_modules/* $out/node_modules
-          ln -s ${nodejs-packages.request}/lib/node_modules/* $out/node_modules
-        '';
     }
   );
+  ghost-publishing = pkgs.callPackage ./ghost-publishing {inherit ghost-cli;};
+  # elasticdump = nodejs-packages.elasticdump.overrideAttrs (
+  #   final: prev: {
+  #     buildInputs =
+  #       [
+  #         nodejs-packages.JSONStream
+  #         nodejs-packages.request
+  #       ]
+  #       ++ prev.buildInputs;
+
+  #     installPhase =
+  #       prev.installPhase
+  #       + ''
+
+  #         mkdir -p $out/node_modules
+  #         ln -s ${nodejs-packages.JSONStream}/lib/node_modules/* $out/node_modules
+  #         ln -s ${nodejs-packages.request}/lib/node_modules/* $out/node_modules
+  #       '';
+  #   }
+  # );
 }
