@@ -158,21 +158,46 @@ in {
           client_max_body_size 1g;
         '';
 
-        serverAliases = builtins.map (item: "${item}.${domain}") cfg.installedApps;
+        # serverAliases = builtins.map (item: "${item}.${domain}") cfg.installedApps;
+        serverAliases = ["*.${domain}"];
 
         locations = {
           "/" = {
             proxyPass = "http://localhost:${toString cfg.port}";
-            # recommendedProxySettings = false;
+            recommendedProxySettings = false;
             extraConfig = ''
               proxy_http_version 1.1;
-              proxy_set_header Upgrade \$http_upgrade;
+              proxy_set_header Upgrade $http_upgrade;
               proxy_set_header Connection "upgrade";
-              proxy_set_header X-Forwarded-For \$remote_addr;
+              proxy_set_header X-Forwarded-For $remote_addr;
+              proxy_set_header Host $host;
             '';
           };
         };
       };
+
+      # "${cfg.admin.subdomain}.${domain}" = {
+      #   forceSSL = true;
+      #   enableACME = true;
+      #   extraConfig = ''
+      #     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains;";
+      #     client_max_body_size 1g;
+      #   '';
+
+      #   locations = {
+      #     "/" = {
+      #       proxyPass = "http://localhost:${toString cfg.admin.port}";
+      #       recommendedProxySettings = false;
+      #       extraConfig = ''
+      #         proxy_http_version 1.1;
+      #         proxy_set_header Upgrade $http_upgrade;
+      #         proxy_set_header Connection "upgrade";
+      #         proxy_set_header X-Forwarded-For $remote_addr;
+      #         proxy_set_header Host $host;
+      #       '';
+      #     };
+      #   };
+      # };
     };
   };
 }

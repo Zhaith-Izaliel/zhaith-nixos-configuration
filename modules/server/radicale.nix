@@ -26,7 +26,7 @@ in {
         };
 
         encryption = mkOption {
-          default = "plain";
+          default = "bcrypt";
           type = types.enum ["plain" "bcrypt" "md5"];
           description = ''
             The encryption scheme of the auth file. If you choose "plain" you must encrypt it on the NixOS side with agenix.

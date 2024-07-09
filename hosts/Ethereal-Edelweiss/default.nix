@@ -70,7 +70,7 @@
       };
 
       cozy = {
-        enable = false;
+        enable = true;
         subdomain = "cozy";
         volume = "/mnt/datas/cozy/volume";
         installedApps = [
