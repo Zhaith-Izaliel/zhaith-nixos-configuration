@@ -51,6 +51,11 @@ in {
       fqdn = domain;
       useFsLayout = true;
       certificateScheme = "acme-nginx";
+      enableSubmission = true;
+      enableSubmissionSsl = false;
+      enableImap = true;
+      enableImapSsl = false;
+      openFirewall = true;
 
       hierarchySeparator = "/";
     };

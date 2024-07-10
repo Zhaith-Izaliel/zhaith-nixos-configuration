@@ -98,7 +98,7 @@
         enable = true;
         subdomain = "mail";
         domains = [
-          config.networking.domain
+          "ethereal-edelweiss.cloud"
         ];
         loginAccounts = {
           "virgil.ribeyre@ethereal-edelweiss.cloud" = {
