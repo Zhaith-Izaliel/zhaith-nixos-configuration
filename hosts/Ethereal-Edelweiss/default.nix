@@ -94,6 +94,21 @@
         auth.file = config.age.secrets.radicale.path;
       };
 
+      mail = {
+        enable = true;
+        subdomain = "mail";
+        domains = [
+          config.networking.domain
+        ];
+        loginAccounts = {
+          "virgil.ribeyre@ethereal-edelweiss.cloud" = {
+            hashedPasswordFile = config.age.secrets."mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud".path;
+            aliases = ["postmaster@ethereal-edelweiss.cloud"];
+          };
+        };
+        mailDirectory = "/mnt/datas/mails";
+      };
+
       calibre-web = {
         enable = true;
         group = "nextcloud";
@@ -138,6 +153,7 @@
           "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
           "${config.hellebore.server.servas.subdomain}.${domain}"
           "${config.hellebore.server.radicale.subdomain}.${domain}"
+          "${config.hellebore.server.mail.subdomain}.${domain}"
           # Cozy
           "${config.hellebore.server.cozy.subdomain}.${domain}"
           "*.${config.hellebore.server.cozy.subdomain}.${domain}"

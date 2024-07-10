@@ -9,6 +9,7 @@
     ./inadyn.nix
     ./invoiceshelf.nix
     ./jellyfin.nix
+    ./mailserver.nix
     ./nextcloud.nix
     ./nginx.nix
     ./podman.nix

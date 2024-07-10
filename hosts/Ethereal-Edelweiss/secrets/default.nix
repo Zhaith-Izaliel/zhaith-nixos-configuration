@@ -41,10 +41,10 @@ in {
       group = config.services.couchdb.group;
     };
 
-    # "mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud" = {
-    #   file = ./mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud.age;
-    #   owner = config.mailserver.vmailUserName;
-    #   group = config.mailserver.vmailGroupName;
-    # };
+    "mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
+      file = ./mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud.age;
+      owner = config.mailserver.vmailUserName;
+      group = config.mailserver.vmailGroupName;
+    };
   };
 }
