@@ -15,7 +15,6 @@ in {
         (options.mailserver)
         domains
         loginAccounts
-        mailBoxes
         rejectRecipients
         rejectSender
         certificateDomains
@@ -27,8 +26,8 @@ in {
     }
     // extra-types.server-app {
       name = "Mail Server";
-      group = config.mailserver.vmailGroupName;
-      user = config.mailserver.vmailUserName;
+      group = "virtualMail";
+      user = "virtualMail";
     };
 
   config = mkIf cfg.enable {
@@ -37,7 +36,6 @@ in {
         (cfg)
         domains
         loginAccounts
-        mailBoxes
         rejectRecipients
         rejectSender
         certificateDomains

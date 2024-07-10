@@ -37,14 +37,14 @@ in {
 
     couchdb = enableSecret "couchdb" {
       file = ./services/couchdb.age;
-      owner = config.services.couchdb.user;
-      group = config.services.couchdb.group;
+      owner = config.hellebore.server.couchdb.user;
+      group = config.hellebore.server.couchdb.group;
     };
 
     "mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
       file = ./mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud.age;
-      owner = config.mailserver.vmailUserName;
-      group = config.mailserver.vmailGroupName;
+      owner = config.hellebore.server.mail.user;
+      group = config.hellebore.server.mail.group;
     };
   };
 }
