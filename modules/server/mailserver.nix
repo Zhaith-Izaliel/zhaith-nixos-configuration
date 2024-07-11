@@ -59,5 +59,10 @@ in {
 
       hierarchySeparator = "/";
     };
+
+    services.nginx.virtualHosts.${config.networking.domain} = {
+      enableACME = true;
+      forceSSL = true;
+    };
   };
 }
