@@ -271,10 +271,18 @@ in {
         (optional appletsConfig.mpd.enable
           "$mainMod, A, exec, ${getExe appletsConfig.mpd.package}")
 
+        (optional appletsConfig.ronema.enable
+          "$mainMod, N, exec, ${getExe appletsConfig.ronema.package}")
+
         (optional appletsConfig.power-profiles.enable
           "$mainMod, Z, exec, ${getExe appletsConfig.power-profiles.package}")
 
         "$mainMod SHIFT, Q, exec, ${getExe pkgs.qalculate-gtk}"
+
+        (
+          optional os-config.hellebore.games.steam.enable
+          "$mainMod, S, exec, ${getExe os-config.hellebore.games.steam.package}"
+        )
 
         (optional cfg.switches.lid.enable ", switch:[${cfg.switches.lid.name}], exec, ${config.hellebore.desktop-environment.lockscreen.bin}")
       ];
