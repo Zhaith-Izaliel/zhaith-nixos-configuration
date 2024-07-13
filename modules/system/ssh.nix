@@ -32,10 +32,13 @@ in {
         inherit (cfg.openssh) ports;
         enable = true;
         openFirewall = true;
-        settings.PasswordAuthentication = false;
+        settings = {
+          PasswordAuthentication = false;
+          logLevel = "VERBOSE";
+        };
+
         allowSFTP = true;
         sftpServerExecutable = "internal-sftp";
-        logLevel = "VERBOSE";
       };
     })
   ];
