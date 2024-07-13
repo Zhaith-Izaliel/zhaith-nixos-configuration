@@ -34,7 +34,7 @@ in {
         openFirewall = true;
         settings = {
           PasswordAuthentication = false;
-          logLevel = "VERBOSE";
+          LogLevel = "VERBOSE";
         };
 
         allowSFTP = true;
