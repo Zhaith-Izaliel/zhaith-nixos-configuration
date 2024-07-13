@@ -35,6 +35,7 @@ in {
         settings.PasswordAuthentication = false;
         allowSFTP = true;
         sftpServerExecutable = "internal-sftp";
+        logLevel = "VERBOSE";
       };
     })
   ];

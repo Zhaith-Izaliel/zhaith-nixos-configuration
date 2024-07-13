@@ -10,6 +10,7 @@
     ./invoiceshelf.nix
     ./jellyfin.nix
     ./mailserver.nix
+    ./mariadb.nix
     ./nextcloud.nix
     ./nginx.nix
     ./podman.nix
