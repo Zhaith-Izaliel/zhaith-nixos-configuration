@@ -112,7 +112,7 @@ in {
 
       bluetooth.enable = true;
       network.enable = true;
-      cloud.enable = false;
+      cloud.enable = true;
 
       i18n = {
         enable = true;
@@ -123,7 +123,7 @@ in {
         enable = true;
         supports = {
           images = true;
-          torrents = false;
+          torrents = true;
           archives = true;
         };
       };

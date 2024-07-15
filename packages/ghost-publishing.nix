@@ -11,7 +11,10 @@ stdenv.mkDerivation {
   ];
 
   buildPhase = ''
-    mkdir "$out"
+    mkdir -p "$out"
+  '';
+
+  installPhase = ''
     ghost install "$version" --db=sqlite3 --no-enable --no-prompt --no-stack --no-setup --no-start --dir "$out"
   '';
 }
