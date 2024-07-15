@@ -66,6 +66,11 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    wezterm = {
+      url = "github:wez/wezterm?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Theme packages
     # NOTE: include them as "{theme-name}-{app-name}"
 
@@ -82,11 +87,6 @@
 
     catppuccin-gitui = {
       url = "github:catppuccin/gitui";
-      flake = false;
-    };
-
-    catppuccin-alacritty = {
-      url = "github:catppuccin/alacritty";
       flake = false;
     };
 

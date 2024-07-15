@@ -197,7 +197,6 @@ in {
       workspace.enable = true;
       emulator = {
         enable = true;
-        enableZshIntegration = true;
       };
     };
   };

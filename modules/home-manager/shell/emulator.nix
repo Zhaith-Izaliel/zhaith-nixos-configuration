@@ -5,12 +5,12 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkOption mkEnableOption getExe types mkIf mkPackageOption;
+  inherit (lib) mkOption mkEnableOption getExe types mkIf mkPackageOption concatStringsSep optionalString;
 
   cfg = config.hellebore.shell.emulator;
   emulator-bin = pkgs.writeScriptBin "emulator-bin" ''
     # WAYLAND_DISPLAY=1
-    ${getExe cfg.package}
+    ${cfg.package}/bin/wezterm
   '';
   theme = config.hellebore.theme.themes.${cfg.theme}.wezterm;
 in {
@@ -38,8 +38,6 @@ in {
         };
       };
 
-    enableZshIntegration = mkEnableOption "ZSH integration";
-
     theme = extra-types.theme.name {
       default = config.hellebore.theme.name;
       description = "Defines the terminal emulator theme.";
@@ -53,6 +51,18 @@ in {
       description = "Get the terminal emulator binary.";
       readOnly = true;
     };
+
+    multiplexing = mkOption {
+      type = types.enum ["plain" "full"];
+      default = "plain";
+      description = ''
+        Set terminal multiplexing mode for the emulator.
+
+        - `plain`: no terminal multiplexing, you should use something like Zellij if you need it
+        - `full`: full terminal multiplexing support.
+
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
@@ -64,48 +74,65 @@ in {
       enableZshIntegration = true;
       enableBashIntegration = true;
 
-      extraConfig = ''
-        local wezterm = require("wezterm")
-        local config = wezterm.config_builder() or {}
+      extraConfig = concatStringsSep "\n" [
+        ''
+          local wezterm = require("wezterm")
+          local config = wezterm.config_builder() or {}
+        ''
+        ''
+          config.enable_wayland = true
+        ''
+        (
+          optionalString (cfg.multiplexing == "plain")
+          ''
+            config.enable_tab_bar = false
+            config.use_fancy_tab_bar = false
+            config.show_tabs_in_tab_bar = false
+            config.show_new_tab_button_in_tab_bar = false
+            config.disable_default_key_bindings = true
 
-        config.enable_wayland = false
+            config.keys = {
+              { mods = "CTRL|SHIFT", key = "c", action = wezterm.action.CopyTo "Clipboard" },
+              { mods = "CTRL|SHIFT", key = "v", action = wezterm.action.PasteFrom "Clipboard" },
+              { mods = "CTRL", key = "Insert", action = wezterm.action.CopyTo "PrimarySelection" },
+              { mods = "SHIFT", key = "Insert", action = wezterm.action.PasteFrom "PrimarySelection" },
+              { mods = "CTRL|SHIFT", key = "g", action = wezterm.action.ActivateCommandPalette },
+              { mods = "CTRL|SHIFT", key = "l", action = wezterm.action.ShowDebugOverlay },
+            }
+          ''
+        )
+        ''
+          -- colorscheme
+          config.color_scheme = "${theme.theme}"
+          config.window_background_opacity = 0.85
 
-        -- don't care about tabs
-        config.enable_tab_bar = false
-        config.use_fancy_tab_bar = false
-        config.show_tabs_in_tab_bar = false
-        config.show_new_tab_button_in_tab_bar = false
+          config.font_size = ${toString cfg.font.size}
+          config.font = wezterm.font_with_fallback({
+          	{
+          		family = "${cfg.font.name}",
+          		weight = "Regular",
+          		harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
+          	},
+          	{ family = "${cfg.font.emoji}", weight = "Regular" },
+          	{ family = "${cfg.font.nerd-font}", weight = "Regular" },
+          })
 
-        -- colorscheme
-        config.color_scheme = "${theme.theme}"
-        config.window_background_opacity = 0.85
+          config.window_close_confirmation = "NeverPrompt"
 
-        config.font_size = ${toString cfg.font.size}
-        config.font = wezterm.font_with_fallback({
-        	{
-        		family = "${cfg.font.name}",
-        		weight = "Regular",
-        		harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
-        	},
-        	{ family = "${cfg.font.emoji}", weight = "Regular" },
-        	{ family = "${cfg.font.nerd-font}", weight = "Regular" },
-        })
+          config.enable_kitty_keyboard = true
 
-        config.window_close_confirmation = "NeverPrompt"
+          config.audible_bell = "Disabled";
 
-        config.enable_kitty_keyboard = true
+          config.window_padding = {
+           left = 0,
+           right = 0,
+           top = 0,
+           bottom = 0,
+          }
 
-        config.audible_bell = "Disabled";
-
-        config.window_padding = {
-         left = 0,
-         right = 0,
-         top = 0,
-         bottom = 0,
-        }
-
-        return config
-      '';
+          return config
+        ''
+      ];
     };
   };
 }

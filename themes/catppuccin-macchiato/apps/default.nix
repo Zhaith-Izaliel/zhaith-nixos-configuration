@@ -4,7 +4,6 @@
   inputs,
   colors,
 }: rec {
-  alacritty = import ./alacritty.nix {inherit pkgs inputs;};
   bat = import ./bat.nix {inherit pkgs lib inputs;};
   contour = import ./contour.nix {inherit colors;};
   dunst = import ./dunst.nix {inherit colors;};
