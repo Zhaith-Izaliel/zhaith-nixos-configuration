@@ -181,9 +181,7 @@ in {
         protontricks
         wineWowPackages.stable
         heroic
-        wine
-        (wine.override {wineBuild = "wine64";})
-        wineWowPackages.staging
+        wineWowPackages.unstableFull
         winetricks
         game-run-script
       ]
@@ -191,12 +189,6 @@ in {
       ++ optionals cfg.lutris.enable [
         cfg.lutris.package
         dxvk
-      ]
-      ++ optionals config.programs.hyprland.enable
-      [
-        winePackages.waylandFull
-        wine64Packages.waylandFull
-        wine-wayland
       ]
       ++ optionals cfg.minecraft.enable
       [
