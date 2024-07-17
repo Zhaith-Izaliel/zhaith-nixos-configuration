@@ -61,7 +61,7 @@ in {
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = config.hardware.graphics.enable && config.hardware.graphics.enable32Bit;
+        assertion = config.hardware.opengl.enable && config.hardware.opengl.driSupport32Bit && config.hardware.opengl.driSupport;
         message = "You must enable OpenGL to support Nvidia.";
       }
       {

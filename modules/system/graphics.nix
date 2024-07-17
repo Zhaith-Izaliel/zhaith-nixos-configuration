@@ -1,11 +1,10 @@
 {
   config,
-  options,
   lib,
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption mkIf types optionalAttrs;
+  inherit (lib) mkEnableOption mkOption mkIf types;
   cfg = config.hellebore.graphics;
 in {
   options.hellebore.graphics = {
@@ -18,41 +17,21 @@ in {
     };
   };
 
-  config = mkIf cfg.enable (
-    if (builtins.hasAttr "graphics" options.hardware)
-    then {
-      hardware.graphics = {
-        enable = true;
-        enable32Bit = true;
+  config = mkIf cfg.enable {
+    hardware.opengl = {
+      enable = true;
+      driSupport32Bit = true;
+      driSupport = true;
 
-        extraPackages = with pkgs;
-          [
-            intel-media-driver
-            vaapiIntel
-            vaapiVdpau
-            libvdpau-va-gl
-            mesa
-          ]
-          ++ cfg.extraPackages;
-      };
-    }
-    # COMPATIBILITY: For compatibility with 24.05
-    else {
-      hardware.opengl = {
-        enable = true;
-        driSupport32Bit = true;
-        driSupport = true;
-
-        extraPackages = with pkgs;
-          [
-            intel-media-driver
-            vaapiIntel
-            vaapiVdpau
-            libvdpau-va-gl
-            mesa
-          ]
-          ++ cfg.extraPackages;
-      };
-    }
-  );
+      extraPackages = with pkgs;
+        [
+          intel-media-driver
+          vaapiIntel
+          vaapiVdpau
+          libvdpau-va-gl
+          mesa
+        ]
+        ++ cfg.extraPackages;
+    };
+  };
 }

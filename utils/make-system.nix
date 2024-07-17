@@ -17,14 +17,14 @@
       };
     };
     types = import ../types {inherit lib pkgs inputs;};
-    stable-pkgs = import inputs.nixpkgs-stable {
+    stable-pkgs = import inputs.nixpkgs {
       inherit overlays system;
       config = {
         allowUnfree = true;
         allowUnfreePredicate = _: true;
       };
     };
-    unstable-pkgs = import inputs.nixpkgs {
+    unstable-pkgs = import inputs.nixpkgs-unstable {
       inherit overlays system;
       config = {
         allowUnfree = true;
@@ -85,14 +85,14 @@
         allowUnfreePredicate = _: true;
       };
     };
-    stable-pkgs = import inputs.nixpkgs-stable {
+    stable-pkgs = import inputs.nixpkgs {
       inherit overlays system;
       config = {
         allowUnfree = true;
         allowUnfreePredicate = _: true;
       };
     };
-    unstable-pkgs = import inputs.nixpkgs {
+    unstable-pkgs = import inputs.nixpkgs-unstable {
       inherit overlays system;
       config = {
         allowUnfree = true;

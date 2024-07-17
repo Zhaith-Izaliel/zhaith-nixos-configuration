@@ -1,11 +1,12 @@
 {
   config,
+  os-config,
   lib,
   pkgs,
   extra-types,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf mkOption types optionals optional concatStringsSep;
+  inherit (lib) mkEnableOption mkIf mkOption types optionals optional concatStringsSep optionalString;
   cfg = config.hellebore.shell;
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {

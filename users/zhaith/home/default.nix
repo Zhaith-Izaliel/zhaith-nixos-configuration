@@ -21,6 +21,7 @@ in {
         enable = true;
         shellIntegrations.zsh = true;
         layoutAlias = true;
+        autoAttach = true;
         layouts = {
           rust.content = ../../../assets/zellij-layouts/rust.kdl;
           # rust.content = {};
@@ -33,7 +34,7 @@ in {
 
       hyprland = {
         enable = true;
-        input.mouse.scrollFactor = 0.8;
+        input.mouse.scrollFactor = 1.5;
         picture-in-picture = {
           enable = true;
           position = "top-right";

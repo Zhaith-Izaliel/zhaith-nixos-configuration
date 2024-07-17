@@ -32,7 +32,11 @@ in {
   options.hellebore.desktop-environment.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
-    package = mkPackageOption pkgs "hyprland" {};
+    package =
+      (mkPackageOption pkgs "hyprland" {})
+      // {
+        default = os-config.programs.hyprland.package;
+      };
 
     monitors =
       extra-types.monitors

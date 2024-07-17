@@ -29,7 +29,7 @@ in {
       ])
       ++ optionals cfg.supports.archives (with pkgs; [
         cinnamon.nemo-fileroller
-        file-roller
+        gnome.file-roller
         zip
         unzip
       ])

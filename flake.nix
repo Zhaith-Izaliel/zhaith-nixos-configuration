@@ -2,28 +2,28 @@
   description = "Zhaith's NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    home-manager-stable = {
-      url = "github:nix-community/home-manager/release-24.05";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     simple-nixos-mail-server = {
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-24.05";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     agenix = {
       url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     compose2nix = {
@@ -43,7 +43,7 @@
 
     zhaith-helix = {
       url = "gitlab:Zhaith-Izaliel/helix-config/develop";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     sddm-sugar-candy-nix = {
@@ -63,12 +63,12 @@
 
     virgilribeyre-com = {
       url = "gitlab:Zhaith-Izaliel/virgilribeyre.com-next";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     wezterm = {
       url = "github:wez/wezterm?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # Theme packages
@@ -108,14 +108,12 @@
 
   outputs = {
     nixpkgs,
-    nixpkgs-stable,
     grub2-themes,
     nix-alien,
     sddm-sugar-candy-nix,
     virgutils,
     rofi-applets,
     zhaith-helix,
-    home-manager-stable,
     simple-nixos-mail-server,
     agenix,
     ...
@@ -162,7 +160,6 @@
           inherit system;
           hostname = "Ethereal-Edelweiss";
           users = ["lilith"];
-          nixpkgs = nixpkgs-stable;
           overlays = [
             (final: prev: {
               power-management = virgutils.packages.${system}.power-management;
@@ -190,8 +187,6 @@
 
         "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
           inherit system overlays extraModules;
-          nixpkgs = nixpkgs-stable;
-          home-manager = home-manager-stable;
           username = "lilith";
           hostname = "Ethereal-Edelweiss";
           stateVersion = "22.05";
