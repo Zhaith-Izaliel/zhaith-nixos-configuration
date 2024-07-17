@@ -12,6 +12,17 @@ in {
 
     locale.enable = true;
 
+    dev-env = {
+      helix = {
+        enable = true;
+        defaultEditor = true;
+      };
+      zellij = {
+        enable = true;
+        shellIntegrations.zsh = true;
+      };
+    };
+
     desktop-environment = {
       clipboard.enable = true;
 
@@ -194,7 +205,7 @@ in {
       enable = true;
       enableImageSupport = true;
       prompt.enable = true;
-      workspace.enable = true;
+      # workspace.enable = true;
       emulator = {
         enable = true;
       };
@@ -202,8 +213,4 @@ in {
   };
 
   # programs.neovim.zhaith-config.enable = true;
-  programs.helix.zhaith-configuration = {
-    enable = true;
-    defaultEditor = true;
-  };
 }
