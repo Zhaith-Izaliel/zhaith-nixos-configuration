@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   inherit (lib) mkEnableOption mkOption mkMerge mkIf types;
@@ -22,9 +23,14 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      programs.gnupg.agent = {
-        enable = true;
-        enableSSHSupport = true;
+      # programs.gnupg.agent = {
+      #   enable = true;
+      #   enableSSHSupport = true;
+      # };
+      programs.ssh = {
+        enableAskPassword = true;
+        askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
+        startAgent = true;
       };
     })
     (mkIf cfg.openssh.enable {

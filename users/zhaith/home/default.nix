@@ -20,6 +20,11 @@ in {
       zellij = {
         enable = true;
         shellIntegrations.zsh = true;
+        layoutAlias = true;
+        layouts = {
+          rust.content = ../../../assets/zellij-layouts/rust.kdl;
+          # rust.content = {};
+        };
       };
     };
 

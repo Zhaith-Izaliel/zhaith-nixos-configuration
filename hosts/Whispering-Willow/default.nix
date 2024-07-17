@@ -165,7 +165,9 @@
       enableDocumentation = true;
     };
 
-    ssh.enable = true;
+    ssh = {
+      enable = true;
+    };
 
     tex.enable = true;
 
