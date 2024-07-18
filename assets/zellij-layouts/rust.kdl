@@ -6,9 +6,9 @@ layout {
   pane split_direction="vertical" {
     pane
     pane split_direction="horizontal" {
-      cargo { args "check"; }
-      cargo { args "run"; }
-      cargo { args "test"; }
+      cargo-check
+      cargo-run
+      cargo-test
     }
   }
 
@@ -16,8 +16,21 @@ layout {
     plugin location="zellij:status-bar"
   }
   
-  pane_template name="cargo" {
-    command "cargo"
+  pane_template name="cargo-run" {
+    command "zsh"
+    args "-c" "direnv exec . cargo run"
+    start_suspended true
+  }
+
+  pane_template name="cargo-test" {
+    command "zsh"
+    args "-c" "direnv exec . cargo test"
+    start_suspended true
+  }
+
+  pane_template name="cargo-check" {
+    command "zsh"
+    args "-c" "direnv exec . cargo check"
     start_suspended true
   }
 }

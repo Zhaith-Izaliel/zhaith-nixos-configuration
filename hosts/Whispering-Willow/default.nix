@@ -27,7 +27,7 @@
   ];
 
   boot = {
-    kernelPackages = stable-pkgs.linuxPackages;
+    # kernelPackages = stable-pkgs.linuxPackages;
     # initrd.kernelModules = ["i915"];
   };
 
@@ -94,7 +94,8 @@
         enable = true;
         # package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
         package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-          # Trying to fix the kernel panics related to NVidia, see: https://www.reddit.com/r/NixOS/comments/1dd7mj6/kernel_panic_with_nvidia_driver_550_on_laptop/
+          # Trying to fix the kernel panics related to NVidia,
+          # See: https://www.reddit.com/r/NixOS/comments/1dd7mj6/kernel_panic_with_nvidia_driver_550_on_laptop/
           version = "535.154.05";
           sha256_64bit = "sha256-fpUGXKprgt6SYRDxSCemGXLrEsIA6GOinp+0eGbqqJg=";
           sha256_aarch64 = "sha256-G0/GiObf/BZMkzzET8HQjdIcvCSqB1uhsinro2HLK9k=";
