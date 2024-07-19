@@ -21,12 +21,17 @@ in {
         enable = true;
         shellIntegrations.zsh = true;
         layoutAlias = true;
+        enableSideBar = true;
         autoAttach = true;
         layouts = {
           rust.content = ../../../assets/zellij-layouts/rust.kdl;
-          # rust.content = {};
         };
       };
+      yazi = {
+        enable = true;
+        shellIntegrations.zsh = true;
+      };
+      erdtree.enable = true;
     };
 
     desktop-environment = {
@@ -34,7 +39,7 @@ in {
 
       hyprland = {
         enable = true;
-        input.mouse.scrollFactor = 1.5;
+        input.mouse.scrollFactor = 1.0;
         picture-in-picture = {
           enable = true;
           position = "top-right";
@@ -168,7 +173,6 @@ in {
       office.enable = true;
       tasks.enable = true;
       docs.enable = true;
-      yazi.enable = true;
     };
 
     multimedia = {
@@ -194,9 +198,6 @@ in {
           setUpAlias = true;
         };
         h.enable = true;
-      };
-      erdtree = {
-        enable = true;
       };
       bat.enable = true;
       tools = {

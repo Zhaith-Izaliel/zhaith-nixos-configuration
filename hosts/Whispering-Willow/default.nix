@@ -187,15 +187,6 @@
 
     hyprland = {
       enable = true;
-      package = pkgs.hyprland.overrideAttrs (final: prev: {
-        src = pkgs.fetchFromGitHub {
-          owner = "hyprwm";
-          repo = "hyprland";
-          fetchSubmodules = true;
-          rev = "refs/tags/v0.41.1";
-          hash = "sha256-hLnnNBWP1Qjs1I3fndMgp8rbWJruxdnGTq77A4Rv4R4=";
-        };
-      });
       enableSwaylockPam = true;
       renderingCards = {
         enable = true;

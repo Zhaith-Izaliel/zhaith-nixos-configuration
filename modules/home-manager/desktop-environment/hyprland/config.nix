@@ -175,27 +175,29 @@ in {
         extraLayerRules
       ];
 
-      exec-once = flatten [
+      exec-once = [
         "${getExe pkgs.swww} init"
         "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
         "swayosd --max-volume 150"
         "${pkgs.wl-clipboard}/bin/wl-paste --watch ${getExe pkgs.cliphist} store"
         "hyprctl setcursor ${theme.gtk.cursorTheme.name} 32"
         (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
-        (optional config.hellebore.desktop-environment.browsers.enable
+        (optionalString config.hellebore.desktop-environment.browsers.enable
           "[workspace 1] ${getExe pkgs.firefox}")
-        (optional config.hellebore.shell.emulator.enable
+        (optionalString config.hellebore.shell.emulator.enable
           "[workspace 1] ${config.hellebore.shell.emulator.bin}")
-        (optional config.hellebore.tools.affine.enable
+        (optionalString config.hellebore.tools.affine.enable
           "[workspace 2 silent] ${getExe config.hellebore.tools.affine.package}")
-        (optional config.hellebore.tools.discord.enable
+        (optionalString config.hellebore.tools.discord.enable
           "[workspace 3 silent] ${getExe config.hellebore.tools.discord.finalPackage}")
-        (optional config.hellebore.desktop-environment.mail.enable
+        (optionalString config.hellebore.desktop-environment.mail.enable
           "[workspace 4 silent] ${config.hellebore.desktop-environment.mail.bin}")
-        (optional os-config.hellebore.games.cartridges.enable
+        (optionalString os-config.hellebore.games.cartridges.enable
           "[workspace 5 silent] ${getExe os-config.hellebore.games.cartridges.package}")
-        (optional os-config.hellebore.games.cartridges.enable
+        (optionalString os-config.hellebore.games.cartridges.enable
           "[workspace 5 silent] ${getExe os-config.hellebore.games.steam.package} -silent")
+        (optionalString os-config.hardware.logitech.wireless.enableGraphical
+          "${pkgs.solaar}/bin/solaar --window hide")
       ];
 
       bind = flatten [

@@ -4,26 +4,15 @@
   pkgs,
   ...
 }: let
-  inherit (lib) optionalString concatStringsSep optional types mkEnableOption mkOption mkIf optionals mdDoc mkPackageOption;
+  inherit (lib) concatStringsSep optional types mkEnableOption mkOption mkIf optionals mdDoc mkPackageOption;
   cfg = config.hellebore.games;
 
-  nvidia-command = optionalString config.hardware.nvidia.prime.offload.enableOffloadCmd ''DXVK_FILTER_DEVICE_NAME="${config.hellebore.hardware.nvidia.deviceFilterName}" nvidia-offload'';
-
   game-run-script = pkgs.writeShellScriptBin "game-run" ''
-    #!/usr/bin/env bash
     export XKB_DEFAULT_LAYOUT="${config.hellebore.locale.keyboard.layout}"
     export XKB_DEFAULT_VARIANT="${config.hellebore.locale.keyboard.variant}"
 
     main() {
-      case "$1" in
-        --gamescope)
-          ${nvidia-command} gamemoderun gamescope ${concatStringsSep " " gamescope-args} "''${@:2}"
-        ;;
-
-        *)
-          ${nvidia-command} gamemoderun "$@"
-        ;;
-      esac
+      gamescope ${concatStringsSep " " gamescope-args} -- gamemoderun "''${@}"
     }
 
     main "$@"
@@ -118,7 +107,11 @@ in {
     };
 
     gamescope = {
-      enable = mkEnableOption "Lutris";
+      enable =
+        mkEnableOption "Gamescope"
+        // {
+          default = true;
+        };
 
       package = mkPackageOption pkgs "gamescope" {};
     };
@@ -183,8 +176,8 @@ in {
         heroic
         wineWowPackages.unstableFull
         winetricks
-        game-run-script
       ]
+      ++ optional cfg.gamescope.enable game-run-script
       ++ optional cfg.cartridges.enable cfg.cartridges.package
       ++ optionals cfg.lutris.enable [
         cfg.lutris.package
