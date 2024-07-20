@@ -33,6 +33,7 @@ in {
         helix
         git
         gnumake
+        nix-npm-install
       ]
       ++ (optionals cfg.enablePodman [
         podman-compose

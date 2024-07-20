@@ -4,15 +4,31 @@
   pkgs,
   ...
 }: let
-  inherit (lib) concatStringsSep optional types mkEnableOption mkOption mkIf optionals mdDoc mkPackageOption;
+  inherit (lib) concatStringsSep optional types mkEnableOption mkOption mkIf optionals mdDoc mkPackageOption optionalString;
   cfg = config.hellebore.games;
+
+  nvidia-command =
+    optionalString config.hardware.nvidia.prime.offload.enableOffloadCmd
+    ''DXVK_FILTER_DEVICE_NAME="${config.hellebore.hardware.nvidia.deviceFilterName}" nvidia-offload'';
+
+  gamemode-command = optionalString cfg.gamemode.enable "gamemoderun";
+
+  gamescope-command = optionalString cfg.gamescope.enable "gamescope ${concatStringsSep " " gamescope-args} --";
 
   game-run-script = pkgs.writeShellScriptBin "game-run" ''
     export XKB_DEFAULT_LAYOUT="${config.hellebore.locale.keyboard.layout}"
     export XKB_DEFAULT_VARIANT="${config.hellebore.locale.keyboard.variant}"
 
     main() {
-      gamescope ${concatStringsSep " " gamescope-args} -- gamemoderun "''${@}"
+      case "$1" in
+      --no-gamescope)
+        ${nvidia-command} ${gamemode-command} "''${@:2}"
+      ;;
+
+      *)
+      ${gamescope-command} ${gamemode-command} "''${@}"
+      ;;
+      esac
     }
 
     main "$@"
@@ -22,8 +38,7 @@
     optional config.programs.hyprland.enable "--expose-wayland"
     ++ [
       "-f"
-      "--adaptive-sync"
-      "--force-composition"
+      # "--adaptive-sync"
       "-W ${toString gameMonitor.width}"
       "-H ${toString gameMonitor.height}"
       "-w ${toString gameMonitor.width}"

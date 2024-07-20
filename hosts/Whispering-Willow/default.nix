@@ -85,7 +85,7 @@
       };
       cartridges.enable = true;
       lutris.enable = true;
-      gamemode.enable = true;
+      gamemode.enable = false;
       gamescope.enable = true;
     };
 
