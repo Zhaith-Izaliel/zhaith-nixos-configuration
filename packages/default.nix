@@ -1,4 +1,7 @@
-{pkgs}: let
+{
+  pkgs,
+  inputs,
+}: let
   nodejs-packages = import ./nodejs {
     inherit pkgs;
     inherit (pkgs) stdenv;
@@ -15,7 +18,7 @@ in rec {
         ++ prev.buildInputs;
     }
   );
-  ghost-publishing = pkgs.callPackage ./ghost-publishing {inherit ghost-cli;};
+  ghost-publishing = pkgs.callPackage ./ghost-publishing.nix {inherit ghost-cli;};
   # elasticdump = nodejs-packages.elasticdump.overrideAttrs (
   #   final: prev: {
   #     buildInputs =

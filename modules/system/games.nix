@@ -16,9 +16,6 @@
   gamescope-command = optionalString cfg.gamescope.enable "gamescope ${concatStringsSep " " gamescope-args} --";
 
   game-run-script = pkgs.writeShellScriptBin "game-run" ''
-    export XKB_DEFAULT_LAYOUT="${config.hellebore.locale.keyboard.layout}"
-    export XKB_DEFAULT_VARIANT="${config.hellebore.locale.keyboard.variant}"
-
     main() {
       case "$1" in
       --no-gamescope)
@@ -47,6 +44,19 @@
 
   gameMonitor = builtins.elemAt config.hellebore.monitors cfg.monitorID;
 
+  gamescope-dependencies = with pkgs; [
+    xorg.libXcursor
+    xorg.libXi
+    xorg.libXinerama
+    xorg.libXScrnSaver
+    libpng
+    libpulseaudio
+    libvorbis
+    stdenv.cc.cc.lib
+    libkrb5
+    keyutils
+  ];
+
   steamPackage = pkgs.steam.override ({extraPkgs ? pkgs': [], ...}: {
     extraPkgs = pkgs':
       (extraPkgs pkgs')
@@ -58,18 +68,7 @@
           dconf
         ]
         ++ optional cfg.gamemode.enable gamemode
-        ++ optionals cfg.gamescope.enable [
-          xorg.libXcursor
-          xorg.libXi
-          xorg.libXinerama
-          xorg.libXScrnSaver
-          libpng
-          libpulseaudio
-          libvorbis
-          stdenv.cc.cc.lib
-          libkrb5
-          keyutils
-        ]);
+        ++ optionals cfg.gamescope.enable gamescope-dependencies);
   });
 in {
   options.hellebore.games = {
@@ -90,11 +89,11 @@ in {
     steam = {
       enable = mkEnableOption "Steam";
 
-      package = mkOption {
-        type = types.package;
-        default = steamPackage;
-        description = "The steam package to use.";
-      };
+      package =
+        mkPackageOption pkgs "steam" {}
+        // {
+          default = steamPackage;
+        };
 
       gamescope.session = {
         enable = mkEnableOption "Gamescope standalone session";
@@ -158,6 +157,12 @@ in {
     programs = {
       gamescope = {
         inherit (cfg.gamescope) enable package;
+
+        env = {
+          SDL_VIDEODRIVER = "wayland";
+          XKB_DEFAULT_LAYOUT = config.hellebore.locale.keyboard.layout;
+          XKB_DEFAULT_VARIANT = config.hellebore.locale.keyboard.variant;
+        };
       };
 
       steam = {

@@ -64,9 +64,13 @@ in {
               rules = gameRules;
             }
             {
-              regex = "class:(gw2).*";
+              regex = "class:(gamescope).*";
               rules = gameRules;
             }
+            # {
+            #   regex = "class:(gw2).*";
+            #   rules = gameRules;
+            # }
             {
               regex = "class:(factorio).*";
               rules = gameRules;

@@ -1,6 +1,9 @@
 {inputs}: final: prev: let
   inherit (final.stdenv.hostPlatform) system;
-  packages = import ../packages {pkgs = final;};
+  packages = import ../packages {
+    inherit inputs;
+    pkgs = final;
+  };
 in
   packages
   // {
