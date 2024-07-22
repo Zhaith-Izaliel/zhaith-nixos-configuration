@@ -18,12 +18,12 @@
   game-run-script = pkgs.writeShellScriptBin "game-run" ''
     main() {
       case "$1" in
-      --no-gamescope)
-        ${nvidia-command} ${gamemode-command} "''${@:2}"
+      --gamescope)
+        ${gamescope-command} ${gamemode-command} "''${@:2}"
       ;;
 
       *)
-      ${gamescope-command} ${gamemode-command} "''${@}"
+      ${nvidia-command} ${gamemode-command} "''${@}"
       ;;
       esac
     }

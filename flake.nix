@@ -71,6 +71,12 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    # HACK: disable this until https://github.com/hyprwm/Hyprland/issues/5880 is fixed
+    hyprland = {
+      url = "github:hyprwm/Hyprland/v0.39.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Theme packages
     # NOTE: include them as "{theme-name}-{app-name}"
 
@@ -143,6 +149,7 @@
       sddm-sugar-candy-nix.overlays.default
       virgutils.overlays.${system}.default
       agenix.overlays.default
+      inputs.hyprland.overlays.default
       customOverlay
     ];
   in

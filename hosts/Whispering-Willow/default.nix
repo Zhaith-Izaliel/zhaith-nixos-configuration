@@ -86,7 +86,9 @@
       cartridges.enable = true;
       lutris.enable = true;
       gamemode.enable = false;
-      gamescope.enable = true;
+      gamescope = {
+        enable = true;
+      };
     };
 
     hardware = {

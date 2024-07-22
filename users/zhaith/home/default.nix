@@ -24,7 +24,7 @@ in {
         enableSideBar = true;
         autoAttach = true;
         layouts = {
-          rust.content = ../../../assets/zellij-layouts/rust.kdl;
+          # rust.content = ../../../assets/zellij-layouts/rust.kdl;
         };
       };
       yazi = {
@@ -141,8 +141,9 @@ in {
       cloud.enable = true;
 
       i18n = {
-        enable = true;
-        enableAnthy = true;
+        # TEMP: Disabled until composition with ^ works again on french keyboards
+        # enable = true;
+        # enableAnthy = true;
       };
 
       files-manager = {
