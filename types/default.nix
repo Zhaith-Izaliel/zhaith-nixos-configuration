@@ -2,9 +2,10 @@
   lib,
   inputs,
   pkgs,
+  extra-utils,
 }: let
   inherit (lib) types mkOption mkPackageOption mkEnableOption;
-  themes = import ../themes {inherit lib pkgs inputs;};
+  themes = import ../themes {inherit lib pkgs inputs extra-utils;};
 in rec {
   monitor = types.submodule {
     options = {

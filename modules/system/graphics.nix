@@ -1,10 +1,13 @@
 {
   config,
+  options,
+  extra-utils,
   lib,
   pkgs,
   ...
 }: let
   inherit (lib) mkEnableOption mkOption mkIf types;
+  inherit (extra-utils.compatibility) mkCompatibilityAttrs;
   cfg = config.hellebore.graphics;
 in {
   options.hellebore.graphics = {
@@ -17,21 +20,45 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
-    hardware.opengl = {
-      enable = true;
-      driSupport32Bit = true;
-      driSupport = true;
+  config = mkIf cfg.enable (
+    # RETROCOMPATIBLITY: Should be removed when NixOS Stable moves to 24.11
+    mkCompatibilityAttrs {
+      name = "graphics";
+      set = options.hardware;
 
-      extraPackages = with pkgs;
-        [
-          intel-media-driver
-          vaapiIntel
-          vaapiVdpau
-          libvdpau-va-gl
-          mesa
-        ]
-        ++ cfg.extraPackages;
-    };
-  };
+      new = {
+        hardware.graphics = {
+          enable = true;
+          enable32Bit = true;
+          extraPackages = with pkgs;
+            [
+              intel-media-driver
+              vaapiIntel
+              vaapiVdpau
+              libvdpau-va-gl
+              mesa
+            ]
+            ++ cfg.extraPackages;
+        };
+      };
+
+      old = {
+        hardware.opengl = {
+          enable = true;
+          driSupport32Bit = true;
+          driSupport = true;
+
+          extraPackages = with pkgs;
+            [
+              intel-media-driver
+              vaapiIntel
+              vaapiVdpau
+              libvdpau-va-gl
+              mesa
+            ]
+            ++ cfg.extraPackages;
+        };
+      };
+    }
+  );
 }

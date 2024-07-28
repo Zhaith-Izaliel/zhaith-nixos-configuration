@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) concatStringsSep optional types mkEnableOption mkOption mkIf optionals mdDoc mkPackageOption optionalString;
+  inherit (lib) optional types mkEnableOption mkOption mkIf optionals mkPackageOption optionalString;
   cfg = config.hellebore.games;
 
   nvidia-command =
@@ -13,34 +13,32 @@
 
   gamemode-command = optionalString cfg.gamemode.enable "gamemoderun";
 
-  gamescope-command = optionalString cfg.gamescope.enable "gamescope ${concatStringsSep " " gamescope-args} --";
-
   game-run-script = pkgs.writeShellScriptBin "game-run" ''
-    main() {
-      case "$1" in
-      --gamescope)
-        ${gamescope-command} ${gamemode-command} "''${@:2}"
-      ;;
-
-      *)
-      ${nvidia-command} ${gamemode-command} "''${@}"
-      ;;
-      esac
-    }
-
-    main "$@"
+    ${nvidia-command} ${gamemode-command} "''${@}"
   '';
 
-  gamescope-args =
-    optional config.programs.hyprland.enable "--expose-wayland"
-    ++ [
-      "-f"
-      # "--adaptive-sync"
-      "-W ${toString gameMonitor.width}"
-      "-H ${toString gameMonitor.height}"
-      "-w ${toString gameMonitor.width}"
-      "-h ${toString gameMonitor.height}"
-    ];
+  gamescope = {
+    args =
+      [
+        "--fullscreen"
+        "--rt"
+        "--nested-refresh ${toString gameMonitor.refreshRate}"
+        "-W ${toString gameMonitor.width}"
+        "-H ${toString gameMonitor.height}"
+        "-w ${toString gameMonitor.width}"
+        "-h ${toString gameMonitor.height}"
+      ]
+      ++ optional config.programs.hyprland.enable "--expose-wayland"
+      ++ cfg.gamescope.extraArgs;
+
+    env =
+      {
+        # SDL_VIDEODRIVER = "wayland";
+        XKB_DEFAULT_LAYOUT = config.hellebore.locale.keyboard.layout;
+        XKB_DEFAULT_VARIANT = config.hellebore.locale.keyboard.variant;
+      }
+      // cfg.gamescope.extraEnv;
+  };
 
   gameMonitor = builtins.elemAt config.hellebore.monitors cfg.monitorID;
 
@@ -57,19 +55,17 @@
     keyutils
   ];
 
-  steamPackage = pkgs.steam.override ({extraPkgs ? pkgs': [], ...}: {
-    extraPkgs = pkgs':
-      (extraPkgs pkgs')
-      ++ (with pkgs';
-        [
-          libgdiplus
-          glib
-          gvfs
-          dconf
-        ]
-        ++ optional cfg.gamemode.enable gamemode
-        ++ optionals cfg.gamescope.enable gamescope-dependencies);
-  });
+  steamPackage = pkgs.steam.override {
+    extraPkgs = pkgs: (with pkgs;
+      [
+        libgdiplus
+        glib
+        gvfs
+        dconf
+      ]
+      ++ optional cfg.gamemode.enable gamemode
+      ++ optionals cfg.gamescope.enable gamescope-dependencies);
+  };
 in {
   options.hellebore.games = {
     enable = mkEnableOption "Hellebore's games support";
@@ -94,24 +90,6 @@ in {
         // {
           default = steamPackage;
         };
-
-      gamescope.session = {
-        enable = mkEnableOption "Gamescope standalone session";
-        args =
-          mkOption {
-            type = types.listOf types.str;
-            default = [];
-            description = "List of arguments used when running the gamescope
-        session.";
-          };
-        env = mkOption {
-          type = types.attrsOf types.str;
-          default = {};
-          description = mdDoc ''
-            Environmental variables to be passed to GameScope for the session.
-          '';
-        };
-      };
     };
 
     lutris = {
@@ -122,12 +100,31 @@ in {
 
     gamescope = {
       enable =
-        mkEnableOption "Gamescope"
-        // {
-          default = true;
-        };
+        mkEnableOption "Gamescope, through `steam-gamescope` and its own Display-Manager session";
 
       package = mkPackageOption pkgs "gamescope" {};
+
+      capSysNice =
+        mkEnableOption null
+        // {
+          description = "Add cap_sys_nice capability to the GameScope binary so that it may renice itself.";
+        };
+
+      extraArgs = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = ''
+          The list of Gamescope's arguments added to the default ones.
+        '';
+      };
+
+      extraEnv = mkOption {
+        type = types.attrsOf types.nonEmptyStr;
+        default = {};
+        description = ''
+          An attributes set containing the environment variables used in Gamescope. These take precedence to the default ones.
+        '';
+      };
     };
 
     cartridges = {
@@ -149,27 +146,22 @@ in {
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = config.hardware.opengl.enable && config.hardware.opengl.driSupport32Bit && config.hardware.opengl.driSupport;
+        assertion = config.hellebore.graphics.enable;
         message = "You need to enable OpenGl to run games.";
       }
     ];
 
     programs = {
       gamescope = {
-        inherit (cfg.gamescope) enable package;
-
-        env = {
-          SDL_VIDEODRIVER = "wayland";
-          XKB_DEFAULT_LAYOUT = config.hellebore.locale.keyboard.layout;
-          XKB_DEFAULT_VARIANT = config.hellebore.locale.keyboard.variant;
-        };
+        inherit (cfg.gamescope) enable package capSysNice;
       };
 
       steam = {
         inherit (cfg.steam) enable package;
 
         gamescopeSession = {
-          inherit (cfg.steam.gamescope.session) enable args env;
+          inherit (cfg.gamescope) enable;
+          inherit (gamescope) env args;
         };
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
@@ -196,8 +188,8 @@ in {
         heroic
         wineWowPackages.unstableFull
         winetricks
+        game-run-script
       ]
-      ++ optional cfg.gamescope.enable game-run-script
       ++ optional cfg.cartridges.enable cfg.cartridges.package
       ++ optionals cfg.lutris.enable [
         cfg.lutris.package

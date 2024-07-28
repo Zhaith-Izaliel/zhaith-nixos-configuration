@@ -71,11 +71,11 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    # HACK: disable this until https://github.com/hyprwm/Hyprland/issues/5880 is fixed
-    hyprland = {
-      url = "github:hyprwm/Hyprland/v0.39.1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # # HACK: disable this until https://github.com/hyprwm/Hyprland/issues/5880 is fixed
+    # hyprland = {
+    #   url = "github:hyprwm/Hyprland/v0.39.1";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     # Theme packages
     # NOTE: include them as "{theme-name}-{app-name}"
@@ -114,6 +114,8 @@
 
   outputs = {
     nixpkgs,
+    nixpkgs-unstable,
+    home-manager-unstable,
     grub2-themes,
     nix-alien,
     sddm-sugar-candy-nix,
@@ -125,7 +127,7 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    customHelpers = import ./utils {inherit inputs;};
+    customHelpers = import ./utils/system.nix {inherit inputs;};
     modules = import ./modules {
       extraSystemModules = [
         grub2-themes.nixosModules.default
@@ -149,7 +151,7 @@
       sddm-sugar-candy-nix.overlays.default
       virgutils.overlays.${system}.default
       agenix.overlays.default
-      inputs.hyprland.overlays.default
+      # inputs.hyprland.overlays.default
       customOverlay
     ];
   in
@@ -157,6 +159,7 @@
       nixosConfigurations = {
         Whispering-Willow = customHelpers.mkSystem {
           inherit system overlays;
+          nixpkgs = nixpkgs-unstable;
           hostname = "Whispering-Willow";
           users = ["zhaith"];
           extraModules = [
@@ -187,6 +190,8 @@
       in {
         "zhaith@Whispering-Willow" = customHelpers.mkHome {
           inherit system overlays extraModules;
+          nixpkgs = nixpkgs-unstable;
+          home-manager = home-manager-unstable;
           username = "zhaith";
           hostname = "Whispering-Willow";
           stateVersion = "23.11";

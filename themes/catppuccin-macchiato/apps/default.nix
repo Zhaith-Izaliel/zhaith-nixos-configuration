@@ -3,6 +3,7 @@
   lib,
   inputs,
   colors,
+  extra-utils,
 }: rec {
   bat = import ./bat.nix {inherit pkgs lib inputs;};
   contour = import ./contour.nix {inherit colors;};
@@ -16,9 +17,9 @@
   sddm = import ./sddm.nix {inherit colors;};
   shell = import ./shell.nix {inherit colors;};
   swaylock = import ./swaylock.nix {inherit lib colors;};
-  waybar = modules: import ./waybar {inherit colors inputs modules lib;};
+  waybar = modules: import ./waybar {inherit colors inputs modules lib extra-utils;};
+  wezterm = import ./wezterm.nix {};
   wlogout = import ./wlogout {inherit colors lib;};
   yazi = import ./yazi.nix {inherit inputs pkgs bat;};
-  wezterm = import ./wezterm.nix {};
   zellij = import ./zellij.nix {};
 }
