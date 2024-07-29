@@ -45,6 +45,7 @@ in {
     ./network.nix
     ./graphics.nix
     ./power-management.nix
+    ./power-profiles.nix
     ./shell.nix
     ./sound.nix
     ./ssh.nix

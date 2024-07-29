@@ -95,9 +95,12 @@
       };
     };
 
+    power-profiles.enable = true;
+
     hardware = {
-      nvidia = {
-        enable = true;
+      nvidia.nouveau.enable = true;
+      nvidia.proprietary = {
+        enable = false;
         # package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
         package = let
           rcu_patch = pkgs.fetchpatch {
@@ -115,9 +118,8 @@
             settingsSha256 = "sha256-9wqoDEWY4I7weWW05F4igj1Gj9wjHsREFMztfEmqm10=";
             persistencedSha256 = "sha256-d0Q3Lk80JqkS1B54Mahu2yY/WocOqFFbZVBh+ToGhaE=";
 
-            # patches = [rcu_patch];
+            patches = [rcu_patch];
           };
-        power-profiles.enable = true;
         power-management.enable = true;
         modesetting.enable = true;
         deviceFilterName = "RTX 3060";

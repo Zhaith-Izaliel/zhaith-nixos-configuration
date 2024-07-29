@@ -6,7 +6,7 @@
     ./graphics-tablet.nix
     ./integrated-camera.nix
     ./ntfs.nix
-    ./nvidia.nix
+    ./nvidia
     ./printing.nix
   ];
 }

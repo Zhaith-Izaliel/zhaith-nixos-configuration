@@ -9,7 +9,7 @@
 
   nvidia-command =
     optionalString config.hardware.nvidia.prime.offload.enableOffloadCmd
-    ''DXVK_FILTER_DEVICE_NAME="${config.hellebore.hardware.nvidia.deviceFilterName}" nvidia-offload'';
+    ''DXVK_FILTER_DEVICE_NAME="${config.hellebore.hardware.nvidia.proprietary.deviceFilterName}" nvidia-offload'';
 
   gamemode-command = optionalString cfg.gamemode.enable "gamemoderun";
 
@@ -148,6 +148,10 @@ in {
       {
         assertion = config.hellebore.graphics.enable;
         message = "You need to enable OpenGl to run games.";
+      }
+      {
+        assertion = config.hellebore.power-profiles.enable;
+        message = "You need to enable power-profiles to manage your performances for games.";
       }
     ];
 
