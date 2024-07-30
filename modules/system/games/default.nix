@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) optional types mkEnableOption mkOption mkIf optionals mkPackageOption optionalString;
+  inherit (lib) optional types mkEnableOption mkOption mkIf mkMerge optionals mkPackageOption optionalString;
   cfg = config.hellebore.games;
 
   nvidia-command =
@@ -23,6 +23,8 @@
         "--fullscreen"
         "--rt"
         "--nested-refresh ${toString gameMonitor.refreshRate}"
+        "--generate-drm-mode fixed"
+        "--hdr-enabled"
         "-W ${toString gameMonitor.width}"
         "-H ${toString gameMonitor.height}"
         "-w ${toString gameMonitor.width}"
@@ -33,9 +35,12 @@
 
     env =
       {
-        # SDL_VIDEODRIVER = "wayland";
         XKB_DEFAULT_LAYOUT = config.hellebore.locale.keyboard.layout;
         XKB_DEFAULT_VARIANT = config.hellebore.locale.keyboard.variant;
+        ENABLE_GAMESCOPE_WSI = "1";
+        SDL_VIDEODRIVER = "wayland";
+        # Window managers sets this to wayland but apps using Gamescope must use x11
+        XDG_SESSION_TYPE = "x11";
       }
       // cfg.gamescope.extraEnv;
   };
@@ -133,7 +138,51 @@ in {
       package = mkPackageOption pkgs "cartridges" {};
     };
 
-    gamemode.enable = mkEnableOption "Feral's Gamemode";
+    heroic-launcher = {
+      enable = mkEnableOption "Heroic Launcher, a Native GOG, Epic, and Amazon Games Launcher for Linux, Windows and Mac";
+
+      package = mkPackageOption pkgs "heroic" {};
+    };
+
+    gamemode = {
+      enable = mkEnableOption "Feral's Gamemode";
+
+      settings = lib.mkOption {
+        type = (pkgs.formats.ini {}).type;
+        default = {};
+        description = ''
+          System-wide configuration for GameMode (/etc/gamemode.ini).
+          See gamemoded(8) man page for available settings.
+
+          This takes precedence over the default settings defined by the module.
+        '';
+        example = lib.literalExpression ''
+          {
+            general = {
+              renice = 10;
+            };
+
+            # Warning: GPU optimisations have the potential to damage hardware
+            gpu = {
+              apply_gpu_optimisations = "accept-responsibility";
+              gpu_device = 0;
+              amd_performance_level = "high";
+            };
+
+            custom = {
+              start = "''${pkgs.libnotify}/bin/notify-send 'GameMode started'";
+              end = "''${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
+            };
+          }
+        '';
+      };
+
+      enableRenice =
+        lib.mkEnableOption "CAP_SYS_NICE on gamemoded to support lowering process niceness"
+        // {
+          default = true;
+        };
+    };
 
     monitorID = mkOption {
       type = types.ints.unsigned;
@@ -148,10 +197,6 @@ in {
       {
         assertion = config.hellebore.graphics.enable;
         message = "You need to enable OpenGl to run games.";
-      }
-      {
-        assertion = config.hellebore.power-profiles.enable;
-        message = "You need to enable power-profiles to manage your performances for games.";
       }
     ];
 
@@ -172,28 +217,30 @@ in {
       };
 
       gamemode = {
-        inherit (cfg.gamemode) enable;
+        inherit (cfg.gamemode) enable enableRenice;
 
-        settings = {
-          general = {
-            renice = 10;
-            inhibit_screensaver = 1;
-            reaper_freq = 5;
-            igpu_desiredgov = "powersave";
-          };
-        };
+        settings =
+          {
+            general = {
+              renice = 10;
+              inhibit_screensaver = 1;
+              reaper_freq = 5;
+              igpu_desiredgov = "powersave";
+            };
+          }
+          // cfg.gamemode.settings;
       };
     };
 
     environment.systemPackages = with pkgs;
       [
-        protontricks
         wineWowPackages.stable
-        heroic
         wineWowPackages.unstableFull
         winetricks
         game-run-script
       ]
+      ++ optional cfg.steam.enable protontricks
+      ++ optional cfg.heroic-launcher.enable cfg.heroic-launcher.package
       ++ optional cfg.cartridges.enable cfg.cartridges.package
       ++ optionals cfg.lutris.enable [
         cfg.lutris.package

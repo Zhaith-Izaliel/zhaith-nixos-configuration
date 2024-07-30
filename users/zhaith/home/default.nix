@@ -39,7 +39,7 @@ in {
 
       hyprland = {
         enable = true;
-        input.mouse.scrollFactor = 1.0;
+        input.mouse.scrollFactor = 0.8;
         picture-in-picture = {
           enable = true;
           position = "top-right";
@@ -141,9 +141,9 @@ in {
       cloud.enable = true;
 
       i18n = {
-        # TEMP: Disabled until composition with ^ works again on french keyboards
-        # enable = true;
-        # enableAnthy = true;
+        # FIXME: Disabled until https://github.com/hyprwm/Hyprland/issues/5880 is fixed.
+        enable = true;
+        enableAnthy = true;
       };
 
       files-manager = {

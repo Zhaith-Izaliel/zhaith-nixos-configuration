@@ -98,9 +98,9 @@
     power-profiles.enable = true;
 
     hardware = {
-      nvidia.nouveau.enable = true;
+      # nvidia.nouveau.enable = true;
       nvidia.proprietary = {
-        enable = false;
+        enable = true;
         # package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
         package = let
           rcu_patch = pkgs.fetchpatch {

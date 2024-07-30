@@ -26,6 +26,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ags = {
+      url = "github:Aylur/ags";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     compose2nix = {
       url = "github:aksiksi/compose2nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -159,7 +164,6 @@
       nixosConfigurations = {
         Whispering-Willow = customHelpers.mkSystem {
           inherit system overlays;
-          nixpkgs = nixpkgs-unstable;
           hostname = "Whispering-Willow";
           users = ["zhaith"];
           extraModules = [
@@ -190,8 +194,6 @@
       in {
         "zhaith@Whispering-Willow" = customHelpers.mkHome {
           inherit system overlays extraModules;
-          nixpkgs = nixpkgs-unstable;
-          home-manager = home-manager-unstable;
           username = "zhaith";
           hostname = "Whispering-Willow";
           stateVersion = "23.11";

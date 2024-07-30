@@ -38,7 +38,7 @@ in {
     ./development.nix
     ./display-manager.nix
     ./fonts.nix
-    ./games.nix
+    ./games
     ./hardware
     ./hyprland.nix
     ./locale.nix

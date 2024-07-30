@@ -47,7 +47,7 @@ in {
           name = "file-roller";
           set = pkgs;
           new = [pkgs.${name}];
-          old = [pkgs.cinnamon.${name}];
+          old = [pkgs.gnome.${name}];
         })
       )
       ++ optional cfg.supports.torrents fragments;
