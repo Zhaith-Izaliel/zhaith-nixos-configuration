@@ -10,15 +10,15 @@
   cfg = config.hellebore.desktop-environment.lockscreen;
   theme = config.hellebore.theme.themes.${cfg.theme};
 
-  listeners = flatten [
+  listener = flatten [
     (optional cfg.timeouts.dim.enable {
       timeout = cfg.timeouts.dim.timer;
-      onTimeout = "${getExe pkgs.dim-on-lock} --dim ${toString cfg.timeouts.dim.dimValue}";
-      onResume = "${getExe pkgs.dim-on-lock} --undim";
+      on-timeout = "${getExe pkgs.dim-on-lock} --dim ${toString cfg.timeouts.dim.dimValue}";
+      on-resume = "${getExe pkgs.dim-on-lock} --undim";
     })
     (optional cfg.timeouts.lock.enable {
       timeout = cfg.timeouts.lock.timer;
-      onTimeout = "loginctl lock-session";
+      on-timeout = "loginctl lock-session";
     })
 
     (optional cfg.timeouts.keyboard-backlight.enable {
@@ -29,17 +29,17 @@
 
     (optional cfg.timeouts.powerSaving.enable {
       timeout = cfg.timeouts.powerSaving.timer;
-      onTimeout = "hyprctl dispatch dpms off";
-      onResume = "hyprctl dispatch dpms on";
+      on-timeout = "hyprctl dispatch dpms off";
+      on-resume = "hyprctl dispatch dpms on";
     })
 
     (optional cfg.timeouts.suspend.enable {
       timeout = cfg.timeouts.suspend.timer;
-      onTimeout = "systemctl suspend";
+      on-timeout = "systemctl suspend";
     })
   ];
 
-  areListenersInOrder = compareLists (a: b: a.onTimeout == b.onTimeout) (sort (a: b: a.timeout <= b.timeout) listeners) listeners;
+  areListenersInOrder = compareLists (a: b: a.on-timeout == b.on-timeout) (sort (a: b: a.timeout <= b.timeout) listener) listener;
 in {
   options.hellebore.desktop-environment.lockscreen = {
     enable = mkEnableOption "Hellebore Swaylock and Swayidle configuration";
@@ -178,7 +178,7 @@ in {
     services.hypridle = {
       enable = true;
       settings = {
-        inherit listeners;
+        inherit listener;
         general = {
           lock_cmd = "pidof hyprlock || ${cfg.bin} --grace ${toString cfg.gracePeriod}";
           before_sleep_cmd = "loginctl lock-session";
