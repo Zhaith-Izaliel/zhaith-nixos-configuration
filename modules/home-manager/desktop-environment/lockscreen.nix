@@ -6,9 +6,40 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption mkIf types getExe mkPackageOption optionalAttrs;
+  inherit (lib) mkEnableOption mkOption mkIf types getExe mkPackageOption optional sort compareLists flatten concatStringsSep mapAttrsToList;
   cfg = config.hellebore.desktop-environment.lockscreen;
   theme = config.hellebore.theme.themes.${cfg.theme};
+
+  listeners = flatten [
+    (optional cfg.timeouts.dim.enable {
+      timeout = cfg.timeouts.dim.timer;
+      onTimeout = "${getExe pkgs.dim-on-lock} --dim ${toString cfg.timeouts.dim.dimValue}";
+      onResume = "${getExe pkgs.dim-on-lock} --undim";
+    })
+    (optional cfg.timeouts.lock.enable {
+      timeout = cfg.timeouts.lock.timer;
+      onTimeout = "loginctl lock-session";
+    })
+
+    (optional cfg.timeouts.keyboard-backlight.enable {
+      timeout = cfg.timeouts.keyboard-backlight.timer;
+      on-timeout = "brightnessctl -sd rgb:kbd_backlight set 0";
+      on-resume = "brightnessctl -rd rgb:kbd_backlight";
+    })
+
+    (optional cfg.timeouts.powerSaving.enable {
+      timeout = cfg.timeouts.powerSaving.timer;
+      onTimeout = "hyprctl dispatch dpms off";
+      onResume = "hyprctl dispatch dpms on";
+    })
+
+    (optional cfg.timeouts.suspend.enable {
+      timeout = cfg.timeouts.suspend.timer;
+      onTimeout = "systemctl suspend";
+    })
+  ];
+
+  areListenersInOrder = compareLists (a: b: a.onTimeout == b.onTimeout) (sort (a: b: a.timeout <= b.timeout) listeners) listeners;
 in {
   options.hellebore.desktop-environment.lockscreen = {
     enable = mkEnableOption "Hellebore Swaylock and Swayidle configuration";
@@ -76,6 +107,17 @@ in {
         };
       };
 
+      keyboard-backlight = {
+        enable = mkEnableOption "Keyboard Backlight timeout";
+
+        timer = mkOption {
+          type = types.ints.unsigned;
+          default = 300;
+          description = "The time of inactivity before locking the screen, in
+          seconds.";
+        };
+      };
+
       powerSaving = {
         enable = mkEnableOption "Power Saving timeout";
 
@@ -86,29 +128,38 @@ in {
           screen, in seconds.";
         };
       };
+
+      suspend = {
+        enable = mkEnableOption "Suspend timeout";
+
+        timer = mkOption {
+          type = types.ints.unsigned;
+          default = 1800;
+          description = "The time of inactivity before shutting down the
+          screen, in seconds.";
+        };
+      };
     };
   };
 
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
-        message = "Hyprland must be enabled for Swaylock and Swayidle to
+        assertion = config.wayland.windowManager.hyprland.enable;
+        message = "Hyprland must be enabled for Swaylock and Hypridle to
         properly work";
       }
       {
-        assertion = cfg.enable -> os-config.hellebore.hyprland.enableSwaylockPam;
+        assertion = os-config.hellebore.hyprland.enableSwaylockPam;
         message = "PAM service for Swaylock must be enabled to allow Swaylock
         to properly log you in.";
       }
       {
-        assertion =
-          cfg.enable
-          -> cfg.timeouts.dim.timer
-          < cfg.timeouts.lock.timer
-          && cfg.timeouts.lock.timer < cfg.timeouts.powerSaving.timer;
-        message = "Your timers should be in ascending order, such that
-        `dim.timer < lock.timer < powerSaving.timer`";
+        assertion = areListenersInOrder;
+        message = ''
+          Your timers should be in ascending order, such as
+          `${concatStringsSep " <= " (mapAttrsToList (name: value: "${name}.timer") cfg.timeouts)}`
+        '';
       }
     ];
 
@@ -127,24 +178,12 @@ in {
     services.hypridle = {
       enable = true;
       settings = {
-        listeners = [
-          (optionalAttrs cfg.timeouts.dim.enable {
-            timeout = cfg.timeouts.dim.timer;
-            onTimeout = "${getExe pkgs.dim-on-lock} --dim ${toString cfg.timeouts.dim.dimValue}";
-            onResume = "${getExe pkgs.dim-on-lock} --undim";
-          })
-
-          (optionalAttrs cfg.timeouts.lock.enable {
-            timeout = cfg.timeouts.lock.timer;
-            onTimeout = "${cfg.bin} --grace ${toString cfg.gracePeriod}";
-          })
-
-          (optionalAttrs cfg.timeouts.powerSaving.enable {
-            timeout = cfg.timeouts.powerSaving.timer;
-            onTimeout = "${getExe pkgs.dim-on-lock} --undim && ${getExe pkgs.dim-on-lock} --no-min --dim 100";
-            onResume = "${getExe pkgs.dim-on-lock} --undim";
-          })
-        ];
+        inherit listeners;
+        general = {
+          lock_cmd = "pidof hyprlock || ${cfg.bin} --grace ${toString cfg.gracePeriod}";
+          before_sleep_cmd = "loginctl lock-session";
+          after_sleep_cmd = "hyprctl dispatch dpms on";
+        };
       };
     };
   };

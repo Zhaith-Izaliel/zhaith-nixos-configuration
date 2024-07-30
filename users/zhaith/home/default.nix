@@ -67,10 +67,6 @@ in {
               regex = "class:(gamescope).*";
               rules = gameRules;
             }
-            # {
-            #   regex = "class:(gw2).*";
-            #   rules = gameRules;
-            # }
             {
               regex = "class:(factorio).*";
               rules = gameRules;
@@ -93,6 +89,7 @@ in {
           dim.enable = true;
           lock.enable = true;
           powerSaving.enable = true;
+          suspend.enable = true;
         };
       };
 
@@ -141,7 +138,7 @@ in {
       cloud.enable = true;
 
       i18n = {
-        # FIXME: Disabled until https://github.com/hyprwm/Hyprland/issues/5880 is fixed.
+        # IMPORTANT: Monitor until https://github.com/hyprwm/Hyprland/issues/5880 is fixed.
         enable = true;
         enableAnthy = true;
       };
@@ -217,12 +214,9 @@ in {
       enable = true;
       enableImageSupport = true;
       prompt.enable = true;
-      # workspace.enable = true;
       emulator = {
         enable = true;
       };
     };
   };
-
-  # programs.neovim.zhaith-config.enable = true;
 }
