@@ -16,6 +16,7 @@
       on-timeout = "${getExe pkgs.dim-on-lock} --dim ${toString cfg.timeouts.dim.dimValue}";
       on-resume = "${getExe pkgs.dim-on-lock} --undim";
     })
+
     (optional cfg.timeouts.lock.enable {
       timeout = cfg.timeouts.lock.timer;
       on-timeout = "loginctl lock-session";
@@ -36,6 +37,7 @@
     (optional cfg.timeouts.suspend.enable {
       timeout = cfg.timeouts.suspend.timer;
       on-timeout = "systemctl suspend";
+      on-resume = "hyprctl dispatch dpms on";
     })
   ];
 
@@ -180,7 +182,7 @@ in {
       settings = {
         inherit listener;
         general = {
-          lock_cmd = "pidof hyprlock || ${cfg.bin} --grace ${toString cfg.gracePeriod}";
+          lock_cmd = "pidof swaylock || ${cfg.bin} --grace ${toString cfg.gracePeriod}";
           before_sleep_cmd = "loginctl lock-session";
           after_sleep_cmd = "hyprctl dispatch dpms on";
         };

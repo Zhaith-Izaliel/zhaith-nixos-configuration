@@ -91,7 +91,6 @@
       gamescope = {
         enable = true;
         capSysNice = true;
-        # package = unstable-pkgs.gamescope;
       };
     };
 

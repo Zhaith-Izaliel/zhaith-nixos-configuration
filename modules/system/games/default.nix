@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) optional types mkEnableOption mkOption mkIf mkMerge optionals mkPackageOption optionalString;
+  inherit (lib) optional mkEnableOption mkIf optionals mkPackageOption optionalString;
   cfg = config.hellebore.games;
 
   nvidia-command =
@@ -16,62 +16,11 @@
   game-run-script = pkgs.writeShellScriptBin "game-run" ''
     ${nvidia-command} ${gamemode-command} "''${@}"
   '';
-
-  gamescope = {
-    args =
-      [
-        "--fullscreen"
-        "--rt"
-        "--nested-refresh ${toString gameMonitor.refreshRate}"
-        "--generate-drm-mode fixed"
-        "--hdr-enabled"
-        "-W ${toString gameMonitor.width}"
-        "-H ${toString gameMonitor.height}"
-        "-w ${toString gameMonitor.width}"
-        "-h ${toString gameMonitor.height}"
-      ]
-      ++ optional config.programs.hyprland.enable "--expose-wayland"
-      ++ cfg.gamescope.extraArgs;
-
-    env =
-      {
-        XKB_DEFAULT_LAYOUT = config.hellebore.locale.keyboard.layout;
-        XKB_DEFAULT_VARIANT = config.hellebore.locale.keyboard.variant;
-        ENABLE_GAMESCOPE_WSI = "1";
-        SDL_VIDEODRIVER = "wayland";
-        # Window managers sets this to wayland but apps using Gamescope must use x11
-        XDG_SESSION_TYPE = "x11";
-      }
-      // cfg.gamescope.extraEnv;
-  };
-
-  gameMonitor = builtins.elemAt config.hellebore.monitors cfg.monitorID;
-
-  gamescope-dependencies = with pkgs; [
-    xorg.libXcursor
-    xorg.libXi
-    xorg.libXinerama
-    xorg.libXScrnSaver
-    libpng
-    libpulseaudio
-    libvorbis
-    stdenv.cc.cc.lib
-    libkrb5
-    keyutils
+in {
+  imports = [
+    ./gamescope.nix
   ];
 
-  steamPackage = pkgs.steam.override {
-    extraPkgs = pkgs: (with pkgs;
-      [
-        libgdiplus
-        glib
-        gvfs
-        dconf
-      ]
-      ++ optional cfg.gamemode.enable gamemode
-      ++ optionals cfg.gamescope.enable gamescope-dependencies);
-  };
-in {
   options.hellebore.games = {
     enable = mkEnableOption "Hellebore's games support";
 
@@ -90,46 +39,13 @@ in {
     steam = {
       enable = mkEnableOption "Steam";
 
-      package =
-        mkPackageOption pkgs "steam" {}
-        // {
-          default = steamPackage;
-        };
+      package = mkPackageOption pkgs "steam" {};
     };
 
     lutris = {
       enable = mkEnableOption "Lutris";
 
       package = mkPackageOption pkgs "lutris" {};
-    };
-
-    gamescope = {
-      enable =
-        mkEnableOption "Gamescope, through `steam-gamescope` and its own Display-Manager session";
-
-      package = mkPackageOption pkgs "gamescope" {};
-
-      capSysNice =
-        mkEnableOption null
-        // {
-          description = "Add cap_sys_nice capability to the GameScope binary so that it may renice itself.";
-        };
-
-      extraArgs = mkOption {
-        type = types.listOf types.nonEmptyStr;
-        default = [];
-        description = ''
-          The list of Gamescope's arguments added to the default ones.
-        '';
-      };
-
-      extraEnv = mkOption {
-        type = types.attrsOf types.nonEmptyStr;
-        default = {};
-        description = ''
-          An attributes set containing the environment variables used in Gamescope. These take precedence to the default ones.
-        '';
-      };
     };
 
     cartridges = {
@@ -183,13 +99,6 @@ in {
           default = true;
         };
     };
-
-    monitorID = mkOption {
-      type = types.ints.unsigned;
-      default = 0;
-      description = "The monitor ID used for gaming. The ID corresponds to the
-      index of the monitor in {option}`config.hellebore.monitors`.";
-    };
   };
 
   config = mkIf cfg.enable {
@@ -201,17 +110,8 @@ in {
     ];
 
     programs = {
-      gamescope = {
-        inherit (cfg.gamescope) enable package capSysNice;
-      };
-
       steam = {
         inherit (cfg.steam) enable package;
-
-        gamescopeSession = {
-          inherit (cfg.gamescope) enable;
-          inherit (gamescope) env args;
-        };
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
       };
