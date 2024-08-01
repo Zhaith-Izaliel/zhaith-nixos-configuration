@@ -12,7 +12,7 @@
   in
     pkgs.writeShellScriptBin "steam-gamescope" ''
       ${builtins.concatStringsSep "\n" exports}
-      gamescope --steam ${concatStringsSep " " gamescopeEnvAndArgs.args} -- steam -tenfoot -pipewire-dmabuf -gamepadui
+      gamescope --steam ${concatStringsSep " " gamescopeEnvAndArgs.args} -- steam ${concatStringsSep " " gamescopeEnvAndArgs.steamArgs}
     '';
 
   gamescopeSessionFile =
@@ -29,18 +29,24 @@
     args =
       [
         "--fullscreen"
-        # "--rt"
         "--nested-refresh ${toString gameMonitor.refreshRate}"
         "--generate-drm-mode fixed"
         "--hdr-enabled"
         "--backend sdl"
-        "-W ${toString gameMonitor.width}"
-        "-H ${toString gameMonitor.height}"
+        # "-W ${toString gameMonitor.width}"
+        # "-H ${toString gameMonitor.height}"
         "-w ${toString gameMonitor.width}"
         "-h ${toString gameMonitor.height}"
       ]
       ++ optional config.programs.hyprland.enable "--expose-wayland"
       ++ cfg.extraArgs;
+
+    steamArgs =
+      [
+        "-tenfoot"
+        # "-pipewire-dmabuf"
+      ]
+      ++ cfg.extraSteamArgs;
 
     env =
       {
@@ -79,6 +85,12 @@
         # So just workaround this with an ENV var that Remote Play Together
         # and Gamescope will use for now.
         GAMESCOPE_NV12_COLORSPACE = "k_EStreamColorspace_BT601";
+
+        # Temporary crutch until dummy plane interactions / etc are figured out
+        GAMESCOPE_DISABLE_ASYNC_FLIPS = "1";
+
+        # To play nice with the short term callback-based limiter for now
+        GAMESCOPE_LIMITER_FILE = "$(mktemp /tmp/gamescope-limiter.XXXXXXXX)";
       }
       // cfg.extraEnv;
   };
@@ -106,6 +118,14 @@ in {
       '';
     };
 
+    extraSteamArgs = mkOption {
+      type = types.listOf types.nonEmptyStr;
+      default = [];
+      description = ''
+        The list of Steam's arguments added to the default ones.
+      '';
+    };
+
     extraEnv = mkOption {
       type = types.attrsOf types.nonEmptyStr;
       default = {};
@@ -123,6 +143,13 @@ in {
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = config.hellebore.graphics.enable;
+        message = "You need to enable OpenGl to run gamescope.";
+      }
+    ];
+
     environment.systemPackages = [
       steam-gamescope
     ];
@@ -139,13 +166,6 @@ in {
         source = "${pkgs.bubblewrap}/bin/bwrap";
         setuid = true;
       };
-    };
-
-    hardware.opengl = {
-      # this fixes the "glXChooseVisual failed" bug, context: https://github.com/NixOS/nixpkgs/issues/47932
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
     };
 
     programs.gamescope = {

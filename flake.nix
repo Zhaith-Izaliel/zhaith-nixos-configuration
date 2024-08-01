@@ -156,7 +156,6 @@
       sddm-sugar-candy-nix.overlays.default
       virgutils.overlays.${system}.default
       agenix.overlays.default
-      # inputs.hyprland.overlays.default
       customOverlay
     ];
   in
@@ -165,6 +164,7 @@
         Whispering-Willow = customHelpers.mkSystem {
           inherit system overlays;
           hostname = "Whispering-Willow";
+          nixpkgs = nixpkgs-unstable;
           users = ["zhaith"];
           extraModules = [
             modules.system
@@ -194,6 +194,8 @@
       in {
         "zhaith@Whispering-Willow" = customHelpers.mkHome {
           inherit system overlays extraModules;
+          nixpkgs = nixpkgs-unstable;
+          home-manager = home-manager-unstable;
           username = "zhaith";
           hostname = "Whispering-Willow";
           stateVersion = "23.11";

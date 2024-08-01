@@ -39,7 +39,7 @@ in {
 
       hyprland = {
         enable = true;
-        input.mouse.scrollFactor = 0.8;
+        input.mouse.scrollFactor = 1.0;
         picture-in-picture = {
           enable = true;
           position = "top-right";
