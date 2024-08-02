@@ -80,7 +80,11 @@ in {
           local config = wezterm.config_builder() or {}
         ''
         ''
-          config.enable_wayland = true
+          config.enable_wayland = ${
+            if config.wayland.windowManager.hyprland.enable
+            then "true"
+            else "false"
+          }
         ''
         (
           optionalString (cfg.multiplexing == "plain")
