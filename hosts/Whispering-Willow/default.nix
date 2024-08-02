@@ -1,6 +1,5 @@
 {
   pkgs,
-  unstable-pkgs,
   lib,
   config,
   ...
@@ -27,7 +26,7 @@
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_zen;
+    # kernelPackages = pkgs.linuxPackages_zen;
     # initrd.kernelModules = ["i915"];
   };
 

@@ -37,6 +37,7 @@
         # "-H ${toString gameMonitor.height}"
         "-w ${toString gameMonitor.width}"
         "-h ${toString gameMonitor.height}"
+        "--steam"
       ]
       ++ optional config.programs.hyprland.enable "--expose-wayland"
       ++ cfg.extraArgs;
