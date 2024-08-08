@@ -155,8 +155,8 @@ in {
         usePercentageForPolicy = true;
       };
 
-      systemd.user.services.upower-notify = {
-        enable = cfg.upower.notify;
+      systemd.user.services.upower-notify = mkIf cfg.upower.notify {
+        enable = true;
 
         path = with pkgs; [
           dbus

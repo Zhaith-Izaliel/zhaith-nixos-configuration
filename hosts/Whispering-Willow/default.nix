@@ -230,7 +230,7 @@
 
       upower = {
         enable = true;
-        notify = true;
+        notify = false;
         percentageLow = 15;
         percentageCritical = 10;
         percentageAction = 5;
