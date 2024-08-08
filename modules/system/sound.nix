@@ -10,7 +10,7 @@ in {
   options.hellebore.sound = {
     enable = mkEnableOption "Hellebore sound configuration";
 
-    extraBluetoothCodecs.enable = mkEnableOption "the mSBC and SBC-XQ bluetooth codec in Wireplumber.";
+    bluetoothEnhancements = mkEnableOption "the mSBC and SBC-XQ bluetooth codec in Wireplumber.";
 
     lowLatency = {
       enable = mkEnableOption "PipeWire low-latency configuration";
@@ -56,6 +56,18 @@ in {
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+      jack.enable = true;
+
+      wireplumber.extraConfig = {
+        bluetoothEnhancements = mkIf cfg.bluetoothEnhancements {
+          "monitor.bluez.properties" = {
+            "bluez5.enable-sbc-xq" = true;
+            "bluez5.enable-msbc" = true;
+            "bluez5.enable-hw-volume" = true;
+            "bluez5.roles" = ["hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag"];
+          };
+        };
+      };
 
       extraConfig.pipewire."92-low-latency" = mkIf cfg.lowLatency.enable {
         context = {

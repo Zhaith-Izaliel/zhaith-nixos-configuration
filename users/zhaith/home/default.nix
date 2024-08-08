@@ -16,16 +16,25 @@ in {
       helix = {
         enable = true;
         defaultEditor = true;
+        settings = {
+          languages = {
+            language-server.nixd.config.nixd = {
+              nixpkgs.expr = ''import (builtins.getFlake "gitlab:Zhaith-Izaliel/zhaith-nixos-configuration").inputs.nixpkgs-unstable {}'';
+              options = {
+                nixos.expr = ''(builtins.getFlake "gitlab:Zhaith-Izaliel/zhaith-nixos-configuration").nixosConfigurations.Whispering-Willow.options'';
+                home_manager.expr = ''(builtins.getFlake "gitlab:Zhaith-Izaliel/zhaith-nixos-configuration").homeConfigurations."zhaith@Whispering-Willow".options'';
+              };
+            };
+          };
+        };
       };
+
       zellij = {
         enable = true;
         shellIntegrations.zsh = true;
         layoutAlias = true;
         enableSideBar = true;
         autoAttach = true;
-        layouts = {
-          # rust.content = ../../../assets/zellij-layouts/rust.kdl;
-        };
       };
       yazi = {
         enable = true;
@@ -60,6 +69,10 @@ in {
         in
           [
             {
+              regex = "class:(steam)";
+              rules = ["workspace 5"];
+            }
+            {
               regex = "class:(steam_app_).*";
               rules = gameRules;
             }
@@ -89,7 +102,7 @@ in {
           dim.enable = true;
           lock.enable = true;
           powerSaving.enable = true;
-          suspend.enable = true;
+          suspend.enable = false;
         };
       };
 
@@ -138,7 +151,6 @@ in {
       cloud.enable = true;
 
       i18n = {
-        # IMPORTANT: Monitor until https://github.com/hyprwm/Hyprland/issues/5880 is fixed.
         enable = true;
         enableAnthy = true;
       };

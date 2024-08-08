@@ -117,7 +117,7 @@
     };
   };
 
-  outputs = {
+  outputs = inputs @ {
     nixpkgs,
     nixpkgs-unstable,
     home-manager-unstable,
@@ -130,7 +130,8 @@
     simple-nixos-mail-server,
     agenix,
     ...
-  } @ inputs: let
+  }: let
+    inherit (import nixpkgs {inherit system;}) pkgs;
     system = "x86_64-linux";
     customHelpers = import ./utils/system.nix {inherit inputs;};
     modules = import ./modules {
@@ -158,65 +159,64 @@
       agenix.overlays.default
       customOverlay
     ];
-  in
-    with import nixpkgs {inherit system;}; {
-      nixosConfigurations = {
-        Whispering-Willow = customHelpers.mkSystem {
-          inherit system overlays;
-          hostname = "Whispering-Willow";
-          nixpkgs = nixpkgs-unstable;
-          users = ["zhaith"];
-          extraModules = [
-            modules.system
-          ];
-        };
-        Ethereal-Edelweiss = customHelpers.mkSystem {
-          inherit system;
-          hostname = "Ethereal-Edelweiss";
-          users = ["lilith"];
-          overlays = [
-            (final: prev: {
-              power-management = virgutils.packages.${system}.power-management;
-            })
-            agenix.overlays.default
-            customOverlay
-          ];
-          extraModules = [
-            modules.server
-            modules.system
-          ];
-        };
-      };
-      homeConfigurations = let
+  in {
+    nixosConfigurations = {
+      Whispering-Willow = customHelpers.mkSystem {
+        inherit system overlays;
+        hostname = "Whispering-Willow";
+        nixpkgs = nixpkgs-unstable;
+        users = ["zhaith"];
         extraModules = [
-          modules.home-manager
+          modules.system
         ];
-      in {
-        "zhaith@Whispering-Willow" = customHelpers.mkHome {
-          inherit system overlays extraModules;
-          nixpkgs = nixpkgs-unstable;
-          home-manager = home-manager-unstable;
-          username = "zhaith";
-          hostname = "Whispering-Willow";
-          stateVersion = "23.11";
-        };
-
-        "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
-          inherit system overlays extraModules;
-          username = "lilith";
-          hostname = "Ethereal-Edelweiss";
-          stateVersion = "22.05";
-        };
       };
-
-      devShells.${system}.default = pkgs.mkShell {
-        nativeBuildInputs = with pkgs; [
-          git
-          alejandra
-          home-manager
-          gnumake
-          nil
+      Ethereal-Edelweiss = customHelpers.mkSystem {
+        inherit system;
+        hostname = "Ethereal-Edelweiss";
+        users = ["lilith"];
+        overlays = [
+          (final: prev: {
+            power-management = virgutils.packages.${system}.power-management;
+          })
+          agenix.overlays.default
+          customOverlay
+        ];
+        extraModules = [
+          modules.server
+          modules.system
         ];
       };
     };
+    homeConfigurations = let
+      extraModules = [
+        modules.home-manager
+      ];
+    in {
+      "zhaith@Whispering-Willow" = customHelpers.mkHome {
+        inherit system overlays extraModules;
+        nixpkgs = nixpkgs-unstable;
+        home-manager = home-manager-unstable;
+        username = "zhaith";
+        hostname = "Whispering-Willow";
+        stateVersion = "23.11";
+      };
+
+      "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
+        inherit system overlays extraModules;
+        username = "lilith";
+        hostname = "Ethereal-Edelweiss";
+        stateVersion = "22.05";
+      };
+    };
+
+    devShells.${system}.default = pkgs.mkShell {
+      nativeBuildInputs = with pkgs; [
+        git
+        alejandra
+        home-manager
+        gnumake
+        nil
+      ];
+    };
+  };
 }

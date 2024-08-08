@@ -286,8 +286,12 @@ in {
             optional os-config.hellebore.games.steam.enable
             "$mainMod, S, exec, ${getExe os-config.hellebore.games.steam.package}"
           )
+          (
+            optional os-config.hellebore.games.gamescope.enable
+            "$mainMod SHIFT, S, exec, steam-gamescope"
+          )
 
-          (optional cfg.switches.lid.enable ", switch:[${cfg.switches.lid.name}], exec, ${config.hellebore.desktop-environment.lockscreen.bin}")
+          (optional cfg.switches.lid.enable ", switch:[${cfg.switches.lid.name}], exec, loginctl lock-session")
         ];
 
         bindl = [

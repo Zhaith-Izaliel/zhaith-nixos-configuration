@@ -65,7 +65,7 @@ in {
 
     gracePeriod = mkOption {
       type = types.ints.unsigned;
-      default = 15;
+      default = 0;
       description = "The grace period during which you can unlock without a
       password, in seconds.";
     };

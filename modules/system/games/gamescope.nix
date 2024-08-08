@@ -12,7 +12,7 @@
   in
     pkgs.writeShellScriptBin "steam-gamescope" ''
       ${builtins.concatStringsSep "\n" exports}
-      gamescope --steam ${concatStringsSep " " gamescopeEnvAndArgs.args} -- steam ${concatStringsSep " " gamescopeEnvAndArgs.steamArgs}
+      gamescope ${concatStringsSep " " gamescopeEnvAndArgs.args} -- steam ${concatStringsSep " " gamescopeEnvAndArgs.steamArgs}
     '';
 
   gamescopeSessionFile =
@@ -33,8 +33,6 @@
         "--generate-drm-mode fixed"
         "--hdr-enabled"
         "--backend sdl"
-        # "-W ${toString gameMonitor.width}"
-        # "-H ${toString gameMonitor.height}"
         "-w ${toString gameMonitor.width}"
         "-h ${toString gameMonitor.height}"
         "--steam"
@@ -46,6 +44,7 @@
       [
         "-tenfoot"
         # "-pipewire-dmabuf"
+        "-steamos"
       ]
       ++ cfg.extraSteamArgs;
 

@@ -27,7 +27,7 @@
 
   boot = {
     # kernelPackages = pkgs.linuxPackages_zen;
-    # initrd.kernelModules = ["i915"];
+    initrd.kernelModules = ["i915"];
   };
 
   # Find vendor and device using `udevadm info /dev/dri/cardX --attribute-walk`
@@ -188,6 +188,7 @@
 
     sound = {
       enable = true;
+      bluetoothEnhancements = true;
       lowLatency = {
         enable = true;
         rate = 48000;
