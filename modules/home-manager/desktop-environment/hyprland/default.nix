@@ -74,6 +74,10 @@ in {
       description = "Defines a list of extra rules for windows to be applied.";
     };
 
+    misc = {
+      middleClickPaste = mkEnableOption "middle click paste";
+    };
+
     input = {
       keyboard = extra-types.keyboard {
         inherit (config.hellebore.locale.keyboard) layout variant;
@@ -174,8 +178,8 @@ in {
       ADW_DISABLE_PORTAL = "1";
     };
 
-    home.packages = with pkgs;
-      [
+    home.packages =
+      (with pkgs; [
         swww
         swayosd
         power-management
@@ -185,7 +189,7 @@ in {
         screenshot
         power-management
         gnome-themes-extra # Add default Gnome theme as well for Adwaita
-      ]
+      ])
       ++ theme.gtk.packages;
 
     gtk = {

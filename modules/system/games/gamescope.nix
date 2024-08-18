@@ -44,7 +44,7 @@
       [
         "-tenfoot"
         # "-pipewire-dmabuf"
-        "-steamos"
+        # "-steamos"
       ]
       ++ cfg.extraSteamArgs;
 

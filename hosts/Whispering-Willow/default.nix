@@ -41,7 +41,7 @@
 
     theme.name = "catppuccin-macchiato";
 
-    monitors = [
+    monitors = lib.mkForce [
       {
         name = "eDP-1";
         width = 2560;
@@ -188,7 +188,6 @@
 
     sound = {
       enable = true;
-      bluetoothEnhancements = true;
       lowLatency = {
         enable = true;
         rate = 48000;
@@ -205,7 +204,7 @@
       enableSwaylockPam = true;
       renderingCards = {
         enable = true;
-        defaultCards = [
+        defaultCards = lib.mkForce [
           "/dev/dri/by-name/intel-tigerlake-h-gt1"
           # "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
         ];
@@ -259,6 +258,34 @@
       };
 
       username = "zhaith";
+    };
+  };
+  specialisation = {
+    hdmi.configuration.hellebore = {
+      monitors = lib.mkForce [
+        {
+          name = "eDP-1";
+          width = 2560;
+          height = 1440;
+          refreshRate = 165;
+          xOffset = 0;
+          yOffset = 0;
+          scaling = 1.0;
+        }
+        {
+          name = "";
+          width = 1920;
+          height = 1080;
+          refreshRate = 60;
+          xOffset = 0;
+          yOffset = 0;
+          scaling = 1.0;
+        }
+      ];
+      hyprland.renderingCards.defaultCards = lib.mkForce [
+        "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
+        "/dev/dri/by-name/intel-tigerlake-h-gt1"
+      ];
     };
   };
 

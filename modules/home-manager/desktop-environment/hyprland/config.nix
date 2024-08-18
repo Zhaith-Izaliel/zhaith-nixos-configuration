@@ -95,6 +95,8 @@ in {
           layout = cfg.layout;
         };
 
+        misc.middle_click_paste = cfg.misc.middleClickPaste;
+
         monitor = mkMonitors cfg.monitors;
 
         env = [
@@ -180,7 +182,7 @@ in {
           "${getExe pkgs.swww} init"
           "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
           "swayosd --max-volume 150"
-          "${pkgs.wl-clipboard}/bin/wl-paste --watch ${getExe pkgs.cliphist} store"
+          # "${pkgs.wl-clipboard}/bin/wl-paste --watch ${getExe pkgs.cliphist} store"
           "hyprctl setcursor ${theme.gtk.cursorTheme.name} 32"
           (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
           (optionalString config.hellebore.desktop-environment.browsers.enable
@@ -291,7 +293,7 @@ in {
             "$mainMod SHIFT, S, exec, steam-gamescope"
           )
 
-          (optional cfg.switches.lid.enable ", switch:[${cfg.switches.lid.name}], exec, loginctl lock-session")
+          (optional cfg.switches.lid.enable ", switch:[${cfg.switches.lid.name}], exec, ${config.hellebore.desktop-environment.lockscreen.bin} --lid")
         ];
 
         bindl = [

@@ -10,6 +10,15 @@
   cfg = config.hellebore.desktop-environment.lockscreen;
   theme = config.hellebore.theme.themes.${cfg.theme};
 
+  lockCmd = "${getExe cfg.package} -fF";
+  lockBin = pkgs.writeScriptBin "lock-cmd" ''
+    if [ "$1" = "--lid" ]; then
+      hyprctl dispatch dpms on
+      brightnessctl -r
+    fi
+    pidof swaylock || ${lockCmd} --grace ${toString cfg.gracePeriod}
+  '';
+
   listener = flatten [
     (optional cfg.timeouts.dim.enable {
       timeout = cfg.timeouts.dim.timer;
@@ -75,7 +84,7 @@ in {
     bin = mkOption {
       readOnly = true;
       type = types.nonEmptyStr;
-      default = "${getExe cfg.package} -fF";
+      default = getExe lockBin;
       description = "Defines the command used for locking the screen. Read-only.";
     };
 
@@ -182,7 +191,7 @@ in {
       settings = {
         inherit listener;
         general = {
-          lock_cmd = "pidof swaylock || ${cfg.bin} --grace ${toString cfg.gracePeriod}";
+          lock_cmd = cfg.bin;
           before_sleep_cmd = "loginctl lock-session";
           after_sleep_cmd = "hyprctl dispatch dpms on";
         };

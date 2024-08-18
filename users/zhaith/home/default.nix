@@ -69,16 +69,17 @@ in {
         in
           [
             {
-              regex = "class:(steam)";
-              rules = ["workspace 5"];
-            }
-            {
               regex = "class:(steam_app_).*";
               rules = gameRules;
             }
             {
               regex = "class:(gamescope).*";
-              rules = gameRules;
+              rules = [
+                "workspace 5"
+                "noblur"
+                "noborder"
+                "noshadow"
+              ];
             }
             {
               regex = "class:(factorio).*";
