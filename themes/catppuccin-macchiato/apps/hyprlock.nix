@@ -16,7 +16,7 @@ in {
       monitor = "";
       path = backgroundImage;
       blur_size = 3;
-      blur_passes = 4;
+      blur_passes = 6;
       noise = 0.0117;
       contrast = 1.3000; # Vibrant
       brightness = 0.8000;
@@ -55,16 +55,22 @@ in {
 
     input-field = {
       monitor = "";
-      size = "300, 50";
+      size = "300, 40";
       outline_thickness = 1;
       dots_size = 0.2; # Scale of input-field height, 0.2 - 0.8
-      dots_spacing = 1.00; # Scale of dots' absolute size, 0.0 - 1.0
+      dots_spacing = 0.50; # Scale of dots' absolute size, 0.0 - 1.0
       dots_center = true;
       outer_color = "$sapphire";
       inner_color = "$crust";
       font_color = "$text";
-      fade_on_empty = true;
-      placeholder_text = "<i>Password...</i>"; # Text rendered in the input box when it's empty.
+      capslock_color = "$peach";
+      numlock_color = "$teal";
+      bothlock_color = "$pink"; # when both locks are active. -1 means don't change outer color (same for above)
+      fail_color = "$maroon";
+      check_color = "$sapphire";
+      fade_on_empty = false;
+      rounding = -1;
+      placeholder_text = "<i>Input Password...</i>"; # Text rendered in the input box when it's empty.
       hide_input = false;
       position = "0, -100";
       halign = "center";
