@@ -10,13 +10,12 @@
   cfg = config.hellebore.desktop-environment.lockscreen;
   theme = config.hellebore.theme.themes.${cfg.theme};
 
-  lockCmd = "${getExe cfg.package} -fF";
   lockBin = pkgs.writeScriptBin "lock-cmd" ''
     if [ "$1" = "--lid" ]; then
       hyprctl dispatch dpms on
       brightnessctl -r
     fi
-    pidof swaylock || ${lockCmd} --grace ${toString cfg.gracePeriod}
+    pidof hyprlock || ${getExe cfg.package}
   '';
 
   listener = flatten [
@@ -56,7 +55,8 @@ in {
     enable = mkEnableOption "Hellebore Swaylock and Swayidle configuration";
 
     font = extra-types.font {
-      inherit (config.hellebore.font) size name;
+      inherit (config.hellebore.font) size;
+      name = "Fira Code";
       sizeDescription = "Set lockscreen font size.";
       nameDescription = "Set lockscreen font family.";
     };
@@ -79,7 +79,17 @@ in {
       password, in seconds.";
     };
 
-    package = mkPackageOption pkgs "swaylock-effects" {};
+    backgroundImage = mkOption {
+      type = with types;
+        oneOf [
+          path
+          (enum ["screenshot" ""])
+        ];
+      default = "screenshot";
+      description = ''The image used as the background for Hyprlock. If `screenshot` is selected, it will take a screenshot before locking the screen.'';
+    };
+
+    package = mkPackageOption pkgs "hyprlock" {};
 
     bin = mkOption {
       readOnly = true;
@@ -157,13 +167,11 @@ in {
     assertions = [
       {
         assertion = config.wayland.windowManager.hyprland.enable;
-        message = "Hyprland must be enabled for Swaylock and Hypridle to
-        properly work";
+        message = "Hyprland must be enabled for Hyprlock and Hypridle to properly work.";
       }
       {
-        assertion = os-config.hellebore.hyprland.enableSwaylockPam;
-        message = "PAM service for Swaylock must be enabled to allow Swaylock
-        to properly log you in.";
+        assertion = os-config.hellebore.hyprland.enableHyprlockPam;
+        message = "PAM service for Swaylock must be enabled to allow Hyprlock to properly log you in.";
       }
       {
         assertion = areListenersInOrder;
@@ -174,16 +182,18 @@ in {
       }
     ];
 
-    programs.swaylock = {
+    programs.hyprlock = {
       inherit (cfg) package;
       enable = true;
       settings =
         {
-          indicator-radius = cfg.indicatorRadius;
-          font-size = cfg.font.size;
-          font = cfg.font.name;
+          general = {
+            grace = cfg.gracePeriod;
+          };
         }
-        // theme.swaylock.settings;
+        // (theme.hyprlock.settings {
+          inherit (cfg) font backgroundImage;
+        });
     };
 
     services.hypridle = {

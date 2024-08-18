@@ -55,14 +55,8 @@ in {
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> config.programs.swaylock.enable;
-        message = "WLogout depends on Swaylock to lock the screen. Please enable
-        it in your configuration.";
-      }
-      {
-        assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
-        message = "WLogout depends on Hyprland to logout. Please enable
-        it in your configuration.";
+        assertion = config.wayland.windowManager.hyprland.enable;
+        message = "WLogout depends on Hyprland to logout. Please enable it in your configuration.";
       }
       {
         assertion = cfg.useLayerBlur -> config.wayland.windowManager.hyprland.enable;
@@ -79,7 +73,7 @@ in {
       layout = [
         {
           label = "lock";
-          action = "${getExe config.programs.swaylock.package} -fF";
+          action = "${pkgs.systemd}/bin/loginctl lock-session";
           text = "Lock";
           keybind = "l";
         }

@@ -38,6 +38,11 @@
         size = 3;
         passes = 4;
         new_optimizations = true;
+        noise = 0.0117;
+        contrast = 1.3000; # Vibrant
+        brightness = 0.8000;
+        vibrancy = 0.2100;
+        vibrancy_darkness = 0.0;
       };
 
       drop_shadow = true;

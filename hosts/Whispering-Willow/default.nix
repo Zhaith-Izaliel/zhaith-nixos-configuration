@@ -201,7 +201,7 @@
 
     hyprland = {
       enable = true;
-      enableSwaylockPam = true;
+      enableHyprlockPam = true;
       renderingCards = {
         enable = true;
         defaultCards = lib.mkForce [

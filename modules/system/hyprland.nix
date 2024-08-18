@@ -14,6 +14,8 @@ in {
 
     enableSwaylockPam = mkEnableOption "Swaylock PAM configuration";
 
+    enableHyprlockPam = mkEnableOption "Hyprlock PAM configuration";
+
     renderingCards = {
       enable = mkEnableOption "using different rendering cards for WLRoots based compositors";
 
@@ -46,6 +48,12 @@ in {
     programs.dconf.enable = true;
 
     security.pam.services.swaylock.text = optionalString cfg.enableSwaylockPam ''
+      # PAM configuration file for the swaylock screen locker. By default, it includes
+      # the 'login' configuration file (see /etc/pam.d/login)
+      auth include login
+    '';
+
+    security.pam.services.hyprlock.text = optionalString cfg.enableHyprlockPam ''
       # PAM configuration file for the swaylock screen locker. By default, it includes
       # the 'login' configuration file (see /etc/pam.d/login)
       auth include login
