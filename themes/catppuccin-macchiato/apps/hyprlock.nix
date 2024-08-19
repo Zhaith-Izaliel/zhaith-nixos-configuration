@@ -5,6 +5,13 @@
 }: let
   inherit (lib) mapAttrs;
   converted-colors = mapAttrs (name: value: "#${value}") colors.normal; # This escapes `#` to allow colors in `span`.
+
+  shadowConfig = {
+    shadow_passes = 3;
+    shadow_size = 8;
+    shadow_color = "$crust";
+    shadow_boost = 1.5;
+  };
 in {
   settings = {
     font,
@@ -24,7 +31,7 @@ in {
       vibrancy_darkness = 0.0;
     };
 
-    label = [
+    label = builtins.map (item: item // shadowConfig) [
       {
         monitor = "";
         text = ''cmd[update:1000] echo "<big>$(date +"%H:%M")</big>"'';
@@ -34,9 +41,6 @@ in {
         position = "0, 100";
         halign = "center";
         valign = "center";
-        shadow_passes = 2;
-        shadow_size = 5;
-        shadow_color = "$crust";
       }
       {
         monitor = "";
@@ -47,9 +51,6 @@ in {
         position = "0, 0";
         halign = "center";
         valign = "center";
-        shadow_passes = 2;
-        shadow_size = 5;
-        shadow_color = "$crust";
       }
     ];
 
