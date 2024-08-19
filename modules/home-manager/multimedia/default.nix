@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  stable-pkgs,
   ...
 }: let
   inherit (lib) mkEnableOption mkIf;
@@ -20,12 +21,14 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      mpv
-      vlc
-      kid3
-      ffmpeg
-    ];
+    home.packages =
+      (with pkgs; [
+        mpv
+        vlc
+        kid3
+        ffmpeg
+      ])
+      ++ [stable-pkgs.audacity];
 
     services.mpris-proxy.enable = cfg.mpris.enable;
   };

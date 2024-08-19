@@ -2,9 +2,10 @@
   lib,
   inputs,
   pkgs,
+  extra-utils,
 }: let
   inherit (lib) types mkOption mkPackageOption mkEnableOption;
-  themes = import ../themes {inherit lib pkgs inputs;};
+  themes = import ../themes {inherit lib pkgs inputs extra-utils;};
 in rec {
   monitor = types.submodule {
     options = {
@@ -120,11 +121,19 @@ in rec {
   server-app = {
     name,
     package ? null,
+    user ? "",
     group ? "",
     port ? null,
-    database ? null,
+    database ? "",
   }: {
     enable = mkEnableOption "Hellebore's ${name} configuration";
+
+    name = mkOption {
+      type = types.nonEmptyStr;
+      default = name;
+      readOnly = true;
+      description = "Name of the Server App. Read Only.";
+    };
 
     package = mkPackageOption pkgs package {nullable = package == null;};
 
@@ -132,6 +141,12 @@ in rec {
       type = types.nonEmptyStr;
       default = group;
       description = "Defines the user group for ${name}.";
+    };
+
+    user = mkOption {
+      type = types.nonEmptyStr;
+      default = user;
+      description = "Defines the user for ${name}";
     };
 
     database = mkOption {
@@ -150,12 +165,6 @@ in rec {
       type = types.nonEmptyStr;
       default = "";
       description = "Defines the subdomain on which ${name} is served.";
-    };
-
-    acmeEmail = mkOption {
-      type = types.nonEmptyStr;
-      default = "";
-      description = "Defines the email used for ACME SSL certificates.";
     };
   };
 }

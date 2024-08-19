@@ -26,18 +26,24 @@
   ];
 
   boot = {
-    kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
-    # initrd.kernelModules = ["i915"];
+    # kernelPackages = pkgs.linuxPackages_zen;
+    initrd.kernelModules = ["i915"];
   };
+
+  # Find vendor and device using `udevadm info /dev/dri/cardX --attribute-walk`
+  services.udev.extraRules = ''
+    KERNEL=="card*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x9a60", SYMLINK+="dri/by-name/intel-tigerlake-h-gt1"
+    KERNEL=="card*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x10de", ATTRS{device}=="0x2520", SYMLINK+="dri/by-name/nvidia-geforce-rtx-3060-mobile"
+  '';
 
   hellebore = {
     font.size = 12;
 
     theme.name = "catppuccin-macchiato";
 
-    monitors = [
+    monitors = lib.mkForce [
       {
-        name = "eDP-2";
+        name = "eDP-1";
         width = 2560;
         height = 1440;
         refreshRate = 165;
@@ -71,24 +77,49 @@
 
     games = {
       enable = true;
-      steam.enable = true;
+      steam = {
+        enable = true;
+      };
       minecraft = {
         enable = true;
         mods.enable = true;
       };
       cartridges.enable = true;
       lutris.enable = true;
-      gamemode.enable = true;
-      gamescope.enable = true;
+      gamemode.enable = false;
+      gamescope = {
+        enable = true;
+        capSysNice = true;
+      };
     };
 
+    power-profiles.enable = true;
+
     hardware = {
-      nvidia = {
+      # nvidia.nouveau.enable = true;
+      nvidia.proprietary = {
         enable = true;
-        power-profiles.enable = true;
-        power-management.enable = false;
+        # package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
+        package = let
+          rcu_patch = pkgs.fetchpatch {
+            url = "https://github.com/gentoo/gentoo/raw/c64caf53/x11-drivers/nvidia-drivers/files/nvidia-drivers-470.223.02-gpl-pfn_valid.patch";
+            hash = "sha256-eZiQQp2S/asE7MfGvfe6dA/kdCvek9SYa/FFGp24dVg=";
+          };
+        in
+          config.boot.kernelPackages.nvidiaPackages.mkDriver {
+            # Trying to fix the kernel panics related to NVidia,
+            # See: https://www.reddit.com/r/NixOS/comments/1dd7mj6/kernel_panic_with_nvidia_driver_550_on_laptop/
+            version = "535.154.05";
+            sha256_64bit = "sha256-fpUGXKprgt6SYRDxSCemGXLrEsIA6GOinp+0eGbqqJg=";
+            sha256_aarch64 = "sha256-G0/GiObf/BZMkzzET8HQjdIcvCSqB1uhsinro2HLK9k=";
+            openSha256 = "sha256-wvRdHguGLxS0mR06P5Qi++pDJBCF8pJ8hr4T8O6TJIo=";
+            settingsSha256 = "sha256-9wqoDEWY4I7weWW05F4igj1Gj9wjHsREFMztfEmqm10=";
+            persistencedSha256 = "sha256-d0Q3Lk80JqkS1B54Mahu2yY/WocOqFFbZVBh+ToGhaE=";
+
+            patches = [rcu_patch];
+          };
+        power-management.enable = true;
         modesetting.enable = true;
-        forceWaylandOnMesa = true;
         deviceFilterName = "RTX 3060";
         open = false;
         prime = {
@@ -96,9 +127,9 @@
           intelBusId = "PCI:0:2:0";
           nvidiaBusId = "PCI:1:0:0";
         };
-        fixes = {
-          usbCDriversWronglyLoaded = true;
-        };
+        # fixes = {
+        #   usbCDriversWronglyLoaded = true;
+        # };
       };
 
       ntfs.enable = true;
@@ -110,13 +141,7 @@
         numerization.enable = true;
         drivers = with pkgs; [
           epson-escpr
-          (epson-escpr2.overrideAttrs (final: prev: {
-            nativeBuildInputs = with pkgs; [
-              coreutils # HACK: fixes `stat` missing some common arguments
-              # (like `--printf`)
-              busybox
-            ];
-          }))
+          epson-escpr2
         ];
       };
 
@@ -135,6 +160,7 @@
     bootloader = {
       enable = true;
       efiSupport = true;
+      theme.screen = "2k";
     };
 
     fonts.enable = true;
@@ -154,7 +180,9 @@
       enableDocumentation = true;
     };
 
-    ssh.enable = true;
+    ssh = {
+      enable = true;
+    };
 
     tex.enable = true;
 
@@ -169,11 +197,18 @@
       };
     };
 
-    opengl.enable = true;
+    graphics.enable = true;
 
     hyprland = {
       enable = true;
-      enableSwaylockPam = true;
+      enableHyprlockPam = true;
+      renderingCards = {
+        enable = true;
+        defaultCards = lib.mkForce [
+          "/dev/dri/by-name/intel-tigerlake-h-gt1"
+          # "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
+        ];
+      };
     };
 
     display-manager = {
@@ -194,7 +229,7 @@
 
       upower = {
         enable = true;
-        notify = true;
+        notify = false;
         percentageLow = 15;
         percentageCritical = 10;
         percentageAction = 5;
@@ -223,6 +258,34 @@
       };
 
       username = "zhaith";
+    };
+  };
+  specialisation = {
+    hdmi.configuration.hellebore = {
+      monitors = lib.mkForce [
+        {
+          name = "eDP-1";
+          width = 2560;
+          height = 1440;
+          refreshRate = 165;
+          xOffset = 0;
+          yOffset = 0;
+          scaling = 1.0;
+        }
+        {
+          name = "";
+          width = 1920;
+          height = 1080;
+          refreshRate = 60;
+          xOffset = 0;
+          yOffset = 0;
+          scaling = 1.0;
+        }
+      ];
+      hyprland.renderingCards.defaultCards = lib.mkForce [
+        "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
+        "/dev/dri/by-name/intel-tigerlake-h-gt1"
+      ];
     };
   };
 

@@ -3,13 +3,22 @@
   lib,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf mkOption types;
   cfg = config.hellebore.bootloader;
 in {
   options.hellebore.bootloader = {
     enable = mkEnableOption "Hellebore bootloader configuration";
 
     efiSupport = mkEnableOption "EFI support for the bootloader";
+
+    theme.screen = mkOption {
+      default = "1080p";
+      example = "1080p";
+      type = types.enum ["1080p" "2k" "4k" "ultrawide" "ultrawide2k"];
+      description = ''
+        The screen resolution to use for grub2.
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
@@ -38,7 +47,7 @@ in {
         enable = true;
         theme = "tela";
         icon = "color";
-        screen = "1080p";
+        screen = cfg.theme.screen;
         footer = true;
       };
     };

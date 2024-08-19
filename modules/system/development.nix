@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf optionals optional mkDefault;
+  inherit (lib) mkEnableOption mkIf optionals optional;
   cfg = config.hellebore.development;
 in {
   options.hellebore.development = {
@@ -16,21 +16,29 @@ in {
   };
 
   config = mkIf cfg.enable {
-    virtualisation.podman = {
-      enable = mkDefault cfg.enablePodman;
-      dockerSocket.enable = cfg.enablePodman;
-      dockerCompat = cfg.enablePodman;
+    virtualisation.podman = mkIf cfg.enablePodman {
+      enable = true;
+      dockerSocket.enable = true;
+      dockerCompat = true;
     };
 
     documentation.dev.enable = cfg.enableDocumentation;
+
+    environment.variables = {
+      EDITOR = "hx";
+    };
 
     environment.systemPackages = with pkgs;
       [
         helix
         git
         gnumake
+        nix-npm-install
       ]
-      ++ (optional cfg.enablePodman pkgs.podman-compose)
+      ++ (optionals cfg.enablePodman [
+        podman-compose
+        compose2nix
+      ])
       ++ (optionals cfg.enableDocumentation [
         man-pages
         man-pages-posix

@@ -16,15 +16,9 @@ in {
         type = types.nonEmptyStr;
       };
 
-      user = mkOption {
-        default = "invoiceshelf";
-        type = types.nonEmptyStr;
-        description = "Defines the user running InvoiceShelf.";
-      };
-
-      dbPasswordFile = mkOption {
+      secretEnvFile = mkOption {
         default = "";
-        type = types.nonEmptyStr;
+        type = types.path;
         description = ''
           The env file containing the DB password, in the form:
           ```
@@ -35,6 +29,8 @@ in {
     }
     // extra-types.server-app {
       name = "InvoiceShelf";
+      user = "invoiceshelf";
+      database = "invoiceshelf";
       group = "invoiceshelf";
       port = 0660;
     };
@@ -62,14 +58,14 @@ in {
           TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
           DB_HOST = "10.0.2.2";
-          DB_PORT = toString config.services.postgresql.port;
+          DB_PORT = toString config.services.postgresql.settings.port;
           DB_DATABASE = "invoiceshelf";
           DB_USERNAME = cfg.user;
           STARTUP_DELAY = "0";
         };
 
         environmentFiles = [
-          cfg.dbPasswordFile
+          cfg.secretEnvFile
         ];
 
         extraOptions = [
@@ -92,7 +88,7 @@ in {
     };
 
     services.postgresql.authentication = ''
-      host invoiceshelf invoiceshelf 10.88.0.0/16 md5
+      host ${cfg.database} ${cfg.user} 10.88.0.0/16 md5
     '';
   };
 }

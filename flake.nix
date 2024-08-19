@@ -2,23 +2,38 @@
   description = "Zhaith's NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    home-manager-stable = {
-      url = "github:nix-community/home-manager/release-23.11";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     simple-nixos-mail-server = {
-      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-23.11";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    ags = {
+      url = "github:Aylur/ags";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    compose2nix = {
+      url = "github:aksiksi/compose2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     grub2-themes = {
@@ -33,7 +48,7 @@
 
     zhaith-helix = {
       url = "gitlab:Zhaith-Izaliel/helix-config/develop";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     sddm-sugar-candy-nix = {
@@ -53,8 +68,19 @@
 
     virgilribeyre-com = {
       url = "gitlab:Zhaith-Izaliel/virgilribeyre.com-next";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    wezterm = {
+      url = "github:wez/wezterm?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    # # HACK: disable this until https://github.com/hyprwm/Hyprland/issues/5880 is fixed
+    # hyprland = {
+    #   url = "github:hyprwm/Hyprland/v0.39.1";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     # Theme packages
     # NOTE: include them as "{theme-name}-{app-name}"
@@ -75,11 +101,6 @@
       flake = false;
     };
 
-    catppuccin-alacritty = {
-      url = "github:catppuccin/alacritty";
-      flake = false;
-    };
-
     catppuccin-hyprland = {
       url = "github:catppuccin/hyprland";
       flake = false;
@@ -96,30 +117,34 @@
     };
   };
 
-  outputs = {
+  outputs = inputs @ {
     nixpkgs,
-    nixpkgs-stable,
+    nixpkgs-unstable,
+    home-manager-unstable,
     grub2-themes,
     nix-alien,
     sddm-sugar-candy-nix,
     virgutils,
     rofi-applets,
     zhaith-helix,
-    home-manager-stable,
     simple-nixos-mail-server,
+    agenix,
     ...
-  } @ inputs: let
+  }: let
+    inherit (import nixpkgs {inherit system;}) pkgs;
     system = "x86_64-linux";
-    customHelpers = import ./utils {inherit inputs;};
+    customHelpers = import ./utils/system.nix {inherit inputs;};
     modules = import ./modules {
       extraSystemModules = [
         grub2-themes.nixosModules.default
         sddm-sugar-candy-nix.nixosModules.default
+        agenix.nixosModules.default
       ];
 
       extraHomeManagerModules = [
         zhaith-helix.homeManagerModules.default
         rofi-applets.homeManagerModules.default
+        agenix.homeManagerModules.default
       ];
 
       extraServerModules = [
@@ -131,66 +156,67 @@
       nix-alien.overlays.default
       sddm-sugar-candy-nix.overlays.default
       virgutils.overlays.${system}.default
+      agenix.overlays.default
       customOverlay
     ];
-  in
-    with import nixpkgs {inherit system;}; {
-      nixosConfigurations = {
-        Whispering-Willow = customHelpers.mkSystem {
-          inherit system overlays;
-          hostname = "Whispering-Willow";
-          users = ["zhaith"];
-          extraModules = [
-            modules.system
-          ];
-        };
-        Ethereal-Edelweiss = customHelpers.mkSystem {
-          inherit system;
-          hostname = "Ethereal-Edelweiss";
-          users = ["lilith"];
-          nixpkgs = nixpkgs-stable;
-          overlays = [
-            (final: prev: {
-              power-management = virgutils.packages.${system}.power-management;
-            })
-            customOverlay
-          ];
-          extraModules = [
-            modules.server
-            modules.system
-          ];
-        };
-      };
-      homeConfigurations = let
+  in {
+    nixosConfigurations = {
+      Whispering-Willow = customHelpers.mkSystem {
+        inherit system overlays;
+        hostname = "Whispering-Willow";
+        nixpkgs = nixpkgs-unstable;
+        users = ["zhaith"];
         extraModules = [
-          modules.home-manager
+          modules.system
         ];
-      in {
-        "zhaith@Whispering-Willow" = customHelpers.mkHome {
-          inherit system overlays extraModules;
-          username = "zhaith";
-          hostname = "Whispering-Willow";
-          stateVersion = "23.11";
-        };
-
-        "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
-          inherit system overlays extraModules;
-          nixpkgs = nixpkgs-stable;
-          home-manager = home-manager-stable;
-          username = "lilith";
-          hostname = "Ethereal-Edelweiss";
-          stateVersion = "22.05";
-        };
       };
-
-      devShells.${system}.default = pkgs.mkShell {
-        nativeBuildInputs = with pkgs; [
-          git
-          alejandra
-          home-manager
-          gnumake
-          nil
+      Ethereal-Edelweiss = customHelpers.mkSystem {
+        inherit system;
+        hostname = "Ethereal-Edelweiss";
+        users = ["lilith"];
+        overlays = [
+          (final: prev: {
+            power-management = virgutils.packages.${system}.power-management;
+          })
+          agenix.overlays.default
+          customOverlay
+        ];
+        extraModules = [
+          modules.server
+          modules.system
         ];
       };
     };
+    homeConfigurations = let
+      extraModules = [
+        modules.home-manager
+      ];
+    in {
+      "zhaith@Whispering-Willow" = customHelpers.mkHome {
+        inherit system overlays extraModules;
+        nixpkgs = nixpkgs-unstable;
+        home-manager = home-manager-unstable;
+        username = "zhaith";
+        hostname = "Whispering-Willow";
+        stateVersion = "23.11";
+      };
+
+      "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {
+        inherit system overlays extraModules;
+        username = "lilith";
+        hostname = "Ethereal-Edelweiss";
+        stateVersion = "22.05";
+      };
+    };
+
+    devShells.${system}.default = pkgs.mkShell {
+      nativeBuildInputs = with pkgs; [
+        git
+        alejandra
+        home-manager
+        gnumake
+        nil
+      ];
+    };
+  };
 }

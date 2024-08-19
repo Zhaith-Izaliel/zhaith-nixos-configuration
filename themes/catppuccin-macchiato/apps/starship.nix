@@ -34,11 +34,11 @@ in rec {
 
       continuation_prompt = "[∙](bright-black) ";
 
-      right_format = lib.concatStrings [
-        "[](fg:${gitMetricsSegmentBg})"
-        "$git_metrics"
-        "[▓▒░](${gitMetricsSegmentBg})"
-      ];
+      # right_format = lib.concatStrings [
+      #   "[](fg:${gitMetricsSegmentBg})"
+      #   "$git_metrics"
+      #   "[▓▒░](${gitMetricsSegmentBg})"
+      # ];
 
       format = lib.concatStrings [
         "$nix_shell"
@@ -71,12 +71,12 @@ in rec {
       # Inserts a blank line between shell prompts
       add_newline = true;
 
-      git_metrics = {
-        disabled = false;
-        format = "[ ](bold bg:${gitMetricsSegmentBg})[+$added]($added_style)[ ▏](bg:${gitMetricsSegmentBg})[-$deleted ]($deleted_style)";
-        added_style = "bold fg:green bg:${gitMetricsSegmentBg}";
-        deleted_style = "bold fg:red bg:${gitMetricsSegmentBg}";
-      };
+      # git_metrics = {
+      #   disabled = false;
+      #   format = "[ ](bold bg:${gitMetricsSegmentBg})[+$added]($added_style)[ ▏](bg:${gitMetricsSegmentBg})[-$deleted ]($deleted_style)";
+      #   added_style = "bold fg:green bg:${gitMetricsSegmentBg}";
+      #   deleted_style = "bold fg:red bg:${gitMetricsSegmentBg}";
+      # };
 
       hostname = {
         style = "bold green";
@@ -124,6 +124,7 @@ in rec {
 
       haskell = {
         symbol = " ";
+        style = "bold fg:${colors.normal.lavender}";
       };
 
       cmake = {

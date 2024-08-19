@@ -5,7 +5,7 @@
   ...
 }: let
   inherit (lib) mkOption mkIf mkEnableOption mkPackageOption types literalExpression optional concatStringsSep mapAttrsToList getExe;
-  cfg = config.services.inadyn;
+  cfg = config.hellebore.server.inadyn;
 
   configText = pkgs.writeText "inadyn.conf" (''
       # In-a-Dyn is a dynamic DNS client with multiple SSL/TLS library support
@@ -40,7 +40,7 @@
     ]
     ++ cfg.extraArgs);
 in {
-  options.services.inadyn = {
+  options.hellebore.server.inadyn = {
     enable = mkEnableOption "Inadyn dynamic DNS client";
 
     package = mkPackageOption pkgs "inadyn" {};

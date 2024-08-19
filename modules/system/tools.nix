@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  unstable-pkgs,
   ...
 }: let
   inherit (lib) mkEnableOption mkIf optional;
@@ -15,8 +14,9 @@ in {
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs;
-      [
+    environment.systemPackages =
+      (with pkgs; [
+        jq
         gotop
         ripgrep
         repgrep
@@ -31,9 +31,11 @@ in {
         erdtree
         file
         bandwhich
-        unstable-pkgs.dust
-      ]
-      ++ optional cfg.nix-alien.enable nix-alien;
+        dust
+        agenix
+        nvtopPackages.full
+      ])
+      ++ optional cfg.nix-alien.enable pkgs.nix-alien;
 
     programs.nix-ld.enable = cfg.nix-alien.enable;
   };

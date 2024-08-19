@@ -20,9 +20,9 @@ in {
   config = {
     home.packages = optionals cfg.enable (with pkgs; [
       onefetch
-      nix-npm-install
       hyperfine
       tokei
+      atac
     ]);
 
     home.sessionVariables = mkIf (!cfg.direnv.enableLogs) {

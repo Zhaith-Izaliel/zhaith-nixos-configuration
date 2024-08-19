@@ -4,13 +4,17 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption types mkIf optionalString;
-  cfg = config.hellebore.hardware.nvidia;
+  inherit (lib) mkEnableOption mkOption types mkIf;
+  cfg = config.hellebore.hardware.nvidia.proprietary;
 in {
-  options.hellebore.hardware.nvidia = {
+  options.hellebore.hardware.nvidia.proprietary = {
     enable = mkEnableOption "Nvidia Support";
 
-    power-profiles.enable = mkEnableOption "power-profiles-daemon support";
+    package = mkOption {
+      type = types.package;
+      default = config.boot.kernelPackages.nvidiaPackages.production;
+      description = "Defines the default Nvidia driver package to use.";
+    };
 
     power-management.enable = mkEnableOption "Nvidia power management
       capabilities";
@@ -20,14 +24,6 @@ in {
     modesetting.enable = mkEnableOption "Nvidia Kernel Modesetting";
 
     open = mkEnableOption "Nvidia Open-Source Driver";
-
-    forceWaylandOnMesa =
-      (mkEnableOption null)
-      // {
-        description = "Force Wayland to run on Mesa instead of Nvidia in some
-        rare cases. You can check that by using `nvidia-smi` and see if your
-        compositor is running on Nvidia.";
-      };
 
     deviceFilterName = mkOption {
       type = types.nonEmptyStr;
@@ -63,42 +59,31 @@ in {
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion =
-          cfg.enable
-          -> config.hardware.opengl.enable
-          && config.hardware.opengl.driSupport
-          && config.hardware.opengl.driSupport32Bit;
-        message = "You must enable OpenGL with DRI support (64 bits and 32 bits) to support Nvidia.";
+        assertion = config.hellebore.graphics.enable;
+        message = "You must enable graphics support for Nvidia.";
       }
       {
-        assertion = config.hellebore.vm.enable -> (cfg.enable && cfg.forceWaylandOnMesa);
+        assertion = config.hellebore.vm.enable -> cfg.forceWaylandOnMesa;
         message = "Forcing wayland on Mesa is a required step if you're using a VM with GPU passthrough.";
       }
       {
-        assertion = cfg.prime.sync.enable -> !(cfg.enable && cfg.forceWaylandOnMesa);
+        assertion = cfg.prime.sync.enable -> !(cfg.forceWaylandOnMesa);
         message = "You shouldn't force Wayland on Mesa when using PRIME Sync with Nvidia.";
       }
+      {
+        assertion = cfg.enable -> !config.hellebore.hardware.nvidia.nouveau.enable;
+        message = "Nouveau and the proprietary Nvidia drivers are mutually exclusive, you should enable only one of them.";
+      }
     ];
-
-    services.power-profiles-daemon.enable = cfg.power-profiles.enable;
 
     environment.systemPackages = with pkgs; [
       mesa-demos
     ];
 
-    services.xserver.videoDrivers = ["nvidia"]; # IMPORTANT: this activates
-    # the hardware.nvidia module
-
-    # NOTE: This forces Libglvnd to use Mesa instead of Nvidia.
-    environment.variables = mkIf cfg.forceWaylandOnMesa {
-      "__EGL_VENDOR_LIBRARY_FILENAMES" = "${pkgs.mesa.drivers}/share/glvnd/egl_vendor.d/50_mesa.json";
-      "__GLX_VENDOR_LIBRARY_NAME" = "mesa";
-    };
+    services.xserver.videoDrivers = ["nvidia"]; # IMPORTANT: this activates the hardware.nvidia module
 
     hardware.nvidia = {
-      inherit (cfg) modesetting open;
-
-      package = config.boot.kernelPackages.nvidiaPackages.production;
+      inherit (cfg) modesetting open package;
 
       powerManagement = mkIf cfg.power-management.enable {
         enable = true;
@@ -127,9 +112,9 @@ in {
       };
     };
 
-    # NOTE: Fix Kernel Panics with the Kernel trying to use the USB-C driver on a non-USB-C compatible Nvidia Card.
-    boot.extraModprobeConfig = optionalString cfg.fixes.usbCDriversWronglyLoaded ''
-      blacklist i2c_nvidia_gpu
+    boot.extraModprobeConfig = ''
+      blacklist nouveau
+      options nouveau modeset=0
     '';
   };
 }

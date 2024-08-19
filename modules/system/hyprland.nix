@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkPackageOption optionalString mkIf;
+  inherit (lib) mkEnableOption mkPackageOption optionalString mkIf types concatStringsSep mkOption;
   cfg = config.hellebore.hyprland;
 in {
   options.hellebore.hyprland = {
@@ -13,12 +13,29 @@ in {
     package = mkPackageOption pkgs "hyprland" {};
 
     enableSwaylockPam = mkEnableOption "Swaylock PAM configuration";
+
+    enableHyprlockPam = mkEnableOption "Hyprlock PAM configuration";
+
+    renderingCards = {
+      enable = mkEnableOption "using different rendering cards for WLRoots based compositors";
+
+      defaultCards = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "Defines the cards used for rendering WLRoots based compositors, in order of priority.";
+      };
+    };
   };
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       gtk3
     ];
+
+    # NOTE: This gives granular control over which cards should be used, in order, when rendering Hyprland.
+    environment.variables = mkIf cfg.renderingCards.enable {
+      WLR_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
+    };
 
     qt.enable = true;
 
@@ -31,6 +48,12 @@ in {
     programs.dconf.enable = true;
 
     security.pam.services.swaylock.text = optionalString cfg.enableSwaylockPam ''
+      # PAM configuration file for the swaylock screen locker. By default, it includes
+      # the 'login' configuration file (see /etc/pam.d/login)
+      auth include login
+    '';
+
+    security.pam.services.hyprlock.text = optionalString cfg.enableHyprlockPam ''
       # PAM configuration file for the swaylock screen locker. By default, it includes
       # the 'login' configuration file (see /etc/pam.d/login)
       auth include login
@@ -49,11 +72,6 @@ in {
         TimeoutStopSec = 10;
       };
     };
-
-    boot.extraModprobeConfig = ''
-      blacklist nouveau
-      options nouveau modeset=0
-    '';
 
     programs.hyprland = {
       enable = true;

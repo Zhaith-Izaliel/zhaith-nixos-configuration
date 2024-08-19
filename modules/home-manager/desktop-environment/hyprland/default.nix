@@ -32,7 +32,11 @@ in {
   options.hellebore.desktop-environment.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
-    package = mkPackageOption pkgs "hyprland" {};
+    package =
+      (mkPackageOption pkgs "hyprland" {})
+      // {
+        default = os-config.programs.hyprland.package;
+      };
 
     monitors =
       extra-types.monitors
@@ -68,6 +72,10 @@ in {
       type = types.listOf extraRulesType;
       default = [];
       description = "Defines a list of extra rules for windows to be applied.";
+    };
+
+    misc = {
+      middleClickPaste = mkEnableOption "middle click paste";
     };
 
     input = {
@@ -128,6 +136,22 @@ in {
         default = "bottom-left";
         description = "Defines the initial position of the Picture-in-Picture window.";
       };
+
+      keymaps = {
+        enable = mkEnableOption "keymaps for moving picture-in-picture floating window";
+      };
+    };
+
+    switches = {
+      lid = {
+        enable = mkEnableOption "Lid Switch";
+
+        name = mkOption {
+          default = "Lid Switch";
+          type = types.nonEmptyStr;
+          description = "The name of the lid switch.";
+        };
+      };
     };
   };
 
@@ -151,10 +175,11 @@ in {
       XDG_SESSION_TYPE = "wayland";
       # XDG_SESSION_DESKTOP = "Hyprland";
       WLR_NO_HARDWARE_CURSORS = "1";
+      ADW_DISABLE_PORTAL = "1";
     };
 
-    home.packages = with pkgs;
-      [
+    home.packages =
+      (with pkgs; [
         swww
         swayosd
         power-management
@@ -163,8 +188,8 @@ in {
         volume-brightness
         screenshot
         power-management
-        gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
-      ]
+        gnome-themes-extra # Add default Gnome theme as well for Adwaita
+      ])
       ++ theme.gtk.packages;
 
     gtk = {
@@ -174,6 +199,14 @@ in {
       font = {
         inherit (theme.gtk.font) name package;
         size = config.hellebore.font.size;
+      };
+
+      gtk3.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
+
+      gtk4.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
       };
     };
 

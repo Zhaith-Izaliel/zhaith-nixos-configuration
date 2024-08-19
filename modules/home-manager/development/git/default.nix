@@ -47,6 +47,7 @@ in {
     home.packages = with pkgs; [
       gitAndTools.gitflow
       git-ignore
+      git-graph
     ];
 
     programs.git = {
@@ -60,8 +61,8 @@ in {
     };
 
     programs.gitui = mkIf cfg.gitui.enable {
+      inherit (cfg.gitui) package;
       enable = true;
-      package = cfg.gitui.package;
       theme = builtins.readFile theme.gitui.file;
     };
   };

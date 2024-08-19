@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   inherit (lib) mkEnableOption mkOption mkMerge mkIf types;
@@ -26,13 +27,22 @@ in {
         enable = true;
         enableSSHSupport = true;
       };
+      # programs.ssh = {
+      #   enableAskPassword = true;
+      #   askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
+      #   startAgent = true;
+      # };
     })
     (mkIf cfg.openssh.enable {
       services.openssh = {
         inherit (cfg.openssh) ports;
         enable = true;
         openFirewall = true;
-        settings.PasswordAuthentication = false;
+        settings = {
+          PasswordAuthentication = false;
+          LogLevel = "VERBOSE";
+        };
+
         allowSFTP = true;
         sftpServerExecutable = "internal-sftp";
       };

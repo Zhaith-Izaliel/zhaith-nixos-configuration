@@ -5,14 +5,18 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption mkIf getExe types mkPackageOption concatStringsSep;
+  inherit (lib) mkEnableOption mkOption mkIf getExe types mkPackageOption concatStringsSep optional;
+
+  defaultExtraArgs =
+    (optional cfg.useLayerBlur "--no-bg")
+    ++ [
+      "--protocol layer-shell"
+      "-b 5"
+      "-T 400"
+      "-B 400"
+    ];
 
   cfg = config.hellebore.desktop-environment.logout;
-
-  package-name =
-    if cfg.useLayerBlur
-    then "wlogout"
-    else "wlogout-blur";
 
   theme = config.hellebore.theme.themes.${cfg.theme};
 in {
@@ -30,7 +34,7 @@ in {
       description = "Defines the logout screen theme.";
     };
 
-    package = mkPackageOption pkgs package-name {};
+    package = mkPackageOption pkgs "wlogout-blur" {};
 
     bin = mkOption {
       type = types.str;
@@ -41,12 +45,7 @@ in {
 
     extraArgs = mkOption {
       type = types.listOf types.nonEmptyStr;
-      default = [
-        "--protocol layer-shell"
-        "-b 5"
-        "-T 400"
-        "-B 400"
-      ];
+      default = defaultExtraArgs;
       description = "Extra Arguments to pass to wlogout.";
     };
 
@@ -56,14 +55,8 @@ in {
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.enable -> config.programs.swaylock.enable;
-        message = "WLogout depends on Swaylock to lock the screen. Please enable
-        it in your configuration.";
-      }
-      {
-        assertion = cfg.enable -> config.wayland.windowManager.hyprland.enable;
-        message = "WLogout depends on Hyprland to logout. Please enable
-        it in your configuration.";
+        assertion = config.wayland.windowManager.hyprland.enable;
+        message = "WLogout depends on Hyprland to logout. Please enable it in your configuration.";
       }
       {
         assertion = cfg.useLayerBlur -> config.wayland.windowManager.hyprland.enable;
@@ -80,7 +73,7 @@ in {
       layout = [
         {
           label = "lock";
-          action = "${getExe config.programs.swaylock.package} -fF";
+          action = "${pkgs.systemd}/bin/loginctl lock-session";
           text = "Lock";
           keybind = "l";
         }

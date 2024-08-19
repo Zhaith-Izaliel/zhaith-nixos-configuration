@@ -1,11 +1,10 @@
 {
   config,
-  options,
   lib,
   extra-types,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption types mkMerge mkIf;
+  inherit (lib) mkEnableOption mkOption types mkIf;
   theme = config.hellebore.theme.themes.${cfg.theme};
   cfg = config.hellebore.display-manager;
   defaultMonitor = builtins.elemAt config.hellebore.monitors 0;
@@ -65,47 +64,36 @@ in {
     };
   };
 
-  config = mkMerge [
-    (mkIf cfg.enable {
-      services.xserver.xkb = {
+  config = mkIf cfg.enable {
+    services = {
+      xserver.xkb = {
         inherit (cfg.keyboard) layout variant;
       };
-    })
-    # COMPATIBILITY: Used for compat with NixOS 23.11
-    (mkIf cfg.enable (
-      let
-        attr = {
-          enable = true;
-          wayland.enable = true;
-          settings = {
-            Theme = {
-              CursorTheme = theme.gtk.cursorTheme.name;
-              CursorSize = 24;
-              Font = cfg.font.size;
-            };
-          };
 
-          sugarCandyNix = {
-            enable = true;
-            settings =
-              {
-                ScreenWidth = cfg.screenWidth;
-                ScreenHeight = cfg.screenHeight;
-                Font = cfg.font.name;
-                FontSize = toString cfg.font.size;
-                Background = cfg.background.path;
-              }
-              // theme.sddm.settings;
+      displayManager.sddm = {
+        enable = true;
+        wayland.enable = true;
+        settings = {
+          Theme = {
+            CursorTheme = theme.gtk.cursorTheme.name;
+            CursorSize = 24;
+            Font = cfg.font.size;
           };
         };
-      in
-        if !(builtins.hasAttr "enable" options.services.displayManager.sddm)
-        then {
-          services.xserver.displayManager.sddm = attr;
-        }
-        else {
-          services.displayManager.sddm = attr;
-        }
-    ))
-  ];
+
+        sugarCandyNix = {
+          enable = true;
+          settings =
+            {
+              ScreenWidth = cfg.screenWidth;
+              ScreenHeight = cfg.screenHeight;
+              Font = cfg.font.name;
+              FontSize = toString cfg.font.size;
+              Background = cfg.background.path;
+            }
+            // theme.sddm.settings;
+        };
+      };
+    };
+  };
 }

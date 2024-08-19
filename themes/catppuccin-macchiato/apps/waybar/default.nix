@@ -3,14 +3,11 @@
   inputs,
   modules,
   lib,
+  extra-utils,
 }: let
   inherit (lib) recursiveUpdate any optionalString concatStringsSep;
+  inherit (extra-utils.waybar) mkWaybarModules;
   mkBig = icon: "<big>${icon}</big>";
-  mkWaybarModules =
-    (
-      import ../../../../utils/default.nix {inherit inputs;}
-    )
-    .mkWaybarModules;
   modulesPosition = {
     modules-left = [
       "custom/icon"
