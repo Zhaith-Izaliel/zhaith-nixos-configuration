@@ -182,6 +182,8 @@ in {
       }
     ];
 
+    home.packages = theme.hyprlock.extraPackages;
+
     programs.hyprlock = {
       inherit (cfg) package;
       enable = true;

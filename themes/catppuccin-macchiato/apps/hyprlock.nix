@@ -2,6 +2,7 @@
   palette,
   colors,
   lib,
+  pkgs,
 }: let
   inherit (lib) mapAttrs;
   converted-colors = mapAttrs (name: value: "#${value}") colors.normal; # This escapes `#` to allow colors in `span`.
@@ -13,6 +14,11 @@
     shadow_boost = 1.5;
   };
 in {
+  extraPackages = with pkgs; [
+    wttrbar
+    jq
+  ];
+
   settings = {
     font,
     backgroundImage ? "screenshot",
@@ -51,6 +57,16 @@ in {
         position = "0, 0";
         halign = "center";
         valign = "center";
+      }
+      {
+        monitor = "";
+        text = ''cmd[update:1000] wttrbar --custom-indicator "{ICON} {temp_C}°C ({FeelsLikeC}°C)" | jq -r .text'';
+        color = "$text";
+        font_size = font.size - 5;
+        font_family = font.name;
+        position = "25, 25";
+        halign = "left";
+        valign = "bottom";
       }
     ];
 

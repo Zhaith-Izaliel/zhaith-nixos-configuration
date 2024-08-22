@@ -13,7 +13,7 @@
   gtk = import ./gtk.nix {inherit pkgs lib;};
   hyprland = import ./hyprland.nix {inherit pkgs lib inputs;};
   hyprlock = import ./hyprlock.nix {
-    inherit colors lib;
+    inherit colors lib pkgs;
     inherit (hyprland) palette;
   };
   starship = import ./starship.nix {inherit pkgs lib inputs colors;};

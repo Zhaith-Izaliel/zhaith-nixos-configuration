@@ -59,7 +59,7 @@ in {
           DB_CONNECTION = "pgsql";
           DB_HOST = "10.0.2.2";
           DB_PORT = toString config.services.postgresql.settings.port;
-          DB_DATABASE = "invoiceshelf";
+          DB_DATABASE = cfg.database;
           DB_USERNAME = cfg.user;
           STARTUP_DELAY = "0";
         };
@@ -87,8 +87,19 @@ in {
       };
     };
 
-    services.postgresql.authentication = ''
-      host ${cfg.database} ${cfg.user} 10.88.0.0/16 md5
-    '';
+    services.postgresql = {
+      enable = mkDefault true;
+      ensureDatabases = [cfg.database];
+
+      ensureUsers = [
+        {
+          name = cfg.user;
+          ensureDBOwnership = true;
+        }
+      ];
+      authentication = ''
+        host ${cfg.database} ${cfg.user} 10.88.0.0/16 md5
+      '';
+    };
   };
 }

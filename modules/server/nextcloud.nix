@@ -83,6 +83,18 @@ in {
       ];
     };
 
+    services.postgresql = {
+      enable = mkDefault true;
+      ensureDatabases = [cfg.database];
+
+      ensureUsers = [
+        {
+          name = cfg.user;
+          ensureDBOwnership = true;
+        }
+      ];
+    };
+
     hellebore.server.nginx.enable = mkDefault true;
     services.nginx.virtualHosts.${domain} = {
       # Nextcloud
