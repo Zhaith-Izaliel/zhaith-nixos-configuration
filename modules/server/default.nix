@@ -11,6 +11,7 @@
     ./jellyfin.nix
     ./mailserver.nix
     ./mariadb.nix
+    ./ghost.nix
     ./nextcloud.nix
     ./nginx.nix
     ./podman.nix

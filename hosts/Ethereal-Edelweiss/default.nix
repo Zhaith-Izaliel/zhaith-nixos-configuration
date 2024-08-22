@@ -44,6 +44,10 @@
         package = pkgs.postgresql_15;
       };
 
+      mariadb = {
+        enable = true;
+      };
+
       nginx.enable = true;
 
       nextcloud = {
@@ -85,6 +89,12 @@
           "mespapiers"
         ];
         secretEnvFile = config.age.secrets.cozy-env.path;
+      };
+
+      ghost = {
+        enable = true;
+        subdomain = "ghost";
+        dataDir = "/mnt/datas/ghost";
       };
 
       radicale = {
@@ -154,6 +164,7 @@
           "${config.hellebore.server.servas.subdomain}.${domain}"
           "${config.hellebore.server.radicale.subdomain}.${domain}"
           "${config.hellebore.server.mail.subdomain}.${domain}"
+          "${config.hellebore.server.ghost.subdomain}.${domain}"
           # Cozy
           "${config.hellebore.server.cozy.subdomain}.${domain}"
           "*.${config.hellebore.server.cozy.subdomain}.${domain}"
