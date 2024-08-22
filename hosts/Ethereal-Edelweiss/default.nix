@@ -69,12 +69,12 @@
       };
 
       couchdb = {
-        enable = true;
+        # enable = true;
         passwordFile = config.age.secrets.couchdb.path;
       };
 
       cozy = {
-        enable = true;
+        # enable = true;
         subdomain = "cozy";
         volume = "/mnt/datas/cozy/volume";
         installedApps = [
@@ -92,7 +92,7 @@
       };
 
       ghost = {
-        enable = true;
+        # enable = true;
         subdomain = "ghost";
         volume = "/mnt/datas/ghost";
         secretEnvFile = config.age.secrets.ghost.path;
@@ -165,10 +165,10 @@
           "${config.hellebore.server.servas.subdomain}.${domain}"
           "${config.hellebore.server.radicale.subdomain}.${domain}"
           "${config.hellebore.server.mail.subdomain}.${domain}"
-          "${config.hellebore.server.ghost.subdomain}.${domain}"
+          # "${config.hellebore.server.ghost.subdomain}.${domain}"
           # Cozy
-          "${config.hellebore.server.cozy.subdomain}.${domain}"
-          "*.${config.hellebore.server.cozy.subdomain}.${domain}"
+          # "${config.hellebore.server.cozy.subdomain}.${domain}"
+          # "*.${config.hellebore.server.cozy.subdomain}.${domain}"
         ];
       in {
         enable = true;

@@ -39,20 +39,21 @@ in {
       environment = {
         "database__client" = "mysql";
         "database__connection__database" = cfg.database;
-        "database__connection__host" = "10.0.2.2";
-        "database__connection__port" = "3306";
+        # "database__connection__host" = "localhost";
+        # "database__connection__port" = "3306";
         "database__connection__user" = cfg.user;
+        "database__connection__socketPath" = "/var/run/mysqld/mysqld.sock";
         "url" = "https://${domain}";
         "mail__transport" = "sendmail";
-        "loggin__transports" = "(\"stdout\")";
       };
 
-      environmentFiles = [
-        cfg.secretEnvFile
-      ];
+      # environmentFiles = [
+      #   cfg.secretEnvFile
+      # ];
 
       volumes = [
         "${cfg.volume}:/var/lib/ghost/content:rw"
+        "/var/run/mysqld:/var/run/mysqld:rw"
       ];
 
       ports = [
@@ -60,10 +61,10 @@ in {
       ];
 
       log-driver = "journald";
-      extraOptions = [
-        "--network"
-        "slirp4netns:allow_host_loopback=true"
-      ];
+      # extraOptions = [
+      #   "--network"
+      #   "slirp4netns:allow_host_loopback=true"
+      # ];
     };
 
     hellebore.server.nginx.enable = mkDefault true;
