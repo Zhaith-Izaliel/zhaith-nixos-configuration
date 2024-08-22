@@ -171,16 +171,9 @@
         ];
       };
       Ethereal-Edelweiss = customHelpers.mkSystem {
-        inherit system;
+        inherit system overlays;
         hostname = "Ethereal-Edelweiss";
         users = ["lilith"];
-        overlays = [
-          (final: prev: {
-            power-management = virgutils.packages.${system}.power-management;
-          })
-          agenix.overlays.default
-          customOverlay
-        ];
         extraModules = [
           modules.server
           modules.system

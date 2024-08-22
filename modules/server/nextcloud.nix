@@ -14,6 +14,7 @@ in {
     // extra-types.server-app {
       name = "Nextcloud";
       package = "nextcloud29";
+      database = "nextcloud";
     };
 
   config = mkIf cfg.enable {
@@ -56,7 +57,7 @@ in {
         dbtype = "pgsql";
         dbuser = "nextcloud";
         dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
-        dbname = "nextcloud";
+        dbname = cfg.database;
 
         adminpassFile = "/mnt/datas/nextcloud/nextcloud-admin-pass";
         dbpassFile = "/mnt/datas/nextcloud/nextcloud-db-pass";
@@ -89,7 +90,7 @@ in {
 
       ensureUsers = [
         {
-          name = cfg.user;
+          name = "nextcloud";
           ensureDBOwnership = true;
         }
       ];
