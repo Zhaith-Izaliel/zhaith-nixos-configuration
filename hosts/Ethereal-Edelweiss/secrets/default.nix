@@ -46,5 +46,9 @@ in {
       owner = config.hellebore.server.mail.user;
       group = config.hellebore.server.mail.group;
     };
+
+    ghost = enableSecret "ghost" {
+      file = ./apps/ghost.age;
+    };
   };
 }
