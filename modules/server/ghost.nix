@@ -87,15 +87,15 @@ in {
       {
         "url": "https://${domain}",
         "server": {
-          "port": ${cfg.port},
+          "port": toString cfg.port,
           "host": "0.0.0.0"
         },
         "database": {
           "client": "mysql",
           "connection": {
             "host": "localhost",
-            "user": "${cfg.user}",
-            "database": "${cfg.database}",
+            "user": cfg.user,
+            "database": cfg.database,
             "password": "",
             "socketPath": "/run/mysqld/mysqld.sock"
           }

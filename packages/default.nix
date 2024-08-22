@@ -9,16 +9,7 @@
   };
 in rec {
   fusion = pkgs.callPackage ./fusion.nix {};
-  ghost-cli = nodejs-packages.ghost-cli.overrideAttrs (
-    final: prev: {
-      buildInputs = with pkgs;
-        [
-          vips
-        ]
-        ++ prev.buildInputs;
-    }
-  );
-  ghost-publishing = pkgs.callPackage ./ghost-publishing.nix {inherit ghost-cli;};
+  ghost-publishing = pkgs.callPackage ./ghost-publishing {inherit (nodejs-packages) ghost-cli;};
   # elasticdump = nodejs-packages.elasticdump.overrideAttrs (
   #   final: prev: {
   #     buildInputs =

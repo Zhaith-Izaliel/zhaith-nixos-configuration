@@ -24,7 +24,6 @@ in {
       inherit (cfg) package enable;
 
       settings = {
-        port = 3306;
         # listen_addresses = mkForce (concatStringsSep "," [
         #   "localhost"
         #   "10.88.0.1" # Podman bridge
