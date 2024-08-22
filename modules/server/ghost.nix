@@ -2,44 +2,69 @@
   config,
   lib,
   extra-types,
-  pkgs,
   ...
 }: let
   inherit (lib) mkIf mkDefault mkOption types;
   cfg = config.hellebore.server.ghost;
   domain = "${cfg.subdomain}.${config.networking.domain}";
-  databaseService = "mysql.service";
-
-  setupScript = pkgs.writeScriptBin "ghost-setup.sh" ''
-    chmod g+s "${cfg.dataDir}"
-    [[ ! -d "${cfg.dataDir}/content" ]] && cp -r "${pkgs.ghost-publishing}/content" "${cfg.dataDir}/content"
-    chown -R "${cfg.user}":"${cfg.group}" "${cfg.dataDir}/content"
-    chmod -R +w "${cfg.dataDir}/content"
-    ln -f -s "/etc/ghost.json" "${cfg.dataDir}/config.production.json"
-    [[ -d "${cfg.dataDir}/current" ]] && rm "${cfg.dataDir}/current"
-    ln -f -s "${pkgs.ghost-publishing}/current" "${cfg.dataDir}/current"
-    [[ -d "${cfg.dataDir}/content/themes/casper" ]] && rm "${cfg.dataDir}/content/themes/casper"
-    ln -f -s "${pkgs.ghost-publishing}/current/content/themes/casper" "${cfg.dataDir}/content/themes/casper"
-  '';
 in {
   options.hellebore.server.ghost =
     {
-      dataDir = mkOption {
+      volume = mkOption {
         default = "/var/lib/ghost";
         description = lib.mdDoc "Directory to store Ghost data.";
         type = types.nonEmptyStr;
+      };
+      secretEnvFile = mkOption {
+        default = "";
+        type = types.path;
+        description = ''
+          The env file containing the DB password, in the form:
+          ```
+            database__connection__password="password"
+          ```
+        '';
       };
     }
     // extra-types.server-app {
       name = "Ghost";
       user = "ghost";
-      group = "ghost";
       database = "ghost";
-      package = "ghost-publishing";
-      port = 9000;
+      port = 2368;
     };
 
   config = mkIf cfg.enable {
+    virtualisation.oci-containers.containers."ghost" = {
+      image = "ghost";
+      environment = {
+        "database__client" = "mysql";
+        "database__connection__database" = cfg.database;
+        "database__connection__host" = "10.0.2.2";
+        "database__connection__port" = "3306";
+        "database__connection__user" = cfg.user;
+        "url" = "https://${domain}";
+        "mail__transport" = "sendmail";
+        "loggin__transports" = "(\"stdout\")";
+      };
+
+      environmentFiles = [
+        cfg.secretEnvFile
+      ];
+
+      volumes = [
+        "ghost:${cfg.volume}:rw"
+      ];
+
+      ports = [
+        "8080:${toString cfg.port}/tcp"
+      ];
+
+      log-driver = "journald";
+      extraOptions = [
+        "--network slirp4netns:allow_host_loopback=true"
+      ];
+    };
+
     hellebore.server.nginx.enable = mkDefault true;
 
     services.nginx.virtualHosts.${domain} = {
@@ -71,88 +96,6 @@ in {
           ensurePermissions = {"${cfg.database}.*" = "ALL PRIVILEGES";};
         }
       ];
-    };
-
-    # Creates the user and group
-    users.users.${cfg.user} = {
-      isSystemUser = true;
-      group = cfg.group;
-      createHome = true;
-      home = cfg.dataDir;
-    };
-    users.groups.${cfg.group} = {};
-
-    # Creates the Ghost config
-    environment.etc."ghost.json".text = ''
-      {
-        "url": "https://${domain}",
-        "server": {
-          "port": toString cfg.port,
-          "host": "0.0.0.0"
-        },
-        "database": {
-          "client": "mysql",
-          "connection": {
-            "host": "localhost",
-            "user": cfg.user,
-            "database": cfg.database,
-            "password": "",
-            "socketPath": "/run/mysqld/mysqld.sock"
-          }
-        },
-        "mail": {
-          "transport": "sendmail"
-        },
-        "logging": {
-          "transports": ["stdout"]
-        },
-        "paths": {
-          "contentPath": "${cfg.dataDir}/content"
-        }
-      }
-    '';
-
-    # Sets up the Systemd service
-    systemd.services.ghost = {
-      enable = true;
-      description = "Independent technology for modern publishing, memberships, subscriptions and newsletters.";
-      restartIfChanged = true;
-      restartTriggers = [cfg.package config.environment.etc."ghost.json".source];
-      requires = [databaseService];
-      after = [databaseService];
-      path = [pkgs.nodejs pkgs.vips];
-      wantedBy = ["multi-user.target"];
-      serviceConfig = {
-        User = cfg.user;
-        Group = cfg.group;
-        WorkingDirectory = cfg.dataDir;
-        # Executes the setup script before start
-        ExecStartPre = setupScript;
-        # Runs Ghost with node
-        ExecStart = "${pkgs.nodejs}/bin/node current/index.js";
-        # Sandboxes the Systemd service
-        AmbientCapabilities = [];
-        CapabilityBoundingSet = [];
-        KeyringMode = "private";
-        LockPersonality = true;
-        NoNewPrivileges = true;
-        PrivateDevices = true;
-        PrivateMounts = true;
-        PrivateTmp = true;
-        ProtectClock = true;
-        ProtectControlGroups = true;
-        ProtectHome = true;
-        ProtectHostname = true;
-        ProtectKernelLogs = true;
-        ProtectKernelModules = true;
-        ProtectKernelTunables = true;
-        ProtectSystem = "full";
-        RemoveIPC = true;
-        RestrictAddressFamilies = [];
-        RestrictNamespaces = true;
-        RestrictRealtime = true;
-      };
-      environment = {NODE_ENV = "production";};
     };
   };
 }

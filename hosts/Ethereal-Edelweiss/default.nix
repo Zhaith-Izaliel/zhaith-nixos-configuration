@@ -94,7 +94,8 @@
       ghost = {
         enable = true;
         subdomain = "ghost";
-        dataDir = "/mnt/datas/ghost";
+        volume = "/mnt/datas/ghost";
+        secretEnvFile = config.age.secrets.ghost.path;
       };
 
       radicale = {
