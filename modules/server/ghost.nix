@@ -52,16 +52,17 @@ in {
       ];
 
       volumes = [
-        "ghost:${cfg.volume}:rw"
+        "${cfg.volume}:/var/lib/ghost/content:rw"
       ];
 
       ports = [
-        "8080:${toString cfg.port}/tcp"
+        "${toString cfg.port}:2368/tcp"
       ];
 
       log-driver = "journald";
       extraOptions = [
-        "--network slirp4netns:allow_host_loopback=true"
+        "--network"
+        "slirp4netns:allow_host_loopback=true"
       ];
     };
 
