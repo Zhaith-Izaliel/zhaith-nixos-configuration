@@ -224,11 +224,11 @@
     "fast-blur": {
       "flake": false,
       "locked": {
-        "lastModified": 1686151794,
-        "narHash": "sha256-iElHvxyVCVL/kDJE2qS13laqmy1884H+JCH3YnKh4H8=",
+        "lastModified": 1724016656,
+        "narHash": "sha256-TkQZi7VHa8xTnAq3vo8OjUOvF+CS/KruVlLtpNIMsyc=",
         "owner": "bfraboni",
         "repo": "FastGaussianBlur",
-        "rev": "b267f984a02dc3dbe2ab21420264ac5338608bca",
+        "rev": "49f0128469c3df89d728d3b94457108682682825",
         "type": "github"
       },
       "original": {
@@ -1297,11 +1297,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1724419893,
-        "narHash": "sha256-wQSsFVHbJ4qM5NogBM+qlAGRS8hkG2t8oeZCSXjTLoU=",
+        "lastModified": 1724421702,
+        "narHash": "sha256-gPHXm6uDZwvRVtLPd2oUnpOiwyETMZwaBTmUz8UgmIM=",
         "owner": "Zhaith-Izaliel",
         "repo": "virgutils",
-        "rev": "f6588401df87ce0100160ee4c48f2c8b8065b268",
+        "rev": "58b53eb4aa3be33213d7142f231ab83f9162cf1f",
         "type": "gitlab"
       },
       "original": {
