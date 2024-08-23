@@ -29,6 +29,7 @@ in {
     // extra-types.server-app {
       name = "Ghost";
       user = "ghost";
+      group = "ghost";
       database = "ghost";
       port = 2368;
     };
@@ -88,6 +89,13 @@ in {
         };
       };
     };
+
+    users.users.${cfg.user} = {
+      isSystemUser = true;
+      group = cfg.group;
+    };
+
+    users.groups.${cfg.group} = {};
 
     services.mysql = {
       ensureDatabases = [cfg.database];
