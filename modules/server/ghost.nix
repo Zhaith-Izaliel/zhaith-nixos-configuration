@@ -40,7 +40,7 @@ in {
       environment = {
         "database__client" = "mysql";
         "database__connection__database" = cfg.database;
-        "database__connection__host" = "localhost";
+        "database__connection__host" = "10.0.2.2";
         "database__connection__port" = "3306";
         "database__connection__user" = cfg.user;
         "url" = "https://${domain}";
@@ -98,12 +98,12 @@ in {
 
     services.mysql = {
       ensureDatabases = [cfg.database];
-      ensureUsers = [
-        {
-          name = cfg.user;
-          ensurePermissions = {"${cfg.database}.*" = "ALL PRIVILEGES";};
-        }
-      ];
+      # ensureUsers = [
+      #   {
+      #     name = cfg.user;
+      #     ensurePermissions = {"${cfg.database}.*" = "ALL PRIVILEGES";};
+      #   }
+      # ];
     };
   };
 }
