@@ -2,6 +2,7 @@
   config,
   lib,
   extra-types,
+  pkgs,
   ...
 }: let
   inherit (lib) mkIf mkDefault mkOption types;
@@ -25,6 +26,16 @@ in {
           ```
         '';
       };
+
+      settings = mkOption {
+        type = (pkgs.formats.json {}).type;
+        default = {};
+        description = ''
+          The settings used on this Ghost instance. Refer to https://ghost.org/docs/config/ to configure Ghost.
+
+          **Do not override database configuration with these.**
+        '';
+      };
     }
     // extra-types.server-app {
       name = "Ghost";
@@ -44,7 +55,6 @@ in {
         "database__connection__port" = "3306";
         "database__connection__user" = cfg.user;
         "url" = "https://${domain}";
-        "mail__transport" = "sendmail";
       };
 
       environmentFiles = [

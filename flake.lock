@@ -284,22 +284,6 @@
         "type": "github"
       }
     },
-    "flake-compat_4": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1696426674,
-        "narHash": "sha256-kvjfFW7WAETZlt09AgDn1MrtKzP7t90Vf7vypd3OL1U=",
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
-        "type": "github"
-      },
-      "original": {
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -320,6 +304,23 @@
     "flake-parts_2": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib_2"
+      },
+      "locked": {
+        "lastModified": 1722555600,
+        "narHash": "sha256-XOQkdLafnb/p9ij77byFQjDf5m5QYl9b2REiVClC+x4=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "8471fe90ad337a8074e957b69ca4d0089218391d",
+        "type": "github"
+      },
+      "original": {
+        "id": "flake-parts",
+        "type": "indirect"
+      }
+    },
+    "flake-parts_3": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib_3"
       },
       "locked": {
         "lastModified": 1722555600,
@@ -426,24 +427,6 @@
         "systems": "systems_8"
       },
       "locked": {
-        "lastModified": 1710146030,
-        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "flake-utils_7": {
-      "inputs": {
-        "systems": "systems_9"
-      },
-      "locked": {
         "lastModified": 1709126324,
         "narHash": "sha256-q6EQdSeUZOG26WelxqkmR7kArjgWCdw5sfJVHPH/7j8=",
         "owner": "numtide",
@@ -457,9 +440,9 @@
         "type": "github"
       }
     },
-    "flake-utils_8": {
+    "flake-utils_7": {
       "inputs": {
-        "systems": "systems_10"
+        "systems": "systems_9"
       },
       "locked": {
         "lastModified": 1710146030,
@@ -475,9 +458,9 @@
         "type": "github"
       }
     },
-    "flake-utils_9": {
+    "flake-utils_8": {
       "inputs": {
-        "systems": "systems_11"
+        "systems": "systems_10"
       },
       "locked": {
         "lastModified": 1710146030,
@@ -550,7 +533,7 @@
     "helix": {
       "inputs": {
         "crane": "crane",
-        "flake-utils": "flake-utils_7",
+        "flake-utils": "flake-utils_6",
         "nixpkgs": [
           "zhaith-helix",
           "nixpkgs"
@@ -634,6 +617,27 @@
         "type": "github"
       }
     },
+    "hyprland-contrib": {
+      "inputs": {
+        "nixpkgs": [
+          "virgutils",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1722636442,
+        "narHash": "sha256-+7IS0n3/F0I5j6ZbrVlLcIIPHY3o+/vLAqg/G48sG+w=",
+        "owner": "hyprwm",
+        "repo": "contrib",
+        "rev": "9d67858b437d4a1299be496d371b66fc0d3e01f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "contrib",
+        "type": "github"
+      }
+    },
     "libpng": {
       "flake": false,
       "locked": {
@@ -676,7 +680,7 @@
     },
     "nil": {
       "inputs": {
-        "flake-utils": "flake-utils_8",
+        "flake-utils": "flake-utils_7",
         "nixpkgs": [
           "zhaith-helix",
           "nixpkgs"
@@ -824,6 +828,18 @@
       }
     },
     "nixpkgs-lib_2": {
+      "locked": {
+        "lastModified": 1722555339,
+        "narHash": "sha256-uFf2QeW7eAHlYXuDktm9c25OxOyCoUOQmh5SZ9amE5Q=",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/a5d394176e64ab29c852d03346c1fc9b0b7d33eb.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/a5d394176e64ab29c852d03346c1fc9b0b7d33eb.tar.gz"
+      }
+    },
+    "nixpkgs-lib_3": {
       "locked": {
         "lastModified": 1722555339,
         "narHash": "sha256-uFf2QeW7eAHlYXuDktm9c25OxOyCoUOQmh5SZ9amE5Q=",
@@ -1035,7 +1051,7 @@
     },
     "simple-completion-language-server": {
       "inputs": {
-        "flake-utils": "flake-utils_9",
+        "flake-utils": "flake-utils_8",
         "naersk": "naersk",
         "nixpkgs": [
           "zhaith-helix",
@@ -1097,21 +1113,6 @@
       }
     },
     "systems_10": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_11": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -1289,18 +1290,18 @@
     "virgutils": {
       "inputs": {
         "fast-blur": "fast-blur",
-        "flake-compat": "flake-compat_4",
-        "flake-utils": "flake-utils_5",
+        "flake-parts": "flake-parts_2",
+        "hyprland-contrib": "hyprland-contrib",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1722296558,
-        "narHash": "sha256-HXqm39H9QvDlfq8NrA+VbuD0+BnnLGt08/MQBF65n5A=",
+        "lastModified": 1724419893,
+        "narHash": "sha256-wQSsFVHbJ4qM5NogBM+qlAGRS8hkG2t8oeZCSXjTLoU=",
         "owner": "Zhaith-Izaliel",
         "repo": "virgutils",
-        "rev": "e85aec9ed57af73adbee68779a263ce8c1566d06",
+        "rev": "f6588401df87ce0100160ee4c48f2c8b8065b268",
         "type": "gitlab"
       },
       "original": {
@@ -1311,7 +1312,7 @@
     },
     "wezterm": {
       "inputs": {
-        "flake-utils": "flake-utils_6",
+        "flake-utils": "flake-utils_5",
         "freetype2": "freetype2",
         "harfbuzz": "harfbuzz",
         "libpng": "libpng",
@@ -1339,7 +1340,7 @@
     },
     "zhaith-helix": {
       "inputs": {
-        "flake-parts": "flake-parts_2",
+        "flake-parts": "flake-parts_3",
         "helix": "helix",
         "nil": "nil",
         "nixpkgs": [

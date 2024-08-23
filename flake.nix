@@ -155,7 +155,7 @@
     overlays = [
       nix-alien.overlays.default
       sddm-sugar-candy-nix.overlays.default
-      virgutils.overlays.${system}.default
+      virgutils.overlays.default
       agenix.overlays.default
       customOverlay
     ];
