@@ -7,17 +7,6 @@
       helix = {
         enable = true;
         defaultEditor = true;
-        settings = {
-          languages = {
-            language-server.nixd.config.nixd = {
-              nixpkgs.expr = ''import (builtins.getFlake "gitlab:Zhaith-Izaliel/zhaith-nixos-configuration").inputs.nixpkgs-unstable {}'';
-              options = {
-                nixos.expr = ''(builtins.getFlake "gitlab:Zhaith-Izaliel/zhaith-nixos-configuration").nixosConfigurations.Whispering-Willow.options'';
-                home_manager.expr = ''(builtins.getFlake "gitlab:Zhaith-Izaliel/zhaith-nixos-configuration").homeConfigurations."zhaith@Whispering-Willow".options'';
-              };
-            };
-          };
-        };
       };
       yazi = {
         enable = true;
