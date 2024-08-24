@@ -25,20 +25,17 @@
     url = "https://${domain}";
   };
 
-  configLocation = "${cfg.volume}/config/config.production.json";
+  configLocation = "${cfg.volume}/config.production.json";
 
   replace-secret = ''${getExe pkgs.replace-secret} "${defaultConfig.database.password}" "${cfg.dbPass}" "${configLocation}"'';
 
   finalConfig = jsonFormat.generate (recursiveUpdate cfg.settings defaultConfig);
 
-  preStart =
-    if (cfg.passwords != null)
-    then ''
-      mkdir -p "${cfg.volume}/config"
-      install --mode=600 --owner=$USER "${finalConfig}" "${configLocation}"
-      ${replace-secret}
-    ''
-    else "";
+  preStart = ''
+    mkdir -p "${cfg.volume}"
+    install --mode=600 --owner=$USER "${finalConfig}" "${configLocation}"
+    ${replace-secret}
+  '';
 in {
   options.hellebore.server.ghost =
     {
@@ -81,8 +78,7 @@ in {
       image = "ghost";
 
       volumes = [
-        "${cfg.volume}/content:/var/lib/ghost/content"
-        "${cfg.volume}/config:/var/lib/ghost/config"
+        "${cfg.volume}:/var/lib/ghost"
       ];
 
       ports = [
