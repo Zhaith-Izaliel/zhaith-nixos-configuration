@@ -60,6 +60,7 @@ in {
       };
     }
     // extra-types.server-app {
+      inherit domain;
       name = "Homepage Dashboard";
       package = "homepage-dashboard";
       group = "homepage";
@@ -80,7 +81,7 @@ in {
     };
 
     hellebore.server.nginx.enable = mkDefault true;
-    services.nginx.virtualHosts.${domain} = {
+    services.nginx.virtualHosts.${cfg.domain} = {
       enableACME = true;
       forceSSL = true;
 

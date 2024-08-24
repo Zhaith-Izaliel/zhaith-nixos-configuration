@@ -12,7 +12,7 @@
   domain = "${cfg.subdomain}.${config.networking.domain}";
 
   defaultConfig = {
-    url = "https://${domain}";
+    url = "https://${cfg.domain}";
     database = {
       client = "mysql";
       connection = {
@@ -83,6 +83,7 @@ in {
       };
     }
     // extra-types.server-app {
+      inherit domain;
       name = "Ghost";
       user = "ghost";
       group = "ghost";
@@ -112,7 +113,7 @@ in {
 
     hellebore.server.nginx.enable = mkDefault true;
 
-    services.nginx.virtualHosts.${domain} = {
+    services.nginx.virtualHosts.${cfg.domain} = {
       enableACME = true;
       forceSSL = true;
 

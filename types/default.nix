@@ -125,6 +125,7 @@ in rec {
     group ? "",
     port ? null,
     database ? "",
+    domain ? "",
   }: {
     enable = mkEnableOption "Hellebore's ${name} configuration";
 
@@ -165,6 +166,12 @@ in rec {
       type = types.nonEmptyStr;
       default = "";
       description = "Defines the subdomain on which ${name} is served.";
+    };
+
+    domain = mkOption {
+      type = types.nonEmptyStr;
+      default = domain;
+      description = "Defines the domain on which ${name} is served. This overrides the subdomain.";
     };
   };
 }

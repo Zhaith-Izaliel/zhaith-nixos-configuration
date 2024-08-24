@@ -12,6 +12,7 @@ in {
     {
     }
     // extra-types.server-app {
+      inherit domain;
       name = "Nextcloud";
       package = "nextcloud29";
       database = "nextcloud";
@@ -23,7 +24,7 @@ in {
       inherit (cfg) package;
 
       enable = true;
-      hostName = domain;
+      hostName = cfg.domain;
       home = "/mnt/datas/nextcloud";
 
       # Use HTTPS for links
@@ -97,7 +98,7 @@ in {
     };
 
     hellebore.server.nginx.enable = mkDefault true;
-    services.nginx.virtualHosts.${domain} = {
+    services.nginx.virtualHosts.${cfg.domain} = {
       # Nextcloud
       enableACME = true;
       forceSSL = true;

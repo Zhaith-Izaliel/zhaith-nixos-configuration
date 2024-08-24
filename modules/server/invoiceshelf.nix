@@ -28,6 +28,7 @@ in {
       };
     }
     // extra-types.server-app {
+      inherit domain;
       name = "InvoiceShelf";
       user = "invoiceshelf";
       database = "invoiceshelf";
@@ -50,9 +51,9 @@ in {
 
         environment = {
           APP_ENV = "production";
-          SESSION_DOMAIN = domain;
-          SANCTUM_STATEFUL_DOMAINS = domain;
-          APP_URL = "https://${domain}";
+          SESSION_DOMAIN = cfg.domain;
+          SANCTUM_STATEFUL_DOMAINS = cfg.domain;
+          APP_URL = "https://${cfg.domain}";
           APP_FORCE_HTTPS = "true";
           PHP_TZ = config.time.timeZone;
           TIMEZONE = config.time.timeZone;
@@ -77,7 +78,7 @@ in {
 
     hellebore.server.nginx.enable = mkDefault true;
 
-    services.nginx.virtualHosts.${domain} = {
+    services.nginx.virtualHosts.${cfg.domain} = {
       forceSSL = true;
       enableACME = true;
       locations = {

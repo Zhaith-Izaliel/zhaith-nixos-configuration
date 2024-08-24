@@ -39,6 +39,7 @@ in {
       };
     }
     // extra-types.server-app {
+      inherit domain;
       name = "Servas";
       user = "servas";
       group = "servas";
@@ -67,7 +68,7 @@ in {
             then "true"
             else "false";
           APP_DEBUG = "false";
-          APP_URL = "https://${domain}";
+          APP_URL = "https://${cfg.domain}";
           DB_CONNECTION = "sqlite";
           DB_DATABASE = "/var/www/html/database/sqlite/servas.db";
           DB_FOREIGN_KEYS = "true";
@@ -81,7 +82,7 @@ in {
 
     hellebore.server.nginx.enable = mkDefault true;
 
-    services.nginx.virtualHosts.${domain} = {
+    services.nginx.virtualHosts.${cfg.domain} = {
       forceSSL = true;
       enableACME = true;
       locations = {

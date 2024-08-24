@@ -9,7 +9,7 @@
   domain = "${cfg.subdomain}.${config.networking.domain}";
 
   environment = {
-    DOMAIN = domain;
+    DOMAIN = cfg.domain;
     COUCHDB_PROTOCOL = "http";
     COUCHDB_HOST = "localhost";
     COUCHDB_PORT = toString config.services.couchdb.port;
@@ -103,6 +103,7 @@ in {
       };
     }
     // extra-types.server-app {
+      inherit domain;
       name = "Cozy";
       user = "cozy";
       group = "cozy";
@@ -150,7 +151,7 @@ in {
     hellebore.server.nginx.enable = mkDefault true;
 
     services.nginx.virtualHosts = {
-      "${domain}" = {
+      "${cfg.domain}" = {
         forceSSL = true;
         enableACME = true;
         extraConfig = ''
@@ -158,7 +159,7 @@ in {
           client_max_body_size 1g;
         '';
 
-        serverAliases = builtins.map (item: "${item}.${domain}") cfg.installedApps;
+        serverAliases = builtins.map (item: "${item}.${cfg.domain}") cfg.installedApps;
 
         locations = {
           "/" = {
@@ -175,7 +176,7 @@ in {
         };
       };
 
-      # "${cfg.admin.subdomain}.${domain}" = {
+      # "${cfg.admin.subdomain}.${cfg.domain}" = {
       #   forceSSL = true;
       #   enableACME = true;
       #   extraConfig = ''

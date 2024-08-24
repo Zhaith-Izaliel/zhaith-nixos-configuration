@@ -17,6 +17,7 @@ in {
       };
     }
     // extra-types.server-app {
+      inherit domain;
       name = "Calibre Web";
       package = "calibre-web";
       group = "calibre-web";
@@ -33,7 +34,7 @@ in {
     };
 
     hellebore.server.nginx.enable = mkDefault true;
-    services.nginx.virtualHosts.${domain} = {
+    services.nginx.virtualHosts.${cfg.domain} = {
       enableACME = true;
       forceSSL = true;
 

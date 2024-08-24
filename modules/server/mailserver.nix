@@ -25,6 +25,7 @@ in {
         ;
     }
     // extra-types.server-app {
+      inherit domain;
       name = "Mail Server";
       group = "virtualMail";
       user = "virtualMail";
@@ -48,7 +49,7 @@ in {
       enable = true;
       vmailUserName = cfg.user;
       vmailGroupName = cfg.user;
-      fqdn = domain;
+      fqdn = cfg.domain;
       useFsLayout = true;
       certificateScheme = "acme-nginx";
       enableSubmission = true;
