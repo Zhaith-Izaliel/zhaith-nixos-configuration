@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf optionals optional;
+  inherit (lib) mkEnableOption mkIf optionals;
   cfg = config.hellebore.development;
 in {
   options.hellebore.development = {
@@ -20,6 +20,10 @@ in {
       enable = true;
       dockerSocket.enable = true;
       dockerCompat = true;
+      defaultNetwork.settings = {
+        # Required for container networking to be able to use names.
+        dns_enabled = true;
+      };
     };
 
     documentation.dev.enable = cfg.enableDocumentation;
@@ -28,20 +32,20 @@ in {
       EDITOR = "hx";
     };
 
-    environment.systemPackages = with pkgs;
-      [
+    environment.systemPackages =
+      (with pkgs; [
         helix
         git
         gnumake
         nix-npm-install
-      ]
-      ++ (optionals cfg.enablePodman [
+      ])
+      ++ (optionals cfg.enablePodman (with pkgs; [
         podman-compose
         compose2nix
-      ])
-      ++ (optionals cfg.enableDocumentation [
+      ]))
+      ++ (optionals cfg.enableDocumentation (with pkgs; [
         man-pages
         man-pages-posix
-      ]);
+      ]));
   };
 }

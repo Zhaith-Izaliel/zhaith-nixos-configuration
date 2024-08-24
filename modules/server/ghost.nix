@@ -5,9 +5,40 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkIf mkDefault mkOption types;
+  inherit (lib) mkIf mkDefault mkOption types getExe recursiveUpdate;
+  jsonFormat = pkgs.formats.json {};
+
   cfg = config.hellebore.server.ghost;
   domain = "${cfg.subdomain}.${config.networking.domain}";
+
+  defaultConfig = {
+    database = {
+      client = "mysql";
+      connection = {
+        database = cfg.database;
+        host = "10.0.2.2";
+        port = "3306";
+        user = cfg.user;
+        password = "@dbpass@";
+      };
+    };
+    url = "https://${domain}";
+  };
+
+  configLocation = "${cfg.volume}/config/config.production.json";
+
+  replace-secret = ''${getExe pkgs.replace-secret} "${defaultConfig.database.password}" "${cfg.dbPass}" "${configLocation}"'';
+
+  finalConfig = jsonFormat.generate (recursiveUpdate cfg.settings defaultConfig);
+
+  preStart =
+    if (cfg.passwords != null)
+    then ''
+      mkdir -p "${cfg.volume}/config"
+      install --mode=600 --owner=$USER "${finalConfig}" "${configLocation}"
+      ${replace-secret}
+    ''
+    else "";
 in {
   options.hellebore.server.ghost =
     {
@@ -16,24 +47,24 @@ in {
         description = lib.mdDoc "Directory to store Ghost data.";
         type = types.nonEmptyStr;
       };
-      secretEnvFile = mkOption {
+      dbPass = mkOption {
         default = "";
         type = types.path;
         description = ''
-          The env file containing the DB password, in the form:
+          The file containing the Database password, in the form:
           ```
-            database__connection__password="password"
+            password
           ```
         '';
       };
 
       settings = mkOption {
-        type = (pkgs.formats.json {}).type;
+        type = jsonFormat.type;
         default = {};
         description = ''
           The settings used on this Ghost instance. Refer to https://ghost.org/docs/config/ to configure Ghost.
 
-          **Do not override database configuration with these.**
+          **Do not override database or url configuration with these.**
         '';
       };
     }
@@ -48,21 +79,10 @@ in {
   config = mkIf cfg.enable {
     virtualisation.oci-containers.containers."ghost" = {
       image = "ghost";
-      environment = {
-        "database__client" = "mysql";
-        "database__connection__database" = cfg.database;
-        "database__connection__host" = "10.0.2.2";
-        "database__connection__port" = "3306";
-        "database__connection__user" = cfg.user;
-        "url" = "https://${domain}";
-      };
-
-      environmentFiles = [
-        cfg.secretEnvFile
-      ];
 
       volumes = [
-        "${cfg.volume}:/var/lib/ghost/content:rw"
+        "${cfg.volume}/content:/var/lib/ghost/content"
+        "${cfg.volume}/config:/var/lib/ghost/config"
       ];
 
       ports = [
@@ -97,6 +117,10 @@ in {
           proxyPass = "http://localhost:${toString cfg.port}";
         };
       };
+    };
+
+    systemd.services.podman-ghost = {
+      inherit preStart;
     };
 
     users.users.${cfg.user} = {
