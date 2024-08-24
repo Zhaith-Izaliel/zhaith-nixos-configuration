@@ -92,10 +92,10 @@
       };
 
       ghost = {
-        # enable = true;
+        enable = true;
         subdomain = "ghost";
         volume = "/mnt/datas/ghost";
-        secretEnvFile = config.age.secrets.ghost.path;
+        dbPass = config.age.secrets.ghost.path;
       };
 
       radicale = {

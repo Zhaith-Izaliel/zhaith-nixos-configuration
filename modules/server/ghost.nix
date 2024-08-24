@@ -27,9 +27,9 @@
 
   configLocation = "${cfg.volume}/config.production.json";
 
-  replace-secret = ''${getExe pkgs.replace-secret} "${defaultConfig.database.password}" "${cfg.dbPass}" "${configLocation}"'';
+  replace-secret = ''${getExe pkgs.replace-secret} "${defaultConfig.database.connection.password}" "${cfg.dbPass}" "${configLocation}"'';
 
-  finalConfig = jsonFormat.generate (recursiveUpdate cfg.settings defaultConfig);
+  finalConfig = jsonFormat.generate "ghost-config.production.json" (recursiveUpdate cfg.settings defaultConfig);
 
   preStart = ''
     mkdir -p "${cfg.volume}"
