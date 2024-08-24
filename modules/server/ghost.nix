@@ -27,18 +27,15 @@
 
   configLocation = "${cfg.volume}/config/config.production.json";
 
-  replace-secret = ''${getExe pkgs.replace-secret} "${defaultConfig.database.password}" "${cfg.dbPass}" "${configLocation}"'';
+  replace-secret = ''${getExe pkgs.replace-secret} "${defaultConfig.database.connection.password}" "${cfg.dbPass}" "${configLocation}"'';
 
-  finalConfig = jsonFormat.generate (recursiveUpdate cfg.settings defaultConfig);
+  finalConfig = jsonFormat.generate "ghost-config.production.json" (recursiveUpdate cfg.settings defaultConfig);
 
-  preStart =
-    if (cfg.passwords != null)
-    then ''
-      mkdir -p "${cfg.volume}/config"
-      install --mode=600 --owner=$USER "${finalConfig}" "${configLocation}"
-      ${replace-secret}
-    ''
-    else "";
+  preStart = ''
+    mkdir -p "${cfg.volume}/config"
+    install --mode=600 --owner=$USER "${finalConfig}" "${configLocation}"
+    ${replace-secret}
+  '';
 in {
   options.hellebore.server.ghost =
     {
