@@ -12,6 +12,7 @@
   domain = "${cfg.subdomain}.${config.networking.domain}";
 
   defaultConfig = {
+    url = "https://${domain}";
     database = {
       client = "mysql";
       connection = {
@@ -22,18 +23,34 @@
         password = "@dbpass@";
       };
     };
-    url = "https://${domain}";
+    "server" = {
+      "port" = 2368;
+      "host" = "::";
+    };
+    "mail" = {
+      "transport" = "Direct";
+    };
+    "logging" = {
+      "transports" = [
+        "file"
+        "stdout"
+      ];
+    };
+    "process" = "systemd";
+    "paths" = {
+      "contentPath" = "/var/lib/ghost/content";
+    };
   };
 
-  configLocation = "${cfg.volume}/config.production.json";
+  configLocation = "${cfg.volume}/config/config.production.json";
 
   replace-secret = ''${getExe pkgs.replace-secret} "${defaultConfig.database.connection.password}" "${cfg.dbPass}" "${configLocation}"'';
 
   finalConfig = jsonFormat.generate "ghost-config.production.json" (recursiveUpdate cfg.settings defaultConfig);
 
   preStart = ''
-    mkdir -p "${cfg.volume}"
-    install --mode=600 --owner=$USER "${finalConfig}" "${configLocation}"
+    mkdir -p "${cfg.volume}"/{content,config}
+    install --mode=600 --owner="lilith" "${finalConfig}" "${configLocation}"
     ${replace-secret}
   '';
 in {
@@ -78,7 +95,8 @@ in {
       image = "ghost";
 
       volumes = [
-        "${cfg.volume}:/var/lib/ghost"
+        "${cfg.volume}/content:/var/lib/ghost/content"
+        "${configLocation}:/var/lib/ghost/config.production.json"
       ];
 
       ports = [

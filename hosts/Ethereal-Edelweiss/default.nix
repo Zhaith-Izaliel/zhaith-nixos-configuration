@@ -92,7 +92,7 @@
       };
 
       ghost = {
-        enable = true;
+        # enable = true;
         subdomain = "ghost";
         volume = "/mnt/datas/ghost";
         dbPass = config.age.secrets.ghost.path;
