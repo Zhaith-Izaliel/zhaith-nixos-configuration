@@ -4,23 +4,27 @@
   config,
   ...
 }: let
-  inherit (lib) optional types mkEnableOption mkOption mkIf mkPackageOption concatStringsSep;
+  inherit (lib) optional types mkEnableOption mkOption mkIf mkPackageOption concatStringsSep getExe;
   cfg = config.hellebore.games.gamescope;
 
-  steam-gamescope = let
+  gamescopeScripts = let
     exports = builtins.attrValues (builtins.mapAttrs (n: v: "export ${n}=${v}") gamescopeEnvAndArgs.env);
-  in
-    pkgs.writeShellScriptBin "steam-gamescope" ''
-      ${builtins.concatStringsSep "\n" exports}
-      gamescope ${concatStringsSep " " gamescopeEnvAndArgs.args} -- steam ${concatStringsSep " " gamescopeEnvAndArgs.steamArgs}
+  in rec {
+    steam-gamescope = pkgs.writeShellScriptBin "steam-gamescope" ''
+      ${getExe gamescope-run} steam ${concatStringsSep " " gamescopeEnvAndArgs.steamArgs}
     '';
+    gamescope-run = pkgs.writeShellScriptBin "gamescope-run" ''
+      ${builtins.concatStringsSep "\n" exports}
+      gamescope ${concatStringsSep " " gamescopeEnvAndArgs.args} -- "$@"
+    '';
+  };
 
   gamescopeSessionFile =
     (pkgs.writeTextDir "share/wayland-sessions/steam.desktop" ''
       [Desktop Entry]
       Name=Steam
       Comment=A digital distribution platform
-      Exec=${steam-gamescope}/bin/steam-gamescope
+      Exec=${gamescopeScripts.steam-gamescope}/bin/steam-gamescope
       Type=Application
     '')
     .overrideAttrs (_: {passthru.providedSessions = ["steam"];});
@@ -151,7 +155,8 @@ in {
     ];
 
     environment.systemPackages = [
-      steam-gamescope
+      gamescopeScripts.steam-gamescope
+      gamescopeScripts.gamescope-run
     ];
 
     programs.steam.gamescopeSession.enable = true;
