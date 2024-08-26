@@ -68,29 +68,6 @@
         subdomain = "jellyfin";
       };
 
-      couchdb = {
-        # enable = true;
-        passwordFile = config.age.secrets.couchdb.path;
-      };
-
-      cozy = {
-        # enable = true;
-        subdomain = "cozy";
-        volume = "/mnt/datas/cozy/volume";
-        installedApps = [
-          "home"
-          "banks"
-          "contacts"
-          "drive"
-          "passwords"
-          "photos"
-          "settings"
-          "store"
-          "mespapiers"
-        ];
-        secretEnvFile = config.age.secrets.cozy-env.path;
-      };
-
       ghost = {
         # enable = true;
         subdomain = "ghost";
@@ -166,9 +143,6 @@
           "${config.hellebore.server.radicale.subdomain}.${domain}"
           "${config.hellebore.server.mail.subdomain}.${domain}"
           "${config.hellebore.server.ghost.subdomain}.${domain}"
-          # Cozy
-          # "${config.hellebore.server.cozy.subdomain}.${domain}"
-          # "*.${config.hellebore.server.cozy.subdomain}.${domain}"
         ];
       in {
         enable = true;
