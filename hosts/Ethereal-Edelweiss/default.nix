@@ -55,6 +55,12 @@
         subdomain = "nextcloud";
       };
 
+      outline = {
+        enable = true;
+        subdomain = "outline";
+        storagePath = "/mnt/datas/outline/data";
+      };
+
       invoiceshelf = {
         enable = true;
         subdomain = "invoices";
@@ -135,14 +141,15 @@
         inherit (config.networking) domain;
         domains = [
           domain
-          "${config.hellebore.server.nextcloud.subdomain}.${domain}"
-          "${config.hellebore.server.calibre-web.subdomain}.${domain}"
-          "${config.hellebore.server.jellyfin.subdomain}.${domain}"
-          "${config.hellebore.server.invoiceshelf.subdomain}.${domain}"
-          "${config.hellebore.server.servas.subdomain}.${domain}"
-          "${config.hellebore.server.radicale.subdomain}.${domain}"
-          "${config.hellebore.server.mail.subdomain}.${domain}"
-          "${config.hellebore.server.ghost.subdomain}.${domain}"
+          config.hellebore.server.nextcloud.domain
+          config.hellebore.server.calibre-web.domain
+          config.hellebore.server.jellyfin.domain
+          config.hellebore.server.invoiceshelf.domain
+          config.hellebore.server.servas.domain
+          config.hellebore.server.radicale.domain
+          config.hellebore.server.mail.domain
+          config.hellebore.server.ghost.domain
+          config.hellebore.server.outline.domain
         ];
       in {
         enable = true;

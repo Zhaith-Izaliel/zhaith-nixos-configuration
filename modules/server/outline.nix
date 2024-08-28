@@ -10,7 +10,7 @@
 in {
   options.hellebore.server.outline =
     {
-      volume = mkOption {
+      storagePath = mkOption {
         default = "/var/lib/outline/data";
         description = mdDoc "Directory to store Invoiceshelf volume.";
         type = types.nonEmptyStr;
@@ -30,8 +30,7 @@ in {
             An environment file containing the database URl in the form:
 
             ```bash
-            DATABASE_URL="http://${cfg.user}:password@localhost:${config.services.postgresql.settings.port}"
-
+            DATABASE_URL="http://outline:password@localhost:5432"
             ```
             Note: the port, user and host have to be coherent with configuration, generally it should be `http://outline:password@localhost:5432`
           '';
@@ -60,11 +59,12 @@ in {
       enable = true;
 
       publicUrl = "https://${cfg.domain}";
-      databaseUrl = "http://${cfg.user}@localhost:${config.services.postgresql.settings.port}";
+      # databaseUrl = "http://${cfg.user}@localhost:${toString config.services.postgresql.settings.port}";
+      databaseUrl = "local";
 
       storage = {
         storageType = "local";
-        localRootDir = cfg.volume;
+        localRootDir = cfg.storagePath;
       };
     };
 
@@ -77,12 +77,16 @@ in {
       locations = {
         "/" = {
           proxyPass = "http://localhost:${toString cfg.port}";
+          extraConfig = ''
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Host $host;
+            proxy_redirect off;
+          '';
         };
       };
     };
 
     services.postgresql = {
-      enable = mkDefault true;
+      enable = true;
       ensureDatabases = [cfg.database];
 
       ensureUsers = [
@@ -91,9 +95,6 @@ in {
           ensureDBOwnership = true;
         }
       ];
-      authentication = ''
-        host ${cfg.database} ${cfg.user} 10.88.0.0/16 md5
-      '';
     };
   };
 }

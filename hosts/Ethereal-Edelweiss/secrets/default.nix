@@ -25,20 +25,10 @@ in {
       file = ./services/inadyn.age;
     };
 
-    cozy-env = enableSecret "cozy" {
-      file = ./apps/cozy-env.age;
-    };
-
     radicale = enableSecret "radicale" {
       file = ./apps/radicale.age;
       owner = "radicale";
       group = "radicale";
-    };
-
-    couchdb = enableSecret "couchdb" {
-      file = ./services/couchdb.age;
-      owner = config.hellebore.server.couchdb.user;
-      group = config.hellebore.server.couchdb.group;
     };
 
     "mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
