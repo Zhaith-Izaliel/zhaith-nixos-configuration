@@ -24,7 +24,7 @@
       [Desktop Entry]
       Name=Steam
       Comment=A digital distribution platform
-      Exec=${gamescopeScripts.steam-gamescope}/bin/steam-gamescope
+      Exec=${getExe gamescopeScripts.steam-gamescope}
       Type=Application
     '')
     .overrideAttrs (_: {passthru.providedSessions = ["steam"];});
