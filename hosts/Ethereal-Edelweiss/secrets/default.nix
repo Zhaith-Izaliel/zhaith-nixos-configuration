@@ -40,5 +40,9 @@ in {
     ghost = enableSecret "ghost" {
       file = ./apps/ghost.age;
     };
+
+    "outline/client-secret" = enableSecret "outline" {
+      file = ./apps/outline-client-secret.age;
+    };
   };
 }
