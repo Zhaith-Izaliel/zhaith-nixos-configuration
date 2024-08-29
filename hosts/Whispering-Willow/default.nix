@@ -184,7 +184,10 @@
       enable = true;
     };
 
-    tex.enable = true;
+    tex = {
+      enable = true;
+      scheme = "full";
+    };
 
     sound = {
       enable = true;

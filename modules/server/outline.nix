@@ -22,6 +22,50 @@ in {
         type = types.nullOr types.path;
       };
 
+      authelia = {
+        port = mkOption {
+          type = types.ints.unsigned;
+          default = 3001;
+          description = "The Authelia instance running as OIDC service for Outline";
+        };
+
+        clientId = mkOption {
+          type = types.nonEmptyStr;
+          default = "";
+          description = ''
+            A string corresponding to your client ID for OIDC authentication in Authelia. It should be generated as follows:
+
+            ```bash
+            authelia crypto rand --length 72 --charset rfc3986
+            ```
+          '';
+        };
+
+        clientSecretFile = mkOption {
+          type = types.path;
+          default = null;
+          description = ''
+            A file containing the client secret for OIDC authentication. The secret should be generated as follows (it should be the first line printed by the command, see https://www.authelia.com/integration/openid-connect/frequently-asked-questions/#client-secret) and the file should be encrypted using Agenix:
+
+            ```bash
+              authelia crypto hash generate pbkdf2 --variant sha512 --random --random.length 72 --random.charset rfc3986
+            ```
+          '';
+        };
+
+        hashedClientSecret = mkOption {
+          type = types.nonEmptyStr;
+          default = "";
+          description = ''
+            The **hashed** client secret for OIDC authentication. The secret should be generated as follows (it should be the second line printed by the command, see https://www.authelia.com/integration/openid-connect/frequently-asked-questions/#client-secret for more info):
+
+            ```bash
+              authelia crypto hash generate pbkdf2 --variant sha512 --random --random.length 72 --random.charset rfc3986
+            ```
+          '';
+        };
+      };
+
       secrets = {
         databaseURLFile = mkOption {
           type = types.path;
@@ -53,48 +97,93 @@ in {
       port = 3000;
     });
 
-  config = mkIf cfg.enable {
-    services.outline = {
-      inherit (cfg) group user package port logo;
-      enable = true;
+  config =
+    mkIf cfg.enable {
+      services.outline = {
+        inherit (cfg) group user package port logo;
+        enable = true;
 
-      publicUrl = "https://${cfg.domain}";
-      # databaseUrl = "http://${cfg.user}@localhost:${toString config.services.postgresql.settings.port}";
-      databaseUrl = "local";
+        publicUrl = "https://${cfg.domain}";
+        # databaseUrl = "http://${cfg.user}@localhost:${toString config.services.postgresql.settings.port}";
+        databaseUrl = "local";
 
-      storage = {
-        storageType = "local";
-        localRootDir = cfg.storagePath;
-      };
-    };
+        storage = {
+          storageType = "local";
+          localRootDir = cfg.storagePath;
+        };
 
-    hellebore.server.nginx.enable = mkDefault true;
+        oidcAuthentication = {
+          inherit (cfg.authelia) clientSecretFile clientId;
 
-    services.nginx.virtualHosts.${cfg.domain} = {
-      enableACME = true;
-      forceSSL = true;
-
-      locations = {
-        "/" = {
-          proxyPass = "http://localhost:${toString cfg.port}";
-          extraConfig = ''
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Host $host;
-            proxy_redirect off;
-          '';
+          displayName = "Authelia";
+          tokenUrl = "https://${cfg.domain}/api/oidc/token";
+          userInfoUrl = "=https://${cfg.domain}/api/oidc/userinfo";
+          authUrl = "https://${cfg.domain}/api/oidc/authorization";
+          scopes = ["openid" "offline_access" "profile" "email"];
         };
       };
-    };
 
-    services.postgresql = {
-      enable = true;
-      ensureDatabases = [cfg.database];
+      hellebore.server.nginx.enable = mkDefault true;
 
-      ensureUsers = [
-        {
-          name = cfg.user;
-          ensureDBOwnership = true;
-        }
-      ];
+      services.nginx.virtualHosts.${cfg.domain} = {
+        enableACME = true;
+        forceSSL = true;
+
+        locations = {
+          "/" = {
+            proxyPass = "http://localhost:${toString cfg.port}";
+            extraConfig = ''
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Host $host;
+              proxy_redirect off;
+            '';
+          };
+
+          "/authelia" = {
+            proxyPass = "http://localhost:${toString cfg.authelia.port}";
+          };
+        };
+      };
+
+      services.authelia.instances.outline = {
+        enable = true;
+
+        settings = {
+          server = {
+            port = cfg.authelia.port;
+            host = "http://localhost";
+          };
+
+          identity_providers = {
+            oidc = {
+              clients = [
+                {
+                  client_id = cfg.authelia.clientId;
+                  client_secret = cfg.authelia.hashedClientSecret;
+                  client_name = "Outline";
+                  public = false;
+                  authorization_policy = "two_factor";
+                  redirect_uris = ["https://outline.ethereal-edelweiss.cloud/auth/oidc.
+callback"];
+                  scopes = ["openid" "offline_access" "profile" "email"];
+                  userinfo_signed_response_alg = "none";
+                  token_endpoint_auth_method = "client_secret_post";
+                }
+              ];
+            };
+          };
+        };
+      };
+
+      services.postgresql = {
+        enable = true;
+        ensureDatabases = [cfg.database];
+
+        ensureUsers = [
+          {
+            name = cfg.user;
+            ensureDBOwnership = true;
+          }
+        ];
+      };
     };
-  };
 }

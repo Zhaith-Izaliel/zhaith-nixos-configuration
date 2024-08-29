@@ -31,9 +31,12 @@ in {
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      cfg.package
-      pandoc
-    ];
+    environment.systemPackages =
+      (with pkgs; [
+        pandoc
+      ])
+      ++ [
+        cfg.package
+      ];
   };
 }
