@@ -28,7 +28,30 @@ in {
           default = 3001;
           description = "The Authelia instance running as OIDC service for Outline";
         };
+      };
 
+      secrets = {
+        databaseURLFile = mkOption {
+          type = types.path;
+          default = null;
+          description = mdDoc ''
+            An environment file containing the database URl in the form:
+
+            ```bash
+            DATABASE_URL="http://outline:password@localhost:5432"
+            ```
+            Note: the port, user and host have to be coherent with configuration, generally it should be `http://outline:password@localhost:5432`
+          '';
+        };
+
+        redisUrlFile = mkOption {
+          type = types.path;
+          default = null;
+          description = "";
+        };
+      };
+
+      OIDC = {
         clientId = mkOption {
           type = types.nonEmptyStr;
           default = "";
@@ -40,7 +63,6 @@ in {
             ```
           '';
         };
-
         clientSecretFile = mkOption {
           type = types.path;
           default = null;
@@ -63,27 +85,6 @@ in {
               authelia crypto hash generate pbkdf2 --variant sha512 --random --random.length 72 --random.charset rfc3986
             ```
           '';
-        };
-      };
-
-      secrets = {
-        databaseURLFile = mkOption {
-          type = types.path;
-          default = null;
-          description = mdDoc ''
-            An environment file containing the database URl in the form:
-
-            ```bash
-            DATABASE_URL="http://outline:password@localhost:5432"
-            ```
-            Note: the port, user and host have to be coherent with configuration, generally it should be `http://outline:password@localhost:5432`
-          '';
-        };
-
-        redisUrlFile = mkOption {
-          type = types.path;
-          default = null;
-          description = "";
         };
       };
     }
@@ -113,7 +114,7 @@ in {
         };
 
         oidcAuthentication = {
-          inherit (cfg.authelia) clientSecretFile clientId;
+          inherit (cfg.OIDC) clientSecretFile clientId;
 
           displayName = "Authelia";
           tokenUrl = "https://${cfg.domain}/api/oidc/token";
@@ -137,28 +138,17 @@ in {
               proxy_redirect off;
             '';
           };
-
-          "/authelia" = {
-            proxyPass = "http://localhost:${toString cfg.authelia.port}";
-          };
         };
       };
 
-      services.authelia.instances.outline = {
-        enable = true;
-
+      services.authelia.instances.${config.hellebore.server.authelia.instance} = {
         settings = {
-          server = {
-            port = cfg.authelia.port;
-            host = "http://localhost";
-          };
-
           identity_providers = {
             oidc = {
               clients = [
                 {
-                  client_id = cfg.authelia.clientId;
-                  client_secret = cfg.authelia.hashedClientSecret;
+                  client_id = cfg.OIDC.clientId;
+                  client_secret = cfg.OIDC.hashedClientSecret;
                   client_name = "Outline";
                   public = false;
                   authorization_policy = "two_factor";

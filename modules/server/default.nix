@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./acme.nix
+    ./authelia.nix
     ./calibre.nix
     ./factorio.nix
     ./fail2ban.nix

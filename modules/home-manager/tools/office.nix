@@ -14,7 +14,6 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       onlyoffice-bin
-      apostrophe
       evince
       qalculate-gtk
       calibre
