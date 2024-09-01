@@ -44,5 +44,25 @@ in {
     "outline/client-secret" = enableSecret "outline" {
       file = ./apps/outline-client-secret.age;
     };
+
+    "authelia/redis-server-password" = enableSecret "authelia" {
+      file = ./apps/authelia/redis-server-password.age;
+    };
+
+    "authelia/jwt-token" = enableSecret "authelia" {
+      file = ./apps/authelia/jwt-token.age;
+    };
+
+    "authelia/storage-encryption-key" = enableSecret "authelia" {
+      file = ./apps/authelia/storage-encryption-key.age;
+    };
+
+    "authelia/session-secret" = enableSecret "authelia" {
+      file = ./apps/authelia/session-secret.age;
+    };
+
+    "authelia/user-database" = enableSecret "authelia" {
+      file = ./apps/authelia/user-database.age;
+    };
   };
 }

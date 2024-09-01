@@ -50,6 +50,17 @@
 
       nginx.enable = true;
 
+      authelia = {
+        subdomain = "auth";
+        secrets = {
+          redisServerPasswordFile = config.age.secrets."authelia/redis-server-password".path;
+          jwtSecretFile = config.age.secrets."authelia/jwt-token".path;
+          sessionSecretFile = config.age.secrets."authelia/session-secret".path;
+          storageEncryptionKeyFile = config.age.secrets."authelia/storage-encryption-key".path;
+          userDatabase = config.age.secrets."authelia/user-database".path;
+        };
+      };
+
       nextcloud = {
         enable = true;
         subdomain = "nextcloud";
@@ -59,7 +70,7 @@
         enable = true;
         subdomain = "outline";
         storagePath = "/mnt/datas/outline/data";
-        authelia = {
+        OIDC = {
           clientId = "wEtr74GUQqj3emKmcbKbRyXSBXqAlk5T5A4Ya9LtWFyysXCluQXr2QkR_H.AF2WiSElkochG";
           clientSecretFile = config.age.secrets."outline/client-secret".path;
           hashedClientSecret = "$pbkdf2-sha512$310000$EZbHn.dy0T9tDJz8/U6Ogw$XZk2VV9cbTrWqo0VWHPA4sfSV3bZgWmElebm7FF1elnNuLvdhd6YeCJbwEcI2PjaEg2gLu/xYaZXhLd4seFcVg";
