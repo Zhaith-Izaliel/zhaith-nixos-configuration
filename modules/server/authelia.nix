@@ -124,6 +124,10 @@ in {
         inherit (cfg.secrets) jwtSecretFile sessionSecretFile storageEncryptionKeyFile oidcHmacSecretFile;
       };
 
+      environmentVariables = {
+        X_AUTHELIA_CONFIG_FILTERS = "expand-env,template";
+      };
+
       settings = {
         inherit (cfg) theme;
         server = {
@@ -250,10 +254,13 @@ in {
 
         identity_providers = {
           oidc = {
-            access_token_lifespan = "30m";
-            authorize_code_lifespan = "1m";
-            id_token_lifespan = "30m";
-            refresh_token_lifespan = "90m";
+            lifespans = {
+              access_token = "1h";
+              authorize_code = "1m";
+              id_token = "1h";
+              refresh_token = "90m";
+            };
+
             enable_client_debug_messages = false;
             enforce_pkce = "always";
 
@@ -267,7 +274,7 @@ in {
               {
                 algorithm = "RS256";
                 use = "sig";
-                key = ''{{ secret "${cfg.secrets.oidcJWKeyFile}" | mindent 10 "|" | msquote }}'';
+                key = ''{{ secret "${cfg.secrets.oidcJWKeyFile}" | mindent 8 "|" | msquote }}''; # Using 8 (6 base indent + 2 for its own block) because I checked the indentation but it's not portable AFAIK
               }
             ];
           };

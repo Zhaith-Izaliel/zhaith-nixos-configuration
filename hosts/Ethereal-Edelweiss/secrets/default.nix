@@ -83,6 +83,18 @@ in {
       group = config.hellebore.server.authelia.group;
     };
 
+    "authelia/jwk-private" = enableSecret "authelia" {
+      file = ./apps/authelia/jwk-private.age;
+      owner = config.hellebore.server.authelia.user;
+      group = config.hellebore.server.authelia.group;
+    };
+
+    "authelia/jwk-public" = enableSecret "authelia" {
+      file = ./apps/authelia/jwk-public.age;
+      owner = config.hellebore.server.authelia.user;
+      group = config.hellebore.server.authelia.group;
+    };
+
     "authelia/user-database" = enableSecret "authelia" {
       file = ./apps/authelia/user-database.age;
       owner = config.hellebore.server.authelia.user;
