@@ -45,6 +45,13 @@ in {
           secret
         '';
 
+        oidcJWKeyFile = mkSecretOption "OIDC JSON Web Key" ''
+          # Generated with
+          # `authelia crypto pair rsa generate`
+
+          secret
+        '';
+
         redisServerPasswordFile = mkSecretOption "Redis Server password" ''
           # Generated with
           # `authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric`
@@ -169,6 +176,7 @@ in {
 
         access_control = {
           default_policy = "deny";
+
           rules = [
             {
               domain = [cfg.domain];
@@ -181,12 +189,14 @@ in {
             }
           ];
         };
+
         session = {
           name = "authelia_session";
           same_site = "lax";
           expiration = "1h";
           inactivity = "5m";
           remember_me = "2M";
+
           cookies = [
             {
               domain = config.networking.domain;
@@ -194,6 +204,7 @@ in {
               default_redirection_url = "https://www.${config.networking.domain}/";
             }
           ];
+
           redis = {
             host = "localhost";
             password = ''{{ secret "${cfg.secrets.redisServerPasswordFile}" }}'';
@@ -203,11 +214,13 @@ in {
             minimum_idle_connections = 0;
           };
         };
+
         regulation = {
           max_retries = 3;
           find_time = "10m";
           ban_time = "12h";
         };
+
         storage = {
           postgres = {
             address = "tcp://localhost:${toString config.services.postgresql.settings.port}/";
@@ -216,8 +229,10 @@ in {
             password = ''{{ secret "${cfg.secrets.databasePasswordFile}" }}'';
           };
         };
+
         notifier = {
           disable_startup_check = false;
+
           smtp = {
             address = "smtp://smtp.orange.fr";
             sender = "no-reply@${config.networking.domain}";
@@ -230,6 +245,31 @@ in {
               skip_verify = false;
               minimum_version = "TLS1.2";
             };
+          };
+        };
+
+        identity_providers = {
+          oidc = {
+            access_token_lifespan = "30m";
+            authorize_code_lifespan = "1m";
+            id_token_lifespan = "30m";
+            refresh_token_lifespan = "90m";
+            enable_client_debug_messages = false;
+            enforce_pkce = "always";
+
+            cors = {
+              endpoints = ["authorization" "token" "revocation" "introspection" "userinfo"];
+              allowed_origins = ["https://${cfg.domain}"];
+              allowed_origins_from_client_redirect_uris = false;
+            };
+
+            jwks = [
+              {
+                algorithm = "RS256";
+                use = "sig";
+                key = ''{{ secret "${cfg.secrets.oidcJWKeyFile}" | mindent 10 "|" | msquote }}'';
+              }
+            ];
           };
         };
       };
