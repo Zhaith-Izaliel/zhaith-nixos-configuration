@@ -61,7 +61,7 @@ in {
           users:
           john:
             displayname: "John Doe"
-            password: "argon encrypted password" # generated with `authelia crypto hash generate argon2 --password 'yourpassword'`
+            password: "argon encrypted password" # Generated with `authelia crypto hash generate argon2 --password 'yourpassword'`
             email: john.doe@authelia.com
             groups:
               - admins
