@@ -77,6 +77,12 @@ in {
       group = config.hellebore.server.authelia.group;
     };
 
+    "authelia/hmac-secret" = enableSecret "authelia" {
+      file = ./apps/authelia/hmac-secret.age;
+      owner = config.hellebore.server.authelia.user;
+      group = config.hellebore.server.authelia.group;
+    };
+
     "authelia/user-database" = enableSecret "authelia" {
       file = ./apps/authelia/user-database.age;
       owner = config.hellebore.server.authelia.user;

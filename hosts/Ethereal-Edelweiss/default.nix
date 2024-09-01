@@ -59,6 +59,7 @@
           redisServerPasswordFile = config.age.secrets."authelia/redis-server-password".path;
           jwtSecretFile = config.age.secrets."authelia/jwt-token".path;
           sessionSecretFile = config.age.secrets."authelia/session-secret".path;
+          oidcHmacSecretFile = config.age.secrets."authelia/hmac-secret".path;
           storageEncryptionKeyFile = config.age.secrets."authelia/storage-encryption-key".path;
           userDatabase = config.age.secrets."authelia/user-database".path;
         };
