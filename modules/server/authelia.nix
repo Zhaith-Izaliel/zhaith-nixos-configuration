@@ -38,6 +38,13 @@ in {
       };
 
       secrets = {
+        oidcHmacSecretFile = mkSecretOption "OIDC Hmac secret" ''
+          # Generated with
+          # `authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric`
+
+          secret
+        '';
+
         redisServerPasswordFile = mkSecretOption "Redis Server password" ''
           # Generated with
           # `authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric`
@@ -107,7 +114,7 @@ in {
       enable = true;
 
       secrets = {
-        inherit (cfg.secrets) jwtSecretFile sessionSecretFile storageEncryptionKeyFile;
+        inherit (cfg.secrets) jwtSecretFile sessionSecretFile storageEncryptionKeyFile oidcHmacSecretFile;
       };
 
       settings = {
