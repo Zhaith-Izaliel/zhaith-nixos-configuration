@@ -22,14 +22,6 @@ in {
         type = types.nullOr types.path;
       };
 
-      authelia = {
-        port = mkOption {
-          type = types.ints.unsigned;
-          default = 3001;
-          description = "The Authelia instance running as OIDC service for Outline";
-        };
-      };
-
       secrets = {
         databaseURLFile = mkOption {
           type = types.path;
