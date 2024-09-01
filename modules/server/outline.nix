@@ -90,82 +90,82 @@ in {
       port = 3000;
     });
 
-  config =
-    mkIf cfg.enable {
-      services.outline = {
-        inherit (cfg) group user package port logo;
-        enable = true;
+  config = mkIf cfg.enable {
+    services.outline = {
+      inherit (cfg) group user package port logo;
+      enable = true;
 
-        publicUrl = "https://${cfg.domain}";
-        # databaseUrl = "http://${cfg.user}@localhost:${toString config.services.postgresql.settings.port}";
-        databaseUrl = "local";
+      publicUrl = "https://${cfg.domain}";
+      # databaseUrl = "http://${cfg.user}@localhost:${toString config.services.postgresql.settings.port}";
+      databaseUrl = "local";
 
-        storage = {
-          storageType = "local";
-          localRootDir = cfg.storagePath;
-        };
-
-        oidcAuthentication = {
-          inherit (cfg.OIDC) clientSecretFile clientId;
-
-          displayName = "Authelia";
-          tokenUrl = "https://${cfg.domain}/api/oidc/token";
-          userInfoUrl = "=https://${cfg.domain}/api/oidc/userinfo";
-          authUrl = "https://${cfg.domain}/api/oidc/authorization";
-          scopes = ["openid" "offline_access" "profile" "email"];
-        };
+      storage = {
+        storageType = "local";
+        localRootDir = cfg.storagePath;
       };
 
-      hellebore.server.nginx.enable = mkDefault true;
+      oidcAuthentication = {
+        inherit (cfg.OIDC) clientSecretFile clientId;
 
-      services.nginx.virtualHosts.${cfg.domain} = {
-        enableACME = true;
-        forceSSL = true;
-
-        locations = {
-          "/" = {
-            proxyPass = "http://localhost:${toString cfg.port}";
-            extraConfig = ''
-              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Host $host;
-              proxy_redirect off;
-            '';
-          };
-        };
-      };
-
-      services.authelia.instances.${config.hellebore.server.authelia.instance} = {
-        settings = {
-          identity_providers = {
-            oidc = {
-              clients = [
-                {
-                  client_id = cfg.OIDC.clientId;
-                  client_secret = cfg.OIDC.hashedClientSecret;
-                  client_name = "Outline";
-                  public = false;
-                  authorization_policy = "two_factor";
-                  redirect_uris = ["https://outline.ethereal-edelweiss.cloud/auth/oidc.
-callback"];
-                  scopes = ["openid" "offline_access" "profile" "email"];
-                  userinfo_signed_response_alg = "none";
-                  token_endpoint_auth_method = "client_secret_post";
-                }
-              ];
-            };
-          };
-        };
-      };
-
-      services.postgresql = {
-        enable = true;
-        ensureDatabases = [cfg.database];
-
-        ensureUsers = [
-          {
-            name = cfg.user;
-            ensureDBOwnership = true;
-          }
-        ];
+        displayName = "Authelia";
+        tokenUrl = "https://${cfg.domain}/api/oidc/token";
+        userinfoUrl = "=https://${cfg.domain}/api/oidc/userinfo";
+        authUrl = "https://${cfg.domain}/api/oidc/authorization";
+        scopes = ["openid" "offline_access" "profile" "email"];
       };
     };
+
+    hellebore.server.nginx.enable = mkDefault true;
+
+    services.nginx.virtualHosts.${cfg.domain} = {
+      enableACME = true;
+      forceSSL = true;
+
+      locations = {
+        "/" = {
+          proxyPass = "http://localhost:${toString cfg.port}";
+          extraConfig = ''
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Host $host;
+            proxy_redirect off;
+          '';
+        };
+      };
+    };
+
+    services.authelia.instances.${config.hellebore.server.authelia.instance} = {
+      settings = {
+        identity_providers = {
+          oidc = {
+            clients = [
+              {
+                client_id = cfg.OIDC.clientId;
+                client_secret = cfg.OIDC.hashedClientSecret;
+                client_name = "Outline";
+                public = false;
+                authorization_policy = "two_factor";
+                redirect_uris = [
+                  "https://outline.ethereal-edelweiss.cloud/auth/oidc.callback"
+                ];
+                scopes = ["openid" "offline_access" "profile" "email"];
+                userinfo_signed_response_alg = "none";
+                token_endpoint_auth_method = "client_secret_post";
+              }
+            ];
+          };
+        };
+      };
+    };
+
+    services.postgresql = {
+      enable = true;
+      ensureDatabases = [cfg.database];
+
+      ensureUsers = [
+        {
+          name = cfg.user;
+          ensureDBOwnership = true;
+        }
+      ];
+    };
+  };
 }

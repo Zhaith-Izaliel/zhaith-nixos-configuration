@@ -42,27 +42,45 @@ in {
     };
 
     "outline/client-secret" = enableSecret "outline" {
-      file = ./apps/outline-client-secret.age;
+      file = ./apps/outline/client-secret.age;
+      owner = config.hellebore.server.outline.user;
+      group = config.hellebore.server.authelia.group;
+    };
+
+    "authelia/database-password" = enableSecret "authelia" {
+      file = ./apps/authelia/database-password.age;
+      owner = config.hellebore.server.authelia.user;
+      group = config.hellebore.server.authelia.group;
     };
 
     "authelia/redis-server-password" = enableSecret "authelia" {
       file = ./apps/authelia/redis-server-password.age;
+      owner = config.hellebore.server.authelia.user;
+      group = config.hellebore.server.authelia.group;
     };
 
     "authelia/jwt-token" = enableSecret "authelia" {
       file = ./apps/authelia/jwt-token.age;
+      owner = config.hellebore.server.authelia.user;
+      group = config.hellebore.server.authelia.group;
     };
 
     "authelia/storage-encryption-key" = enableSecret "authelia" {
       file = ./apps/authelia/storage-encryption-key.age;
+      owner = config.hellebore.server.authelia.user;
+      group = config.hellebore.server.authelia.group;
     };
 
     "authelia/session-secret" = enableSecret "authelia" {
       file = ./apps/authelia/session-secret.age;
+      owner = config.hellebore.server.authelia.user;
+      group = config.hellebore.server.authelia.group;
     };
 
     "authelia/user-database" = enableSecret "authelia" {
       file = ./apps/authelia/user-database.age;
+      owner = config.hellebore.server.authelia.user;
+      group = config.hellebore.server.authelia.group;
     };
   };
 }

@@ -38,7 +38,20 @@ in {
       };
 
       secrets = {
-        redisServerPasswordFile = mkSecretOption "Redis Server password" "password";
+        redisServerPasswordFile = mkSecretOption "Redis Server password" ''
+          # Generated with
+          # `authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric`
+
+          password
+        '';
+
+        databasePasswordFile = mkSecretOption "PostgreSQL database password" ''
+          # Generated with
+          # `authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric`
+
+          password
+        '';
+
         jwtSecretFile = mkSecretOption "JWT Token" ''
           # Generated with
           # `authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric`
@@ -80,6 +93,15 @@ in {
     });
 
   config = mkIf cfg.enable {
+    users = {
+      users.${cfg.user} = {
+        isSystemUser = true;
+        group = cfg.group;
+      };
+
+      groups.${cfg.group} = {};
+    };
+
     services.authelia.instances.${cfg.instance} = {
       inherit (cfg) package user group;
       enable = true;
@@ -92,31 +114,41 @@ in {
         inherit (cfg) theme;
         server = {
           address = "tcp://0.0.0.0:${toString cfg.port}/";
+
           buffers = {
             read = 4096;
             write = 4096;
           };
+
           endpoints = {
             enable_pprof = false;
             enable_expvars = false;
           };
+
           disable_healthcheck = false;
+
           tls = {
             key = "";
             certificate = "";
           };
         };
+
         log = {level = "info";};
+
         totp = {
           issuer = config.networking.domain;
           period = 30;
           skew = 1;
         };
+
         authentication_backend = {
           password_reset = {disable = false;};
+
           refresh_interval = "5m";
+
           file = {
             path = cfg.secrets.userDatabase;
+
             password = {
               algorithm = "argon2id";
               iterations = 1;
@@ -127,6 +159,7 @@ in {
             };
           };
         };
+
         access_control = {
           default_policy = "deny";
           rules = [
@@ -146,18 +179,18 @@ in {
           same_site = "lax";
           expiration = "1h";
           inactivity = "5m";
-          remember_me_duration = "2M";
+          remember_me = "2M";
           cookies = [
             {
               domain = config.networking.domain;
-              authelia_url = null;
-              default_redirection_url = "https://${config.networking.domain}/";
+              authelia_url = "https://${cfg.domain}";
+              default_redirection_url = "https://www.${config.networking.domain}/";
             }
           ];
           redis = {
             host = "localhost";
             password = ''{{ secret "${cfg.secrets.redisServerPasswordFile}" }}'';
-            port = config.services.redis.authelia.port;
+            port = config.services.redis.servers.authelia.port;
             database_index = 0;
             maximum_active_connections = 10;
             minimum_idle_connections = 0;
@@ -173,14 +206,15 @@ in {
             address = "tcp://localhost:${toString config.services.postgresql.settings.port}/";
             database = cfg.database;
             username = cfg.user;
+            password = ''{{ secret "${cfg.secrets.databasePasswordFile}" }}'';
           };
         };
         notifier = {
           disable_startup_check = false;
           smtp = {
-            host = "smtp.orange.fr";
+            address = "smtp://smtp.orange.fr";
             sender = "no-reply@${config.networking.domain}";
-            identifier = "localhost";
+            identifier = "smtp.orange.fr";
             subject = "[Authelia] {title}";
             startup_check_address = "test@authelia.com";
             disable_require_tls = false;
@@ -222,33 +256,33 @@ in {
         "/" = {
           proxyPass = "http://localhost:${toString cfg.port}";
 
-          extraConfig = ''
-            client_body_buffer_size 128k;
+          # extraConfig = ''
+          #   client_body_buffer_size 128k;
 
-            #Timeout if the real server is dead
-            proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
+          #   #Timeout if the real server is dead
+          #   proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
 
-            # Advanced Proxy Config
-            send_timeout 5m;
-            proxy_read_timeout 360;
-            proxy_send_timeout 360;
-            proxy_connect_timeout 360;
+          #   # Advanced Proxy Config
+          #   send_timeout 5m;
+          #   proxy_read_timeout 360;
+          #   proxy_send_timeout 360;
+          #   proxy_connect_timeout 360;
 
-            # Basic Proxy Config
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header X-Forwarded-Host $http_host;
-            proxy_set_header X-Forwarded-Uri $request_uri;
-            proxy_set_header X-Forwarded-Ssl on;
-            proxy_redirect  http://  $scheme://;
-            proxy_http_version 1.1;
-            proxy_set_header Connection "";
-            proxy_cache_bypass $cookie_session;
-            proxy_no_cache $cookie_session;
-            proxy_buffers 64 256k;
-          '';
+          #   # Basic Proxy Config
+          #   proxy_set_header Host $host;
+          #   proxy_set_header X-Real-IP $remote_addr;
+          #   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          #   proxy_set_header X-Forwarded-Proto $scheme;
+          #   proxy_set_header X-Forwarded-Host $http_host;
+          #   proxy_set_header X-Forwarded-Uri $request_uri;
+          #   proxy_set_header X-Forwarded-Ssl on;
+          #   proxy_redirect  http://  $scheme://;
+          #   proxy_http_version 1.1;
+          #   proxy_set_header Connection "";
+          #   proxy_cache_bypass $cookie_session;
+          #   proxy_no_cache $cookie_session;
+          #   proxy_buffers 64 256k;
+          # '';
         };
       };
     };

@@ -51,8 +51,11 @@
       nginx.enable = true;
 
       authelia = {
+        enable = true;
+        package = unstable-pkgs.authelia;
         subdomain = "auth";
         secrets = {
+          databasePasswordFile = config.age.secrets."authelia/database-password".path;
           redisServerPasswordFile = config.age.secrets."authelia/redis-server-password".path;
           jwtSecretFile = config.age.secrets."authelia/jwt-token".path;
           sessionSecretFile = config.age.secrets."authelia/session-secret".path;
