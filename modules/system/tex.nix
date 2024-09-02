@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  stable-pkgs,
   ...
 }: let
   inherit (lib) mkOption mkEnableOption types mkPackageOption mkIf;
@@ -34,6 +35,7 @@ in {
     environment.systemPackages =
       (with pkgs; [
         pandoc
+        apostrophe
       ])
       ++ [
         cfg.package
