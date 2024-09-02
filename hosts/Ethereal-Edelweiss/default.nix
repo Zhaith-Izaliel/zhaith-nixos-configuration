@@ -60,7 +60,7 @@
           jwtSecretFile = config.age.secrets."authelia/jwt-token".path;
           sessionSecretFile = config.age.secrets."authelia/session-secret".path;
           oidcHmacSecretFile = config.age.secrets."authelia/hmac-secret".path;
-          oidcJWKeyFile = config.age.secrets."authelia/jwk-private".path;
+          oidcIssuerPrivateKeyFile = config.age.secrets."authelia/jwk-private".path;
           storageEncryptionKeyFile = config.age.secrets."authelia/storage-encryption-key".path;
           userDatabase = config.age.secrets."authelia/user-database".path;
         };

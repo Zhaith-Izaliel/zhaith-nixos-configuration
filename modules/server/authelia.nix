@@ -2,6 +2,7 @@
   config,
   lib,
   extra-types,
+  unstable-pkgs,
   ...
 }: let
   inherit (lib) mkIf mkDefault types mkOption;
@@ -22,6 +23,10 @@
       '';
     };
 in {
+  imports = [
+    "${unstable-pkgs}/nixos/modules/services/security/authelia.nix"
+  ]; # COMPATIBILITY: Move to Authelia unstable for Outline OIDC to work
+
   options.hellebore.server.authelia =
     {
       instance = mkOption {
@@ -45,7 +50,7 @@ in {
           secret
         '';
 
-        oidcJWKeyFile = mkSecretOption "OIDC JSON Web Key" ''
+        oidcIssuerPrivateKeyFile = mkSecretOption "OIDC JSON Web Key" ''
           # Generated with
           # `authelia crypto pair rsa generate`
 
@@ -121,11 +126,7 @@ in {
       enable = true;
 
       secrets = {
-        inherit (cfg.secrets) jwtSecretFile sessionSecretFile storageEncryptionKeyFile oidcHmacSecretFile;
-      };
-
-      environmentVariables = {
-        X_AUTHELIA_CONFIG_FILTERS = "expand-env,template";
+        inherit (cfg.secrets) jwtSecretFile sessionSecretFile storageEncryptionKeyFile oidcHmacSecretFile oidcIssuerPrivateKeyFile;
       };
 
       settings = {
@@ -269,14 +270,6 @@ in {
               allowed_origins = ["https://${cfg.domain}"];
               allowed_origins_from_client_redirect_uris = false;
             };
-
-            jwks = [
-              {
-                algorithm = "RS256";
-                use = "sig";
-                key = ''{{ secret "${cfg.secrets.oidcJWKeyFile}" | mindent 8 "|" | msquote }}''; # Using 8 (6 base indent + 2 for its own block) because I checked the indentation but it's not portable AFAIK
-              }
-            ];
           };
         };
       };
