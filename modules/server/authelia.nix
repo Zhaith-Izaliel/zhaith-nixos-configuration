@@ -157,7 +157,7 @@ in {
         log = {level = "info";};
 
         totp = {
-          issuer = config.networking.domain;
+          issuer = "authelia.com";
           disable = false;
           algorithm = "sha1";
           digits = 6;
