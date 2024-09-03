@@ -160,7 +160,7 @@ in {
         log = {level = "info";};
 
         totp = {
-          issuer = "authelia.com";
+          issuer = cfg.domain;
           disable = false;
           algorithm = "sha1";
           digits = 6;
@@ -252,8 +252,8 @@ in {
           disable_startup_check = false;
 
           smtp = {
-            address = "smtp://smtp.orange.fr";
-            sender = "no-reply@${config.networking.domain}";
+            address = "smtp://smtp.orange.fr:25";
+            sender = "Authelia <no-reply@${config.networking.domain}>";
             identifier = "smtp.orange.fr";
             subject = "[Authelia] {title}";
             startup_check_address = "test@authelia.com";
