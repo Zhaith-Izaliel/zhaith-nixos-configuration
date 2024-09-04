@@ -256,7 +256,7 @@ in {
           disable_startup_check = false;
 
           smtp = {
-            address = "smtp://smtp.orange.fr:465";
+            address = "smtp://smtp.orange.fr:25";
             username = "ribeyre.virgil@orange.fr";
             password = ''{{ secret "${cfg.secrets.emailPasswordFile}" }}'';
             sender = "Authelia <no-reply@${config.networking.domain}>";

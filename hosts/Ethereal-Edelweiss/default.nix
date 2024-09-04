@@ -63,6 +63,7 @@
           oidcIssuerPrivateKeyFile = config.age.secrets."authelia/jwk-private".path;
           storageEncryptionKeyFile = config.age.secrets."authelia/storage-encryption-key".path;
           userDatabase = config.age.secrets."authelia/user-database".path;
+          emailPasswordFile = config.age.secrets."authelia/email-password".path;
         };
       };
 

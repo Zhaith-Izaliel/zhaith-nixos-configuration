@@ -100,5 +100,11 @@ in {
       owner = config.hellebore.server.authelia.user;
       group = config.hellebore.server.authelia.group;
     };
+
+    "authelia/email-password" = enableSecret "authelia" {
+      file = ./apps/authelia/email-password.age;
+      owner = config.hellebore.server.authelia.user;
+      group = config.hellebore.server.authelia.group;
+    };
   };
 }
