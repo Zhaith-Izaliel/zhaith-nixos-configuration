@@ -8,6 +8,7 @@
   inherit (lib) mkIf mkDefault mkOption types mdDoc;
   cfg = config.hellebore.server.outline;
   domain = "${cfg.subdomain}.${config.networking.domain}";
+  autheliaCfg = config.hellebore.server.authelia;
 in {
   imports = [
     "${inputs.nixpkgs-unstable}/nixos/modules/services/security/authelia.nix"
@@ -115,9 +116,9 @@ in {
         inherit (cfg.OIDC) clientSecretFile clientId;
 
         displayName = "Authelia";
-        tokenUrl = "https://${cfg.domain}/api/oidc/token";
-        userinfoUrl = "https://${cfg.domain}/api/oidc/userinfo";
-        authUrl = "https://${cfg.domain}/api/oidc/authorization";
+        tokenUrl = "https://${autheliaCfg.domain}/api/oidc/token";
+        userinfoUrl = "https://${autheliaCfg.domain}/api/oidc/userinfo";
+        authUrl = "https://${autheliaCfg.domain}/api/oidc/authorization";
         scopes = ["openid" "offline_access" "profile" "email"];
       };
     };
