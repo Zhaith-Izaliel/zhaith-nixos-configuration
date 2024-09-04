@@ -45,6 +45,10 @@ in {
       };
 
       secrets = {
+        emailPasswordFile = mkSecretOption "Email Password for SMTP notifications" ''
+          password
+        '';
+
         oidcHmacSecretFile = mkSecretOption "OIDC Hmac secret" ''
           # Generated with
           # `authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric`
@@ -252,7 +256,9 @@ in {
           disable_startup_check = false;
 
           smtp = {
-            address = "smtp://smtp.orange.fr:25";
+            address = "smtp://smtp.orange.fr:465";
+            username = "ribeyre.virgil@orange.fr";
+            password = ''{{ secret "${cfg.secrets.emailPasswordFile}" }}'';
             sender = "Authelia <no-reply@${config.networking.domain}>";
             identifier = "smtp.orange.fr";
             subject = "[Authelia] {title}";
