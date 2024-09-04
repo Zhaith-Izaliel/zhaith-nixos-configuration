@@ -116,7 +116,7 @@ in {
 
         displayName = "Authelia";
         tokenUrl = "https://${cfg.domain}/api/oidc/token";
-        userinfoUrl = "=https://${cfg.domain}/api/oidc/userinfo";
+        userinfoUrl = "https://${cfg.domain}/api/oidc/userinfo";
         authUrl = "https://${cfg.domain}/api/oidc/authorization";
         scopes = ["openid" "offline_access" "profile" "email"];
       };
