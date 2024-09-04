@@ -19,6 +19,7 @@ in {
       calibre
       simple-scan
       fontpreview
+      geogebra6
     ];
   };
 }
