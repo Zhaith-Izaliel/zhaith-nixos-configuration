@@ -45,6 +45,7 @@ in {
       file = ./apps/outline/client-secret.age;
       owner = config.hellebore.server.outline.user;
       group = config.hellebore.server.authelia.group;
+      mode = "770";
     };
 
     "authelia/database-password" = enableSecret "authelia" {

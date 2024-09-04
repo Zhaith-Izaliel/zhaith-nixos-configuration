@@ -52,17 +52,6 @@ in {
       };
 
       OIDC = {
-        clientId = mkOption {
-          type = types.nonEmptyStr;
-          default = "";
-          description = ''
-            A string corresponding to your client ID for OIDC authentication in Authelia. It should be generated as follows:
-
-            ```bash
-            authelia crypto rand --length 72 --charset rfc3986
-            ```
-          '';
-        };
         clientSecretFile = mkOption {
           type = types.path;
           default = null;
@@ -113,13 +102,14 @@ in {
       };
 
       oidcAuthentication = {
-        inherit (cfg.OIDC) clientSecretFile clientId;
+        inherit (cfg.OIDC) clientSecretFile;
 
+        clientId = cfg.domain;
         displayName = "Authelia";
         tokenUrl = "https://${autheliaCfg.domain}/api/oidc/token";
         userinfoUrl = "https://${autheliaCfg.domain}/api/oidc/userinfo";
         authUrl = "https://${autheliaCfg.domain}/api/oidc/authorization";
-        scopes = ["openid" "offline_access" "profile" "email"];
+        scopes = ["openid" "profile" "email" "offline_access"];
       };
     };
 
@@ -132,8 +122,18 @@ in {
       locations = {
         "/" = {
           proxyPass = "http://localhost:${toString cfg.port}";
+
+          recommendedProxySettings = false;
+
           extraConfig = ''
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Host $host;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "Upgrade";
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Scheme $scheme;
+            proxy_set_header X-Forwarded-Proto $scheme;
+
             proxy_redirect off;
           '';
         };
@@ -146,7 +146,7 @@ in {
           oidc = {
             clients = [
               {
-                client_id = cfg.OIDC.clientId;
+                client_id = cfg.domain;
                 client_secret = cfg.OIDC.hashedClientSecret;
                 client_name = "Outline";
                 public = false;
@@ -154,7 +154,10 @@ in {
                 redirect_uris = [
                   "https://outline.ethereal-edelweiss.cloud/auth/oidc.callback"
                 ];
-                scopes = ["openid" "offline_access" "profile" "email"];
+                scopes = ["openid" "profile" "email" "offline_access"];
+                response_types = ["code"];
+                response_modes = ["form_post" "query" "fragment"];
+                grant_types = ["refresh_token"];
                 userinfo_signed_response_alg = "none";
                 token_endpoint_auth_method = "client_secret_post";
               }

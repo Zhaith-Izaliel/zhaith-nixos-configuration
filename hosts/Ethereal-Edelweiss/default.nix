@@ -77,7 +77,6 @@
         subdomain = "outline";
         storagePath = "/mnt/datas/outline/data";
         OIDC = {
-          clientId = "wEtr74GUQqj3emKmcbKbRyXSBXqAlk5T5A4Ya9LtWFyysXCluQXr2QkR_H.AF2WiSElkochG";
           clientSecretFile = config.age.secrets."outline/client-secret".path;
           hashedClientSecret = "$pbkdf2-sha512$310000$EZbHn.dy0T9tDJz8/U6Ogw$XZk2VV9cbTrWqo0VWHPA4sfSV3bZgWmElebm7FF1elnNuLvdhd6YeCJbwEcI2PjaEg2gLu/xYaZXhLd4seFcVg";
         };
