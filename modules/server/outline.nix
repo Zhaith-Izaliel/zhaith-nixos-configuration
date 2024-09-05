@@ -10,11 +10,16 @@
   domain = "${cfg.subdomain}.${config.networking.domain}";
   autheliaCfg = config.hellebore.server.authelia;
 in {
+  # COMPATIBILITY: Move to Authelia and Outline unstable for Outline OIDC to work
   imports = [
     "${inputs.nixpkgs-unstable}/nixos/modules/services/security/authelia.nix"
-  ]; # COMPATIBILITY: Move to Authelia unstable for Outline OIDC to work
+    "${inputs.nixpkgs-unstable}/nixos/modules/services/web-apps/outline.nix"
+  ];
 
-  disabledModules = ["services/security/authelia.nix"];
+  disabledModules = [
+    "services/security/authelia.nix"
+    "services/web-apps/outline.nix"
+  ];
 
   options.hellebore.server.outline =
     {
@@ -104,6 +109,7 @@ in {
       oidcAuthentication = {
         inherit (cfg.OIDC) clientSecretFile;
 
+        usernameClaim = "preferred_username";
         clientId = cfg.domain;
         displayName = "Authelia";
         tokenUrl = "https://${autheliaCfg.domain}/api/oidc/token";
@@ -123,19 +129,19 @@ in {
         "/" = {
           proxyPass = "http://localhost:${toString cfg.port}";
 
-          recommendedProxySettings = false;
+          # recommendedProxySettings = false;
 
-          extraConfig = ''
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "Upgrade";
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Scheme $scheme;
-            proxy_set_header X-Forwarded-Proto $scheme;
+          # extraConfig = ''
+          #   proxy_set_header Upgrade $http_upgrade;
+          #   proxy_set_header Connection "Upgrade";
+          #   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          #   proxy_set_header Host $host;
+          #   proxy_set_header X-Real-IP $remote_addr;
+          #   proxy_set_header X-Scheme $scheme;
+          #   proxy_set_header X-Forwarded-Proto $scheme;
 
-            proxy_redirect off;
-          '';
+          #   proxy_redirect off;
+          # '';
         };
       };
     };
