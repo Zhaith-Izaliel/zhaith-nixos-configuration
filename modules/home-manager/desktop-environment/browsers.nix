@@ -20,10 +20,16 @@ in {
   config = mkIf cfg.enable {
     programs.chromium.enable = true;
 
+    home.packages = with pkgs; [
+      firefoxpwa
+    ];
+
     programs.firefox = {
       inherit (cfg) package;
 
       enable = true;
+
+      nativeMessagingHosts = [pkgs.firefoxpwa];
 
       profiles."zhaith" = mkIf cfg.profiles.zhaith.enable {
         isDefault = true;

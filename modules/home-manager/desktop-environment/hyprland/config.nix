@@ -109,12 +109,9 @@ in {
           (range 1 maxPersistentWorkspaces);
 
         windowrulev2 = flatten [
-          (
-            optionals config.hellebore.tools.affine.enable
-            (mkWindowOrLayerRule "class:(AFFiNE)" [
-              "workspace 2"
-            ])
-          )
+          (mkWindowOrLayerRule "class:(FFPWA-01J70WV204N6ZMVFK3FM87JZRA)" [
+            "workspace 2"
+          ])
           (
             optionals config.hellebore.tools.discord.enable
             (mkWindowOrLayerRule "class:(discord|vesktop)" [
@@ -189,8 +186,9 @@ in {
             "[workspace 1] ${getExe pkgs.firefox}")
           (optionalString config.hellebore.shell.emulator.enable
             "[workspace 1] ${config.hellebore.shell.emulator.bin}")
-          (optionalString config.hellebore.tools.affine.enable
-            "[workspace 2 silent] ${getExe config.hellebore.tools.affine.package}")
+          # (optionalString config.hellebore.tools.affine.enable
+          #   "[workspace 2 silent] ${getExe config.hellebore.tools.affine.package}")
+          "[workspace 2 silent] firefoxpwa site launch 01J70WV204N6ZMVFK3FM87JZRA"
           (optionalString config.hellebore.tools.discord.enable
             "[workspace 3 silent] ${getExe config.hellebore.tools.discord.finalPackage}")
           (optionalString config.hellebore.desktop-environment.mail.enable

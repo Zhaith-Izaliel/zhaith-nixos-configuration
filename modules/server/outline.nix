@@ -126,6 +126,7 @@ in {
       locations = {
         "/" = {
           proxyPass = "http://localhost:${toString cfg.port}";
+          proxyWebsockets = true;
 
           # recommendedProxySettings = false;
 
