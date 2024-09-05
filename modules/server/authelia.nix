@@ -460,7 +460,7 @@ in {
             };
 
             enable_client_debug_messages = false;
-            enforce_pkce = "always";
+            enforce_pkce = "public_clients_only";
 
             cors = {
               endpoints = ["authorization" "token" "revocation" "introspection" "userinfo"];

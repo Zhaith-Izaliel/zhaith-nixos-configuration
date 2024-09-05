@@ -13,12 +13,10 @@ in {
   # COMPATIBILITY: Move to Authelia and Outline unstable for Outline OIDC to work
   imports = [
     "${inputs.nixpkgs-unstable}/nixos/modules/services/security/authelia.nix"
-    "${inputs.nixpkgs-unstable}/nixos/modules/services/web-apps/outline.nix"
   ];
 
   disabledModules = [
     "services/security/authelia.nix"
-    "services/web-apps/outline.nix"
   ];
 
   options.hellebore.server.outline =
@@ -161,10 +159,8 @@ in {
                   "https://outline.ethereal-edelweiss.cloud/auth/oidc.callback"
                 ];
                 scopes = ["openid" "profile" "email" "offline_access"];
-                response_types = ["code"];
-                response_modes = ["form_post" "query" "fragment"];
-                grant_types = ["refresh_token"];
                 userinfo_signed_response_alg = "none";
+                response_types = ["code" "token"];
                 token_endpoint_auth_method = "client_secret_post";
               }
             ];

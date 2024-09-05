@@ -110,7 +110,7 @@
       };
 
       mail = {
-        enable = true;
+        # enable = true;
         subdomain = "mail";
         domains = [
           "ethereal-edelweiss.cloud"
