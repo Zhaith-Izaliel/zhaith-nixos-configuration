@@ -41,7 +41,7 @@
 
     theme.name = "catppuccin-macchiato";
 
-    monitors = lib.mkForce [
+    monitors = [
       {
         name = "eDP-1";
         width = 2560;
@@ -59,10 +59,10 @@
         xOffset = 0;
         yOffset = 0;
         scaling = 1.0;
-        extraArgs = [
-          "mirror"
-          (builtins.elemAt config.hellebore.monitors 0).name
-        ];
+        # extraArgs = [
+        #   "mirror"
+        #   (builtins.elemAt config.hellebore.monitors 0).name
+        # ];
       }
     ];
 
@@ -96,7 +96,7 @@
     power-profiles.enable = true;
 
     hardware = {
-      # nvidia.nouveau.enable = true;
+      nvidia.nouveau.enable = false;
       nvidia.proprietary = {
         enable = true;
         # package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
@@ -168,6 +168,7 @@
     tools = {
       enable = true;
       nix-alien.enable = true;
+      input-remapper.enable = true;
     };
 
     shell.enable = true;
@@ -207,7 +208,7 @@
       enableHyprlockPam = true;
       renderingCards = {
         enable = true;
-        defaultCards = lib.mkForce [
+        defaultCards = [
           "/dev/dri/by-name/intel-tigerlake-h-gt1"
           # "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
         ];
@@ -265,29 +266,14 @@
   };
   specialisation = {
     hdmi.configuration.hellebore = {
-      monitors = lib.mkForce [
-        {
-          name = "eDP-1";
-          width = 2560;
-          height = 1440;
-          refreshRate = 165;
-          xOffset = 0;
-          yOffset = 0;
-          scaling = 1.0;
-        }
-        {
-          name = "";
-          width = 1920;
-          height = 1080;
-          refreshRate = 60;
-          xOffset = 0;
-          yOffset = 0;
-          scaling = 1.0;
-        }
-      ];
+      hardware.nvidia = {
+        nouveau.enable = lib.mkForce true;
+        proprietary.enable = lib.mkForce false;
+      };
+
       hyprland.renderingCards.defaultCards = lib.mkForce [
-        "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
         "/dev/dri/by-name/intel-tigerlake-h-gt1"
+        "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
       ];
     };
   };
