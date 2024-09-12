@@ -12,7 +12,7 @@ in rec {
     name = "catppuccin_macchiato";
     palette =
       builtins.fromTOML (builtins.readFile (palette.package
-          + /palettes/macchiato.toml));
+          + /themes/macchiato.toml));
     package = pkgs.stdenvNoCC.mkDerivation {
       pname = "catppuccin-starship";
       version = inputs.catppuccin-starship.rev;
@@ -20,7 +20,7 @@ in rec {
 
       installPhase = ''
         mkdir -p $out
-        cp -r palettes $out
+        cp -r themes $out
       '';
     };
   };
