@@ -34,7 +34,8 @@ in {
 
     # NOTE: This gives granular control over which cards should be used, in order, when rendering Hyprland.
     environment.variables = mkIf cfg.renderingCards.enable {
-      WLR_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
+      AQ_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
+      # Change to WLR_DRM_DEVICES when on Wlroots
     };
 
     qt.enable = true;
