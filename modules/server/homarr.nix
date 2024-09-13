@@ -85,9 +85,9 @@ in {
 
         volumes =
           [
-            "${cfg.volumes.config}:/app/data/configs:rw"
+            "${cfg.volumes.configs}:/app/data/configs:rw"
             "${cfg.volumes.data}:/data:rw"
-            "${cfg.volume.icons}:/app/public/icons:rw"
+            "${cfg.volumes.icons}:/app/public/icons:rw"
           ]
           ++ optional cfg.podmanIntegration "/var/run/podman/podman.sock:/var/run/docker.sock:rw";
 
@@ -146,7 +146,7 @@ in {
       forceSSL = true;
       enableACME = true;
 
-      serverAliases = (optional cfg.redirectMainDomainToHomarr config.networking.domain) ++ (optional cfg.redirectDomainToHomarr "*.${config.networking.domain}");
+      serverAliases = (optional cfg.redirectMainDomainToHomarr config.networking.domain) ++ (optional cfg.redirectUndefinedSubdomainsToHomarr "*.${config.networking.domain}");
 
       locations = {
         "/" = {

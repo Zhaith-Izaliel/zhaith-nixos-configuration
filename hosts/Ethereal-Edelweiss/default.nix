@@ -102,7 +102,7 @@
         authentication.OIDC = {
           enable = true;
           clientSecretFile = config.age.secrets."homarr/client-secret".path;
-          hashedClientSecret = "";
+          hashedClientSecret = "$pbkdf2-sha512$310000$mAOeO6UK9kaQuOf28KC4zA$DtgSi3a7LewcCcQiJXxulbWX8j8BWM08oZCGyolfM7bOJhmE.XjoZx6SLsXebsFHxpy.EYo3Utf4spDu7M9uCw";
         };
       };
 
