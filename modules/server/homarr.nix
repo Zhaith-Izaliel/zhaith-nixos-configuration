@@ -100,13 +100,16 @@ in {
             TZ = config.time.timeZone;
             DISABLE_ANALYTICS = "true";
             AUTH_SESSION_EXPIRY_TIME = cfg.authentication.expiryTime;
+            BASE_URL = cfg.domain;
           }
           // (mkIf cfg.authentication.OIDC.enable {
             AUTH_PROVIDER = "oidc";
-            AUTH_OIDC_URI = autheliaCfg.domain;
+            AUTH_OIDC_URI = "https://${autheliaCfg.domain}";
             AUTH_OIDC_CLIENT_ID = cfg.authentication.OIDC.clientId;
             AUTH_OIDC_CLIENT_NAME = "Authelia";
-            AUTH_LOGOUT_REDIRECT_URL = autheliaCfg.domain;
+            AUTH_OIDC_ADMIN_GROUP = "homarr-admin";
+            AUTH_OIDC_OWNER_GROUP = "homarr-owner";
+            NEXTAUTH_URL = "https://${cfg.domain}/";
           });
 
         environmentFiles = optional cfg.authentication.OIDC.enable cfg.authentication.OIDC.clientSecretFile;
@@ -125,12 +128,14 @@ in {
                 public = false;
                 authorization_policy = "two_factor";
                 redirect_uris = [
-                  "https://${domain}/auth/oidc.callback"
+                  "https://${domain}/api/auth/callback/oidc"
+                  "http://localhost:${toString cfg.port}/api/auth/callback/oidc"
                 ];
-                scopes = ["openid" "profile" "email" "offline_access" "groups"];
+                scopes = ["openid" "profile" "email" "groups"];
                 userinfo_signed_response_alg = "none";
-                response_types = ["code" "token"];
-                token_endpoint_auth_method = "client_secret_post";
+                response_types = ["code"];
+                consent_mode = "implicit";
+                token_endpoint_auth_method = "client_secret_basic";
               }
             ];
           };
@@ -144,7 +149,9 @@ in {
       forceSSL = true;
       enableACME = true;
 
-      serverAliases = (optional cfg.redirectMainDomainToHomarr config.networking.domain) ++ (optional cfg.redirectUndefinedSubdomainsToHomarr "*.${config.networking.domain}");
+      serverAliases = optional cfg.redirectMainDomainToHomarr config.networking.domain;
+
+      default = cfg.redirectUndefinedSubdomainsToHomarr;
 
       locations = {
         "/" = {

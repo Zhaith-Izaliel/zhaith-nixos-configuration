@@ -96,6 +96,7 @@
         };
 
         redirectMainDomainToHomarr = true;
+        redirectUndefinedSubdomainsToHomarr = true;
 
         podmanIntegration = true;
 

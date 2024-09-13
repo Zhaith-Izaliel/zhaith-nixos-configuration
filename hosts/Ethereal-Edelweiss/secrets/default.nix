@@ -46,6 +46,8 @@ in {
 
     "homarr/client-secret" = enableSecret "homarr" {
       file = ./apps/homarr/client-secret.age;
+      group = config.hellebore.server.authelia.group;
+      mode = "770";
     };
 
     "authelia/database-password" = enableSecret "authelia" {
