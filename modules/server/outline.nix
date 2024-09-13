@@ -54,7 +54,7 @@ in {
         };
       };
 
-      OIDC = {
+      authentication.OIDC = {
         clientSecretFile = mkOption {
           type = types.path;
           default = null;
@@ -105,7 +105,7 @@ in {
       };
 
       oidcAuthentication = {
-        inherit (cfg.OIDC) clientSecretFile;
+        inherit (cfg.authentication.OIDC) clientSecretFile;
 
         usernameClaim = "preferred_username";
         clientId = cfg.domain;
@@ -127,20 +127,6 @@ in {
         "/" = {
           proxyPass = "http://localhost:${toString cfg.port}";
           proxyWebsockets = true;
-
-          # recommendedProxySettings = false;
-
-          # extraConfig = ''
-          #   proxy_set_header Upgrade $http_upgrade;
-          #   proxy_set_header Connection "Upgrade";
-          #   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          #   proxy_set_header Host $host;
-          #   proxy_set_header X-Real-IP $remote_addr;
-          #   proxy_set_header X-Scheme $scheme;
-          #   proxy_set_header X-Forwarded-Proto $scheme;
-
-          #   proxy_redirect off;
-          # '';
         };
       };
     };
@@ -152,12 +138,12 @@ in {
             clients = [
               {
                 client_id = cfg.domain;
-                client_secret = cfg.OIDC.hashedClientSecret;
+                client_secret = cfg.authentication.OIDC.hashedClientSecret;
                 client_name = "Outline";
                 public = false;
                 authorization_policy = "two_factor";
                 redirect_uris = [
-                  "https://outline.ethereal-edelweiss.cloud/auth/oidc.callback"
+                  "https://${cfg.domain}/auth/oidc.callback"
                 ];
                 scopes = ["openid" "profile" "email" "offline_access"];
                 userinfo_signed_response_alg = "none";

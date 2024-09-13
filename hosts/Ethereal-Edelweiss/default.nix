@@ -76,9 +76,33 @@
         enable = true;
         subdomain = "outline";
         storagePath = "/mnt/datas/outline/data";
-        OIDC = {
+        authentication.OIDC = {
           clientSecretFile = config.age.secrets."outline/client-secret".path;
           hashedClientSecret = "$pbkdf2-sha512$310000$EZbHn.dy0T9tDJz8/U6Ogw$XZk2VV9cbTrWqo0VWHPA4sfSV3bZgWmElebm7FF1elnNuLvdhd6YeCJbwEcI2PjaEg2gLu/xYaZXhLd4seFcVg";
+        };
+      };
+
+      homarr = {
+        enable = true;
+
+        subdomain = "www";
+
+        volumes = let
+          rootVolume = "/mnt/datas/homarr";
+        in {
+          data = "${rootVolume}/data";
+          configs = "${rootVolume}/configs";
+          icons = "${rootVolume}/icons";
+        };
+
+        redirectMainDomainToHomarr = true;
+
+        podmanIntegration = true;
+
+        authentication.OIDC = {
+          enable = true;
+          clientSecretFile = config.age.secrets."homarr/client-secret".path;
+          hashedClientSecret = "";
         };
       };
 
@@ -110,7 +134,7 @@
       };
 
       mail = {
-        # enable = true;
+        enable = true;
         subdomain = "mail";
         domains = [
           "ethereal-edelweiss.cloud"
@@ -163,6 +187,7 @@
           config.hellebore.server.ghost.domain
           config.hellebore.server.outline.domain
           config.hellebore.server.authelia.domain
+          config.hellebore.server.homarr.domain
         ];
       in {
         enable = true;
