@@ -99,16 +99,14 @@ in {
           {
             TZ = config.time.timeZone;
             DISABLE_ANALYTICS = "true";
-            AUTH_PROVIDER =
-              if cfg.authentication.OIDC.enable
-              then "oidc"
-              else "credentials";
             AUTH_SESSION_EXPIRY_TIME = cfg.authentication.expiryTime;
           }
           // (mkIf cfg.authentication.OIDC.enable {
+            AUTH_PROVIDER = "oidc";
             AUTH_OIDC_URI = autheliaCfg.domain;
             AUTH_OIDC_CLIENT_ID = cfg.authentication.OIDC.clientId;
             AUTH_OIDC_CLIENT_NAME = "Authelia";
+            AUTH_LOGOUT_REDIRECT_URL = autheliaCfg.domain;
           });
 
         environmentFiles = optional cfg.authentication.OIDC.enable cfg.authentication.OIDC.clientSecretFile;
