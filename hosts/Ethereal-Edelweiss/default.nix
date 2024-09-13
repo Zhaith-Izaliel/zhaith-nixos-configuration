@@ -158,11 +158,11 @@
           config.hellebore.server.calibre-web.domain
           config.hellebore.server.jellyfin.domain
           config.hellebore.server.invoiceshelf.domain
-          config.hellebore.server.servas.domain
           config.hellebore.server.radicale.domain
           config.hellebore.server.mail.domain
           config.hellebore.server.ghost.domain
           config.hellebore.server.outline.domain
+          config.hellebore.server.authelia.domain
         ];
       in {
         enable = true;
