@@ -131,14 +131,6 @@
         subdomain = "books";
       };
 
-      servas = {
-        enable = true;
-        volume = "/mnt/datas/servas/volume";
-        secretEnvFile = config.age.secrets.servas-env.path;
-        allowRegistration = false;
-        subdomain = "bookmarks";
-      };
-
       factorio = {
         enable = true;
         subdomain = "factorio";

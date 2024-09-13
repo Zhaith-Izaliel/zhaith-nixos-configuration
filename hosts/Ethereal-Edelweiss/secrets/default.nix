@@ -17,10 +17,6 @@ in {
       file = ./apps/invoiceshelf-env.age;
     };
 
-    servas-env = enableSecret "servas" {
-      file = ./apps/servas-env.age;
-    };
-
     inadyn = enableSecret "inadyn" {
       file = ./services/inadyn.age;
     };
