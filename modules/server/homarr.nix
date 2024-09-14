@@ -28,6 +28,37 @@ in {
 
       podmanIntegration = mkEnableOption "Homarr's Podman integration. This exposes `/var/run/podman/podman.sock` to Homarr";
 
+      monitoring = {
+        enable =
+          mkEnableOption null
+          // {
+            description = ''
+              Allow system monitoring through Dash. Since Dash. is served without any authentication, it is unsafe to open it up through the reverse proxy, as such Homarr should access it through `localhost:${toString cfg.monitoring.port}`.
+            '';
+          };
+
+        port = mkOption {
+          type = types.ints.unsigned;
+          default = 3001;
+          description = "The port to serve Dash. on.";
+        };
+
+        settings = {
+          type = types.attrsOf types.str;
+          default = {};
+          description = ''
+            The configuration for Dash. It is an attributes set of environment variables.
+            See https://getdashdot.com/docs/configuration/basic
+          '';
+        };
+
+        volume = mkOption {
+          default = "/var/lib/dashdot";
+          description = lib.mdDoc "Directory to store Dash. volume.";
+          type = types.nonEmptyStr;
+        };
+      };
+
       authentication = {
         expiryTime = mkOption {
           type = types.nonEmptyStr;
@@ -113,6 +144,25 @@ in {
           });
 
         environmentFiles = optional cfg.authentication.OIDC.enable cfg.authentication.OIDC.clientSecretFile;
+      };
+
+      dashdot = mkIf cfg.monitoring.enable {
+        image = "mauricenino/dashdot:latest";
+        volumes = [
+          "/:${cfg.monitoring.volume}:ro"
+        ];
+        ports = [
+          "${toString cfg.monitoring.port}:${toString cfg.monitoring.port}/tcp"
+        ];
+        extraOptions = [
+          "--privileged"
+        ];
+
+        environment =
+          cfg.monitoring.settings
+          // {
+            DASHDOT_PORT = toString cfg.monitoring.port;
+          };
       };
     };
 

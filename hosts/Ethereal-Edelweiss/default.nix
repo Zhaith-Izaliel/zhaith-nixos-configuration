@@ -95,6 +95,11 @@
           icons = "${rootVolume}/icons";
         };
 
+        monitoring = {
+          enable = true;
+          volume = "/mnt/datas/homarr/dashdot";
+        };
+
         redirectMainDomainToHomarr = true;
         redirectUndefinedSubdomainsToHomarr = true;
 
