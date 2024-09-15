@@ -4,7 +4,9 @@
   config,
   unstable-pkgs,
   ...
-}: {
+}: let
+  inherit (lib) mkIf;
+in {
   imports = [
     ./hardware-configuration.nix
     ./secrets
@@ -63,7 +65,14 @@
           oidcIssuerPrivateKeyFile = config.age.secrets."authelia/jwk-private".path;
           storageEncryptionKeyFile = config.age.secrets."authelia/storage-encryption-key".path;
           userDatabase = config.age.secrets."authelia/user-database".path;
-          emailPasswordFile = config.age.secrets."authelia/email-password".path;
+        };
+
+        mail = {
+          account = "authelia@ethereal-edelweiss.cloud";
+          passwordFile = config.age.secrets."authelia/mail-password".path;
+          protocol = "submission";
+          address = config.mailserver.fqdn;
+          port = 587;
         };
       };
 
@@ -129,10 +138,14 @@
       };
 
       ghost = {
-        # enable = true;
+        enable = true;
         subdomain = "ghost";
         volume = "/mnt/datas/ghost";
-        dbPass = config.age.secrets.ghost.path;
+        dbPass = config.age.secrets."ghost/database-password".path;
+        mail = {
+          account = "ghost@ethereal-edelweiss.cloud";
+          passwordFile = config.age.secrets."ghost/mail-password".path;
+        };
       };
 
       radicale = {
@@ -152,6 +165,14 @@
           "virgil.ribeyre@ethereal-edelweiss.cloud" = {
             hashedPasswordFile = config.age.secrets."mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud".path;
             aliases = ["postmaster@ethereal-edelweiss.cloud"];
+          };
+          "ghost@ethereal-edelweiss.cloud" = mkIf config.hellebore.server.ghost.enable {
+            hashedPasswordFile = config.age.secrets."ghost/mail-password".path;
+            sendOnly = true;
+          };
+          "authelia@ethereal-edelweiss.cloud" = mkIf config.hellebore.server.authelia.enable {
+            hashedPasswordFile = config.age.secrets."authelia/mail-password".path;
+            sendOnly = true;
           };
         };
         mailDirectory = "/mnt/datas/mails";

@@ -24,88 +24,6 @@
     };
 
   nginxConfigs = {
-    OIDC = {
-      serverConfig = {
-        locations."/internal/authelia/authz/basic" = {
-          proxyPass = "http://localhost:${toString cfg.port}/api/verify";
-
-          recommendedProxySettings = false;
-
-          extraConfig = ''
-            ## Essential Proxy Configuration
-            internal;
-
-            proxy_pass_request_body off;
-            proxy_set_header Content-Length "";
-
-            # Timeout if the real server is dead
-            proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
-            client_body_buffer_size 128k;
-            proxy_set_header Host $host;
-            proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $remote_addr;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header X-Forwarded-Host $http_host;
-            proxy_set_header X-Forwarded-Uri $request_uri;
-            proxy_set_header X-Forwarded-Ssl on;
-            proxy_redirect  http://  $scheme://;
-            proxy_http_version 1.1;
-            proxy_set_header Connection "";
-            proxy_cache_bypass $cookie_session;
-            proxy_no_cache $cookie_session;
-            proxy_buffers 4 32k;
-
-            send_timeout 5m;
-            proxy_read_timeout 240;
-            proxy_send_timeout 240;
-            proxy_connect_timeout 240;
-          '';
-        };
-      };
-
-      locationConfig = {
-        extraConfig = ''
-          auth_request /authelia;
-          auth_request_set $target_url https://$http_host$request_uri;
-          auth_request_set $user $upstream_http_remote_user;
-          auth_request_set $email $upstream_http_remote_email;
-          auth_request_set $groups $upstream_http_remote_groups;
-          proxy_set_header Remote-User $user;
-          proxy_set_header Remote-Email $email;
-          proxy_set_header Remote-Groups $groups;
-
-          error_page 401 =302 https://${cfg.domain}/?rd=$target_url;
-
-          client_body_buffer_size 128k;
-
-          proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
-
-          send_timeout 5m;
-          proxy_read_timeout 360;
-          proxy_send_timeout 360;
-          proxy_connect_timeout 360;
-
-          proxy_set_header Host $host;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection upgrade;
-          proxy_set_header Accept-Encoding gzip;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_set_header X-Forwarded-Host $http_host;
-          proxy_set_header X-Forwarded-Uri $request_uri;
-          proxy_set_header X-Forwarded-Ssl on;
-          proxy_redirect  http://  $scheme://;
-          proxy_http_version 1.1;
-          proxy_set_header Connection "";
-          proxy_cache_bypass $cookie_session;
-          proxy_no_cache $cookie_session;
-          proxy_buffers 64 256k;
-        '';
-      };
-    };
-
     basicAuth = {
       serverConfig = {
         locations."/internal/authelia/authz/basic" = {
@@ -198,22 +116,6 @@ in {
             description = ''The NGINX configuration for the app location using basic Authz with Authelia. Should be merged with `services.nginx.server.<name>.locations."/"`. Read only.'';
           };
         };
-
-        OIDC = {
-          serverConfig = mkOption {
-            type = types.attrs;
-            default = nginxConfigs.OIDC.serverConfig;
-            readOnly = true;
-            description = "The NGINX configuration for locations using basic OIDC with Authelia. Should be merged with `services.nginx.server.<name>`. Read only.";
-          };
-
-          locationConfig = mkOption {
-            type = types.attrs;
-            default = nginxConfigs.OIDC.locationConfig;
-            readOnly = true;
-            description = ''The NGINX configuration for the app location using basic OIDC with Authelia. Should be merged with `services.nginx.server.<name>.locations."/"`. Read only.'';
-          };
-        };
       };
 
       theme = mkOption {
@@ -222,11 +124,70 @@ in {
         description = "The theme used by Authelia";
       };
 
-      secrets = {
-        emailPasswordFile = mkSecretOption "Email Password for SMTP notifications" ''
+      mail = {
+        account = mkOption {
+          default = "";
+          type = types.nonEmptyStr;
+          description = "The no-reply account to send mail from.";
+        };
+
+        passwordFile = mkSecretOption "Email Password for SMTP notifications" ''
           password
         '';
 
+        startupCheckAddress = mkOption {
+          type = types.nonEmptyStr;
+          default = "test@authelia.com";
+          description = ''
+            Authelia checks the SMTP server is valid at startup, one of the checks requires we ask the SMTP server if it can send an email from us to a specific address, this is that address.
+
+            No email is actually sent in the process. It is fine to leave this as is, but you can customize it if you have issues or you desire to.
+          '';
+        };
+
+        port = mkOption {
+          type = types.ints.unsigned;
+          default = 25;
+          description = "The port of the mail server to use.";
+        };
+
+        address = mkOption {
+          type = types.nonEmptyStr;
+          default = "";
+          description = "The address of the mail server to use.";
+        };
+
+        protocol = mkOption {
+          type = types.enum ["smtp" "submission" "submissions"];
+          default = "";
+          description = ''
+            The protocol of the mail server to use.
+            Must be `smtp`, `submission`, or `submissions`.
+
+            The only difference between these schemes are the default ports and submissions requires a TLS transport per SMTP Ports Security Measures, whereas submission and smtp use a standard TCP transport and typically enforce StartTLS.
+          '';
+        };
+
+        identifier = mkOption {
+          type = types.nonEmptyStr;
+          default = cfg.mail.account;
+          description = ''
+            The name to send to the SMTP server as the identifier with the HELO/EHLO command.
+
+            Some SMTP providers like Google Mail reject the message if it’s localhost.
+          '';
+        };
+
+        subject = mkOption {
+          default = "[Authelia] {title}";
+          type = types.nonEmptyStr;
+          description = ''
+            This is the subject Authelia will use in the email, it has a single placeholder at present `{title}` which should be included in all emails as it is the internal descriptor for the contents of the email.
+          '';
+        };
+      };
+
+      secrets = {
         oidcHmacSecretFile = mkSecretOption "OIDC Hmac secret" ''
           # Generated with
           # `authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric`
@@ -434,13 +395,13 @@ in {
           disable_startup_check = false;
 
           smtp = {
-            address = "smtp://smtp.orange.fr:25";
-            username = "ribeyre.virgil@orange.fr";
-            password = ''{{ secret "${cfg.secrets.emailPasswordFile}" }}'';
-            sender = "Authelia <no-reply@${config.networking.domain}>";
-            identifier = "smtp.orange.fr";
-            subject = "[Authelia] {title}";
-            startup_check_address = "test@authelia.com";
+            address = "${cfg.mail.protocol}://${cfg.mail.address}:${toString cfg.mail.port}";
+            username = cfg.mail.account;
+            password = ''{{ secret "${cfg.mail.passwordFile}" }}'';
+            sender = "Authelia <${cfg.mail.account}>";
+            identifier = cfg.mail.identifier;
+            subject = cfg.mail.subject;
+            startup_check_address = cfg.mail.startupCheckAddress;
             disable_require_tls = false;
             disable_html_emails = false;
             tls = {

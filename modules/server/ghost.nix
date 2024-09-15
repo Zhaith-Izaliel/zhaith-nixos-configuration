@@ -20,37 +20,47 @@
         host = "10.0.2.2";
         port = "3306";
         user = cfg.user;
-        password = "@dbpass@";
+        password = "@database_password_placeholder@";
       };
     };
-    "server" = {
-      "port" = 2368;
-      "host" = "::";
+    server = {
+      port = 2368;
+      host = "::";
     };
-    "mail" = {
-      "transport" = "Direct";
+    mail = {
+      transport = "SMTP";
+      options = {
+        service = "ethereal-edelweiss.cloud";
+        auth = {
+          user = cfg.mail.account;
+          pass = "@mail_account_pass_placeholder@";
+        };
+      };
     };
-    "logging" = {
-      "transports" = [
+    logging = {
+      transports = [
         "file"
         "stdout"
       ];
     };
-    "process" = "systemd";
-    "paths" = {
-      "contentPath" = "/var/lib/ghost/content";
+    process = "systemd";
+    paths = {
+      contentPath = "/var/lib/ghost/content";
     };
   };
 
   configLocation = "${cfg.volume}/config/config.production.json";
 
-  replace-secret = ''${getExe pkgs.replace-secret} "${defaultConfig.database.connection.password}" "${cfg.dbPass}" "${configLocation}"'';
+  replace-secret = ''
+    ${getExe pkgs.replace-secret} "${defaultConfig.database.connection.password}" "${cfg.dbPass}" "${configLocation}"
+    ${getExe pkgs.replace-secret} "${defaultConfig.mail.options.auth.pass}" "${cfg.mail.passwordFile}" "${configLocation}"
+  '';
 
   finalConfig = jsonFormat.generate "ghost-config.production.json" (recursiveUpdate cfg.settings defaultConfig);
 
   preStart = ''
     mkdir -p "${cfg.volume}"/{content,config}
-    install --mode=600 --owner="lilith" "${finalConfig}" "${configLocation}"
+    install --mode=600 --owner=1000 "${finalConfig}" "${configLocation}"
     ${replace-secret}
   '';
 in {
@@ -80,6 +90,25 @@ in {
 
           **Do not override database or url configuration with these.**
         '';
+      };
+
+      mail = {
+        account = mkOption {
+          default = "";
+          type = types.nonEmptyStr;
+          description = "The no-reply account to send mail from.";
+        };
+
+        mailPasswordFile = mkOption {
+          default = "";
+          type = types.path;
+          description = ''
+            The file containing the mail account password, in the form:
+            ```
+              password
+            ```
+          '';
+        };
       };
     }
     // extra-types.server-app {

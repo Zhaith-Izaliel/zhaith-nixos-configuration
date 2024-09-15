@@ -33,8 +33,12 @@ in {
       group = config.hellebore.server.mail.group;
     };
 
-    ghost = enableSecret "ghost" {
-      file = ./apps/ghost.age;
+    "ghost/database-password" = enableSecret "ghost" {
+      file = ./apps/ghost/database-password.age;
+    };
+
+    "ghost/mail-password" = enableSecret "ghost" {
+      file = ./apps/ghost/mail-password.age;
     };
 
     "outline/client-secret" = enableSecret "outline" {
@@ -104,10 +108,10 @@ in {
       group = config.hellebore.server.authelia.group;
     };
 
-    "authelia/email-password" = enableSecret "authelia" {
-      file = ./apps/authelia/email-password.age;
+    "authelia/mail-password" = enableSecret "authelia" {
+      file = ./apps/authelia/mail-password.age;
       owner = config.hellebore.server.authelia.user;
-      group = config.hellebore.server.authelia.group;
+      group = config.hellebore.server.mail.group;
     };
   };
 }
