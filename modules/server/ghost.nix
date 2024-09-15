@@ -115,7 +115,7 @@ in {
 
         port = mkOption {
           type = types.ints.unsigned;
-          default = 25;
+          default = 465;
           description = "The port of the mail server to use.";
         };
 

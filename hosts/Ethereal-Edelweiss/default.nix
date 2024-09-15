@@ -72,8 +72,7 @@ in {
           account = "authelia@ethereal-edelweiss.cloud";
           passwordFile = config.age.secrets."authelia/mail-password".path;
           protocol = "smtp";
-          host = "127.0.0.1";
-          port = 25;
+          host = config.mailserver.fqdn;
         };
       };
 
@@ -147,7 +146,6 @@ in {
           account = "ghost@ethereal-edelweiss.cloud";
           passwordFile = config.age.secrets."ghost/mail-password".path;
           host = config.mailserver.fqdn;
-          port = 587;
         };
       };
 

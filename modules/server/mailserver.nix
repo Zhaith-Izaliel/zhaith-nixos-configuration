@@ -55,9 +55,9 @@ in {
       useFsLayout = true;
       certificateScheme = "acme-nginx";
       enableSubmission = true;
-      enableSubmissionSsl = false;
+      enableSubmissionSsl = true;
       enableImap = true;
-      enableImapSsl = false;
+      enableImapSsl = true;
       openFirewall = true;
 
       hierarchySeparator = "/";
