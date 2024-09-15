@@ -56,6 +56,7 @@ in {
         enable = true;
         package = unstable-pkgs.authelia;
         subdomain = "auth";
+
         secrets = {
           databasePasswordFile = config.age.secrets."authelia/database-password".path;
           redisServerPasswordFile = config.age.secrets."authelia/redis-server-password".path;
@@ -70,9 +71,9 @@ in {
         mail = {
           account = "authelia@ethereal-edelweiss.cloud";
           passwordFile = config.age.secrets."authelia/mail-password".path;
-          protocol = "submission";
-          address = config.mailserver.fqdn;
-          port = 587;
+          protocol = "smtp";
+          host = "127.0.0.1";
+          port = 25;
         };
       };
 
@@ -145,6 +146,8 @@ in {
         mail = {
           account = "ghost@ethereal-edelweiss.cloud";
           passwordFile = config.age.secrets."ghost/mail-password".path;
+          host = config.mailserver.fqdn;
+          port = 587;
         };
       };
 
@@ -161,17 +164,20 @@ in {
         domains = [
           "ethereal-edelweiss.cloud"
         ];
+        extraVirtualAliases = {
+          "postmaster@ethereal-edelweiss.cloud" = "virgil.ribeyre@ethereal-edelweiss.cloud";
+          "abuse@ethereal-edelweiss.cloud" = "virgil.ribeyre@ethereal-edelweiss.cloud";
+        };
         loginAccounts = {
           "virgil.ribeyre@ethereal-edelweiss.cloud" = {
             hashedPasswordFile = config.age.secrets."mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud".path;
-            aliases = ["postmaster@ethereal-edelweiss.cloud"];
           };
-          "ghost@ethereal-edelweiss.cloud" = mkIf config.hellebore.server.ghost.enable {
-            hashedPasswordFile = config.age.secrets."ghost/mail-password".path;
+          "ghost@ethereal-edelweiss.cloud" = {
+            hashedPasswordFile = config.age.secrets."mail-accounts/ghost-at-ethereal-edelweiss-cloud".path;
             sendOnly = true;
           };
-          "authelia@ethereal-edelweiss.cloud" = mkIf config.hellebore.server.authelia.enable {
-            hashedPasswordFile = config.age.secrets."authelia/mail-password".path;
+          "authelia@ethereal-edelweiss.cloud" = {
+            hashedPasswordFile = config.age.secrets."mail-accounts/authelia-at-ethereal-edelweiss-cloud".path;
             sendOnly = true;
           };
         };

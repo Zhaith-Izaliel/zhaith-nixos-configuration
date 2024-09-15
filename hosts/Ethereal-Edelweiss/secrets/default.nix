@@ -33,6 +33,18 @@ in {
       group = config.hellebore.server.mail.group;
     };
 
+    "mail-accounts/ghost-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
+      file = ./mail-accounts/ghost-at-ethereal-edelweiss-cloud.age;
+      owner = config.hellebore.server.mail.user;
+      group = config.hellebore.server.mail.group;
+    };
+
+    "mail-accounts/authelia-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
+      file = ./mail-accounts/authelia-at-ethereal-edelweiss-cloud.age;
+      owner = config.hellebore.server.mail.user;
+      group = config.hellebore.server.mail.group;
+    };
+
     "ghost/database-password" = enableSecret "ghost" {
       file = ./apps/ghost/database-password.age;
     };
@@ -111,7 +123,7 @@ in {
     "authelia/mail-password" = enableSecret "authelia" {
       file = ./apps/authelia/mail-password.age;
       owner = config.hellebore.server.authelia.user;
-      group = config.hellebore.server.mail.group;
+      group = config.hellebore.server.authelia.group;
     };
   };
 }

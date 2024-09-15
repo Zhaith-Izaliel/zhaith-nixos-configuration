@@ -151,10 +151,10 @@ in {
           description = "The port of the mail server to use.";
         };
 
-        address = mkOption {
+        host = mkOption {
           type = types.nonEmptyStr;
           default = "";
-          description = "The address of the mail server to use.";
+          description = "The host of the mail server to use.";
         };
 
         protocol = mkOption {
@@ -395,17 +395,18 @@ in {
           disable_startup_check = false;
 
           smtp = {
-            address = "${cfg.mail.protocol}://${cfg.mail.address}:${toString cfg.mail.port}";
+            address = "${cfg.mail.protocol}://${cfg.mail.host}:${toString cfg.mail.port}";
+            timeout = "5m";
             username = cfg.mail.account;
             password = ''{{ secret "${cfg.mail.passwordFile}" }}'';
             sender = "Authelia <${cfg.mail.account}>";
             identifier = cfg.mail.identifier;
             subject = cfg.mail.subject;
             startup_check_address = cfg.mail.startupCheckAddress;
-            disable_require_tls = false;
+            disable_require_tls = true;
             disable_html_emails = false;
             tls = {
-              skip_verify = false;
+              skip_verify = true;
               minimum_version = "TLS1.2";
             };
           };

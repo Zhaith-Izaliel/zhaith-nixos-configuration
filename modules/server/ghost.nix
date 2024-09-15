@@ -31,6 +31,9 @@
       transport = "SMTP";
       options = {
         service = "ethereal-edelweiss.cloud";
+        host = cfg.mail.host;
+        port = cfg.mail.port;
+        secure = true;
         auth = {
           user = cfg.mail.account;
           pass = "@mail_account_pass_placeholder@";
@@ -99,7 +102,7 @@ in {
           description = "The no-reply account to send mail from.";
         };
 
-        mailPasswordFile = mkOption {
+        passwordFile = mkOption {
           default = "";
           type = types.path;
           description = ''
@@ -108,6 +111,18 @@ in {
               password
             ```
           '';
+        };
+
+        port = mkOption {
+          type = types.ints.unsigned;
+          default = 25;
+          description = "The port of the mail server to use.";
+        };
+
+        host = mkOption {
+          type = types.nonEmptyStr;
+          default = "";
+          description = "The host of the mail server to use.";
         };
       };
     }

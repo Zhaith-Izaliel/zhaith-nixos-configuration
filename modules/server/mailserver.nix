@@ -22,6 +22,7 @@ in {
         monitoring
         mailDirectory
         mailboxes
+        extraVirtualAliases
         ;
     }
     // extra-types.server-app {
@@ -44,6 +45,7 @@ in {
         monitoring
         mailDirectory
         mailboxes
+        extraVirtualAliases
         ;
 
       enable = true;
