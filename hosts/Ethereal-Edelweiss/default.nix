@@ -87,9 +87,18 @@ in {
         enable = true;
         subdomain = "outline";
         storagePath = "/mnt/datas/outline/data";
+
         authentication.OIDC = {
           clientSecretFile = config.age.secrets."outline/client-secret".path;
           hashedClientSecret = "$pbkdf2-sha512$310000$EZbHn.dy0T9tDJz8/U6Ogw$XZk2VV9cbTrWqo0VWHPA4sfSV3bZgWmElebm7FF1elnNuLvdhd6YeCJbwEcI2PjaEg2gLu/xYaZXhLd4seFcVg";
+        };
+
+        mail = {
+          account = "noreply@outline.ethereal-edelweiss.cloud";
+          passwordFile = config.age.secrets."outline/mail-password".path;
+          host = config.mailserver.fqdn;
+          secure = true;
+          port = 465;
         };
       };
 
@@ -148,6 +157,8 @@ in {
           account = "noreply@ghost.ethereal-edelweiss.cloud";
           passwordFile = config.age.secrets."ghost/mail-password".path;
           host = config.mailserver.fqdn;
+          secure = true;
+          port = 465;
         };
       };
 
@@ -174,6 +185,10 @@ in {
           };
           "noreply@ghost.ethereal-edelweiss.cloud" = mkIf config.hellebore.server.ghost.enable {
             hashedPasswordFile = config.age.secrets."mail-accounts/ghost-at-ethereal-edelweiss-cloud".path;
+            sendOnly = true;
+          };
+          "noreply@outline.ethereal-edelweiss.cloud" = mkIf config.hellebore.server.ghost.enable {
+            hashedPasswordFile = config.age.secrets."mail-accounts/outline-at-ethereal-edelweiss-cloud".path;
             sendOnly = true;
           };
           "noreply@auth.ethereal-edelweiss.cloud" = mkIf config.hellebore.server.authelia.enable {

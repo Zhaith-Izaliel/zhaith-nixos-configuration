@@ -147,7 +147,7 @@ in {
 
         port = mkOption {
           type = types.ints.unsigned;
-          default = 465;
+          default = 25;
           description = "The port of the mail server to use.";
         };
 
@@ -159,7 +159,7 @@ in {
 
         protocol = mkOption {
           type = types.enum ["smtp" "submission" "submissions"];
-          default = "";
+          default = "smtp";
           description = ''
             The protocol of the mail server to use.
             Must be `smtp`, `submission`, or `submissions`.

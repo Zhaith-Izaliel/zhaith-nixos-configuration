@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkIf mkDefault mkOption types getExe recursiveUpdate;
+  inherit (lib) mkIf mkDefault mkOption types getExe recursiveUpdate mkEnableOption;
   jsonFormat = pkgs.formats.json {};
 
   cfg = config.hellebore.server.ghost;
@@ -30,10 +30,8 @@
     mail = {
       transport = "SMTP";
       options = {
+        inherit (cfg.mail) host port secure;
         service = "ethereal-edelweiss.cloud";
-        host = cfg.mail.host;
-        port = cfg.mail.port;
-        secure = true;
         auth = {
           user = cfg.mail.account;
           pass = "@mail_account_pass_placeholder@";
@@ -102,6 +100,12 @@ in {
           description = "The no-reply account to send mail from.";
         };
 
+        secure =
+          mkEnableOption null
+          // {
+            description = "Wether to force the use of Submissions (SSL) instead of default STARTTLS or SMTP.";
+          };
+
         passwordFile = mkOption {
           default = "";
           type = types.path;
@@ -115,7 +119,7 @@ in {
 
         port = mkOption {
           type = types.ints.unsigned;
-          default = 465;
+          default = 25;
           description = "The port of the mail server to use.";
         };
 

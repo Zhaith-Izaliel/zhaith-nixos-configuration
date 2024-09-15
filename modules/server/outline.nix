@@ -5,7 +5,7 @@
   inputs,
   ...
 }: let
-  inherit (lib) mkIf mkDefault mkOption types mdDoc;
+  inherit (lib) mkIf mkDefault mkOption types mdDoc mkEnableOption;
   cfg = config.hellebore.server.outline;
   domain = "${cfg.subdomain}.${config.networking.domain}";
   autheliaCfg = config.hellebore.server.authelia;
@@ -79,6 +79,43 @@ in {
           '';
         };
       };
+
+      mail = {
+        account = mkOption {
+          default = "";
+          type = types.nonEmptyStr;
+          description = "The no-reply account to send mail from.";
+        };
+
+        secure =
+          mkEnableOption null
+          // {
+            description = "Wether to force the use of Submissions (SSL) instead of default STARTTLS or SMTP.";
+          };
+
+        passwordFile = mkOption {
+          default = "";
+          type = types.path;
+          description = ''
+            The file containing the mail account password, in the form:
+            ```
+              password
+            ```
+          '';
+        };
+
+        port = mkOption {
+          type = types.ints.unsigned;
+          default = 25;
+          description = "The port of the mail server to use.";
+        };
+
+        host = mkOption {
+          type = types.nonEmptyStr;
+          default = "";
+          description = "The host of the mail server to use.";
+        };
+      };
     }
     // (extra-types.server-app {
       inherit domain;
@@ -114,6 +151,13 @@ in {
         userinfoUrl = "https://${autheliaCfg.domain}/api/oidc/userinfo";
         authUrl = "https://${autheliaCfg.domain}/api/oidc/authorization";
         scopes = ["openid" "profile" "email" "offline_access"];
+      };
+
+      smtp = {
+        inherit (cfg.mail) port secure passwordFile host;
+        username = cfg.mail.account;
+        fromEmail = "Outline <${cfg.mail.account}>";
+        replyEmail = cfg.mail.account;
       };
     };
 
