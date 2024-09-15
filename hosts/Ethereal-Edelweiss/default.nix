@@ -69,10 +69,12 @@ in {
         };
 
         mail = {
-          account = "authelia@ethereal-edelweiss.cloud";
+          account = "noreply@auth.ethereal-edelweiss.cloud";
           passwordFile = config.age.secrets."authelia/mail-password".path;
-          protocol = "smtp";
+          protocol = "submissions";
+          identifier = config.mailserver.fqdn;
           host = config.mailserver.fqdn;
+          port = 465;
         };
       };
 
@@ -143,7 +145,7 @@ in {
         volume = "/mnt/datas/ghost";
         dbPass = config.age.secrets."ghost/database-password".path;
         mail = {
-          account = "ghost@ethereal-edelweiss.cloud";
+          account = "noreply@ghost.ethereal-edelweiss.cloud";
           passwordFile = config.age.secrets."ghost/mail-password".path;
           host = config.mailserver.fqdn;
         };
@@ -170,11 +172,11 @@ in {
           "virgil.ribeyre@ethereal-edelweiss.cloud" = {
             hashedPasswordFile = config.age.secrets."mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud".path;
           };
-          "ghost@ethereal-edelweiss.cloud" = {
+          "noreply@ghost.ethereal-edelweiss.cloud" = mkIf config.hellebore.server.ghost.enable {
             hashedPasswordFile = config.age.secrets."mail-accounts/ghost-at-ethereal-edelweiss-cloud".path;
             sendOnly = true;
           };
-          "authelia@ethereal-edelweiss.cloud" = {
+          "noreply@auth.ethereal-edelweiss.cloud" = mkIf config.hellebore.server.authelia.enable {
             hashedPasswordFile = config.age.secrets."mail-accounts/authelia-at-ethereal-edelweiss-cloud".path;
             sendOnly = true;
           };
