@@ -144,6 +144,11 @@ in {
           });
 
         environmentFiles = optional cfg.authentication.OIDC.enable cfg.authentication.OIDC.clientSecretFile;
+
+        extraOptions = [
+          "--network"
+          "slirp4netns:allow_host_loopback=true"
+        ];
       };
 
       dashdot = mkIf cfg.monitoring.enable {
