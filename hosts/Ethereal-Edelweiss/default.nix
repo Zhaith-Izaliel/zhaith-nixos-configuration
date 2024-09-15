@@ -98,6 +98,9 @@
         monitoring = {
           enable = true;
           volume = "/mnt/datas/homarr/dashdot";
+          settings = {
+            DASHDOT_ACCEPT_OOKLA_EULA = "true";
+          };
         };
 
         redirectMainDomainToHomarr = true;

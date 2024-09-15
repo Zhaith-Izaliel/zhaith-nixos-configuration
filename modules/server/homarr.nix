@@ -43,7 +43,7 @@ in {
           description = "The port to serve Dash. on.";
         };
 
-        settings = {
+        settings = mkOption {
           type = types.attrsOf types.str;
           default = {};
           description = ''
