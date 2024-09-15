@@ -39,6 +39,12 @@ in {
       group = config.hellebore.server.mail.group;
     };
 
+    "mail-accounts/outline-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
+      file = ./mail-accounts/ghost-at-ethereal-edelweiss-cloud.age;
+      owner = config.hellebore.server.mail.user;
+      group = config.hellebore.server.mail.group;
+    };
+
     "mail-accounts/authelia-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
       file = ./mail-accounts/authelia-at-ethereal-edelweiss-cloud.age;
       owner = config.hellebore.server.mail.user;
@@ -54,6 +60,13 @@ in {
     };
 
     "outline/client-secret" = enableSecret "outline" {
+      file = ./apps/outline/client-secret.age;
+      owner = config.hellebore.server.outline.user;
+      group = config.hellebore.server.authelia.group;
+      mode = "770";
+    };
+
+    "outline/mail-password" = enableSecret "outline" {
       file = ./apps/outline/client-secret.age;
       owner = config.hellebore.server.outline.user;
       group = config.hellebore.server.authelia.group;
