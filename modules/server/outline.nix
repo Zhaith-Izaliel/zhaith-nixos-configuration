@@ -81,7 +81,7 @@ in {
       };
 
       mail = {
-        account = mkOption {
+        username = mkOption {
           default = "";
           type = types.nonEmptyStr;
           description = "The no-reply account username to send mail from.";
@@ -160,8 +160,7 @@ in {
       };
 
       smtp = {
-        inherit (cfg.mail) port secure passwordFile host;
-        username = cfg.mail.account;
+        inherit (cfg.mail) port secure passwordFile host username;
         fromEmail = "Outline <${cfg.mail.mail}>";
         replyEmail = cfg.mail.mail;
       };

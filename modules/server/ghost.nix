@@ -32,8 +32,9 @@
       options = {
         inherit (cfg.mail) host port secure;
         service = "ethereal-edelweiss.cloud";
+        from = "Ghost <${cfg.mail.mail}>";
         auth = {
-          user = cfg.mail.account;
+          user = cfg.mail.username;
           pass = "@mail_account_pass_placeholder@";
         };
       };
@@ -94,10 +95,16 @@ in {
       };
 
       mail = {
-        account = mkOption {
+        username = mkOption {
           default = "";
           type = types.nonEmptyStr;
-          description = "The no-reply account to send mail from.";
+          description = "The no-reply account username to send mail from.";
+        };
+
+        mail = mkOption {
+          default = "";
+          type = types.nonEmptyStr;
+          description = "The no-reply account mail address to send mail from.";
         };
 
         secure =

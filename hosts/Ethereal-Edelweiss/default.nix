@@ -4,9 +4,7 @@
   config,
   unstable-pkgs,
   ...
-}: let
-  inherit (lib) mkIf;
-in {
+}: {
   imports = [
     ./hardware-configuration.nix
     ./secrets
@@ -69,7 +67,8 @@ in {
         };
 
         mail = {
-          account = "noreply@auth.ethereal-edelweiss.cloud";
+          username = "noreply";
+          mail = "noreply@auth.ethereal-edelweiss.cloud";
           passwordFile = config.age.secrets."authelia/mail-password".path;
           protocol = "submissions";
           identifier = config.mailserver.fqdn;
@@ -94,7 +93,7 @@ in {
         };
 
         mail = {
-          account = "noreply@outline.ethereal-edelweiss.cloud";
+          username = "noreply";
           mail = "noreply@outline.ethereal-edelweiss.cloud";
           passwordFile = config.age.secrets."outline/mail-password".path;
           host = config.mailserver.fqdn;
@@ -155,8 +154,9 @@ in {
         volume = "/mnt/datas/ghost";
         dbPass = config.age.secrets."ghost/database-password".path;
         mail = {
-          account = "noreply@ghost.ethereal-edelweiss.cloud";
+          username = "noreply";
           passwordFile = config.age.secrets."ghost/mail-password".path;
+          mail = "noreply@ghost.ethereal-edelweiss.cloud";
           host = config.mailserver.fqdn;
           secure = true;
           port = 465;
@@ -184,17 +184,15 @@ in {
           "virgil.ribeyre@ethereal-edelweiss.cloud" = {
             hashedPasswordFile = config.age.secrets."mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud".path;
           };
-          "noreply@ghost.ethereal-edelweiss.cloud" = mkIf config.hellebore.server.ghost.enable {
-            hashedPasswordFile = config.age.secrets."mail-accounts/ghost-at-ethereal-edelweiss-cloud".path;
+          "noreply@ethereal-edelweiss.cloud" = {
+            name = "noreply";
+            hashedPasswordFile = config.age.secrets."mail-accounts/no-reply-at-ethereal-edelweiss-cloud".path;
             sendOnly = true;
-          };
-          "noreply@outline.ethereal-edelweiss.cloud" = mkIf config.hellebore.server.ghost.enable {
-            hashedPasswordFile = config.age.secrets."mail-accounts/outline-at-ethereal-edelweiss-cloud".path;
-            sendOnly = true;
-          };
-          "noreply@auth.ethereal-edelweiss.cloud" = mkIf config.hellebore.server.authelia.enable {
-            hashedPasswordFile = config.age.secrets."mail-accounts/authelia-at-ethereal-edelweiss-cloud".path;
-            sendOnly = true;
+            aliases = [
+              "noreply@auth.ethereal-edelweiss.cloud"
+              "noreply@ghost.ethereal-edelweiss.cloud"
+              "noreply@outline.ethereal-edelweiss.cloud"
+            ];
           };
         };
         mailDirectory = "/mnt/datas/mails";

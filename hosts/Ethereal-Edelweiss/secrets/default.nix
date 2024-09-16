@@ -33,30 +33,18 @@ in {
       group = config.hellebore.server.mail.group;
     };
 
-    "mail-accounts/ghost-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
+    "mail-accounts/noreply-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
       file = ./mail-accounts/ghost-at-ethereal-edelweiss-cloud.age;
       owner = config.hellebore.server.mail.user;
       group = config.hellebore.server.mail.group;
-    };
-
-    "mail-accounts/outline-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
-      file = ./mail-accounts/ghost-at-ethereal-edelweiss-cloud.age;
-      owner = config.hellebore.server.mail.user;
-      group = config.hellebore.server.mail.group;
-    };
-
-    "mail-accounts/authelia-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
-      file = ./mail-accounts/authelia-at-ethereal-edelweiss-cloud.age;
-      owner = config.hellebore.server.mail.user;
-      group = config.hellebore.server.mail.group;
-    };
-
-    "ghost/database-password" = enableSecret "ghost" {
-      file = ./apps/ghost/database-password.age;
     };
 
     "ghost/mail-password" = enableSecret "ghost" {
       file = ./apps/ghost/mail-password.age;
+    };
+
+    "ghost/database-password" = enableSecret "ghost" {
+      file = ./apps/ghost/database-password.age;
     };
 
     "outline/client-secret" = enableSecret "outline" {

@@ -125,10 +125,16 @@ in {
       };
 
       mail = {
-        account = mkOption {
+        username = mkOption {
           default = "";
           type = types.nonEmptyStr;
-          description = "The no-reply account to send mail from.";
+          description = "The no-reply account username to send mail from.";
+        };
+
+        mail = mkOption {
+          default = "";
+          type = types.nonEmptyStr;
+          description = "The no-reply account mail address to send mail from.";
         };
 
         passwordFile = mkSecretOption "Email Password for SMTP notifications" ''
@@ -394,17 +400,15 @@ in {
         notifier = {
           disable_startup_check = true;
 
-          # smtp = {
-          #   address = "${cfg.mail.protocol}://${cfg.mail.host}:${toString cfg.mail.port}";
-          #   # timeout = "5m";
-          #   username = cfg.mail.account;
-          #   password = ''{{ secret "${cfg.mail.passwordFile}" }}'';
-          #   sender = "Authelia <${cfg.mail.account}>";
-          #   identifier = cfg.mail.identifier;
-          #   subject = cfg.mail.subject;
-          #   startup_check_address = cfg.mail.startupCheckAddress;
-          # };
-          filesystem.filename = "/tmp/notification.txt";
+          smtp = {
+            inherit (cfg.mail) username identifier subject;
+            address = "${cfg.mail.protocol}://${cfg.mail.host}:${toString cfg.mail.port}";
+            # timeout = "5m";
+            password = ''{{ secret "${cfg.mail.passwordFile}" }}'';
+            sender = "Authelia <${cfg.mail.mail}>";
+            startup_check_address = cfg.mail.startupCheckAddress;
+          };
+          # filesystem.filename = "/tmp/notification.txt";
         };
 
         identity_providers = {
