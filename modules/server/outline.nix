@@ -84,7 +84,13 @@ in {
         account = mkOption {
           default = "";
           type = types.nonEmptyStr;
-          description = "The no-reply account to send mail from.";
+          description = "The no-reply account username to send mail from.";
+        };
+
+        mail = mkOption {
+          default = "";
+          type = types.nonEmptyStr;
+          description = "The no-reply account mail address to send mail from.";
         };
 
         secure =
@@ -156,8 +162,8 @@ in {
       smtp = {
         inherit (cfg.mail) port secure passwordFile host;
         username = cfg.mail.account;
-        fromEmail = "Outline <${cfg.mail.account}>";
-        replyEmail = cfg.mail.account;
+        fromEmail = "Outline <${cfg.mail.mail}>";
+        replyEmail = cfg.mail.mail;
       };
     };
 

@@ -95,6 +95,7 @@ in {
 
         mail = {
           account = "noreply@outline.ethereal-edelweiss.cloud";
+          mail = "noreply@outline.ethereal-edelweiss.cloud";
           passwordFile = config.age.secrets."outline/mail-password".path;
           host = config.mailserver.fqdn;
           secure = true;

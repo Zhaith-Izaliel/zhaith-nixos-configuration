@@ -394,16 +394,17 @@ in {
         notifier = {
           disable_startup_check = true;
 
-          smtp = {
-            address = "${cfg.mail.protocol}://${cfg.mail.host}:${toString cfg.mail.port}";
-            # timeout = "5m";
-            username = cfg.mail.account;
-            password = ''{{ secret "${cfg.mail.passwordFile}" }}'';
-            sender = "Authelia <${cfg.mail.account}>";
-            identifier = cfg.mail.identifier;
-            subject = cfg.mail.subject;
-            startup_check_address = cfg.mail.startupCheckAddress;
-          };
+          # smtp = {
+          #   address = "${cfg.mail.protocol}://${cfg.mail.host}:${toString cfg.mail.port}";
+          #   # timeout = "5m";
+          #   username = cfg.mail.account;
+          #   password = ''{{ secret "${cfg.mail.passwordFile}" }}'';
+          #   sender = "Authelia <${cfg.mail.account}>";
+          #   identifier = cfg.mail.identifier;
+          #   subject = cfg.mail.subject;
+          #   startup_check_address = cfg.mail.startupCheckAddress;
+          # };
+          filesystem.filename = "/tmp/notification.txt";
         };
 
         identity_providers = {
