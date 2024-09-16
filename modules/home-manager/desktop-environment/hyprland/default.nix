@@ -62,6 +62,18 @@ in {
       description = "Set the wallpaper.";
     };
 
+    extraExec = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "Defines a list of extra `exec` rules to be applied.";
+    };
+
+    extraExecOnce = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "Defines a list of extra `exec-once` rules to be applied.";
+    };
+
     extraWindowRules = mkOption {
       type = types.listOf extraRulesType;
       default = [];

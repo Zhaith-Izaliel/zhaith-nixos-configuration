@@ -175,31 +175,34 @@ in {
           extraLayerRules
         ];
 
-        exec-once = [
-          "${getExe pkgs.swww} init"
-          "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
-          "swayosd --max-volume 150"
-          # "${pkgs.wl-clipboard}/bin/wl-paste --watch ${getExe pkgs.cliphist} store"
-          "hyprctl setcursor ${theme.gtk.cursorTheme.name} 32"
-          (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
-          (optionalString config.hellebore.desktop-environment.browsers.enable
-            "[workspace 1] ${getExe pkgs.firefox}")
-          (optionalString config.hellebore.shell.emulator.enable
-            "[workspace 1] ${config.hellebore.shell.emulator.bin}")
-          # (optionalString config.hellebore.tools.affine.enable
-          #   "[workspace 2 silent] ${getExe config.hellebore.tools.affine.package}")
-          "[workspace 2 silent] firefoxpwa site launch 01J70WV204N6ZMVFK3FM87JZRA"
-          (optionalString config.hellebore.tools.discord.enable
-            "[workspace 3 silent] ${getExe config.hellebore.tools.discord.finalPackage}")
-          (optionalString config.hellebore.desktop-environment.mail.enable
-            "[workspace 4 silent] ${config.hellebore.desktop-environment.mail.bin}")
-          (optionalString os-config.hellebore.games.cartridges.enable
-            "[workspace 5 silent] ${getExe os-config.hellebore.games.cartridges.package}")
-          (optionalString os-config.hellebore.games.cartridges.enable
-            "[workspace 5 silent] ${getExe os-config.hellebore.games.steam.package} -silent")
-          (optionalString os-config.hardware.logitech.wireless.enableGraphical
-            "${pkgs.solaar}/bin/solaar --window hide")
-        ];
+        exec-once =
+          [
+            "${getExe pkgs.swww} init"
+            "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
+            "swayosd --max-volume 150"
+            # "${pkgs.wl-clipboard}/bin/wl-paste --watch ${getExe pkgs.cliphist} store"
+            "hyprctl setcursor ${theme.gtk.cursorTheme.name} 32"
+            (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
+            (optionalString config.hellebore.desktop-environment.browsers.enable
+              "[workspace 1] ${getExe pkgs.firefox}")
+            (optionalString config.hellebore.shell.emulator.enable
+              "[workspace 1] ${config.hellebore.shell.emulator.bin}")
+            # (optionalString config.hellebore.tools.affine.enable
+            #   "[workspace 2 silent] ${getExe config.hellebore.tools.affine.package}")
+            (optionalString config.hellebore.tools.discord.enable
+              "[workspace 3 silent] ${getExe config.hellebore.tools.discord.finalPackage}")
+            (optionalString config.hellebore.desktop-environment.mail.enable
+              "[workspace 4 silent] ${config.hellebore.desktop-environment.mail.bin}")
+            (optionalString os-config.hellebore.games.cartridges.enable
+              "[workspace 5 silent] ${getExe os-config.hellebore.games.cartridges.package}")
+            (optionalString os-config.hellebore.games.cartridges.enable
+              "[workspace 5 silent] ${getExe os-config.hellebore.games.steam.package} -silent")
+            (optionalString os-config.hardware.logitech.wireless.enableGraphical
+              "${pkgs.solaar}/bin/solaar --window hide")
+          ]
+          ++ cfg.extraExecOnce;
+
+        exec = cfg.extraExec;
 
         bind = flatten [
           ", code:107, exec, ${getExe pkgs.screenshot} area"

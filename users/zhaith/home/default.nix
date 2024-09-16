@@ -48,16 +48,24 @@ in {
 
       hyprland = {
         enable = true;
+
         input.mouse.scrollFactor = 1.0;
+
         picture-in-picture = {
           enable = true;
           position = "top-right";
         };
+
         switches = {
           lid = {
             enable = true;
           };
         };
+
+        extraExecOnce = [
+          "[workspace 2 slient] firefoxpwa site launch 01J7XS0VJ6CNEKDAMPJAH4E77A"
+        ];
+
         extraWindowRules = let
           gameRules = [
             "workspace 5"
