@@ -34,7 +34,7 @@ in {
     };
 
     "mail-accounts/noreply-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
-      file = ./mail-accounts/ghost-at-ethereal-edelweiss-cloud.age;
+      file = ./mail-accounts/noreply-at-ethereal-edelweiss-cloud.age;
       owner = config.hellebore.server.mail.user;
       group = config.hellebore.server.mail.group;
     };

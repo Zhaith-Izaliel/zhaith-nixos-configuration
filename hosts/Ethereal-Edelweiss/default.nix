@@ -184,9 +184,9 @@
           "virgil.ribeyre@ethereal-edelweiss.cloud" = {
             hashedPasswordFile = config.age.secrets."mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud".path;
           };
-          "noreply@ethereal-edelweiss.cloud" = {
-            name = "noreply";
-            hashedPasswordFile = config.age.secrets."mail-accounts/no-reply-at-ethereal-edelweiss-cloud".path;
+          "noreply" = {
+            name = "noreply@ethereal-edelweiss.cloud";
+            hashedPasswordFile = config.age.secrets."mail-accounts/noreply-at-ethereal-edelweiss-cloud".path;
             sendOnly = true;
             aliases = [
               "noreply@auth.ethereal-edelweiss.cloud"
