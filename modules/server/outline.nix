@@ -156,7 +156,7 @@ in {
         tokenUrl = "https://${autheliaCfg.domain}/api/oidc/token";
         userinfoUrl = "https://${autheliaCfg.domain}/api/oidc/userinfo";
         authUrl = "https://${autheliaCfg.domain}/api/oidc/authorization";
-        scopes = ["openid" "profile" "email" "offline_access"];
+        scopes = ["openid" "profile" "email"];
       };
 
       smtp = {
@@ -194,7 +194,7 @@ in {
                 redirect_uris = [
                   "https://${cfg.domain}/auth/oidc.callback"
                 ];
-                scopes = ["openid" "profile" "email" "offline_access"];
+                scopes = ["openid" "profile" "email"];
                 userinfo_signed_response_alg = "none";
                 response_types = ["code" "token"];
                 token_endpoint_auth_method = "client_secret_post";
