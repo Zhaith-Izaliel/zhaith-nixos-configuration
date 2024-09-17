@@ -12,7 +12,7 @@ in {
   options.hellebore.server.homepage =
     {
       secretsEnvFile = mkOption {
-        type = types.path;
+        type = types.oneOf [types.str types.path];
         default = "";
         description = ''
           A file containing environment variables with secrets for Homepage Dashboard.
