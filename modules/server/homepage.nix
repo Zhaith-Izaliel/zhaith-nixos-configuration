@@ -76,10 +76,19 @@ in {
     };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = autheliaCfg.enable;
+        message = "Serving Hompage on a domain without authentication is insecure. Authelia must be enabled to authenticate Homepage.";
+      }
+    ];
+
     services.homepage-dashboard = {
       inherit (cfg) package;
       enable = true;
       listenPort = cfg.port;
+
+      environmentFile = cfg.secretsEnvFile;
 
       settings = {
         inherit (cfg.settings) theme;

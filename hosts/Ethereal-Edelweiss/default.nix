@@ -50,6 +50,12 @@
 
       nginx.enable = true;
 
+      homepage = {
+        enable = true;
+        subdomain = "www";
+        setDomainAsDefault = true;
+      };
+
       authelia = {
         enable = true;
         package = unstable-pkgs.authelia;
