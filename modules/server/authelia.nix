@@ -24,24 +24,20 @@
     };
 
   nginxConfigs = {
-    basicAuth = {
+    authz = {
       serverConfig = {
-        locations."/internal/authelia/authz/basic" = {
-          proxyPass = "http://localhost:${toString cfg.port}/api/authz/auth-request/basic";
+        locations."/internal/authelia/authz" = {
+          proxyPass = "http://localhost:${toString cfg.port}/api/authz/auth-request";
           recommendedProxySettings = false;
           extraConfig = ''
             ## Essential Proxy Configuration
             internal;
+            proxy_pass $upstream_authelia;
 
             ## Headers
             ## The headers starting with X-* are required.
             proxy_set_header X-Original-Method $request_method;
             proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
-            proxy_set_header X-Original-Method $request_method;
-            proxy_set_header X-Forwarded-Method $request_method;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header X-Forwarded-Host $http_host;
-            proxy_set_header X-Forwarded-URI $request_uri;
             proxy_set_header X-Forwarded-For $remote_addr;
             proxy_set_header Content-Length "";
             proxy_set_header Connection "";
@@ -67,19 +63,48 @@
 
       locationConfig = {
         extraConfig = ''
-          auth_request /internal/authelia/authz/basic;
+          ## Headers
+          proxy_set_header Host $host;
+          proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Forwarded-Host $http_host;
+          proxy_set_header X-Forwarded-URI $request_uri;
+          proxy_set_header X-Forwarded-Ssl on;
+          proxy_set_header X-Forwarded-For $remote_addr;
+          proxy_set_header X-Real-IP $remote_addr;
 
-          ## Save the upstream response headers from Authelia to variables.
+          ## Send a subrequest to Authelia to verify if the user is authenticated and has permission to access the resource.
+          auth_request /internal/authelia/authz;
+
+          ## Save the upstream metadata response headers from Authelia to variables.
           auth_request_set $user $upstream_http_remote_user;
           auth_request_set $groups $upstream_http_remote_groups;
           auth_request_set $name $upstream_http_remote_name;
           auth_request_set $email $upstream_http_remote_email;
 
-          ## Inject the response headers from the variables into the request made to the backend.
+          ## Inject the metadata response headers from the variables into the request made to the backend.
           proxy_set_header Remote-User $user;
           proxy_set_header Remote-Groups $groups;
-          proxy_set_header Remote-Name $name;
           proxy_set_header Remote-Email $email;
+          proxy_set_header Remote-Name $name;
+
+          ## Configure the redirection when the authz failure occurs. Lines starting with 'Modern Method' and 'Legacy Method'
+          ## should be commented / uncommented as pairs. The modern method uses the session cookies configuration's authelia_url
+          ## value to determine the redirection URL here. It's much simpler and compatible with the mutli-cookie domain easily.
+
+          ## Modern Method: Set the $redirection_url to the Location header of the response to the Authz endpoint.
+          auth_request_set $redirection_url $upstream_http_location;
+
+          ## Modern Method: When there is a 401 response code from the authz endpoint redirect to the $redirection_url.
+          error_page 401 =302 $redirection_url;
+
+          ## Legacy Method: Set $target_url to the original requested URL.
+          ## This requires http_set_misc module, replace 'set_escape_uri' with 'set' if you don't have this module.
+          # set_escape_uri $target_url $scheme://$http_host$request_uri;
+
+          ## Legacy Method: When there is a 401 response code from the authz endpoint redirect to the portal with the 'rd'
+          ## URL parameter set to $target_url. This requires users update 'auth.ethereal-edelweiss.cloud/' with their external authelia URL.
+          # error_page 401 =302 https://auth.ethereal-edelweiss.cloud/?rd=$target_url;
         '';
       };
     };
@@ -103,14 +128,14 @@ in {
       nginx = {
         serverConfig = mkOption {
           type = types.attrs;
-          default = nginxConfigs.basicAuth.serverConfig;
+          default = nginxConfigs.autz.serverConfig;
           readOnly = true;
           description = "The NGINX configuration for locations using basic Authz with Authelia. Should be merged with `services.nginx.server.<name>`. Read only.";
         };
 
         locationConfig = mkOption {
           type = types.attrs;
-          default = nginxConfigs.basicAuth.locationConfig;
+          default = nginxConfigs.authz.locationConfig;
           readOnly = true;
           description = ''The NGINX configuration for the app location using basic Authz with Authelia. Should be merged with `services.nginx.server.<name>.locations."/"`. Read only.'';
         };
