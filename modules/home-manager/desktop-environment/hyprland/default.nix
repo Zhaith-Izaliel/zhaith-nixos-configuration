@@ -24,6 +24,34 @@
       };
     };
   };
+
+  pwaType = types.attrsOf (types.submodule {
+    options = {
+      enable =
+        mkEnableOption "this particular Progressive Web App"
+        // {
+          default = true;
+        };
+
+      id = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "The ID of the PWA used by `pkgs.firefoxpwa`.";
+      };
+
+      execRules = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "A list of exec rules to add to the exec-once call.";
+      };
+
+      windowRules = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "The window rules to apply on the PWA.";
+      };
+    };
+  });
 in {
   imports = [
     ./config.nix
@@ -88,6 +116,12 @@ in {
 
     misc = {
       middleClickPaste = mkEnableOption "middle click paste";
+    };
+
+    progressiveWebApps = mkOption {
+      type = pwaType;
+      default = {};
+      description = "Defines all progressive web-apps to be run on startup as well as their own window rules.";
     };
 
     input = {

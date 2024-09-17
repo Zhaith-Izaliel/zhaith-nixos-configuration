@@ -66,9 +66,17 @@ in {
           };
         };
 
-        extraExecOnce = [
-          "[workspace 2 slient] ${getExe pkgs.firefoxpwa} site launch 01J7XS0VJ6CNEKDAMPJAH4E77A"
-        ];
+        progressiveWebApps = {
+          outline = {
+            id = "01J7XS0VJ6CNEKDAMPJAH4E77A";
+            execRules = [
+              "workspace 2 silent"
+            ];
+            windowRules = [
+              "workspace 2"
+            ];
+          };
+        };
 
         extraWindowRules = let
           gameRules = [
@@ -96,12 +104,6 @@ in {
             {
               regex = "class:(factorio).*";
               rules = gameRules;
-            }
-            {
-              regex = "class:(FFPWA-01J7XS0VJ6CNEKDAMPJAH4E77A)";
-              rules = [
-                "workspace 2"
-              ];
             }
           ]
           ++ optional os-config.hellebore.games.minecraft.enable {

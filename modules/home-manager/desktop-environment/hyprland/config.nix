@@ -17,6 +17,10 @@
     mkIf
     recursiveUpdate
     count
+    mapAttrsToList
+    removeSuffix
+    pipe
+    filter
     ;
 
   cfg = config.hellebore.desktop-environment.hyprland;
@@ -55,6 +59,29 @@
   mkMonitors = monitors: builtins.map mkMonitor monitors;
 
   mkExtraRules = rules: builtins.map (item: mkWindowOrLayerRule item.regex item.rules) rules;
+
+  pwas = pipe cfg.progressiveWebApps [
+    (mapAttrsToList (name: value: value))
+    (filter (item: item.enable))
+  ];
+
+  mkPWAExec = pwas:
+    map (item: let
+      execRules =
+        if (builtins.length item.execRules) == 0
+        then ""
+        else "[${removeSuffix "; " (concatStringsSep "; " item.execRules)}]";
+    in "${execRules} ${getExe pkgs.firefoxpwa} site launch ${item.id}")
+    pwas;
+
+  mkPWAWindowRules = pwas:
+    pipe pwas [
+      (map (item: {
+        regex = "class:(FFPWA-${item.id})";
+        rules = item.windowRules;
+      }))
+      mkExtraRules
+    ];
 
   extraWindowRules = mkExtraRules cfg.extraWindowRules;
 
@@ -161,6 +188,7 @@ in {
             "noinitialfocus"
             "move ${pInPPositions.${cfg.picture-in-picture.position}}"
           ]))
+          (mkPWAWindowRules pwas)
           extraWindowRules
         ];
 
@@ -197,6 +225,7 @@ in {
             (optionalString os-config.hardware.logitech.wireless.enableGraphical
               "${pkgs.solaar}/bin/solaar --window hide")
           ]
+          ++ (mkPWAExec pwas)
           ++ cfg.extraExecOnce;
 
         exec = cfg.extraExec;
