@@ -101,20 +101,18 @@ in {
       };
 
       nginx = {
-        basicAuth = {
-          serverConfig = mkOption {
-            type = types.attrs;
-            default = nginxConfigs.basicAuth.serverConfig;
-            readOnly = true;
-            description = "The NGINX configuration for locations using basic Authz with Authelia. Should be merged with `services.nginx.server.<name>`. Read only.";
-          };
+        serverConfig = mkOption {
+          type = types.attrs;
+          default = nginxConfigs.basicAuth.serverConfig;
+          readOnly = true;
+          description = "The NGINX configuration for locations using basic Authz with Authelia. Should be merged with `services.nginx.server.<name>`. Read only.";
+        };
 
-          locationConfig = mkOption {
-            type = types.attrs;
-            default = nginxConfigs.basicAuth.locationConfig;
-            readOnly = true;
-            description = ''The NGINX configuration for the app location using basic Authz with Authelia. Should be merged with `services.nginx.server.<name>.locations."/"`. Read only.'';
-          };
+        locationConfig = mkOption {
+          type = types.attrs;
+          default = nginxConfigs.basicAuth.locationConfig;
+          readOnly = true;
+          description = ''The NGINX configuration for the app location using basic Authz with Authelia. Should be merged with `services.nginx.server.<name>.locations."/"`. Read only.'';
         };
       };
 

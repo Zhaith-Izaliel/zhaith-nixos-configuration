@@ -102,39 +102,6 @@
         };
       };
 
-      homarr = {
-        enable = true;
-
-        subdomain = "www";
-
-        volumes = let
-          rootVolume = "/mnt/datas/homarr";
-        in {
-          data = "${rootVolume}/data";
-          configs = "${rootVolume}/configs";
-          icons = "${rootVolume}/icons";
-        };
-
-        monitoring = {
-          enable = true;
-          volume = "/mnt/datas/homarr/dashdot";
-          settings = {
-            DASHDOT_ACCEPT_OOKLA_EULA = "true";
-          };
-        };
-
-        redirectMainDomainToHomarr = true;
-        redirectUndefinedSubdomainsToHomarr = true;
-
-        podmanIntegration = true;
-
-        authentication.OIDC = {
-          enable = true;
-          clientSecretFile = config.age.secrets."homarr/client-secret".path;
-          hashedClientSecret = "$pbkdf2-sha512$310000$mAOeO6UK9kaQuOf28KC4zA$DtgSi3a7LewcCcQiJXxulbWX8j8BWM08oZCGyolfM7bOJhmE.XjoZx6SLsXebsFHxpy.EYo3Utf4spDu7M9uCw";
-        };
-      };
-
       invoiceshelf = {
         enable = true;
         subdomain = "invoices";

@@ -61,12 +61,6 @@ in {
       mode = "770";
     };
 
-    "homarr/client-secret" = enableSecret "homarr" {
-      file = ./apps/homarr/client-secret.age;
-      group = config.hellebore.server.authelia.group;
-      mode = "770";
-    };
-
     "authelia/database-password" = enableSecret "authelia" {
       file = ./apps/authelia/database-password.age;
       owner = config.hellebore.server.authelia.user;

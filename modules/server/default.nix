@@ -6,7 +6,7 @@
     ./factorio.nix
     ./fail2ban.nix
     ./ghost.nix
-    ./homarr.nix
+    ./homepage.nix
     ./inadyn.nix
     ./invoiceshelf.nix
     ./jellyfin.nix

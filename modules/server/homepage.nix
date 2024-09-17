@@ -4,8 +4,9 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkOption types mkIf mkDefault;
+  inherit (lib) mkOption types mkIf mkDefault mkEnableOption;
   cfg = config.hellebore.server.homepage;
+  autheliaCfg = config.hellebore.server.authelia;
   domain = config.networking.domain;
 in {
   options.hellebore.server.homepage =
@@ -21,6 +22,12 @@ in {
           See https://gethomepage.dev/latest/installation/docker/#using-environment-secrets
         '';
       };
+
+      setDomainAsDefault =
+        mkEnableOption null
+        // {
+          description = "Wether to set the domain as the default domain for Nginx.";
+        };
 
       settings = {
         theme = mkOption {
@@ -81,13 +88,18 @@ in {
     };
 
     hellebore.server.nginx.enable = mkDefault true;
-    services.nginx.virtualHosts.${cfg.domain} = {
-      enableACME = true;
-      forceSSL = true;
+    services.nginx.virtualHosts.${cfg.domain} =
+      {
+        enableACME = true;
+        forceSSL = true;
+        default = cfg.setDomainAsDefault;
 
-      locations."/" = {
-        proxyPass = "http://localhost:${toString cfg.port}";
-      };
-    };
+        locations."/" =
+          {
+            proxyPass = "http://localhost:${toString cfg.port}";
+          }
+          // autheliaCfg.nginx.locationConfig;
+      }
+      // autheliaCfg.nginx.serverConfig;
   };
 }
