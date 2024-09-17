@@ -10,7 +10,7 @@ in {
   options.hellebore.tools.tasks = {
     enable = mkEnableOption "Hellebore's tasks management";
 
-    package = mkPackageOption pkgs "taskwarrior" {};
+    package = mkPackageOption pkgs "taskwarrior3" {};
   };
 
   config = mkIf cfg.enable {

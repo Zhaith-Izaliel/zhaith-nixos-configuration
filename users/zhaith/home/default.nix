@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) optional;
+  inherit (lib) optional getExe;
 in {
   hellebore = {
     theme.name = "catppuccin-macchiato";
@@ -17,12 +17,16 @@ in {
         enable = true;
         defaultEditor = true;
         settings = {
-          languages = {
+          languages = let
+            flakeUrl = "gitlab:Zhaith-Izaliel/zhaith-nixos-configuration/develop";
+            nixosConfigName = "Whispering-Willow";
+            homeConfigName = "zhaith@Whispering-Willow";
+          in {
             language-server.nixd.config.nixd = {
-              nixpkgs.expr = ''import (builtins.getFlake "gitlab:Zhaith-Izaliel/zhaith-nixos-configuration").inputs.nixpkgs-unstable {}'';
+              nixpkgs.expr = ''import (builtins.getFlake "${flakeUrl}").inputs.nixpkgs-unstable {}'';
               options = {
-                nixos.expr = ''(builtins.getFlake "gitlab:Zhaith-Izaliel/zhaith-nixos-configuration").nixosConfigurations.Whispering-Willow.options'';
-                home_manager.expr = ''(builtins.getFlake "gitlab:Zhaith-Izaliel/zhaith-nixos-configuration").homeConfigurations."zhaith@Whispering-Willow".options'';
+                nixos.expr = ''(builtins.getFlake "${flakeUrl}").nixosConfigurations.${nixosConfigName}.options'';
+                home_manager.expr = ''(builtins.getFlake "${flakeUrl}").homeConfigurations."${homeConfigName}".options'';
               };
             };
           };
@@ -63,7 +67,7 @@ in {
         };
 
         extraExecOnce = [
-          "[workspace 2 slient] firefoxpwa site launch 01J7XS0VJ6CNEKDAMPJAH4E77A"
+          "[workspace 2 slient] ${getExe pkgs.firefoxpwa} site launch 01J7XS0VJ6CNEKDAMPJAH4E77A"
         ];
 
         extraWindowRules = let
@@ -92,6 +96,12 @@ in {
             {
               regex = "class:(factorio).*";
               rules = gameRules;
+            }
+            {
+              regex = "class:(FFPWA-01J7XS0VJ6CNEKDAMPJAH4E77A)";
+              rules = [
+                "workspace 2"
+              ];
             }
           ]
           ++ optional os-config.hellebore.games.minecraft.enable {

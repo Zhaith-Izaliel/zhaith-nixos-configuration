@@ -109,9 +109,6 @@ in {
           (range 1 maxPersistentWorkspaces);
 
         windowrulev2 = flatten [
-          (mkWindowOrLayerRule "class:(FFPWA-01J70WV204N6ZMVFK3FM87JZRA)" [
-            "workspace 2"
-          ])
           (
             optionals config.hellebore.tools.discord.enable
             (mkWindowOrLayerRule "class:(discord|vesktop)" [
@@ -179,7 +176,7 @@ in {
           [
             "${getExe pkgs.swww} init"
             "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
-            "swayosd --max-volume 150"
+            # "swayosd --max-volume 150"
             # "${pkgs.wl-clipboard}/bin/wl-paste --watch ${getExe pkgs.cliphist} store"
             "hyprctl setcursor ${theme.gtk.cursorTheme.name} 32"
             (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
