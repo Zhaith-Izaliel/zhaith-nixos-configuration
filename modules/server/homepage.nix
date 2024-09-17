@@ -100,7 +100,7 @@ in {
       settings = {
         session.cookies = [
           {
-            domain = config.networking.domain;
+            domain = cfg.domain;
             authelia_url = "https://${config.hellebore.server.authelia.domain}";
             default_redirection_url = "https://${cfg.domain}/";
           }
