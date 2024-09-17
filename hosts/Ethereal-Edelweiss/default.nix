@@ -204,7 +204,6 @@
           config.hellebore.server.ghost.domain
           config.hellebore.server.outline.domain
           config.hellebore.server.authelia.domain
-          config.hellebore.server.homarr.domain
         ];
       in {
         enable = true;
