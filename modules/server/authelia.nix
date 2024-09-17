@@ -71,23 +71,11 @@
           proxy_set_header Remote-Email $email;
           proxy_set_header Remote-Name $name;
 
-          ## Configure the redirection when the authz failure occurs. Lines starting with 'Modern Method' and 'Legacy Method'
-          ## should be commented / uncommented as pairs. The modern method uses the session cookies configuration's authelia_url
-          ## value to determine the redirection URL here. It's much simpler and compatible with the mutli-cookie domain easily.
-
           ## Modern Method: Set the $redirection_url to the Location header of the response to the Authz endpoint.
           auth_request_set $redirection_url $upstream_http_location;
 
           ## Modern Method: When there is a 401 response code from the authz endpoint redirect to the $redirection_url.
           error_page 401 =302 $redirection_url;
-
-          ## Legacy Method: Set $target_url to the original requested URL.
-          ## This requires http_set_misc module, replace 'set_escape_uri' with 'set' if you don't have this module.
-          # set_escape_uri $target_url $scheme://$http_host$request_uri;
-
-          ## Legacy Method: When there is a 401 response code from the authz endpoint redirect to the portal with the 'rd'
-          ## URL parameter set to $target_url. This requires users update 'auth.ethereal-edelweiss.cloud/' with their external authelia URL.
-          # error_page 401 =302 https://auth.ethereal-edelweiss.cloud/?rd=$target_url;
         '';
       };
     };
