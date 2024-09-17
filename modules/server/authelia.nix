@@ -128,7 +128,7 @@ in {
       nginx = {
         serverConfig = mkOption {
           type = types.attrs;
-          default = nginxConfigs.autz.serverConfig;
+          default = nginxConfigs.authz.serverConfig;
           readOnly = true;
           description = "The NGINX configuration for locations using basic Authz with Authelia. Should be merged with `services.nginx.server.<name>`. Read only.";
         };
