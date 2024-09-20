@@ -36,9 +36,11 @@
         "--nested-refresh ${toString gameMonitor.refreshRate}"
         "--generate-drm-mode fixed"
         "--hdr-enabled"
-        "--backend sdl"
+        # "--backend sdl"
         "-w ${toString gameMonitor.width}"
         "-h ${toString gameMonitor.height}"
+        "-W ${toString gameMonitor.width}"
+        "-H ${toString gameMonitor.height}"
         "--steam"
       ]
       ++ optional config.programs.hyprland.enable "--expose-wayland"

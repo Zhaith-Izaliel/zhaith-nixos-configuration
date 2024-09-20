@@ -85,8 +85,14 @@
         enable = true;
         mods.enable = true;
       };
-      cartridges.enable = true;
-      lutris.enable = true;
+      cartridges = {
+        enable = true;
+        package = unstable-pkgs.cartridges;
+      };
+      lutris = {
+        enable = true;
+        package = unstable-pkgs.lutris;
+      };
       gamemode.enable = false;
       gamescope = {
         enable = true;
