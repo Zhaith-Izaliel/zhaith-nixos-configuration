@@ -96,18 +96,6 @@ in {
       };
     };
 
-    services.authelia.instances.${config.hellebore.server.authelia.instance} = {
-      settings = {
-        session.cookies = [
-          {
-            domain = cfg.domain;
-            authelia_url = "https://${config.hellebore.server.authelia.domain}";
-            default_redirection_url = "https://${cfg.domain}/";
-          }
-        ];
-      };
-    };
-
     hellebore.server.nginx.enable = mkDefault true;
     services.nginx.virtualHosts.${cfg.domain} =
       {

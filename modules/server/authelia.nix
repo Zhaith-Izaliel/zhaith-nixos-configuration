@@ -286,10 +286,21 @@ in {
 
           endpoints = {
             enable_pprof = false;
-
             enable_expvars = false;
-
-            authz.auth-request.implementation = "AuthRequest";
+            authz = {
+              auth-request = {
+                implementation = "AuthRequest";
+                authn_strategies = [
+                  {
+                    name = "HeaderAuthRequestProxyAuthorization";
+                    schemes = ["Bearer"];
+                  }
+                  {
+                    name = "CookieSession";
+                  }
+                ];
+              };
+            };
           };
 
           disable_healthcheck = false;
