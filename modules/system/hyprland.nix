@@ -36,6 +36,7 @@ in {
     environment.variables = mkIf cfg.renderingCards.enable {
       AQ_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
       # Change to WLR_DRM_DEVICES when on Wlroots
+      WLR_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
     };
 
     qt.enable = true;

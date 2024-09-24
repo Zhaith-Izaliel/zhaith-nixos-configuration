@@ -148,6 +148,7 @@
         subdomain = "mail";
         domains = [
           "ethereal-edelweiss.cloud"
+          "silvered-ivy.games"
         ];
         extraVirtualAliases = {
           "postmaster@ethereal-edelweiss.cloud" = "virgil.ribeyre@ethereal-edelweiss.cloud";
@@ -165,6 +166,7 @@
               "noreply@auth.ethereal-edelweiss.cloud"
               "noreply@ghost.ethereal-edelweiss.cloud"
               "noreply@outline.ethereal-edelweiss.cloud"
+              "noreply@nextcloud.ethereal-edelweiss.cloud"
             ];
           };
         };
@@ -220,20 +222,29 @@
           provider default@ovh.com {
             ssl         = true
             username    = ${domain}-zhaith
-            password    = "@password_placeholder@"
+            password    = "@ethereal_edelweiss_pass_placeholder@"
             hostname    = { ${lib.concatStringsSep ", " domains} }
           }
 
           provider default@ovh.com {
             ssl = true
             username = virgilribeyre.com-zhaith
-            password = "@password_placeholder@"
+            password = "@virgilribeyre_pass_placeholder@"
             hostname = { virgilribeyre.com }
+          }
+
+          provider default@ovh.com {
+            ssl = true
+            username = silvered-ivy.games-zhaith
+            password = "@silvered_ivy_pass_placeholder@"
+            hostname = { silvered-ivy.games }
           }
         '';
 
         passwords = {
-          "@password_placeholder@" = config.age.secrets.inadyn.path;
+          "@ethereal_edelweiss_pass_placeholder@" = config.age.secrets."inadyn/ethereal-edelweiss".path;
+          "@virgilribeyre_pass_placeholder@" = config.age.secrets."inadyn/virgilribeyre".path;
+          "@silvered_ivy_pass_placeholder@" = config.age.secrets."inadyn/silvered-ivy".path;
         };
       };
     };

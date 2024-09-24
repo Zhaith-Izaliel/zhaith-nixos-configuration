@@ -1344,11 +1344,11 @@
         "simple-completion-language-server": "simple-completion-language-server"
       },
       "locked": {
-        "lastModified": 1726126318,
-        "narHash": "sha256-OC1E8GbFhPSICT6neqUPc/d0vi/KXeOdjEEDeYl1eyU=",
+        "lastModified": 1727076548,
+        "narHash": "sha256-90GHA0wzuP9GoTKIgCzz2FaUrsY7eAC7F+NP+NCeaIc=",
         "owner": "Zhaith-Izaliel",
         "repo": "helix-config",
-        "rev": "ca8c2b4f593487218a72fed495f3947e7201b6e8",
+        "rev": "34ee8b7058da4726b468b481fcdd4b9d1eb55ce4",
         "type": "gitlab"
       },
       "original": {
