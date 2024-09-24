@@ -17,8 +17,16 @@ in {
       file = ./apps/invoiceshelf-env.age;
     };
 
-    inadyn = enableSecret "inadyn" {
-      file = ./services/inadyn.age;
+    "inadyn/silvered-ivy" = enableSecret "inadyn" {
+      file = ./services/inadyn/silvered-ivy.age;
+    };
+
+    "inadyn/virgilribeyre" = enableSecret "inadyn" {
+      file = ./services/inadyn/virgilribeyre.age;
+    };
+
+    "inadyn/ethereal-edelweiss" = enableSecret "inadyn" {
+      file = ./services/inadyn/ethereal-edelweiss.age;
     };
 
     radicale = enableSecret "radicale" {
