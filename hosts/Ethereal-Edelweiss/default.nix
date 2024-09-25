@@ -158,6 +158,9 @@
           "virgil.ribeyre@ethereal-edelweiss.cloud" = {
             hashedPasswordFile = config.age.secrets."mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud".path;
           };
+          "virgil.ribeyre@silvered-ivy.games" = {
+            hashedPasswordFile = config.age.secrets."mail-accounts/virgil-ribeyre-at-silvered-ivy-games".path;
+          };
           "noreply" = {
             name = "noreply@ethereal-edelweiss.cloud";
             hashedPasswordFile = config.age.secrets."mail-accounts/noreply-at-ethereal-edelweiss-cloud".path;

@@ -41,6 +41,12 @@ in {
       group = config.hellebore.server.mail.group;
     };
 
+    "mail-accounts/virgil-ribeyre-at-silvered-ivy-games" = enableSecret "mail" {
+      file = ./mail-accounts/virgil-ribeyre-at-silvered-ivy-games.age;
+      owner = config.hellebore.server.mail.user;
+      group = config.hellebore.server.mail.group;
+    };
+
     "mail-accounts/noreply-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
       file = ./mail-accounts/noreply-at-ethereal-edelweiss-cloud.age;
       owner = config.hellebore.server.mail.user;
