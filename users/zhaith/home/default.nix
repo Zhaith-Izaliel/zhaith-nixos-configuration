@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) optional getExe;
+  inherit (lib) optional;
 in {
   hellebore = {
     theme.name = "catppuccin-macchiato";
@@ -251,5 +251,9 @@ in {
         enable = true;
       };
     };
+  };
+
+  programs.vscode = {
+    enable = true; # TEMP: Only for Jupyter notebooks until I find a better solution
   };
 }
