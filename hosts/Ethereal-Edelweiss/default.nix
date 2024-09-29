@@ -23,7 +23,7 @@
   };
 
   users.extraUsers.lilith.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE72R8aIght+Ci0DjXvXJ4l1UZ2f7/phFHc5gfqJ16E4 virgil.ribeyre@protonmail.com"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE72R8aIght+Ci0DjXvXJ4l1UZ2f7/phFHc5gfqJ16E4 virgil.ribeyre@ethereal-edelweiss.cloud"
   ];
 
   hellebore = {
@@ -233,7 +233,7 @@
             ssl = true
             username = virgilribeyre.com-zhaith
             password = "@virgilribeyre_pass_placeholder@"
-            hostname = { virgilribeyre.com }
+            hostname = { virgilribeyre.com, www.virgilribeyre.com }
           }
 
           provider default@ovh.com {
