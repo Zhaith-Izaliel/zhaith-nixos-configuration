@@ -53,6 +53,12 @@ in {
       group = config.hellebore.server.mail.group;
     };
 
+    "mail-accounts/support-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
+      file = ./mail-accounts/support-at-ethereal-edelweiss-cloud.age;
+      owner = config.hellebore.server.mail.user;
+      group = config.hellebore.server.mail.group;
+    };
+
     "ghost/mail-password" = enableSecret "ghost" {
       file = ./apps/ghost/mail-password.age;
     };
