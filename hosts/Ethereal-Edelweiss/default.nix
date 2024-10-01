@@ -127,9 +127,9 @@
         volume = "/mnt/datas/ghost";
         dbPass = config.age.secrets."ghost/database-password".path;
         mail = {
-          username = "noreply";
+          username = "support";
           passwordFile = config.age.secrets."ghost/mail-password".path;
-          mail = "noreply@ghost.ethereal-edelweiss.cloud";
+          mail = "support@ghost.ethereal-edelweiss.cloud";
           host = config.mailserver.fqdn;
           secure = true;
           port = 465;
