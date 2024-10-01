@@ -150,24 +150,36 @@
           "ethereal-edelweiss.cloud"
           "silvered-ivy.games"
         ];
-        extraVirtualAliases = {
-          "postmaster@ethereal-edelweiss.cloud" = "virgil.ribeyre@ethereal-edelweiss.cloud";
-          "abuse@ethereal-edelweiss.cloud" = "virgil.ribeyre@ethereal-edelweiss.cloud";
-        };
         loginAccounts = {
           "virgil.ribeyre@ethereal-edelweiss.cloud" = {
             hashedPasswordFile = config.age.secrets."mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud".path;
+            aliases = [
+              "zhaith.izaliel@ethereal-edelweiss.cloud"
+            ];
           };
+
           "virgil.ribeyre@silvered-ivy.games" = {
             hashedPasswordFile = config.age.secrets."mail-accounts/virgil-ribeyre-at-silvered-ivy-games".path;
           };
+
+          "support" = {
+            name = "support@ethereal-edelweiss.cloud";
+            hashedPasswordFile = config.age.secrets."mail-accounts/support-at-ethereal-edelweiss-cloud".path;
+            aliases = [
+              "postmaster@ethereal-edelweiss.cloud"
+              "abuse@ethereal-edelweiss.cloud"
+
+              # App aliases
+              "support@ghost.ethereal-edelweiss.cloud"
+            ];
+          };
+
           "noreply" = {
             name = "noreply@ethereal-edelweiss.cloud";
             hashedPasswordFile = config.age.secrets."mail-accounts/noreply-at-ethereal-edelweiss-cloud".path;
             sendOnly = true;
             aliases = [
               "noreply@auth.ethereal-edelweiss.cloud"
-              "noreply@ghost.ethereal-edelweiss.cloud"
               "noreply@outline.ethereal-edelweiss.cloud"
               "noreply@nextcloud.ethereal-edelweiss.cloud"
             ];
