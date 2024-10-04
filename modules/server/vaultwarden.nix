@@ -4,15 +4,15 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkOption types mkIf cleanSource mkDefault mkEnableOption concatStringsSep;
+  inherit (lib) mkOption types mkIf mkDefault mkEnableOption concatStringsSep;
   cfg = config.hellebore.server.vaultwarden;
   domain = "${cfg.subdomain}.${config.networking.domain}";
 in {
   options.hellebore.server.vaultwarden =
     {
       backupDir = mkOption {
-        type = types.path;
-        default = cleanSource /var/vaultwarden/backup;
+        type = types.nullOr types.path;
+        default = null;
         description = "The directory under which vaultwarden will backup its persistent data.";
       };
 
@@ -90,10 +90,11 @@ in {
       config = {
         ROCKET_PORT = cfg.port;
         ROCKET_ADDRESS = "127.0.0.1";
-        PGHOST = "locahost";
-        PGPORT = toString config.services.postgresql.settings.port;
+        # PGHOST = "locahost";
+        # PGPORT = toString config.services.postgresql.settings.port;
         PGUSER = "vaultwarden";
         PGDATABASE = "vaultwarden";
+        DATABASE_URL = "postgres://localhost:${toString config.services.postgresql.settings.port}";
         SMTP_HOST = cfg.mail.host;
         SMTP_FROM = "Vaultwarden <${cfg.mail.mail}>";
         SMTP_PORT = toString cfg.mail.port;

@@ -97,7 +97,7 @@
           port = 465;
         };
 
-        backupDir = "/mnt/datas/vaultwarden.bak";
+        # backupDir = "/mnt/datas/vaultwarden.bak";
       };
 
       nextcloud = {
