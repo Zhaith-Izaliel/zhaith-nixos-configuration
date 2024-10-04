@@ -199,6 +199,7 @@
               "noreply@auth.ethereal-edelweiss.cloud"
               "noreply@outline.ethereal-edelweiss.cloud"
               "noreply@nextcloud.ethereal-edelweiss.cloud"
+              "noreply@vaultwarden.ethereal-edelweiss.cloud"
             ];
           };
         };
@@ -244,6 +245,7 @@
           config.hellebore.server.ghost.domain
           config.hellebore.server.outline.domain
           config.hellebore.server.authelia.domain
+          config.hellebore.server.vaultwarden.domain
         ];
       in {
         enable = true;

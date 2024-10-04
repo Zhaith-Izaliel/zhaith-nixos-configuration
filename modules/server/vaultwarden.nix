@@ -78,7 +78,7 @@ in {
     // extra-types.server-app {
       inherit domain;
       name = "Vaultwarden";
-      package = "vaultwarden";
+      package = "vaultwarden-postgresql";
       port = 8222;
     };
 
@@ -92,11 +92,10 @@ in {
         ROCKET_ADDRESS = "127.0.0.1";
         # PGHOST = "locahost";
         # PGPORT = toString config.services.postgresql.settings.port;
-        PGUSER = "vaultwarden";
-        PGDATABASE = "vaultwarden";
-        DATABASE_URL = "postgres://localhost:${toString config.services.postgresql.settings.port}";
+        DATABASE_URL = "postgresql://vaultwarden@localhost:${toString config.services.postgresql.settings.port}/vaultwarden";
+        DOMAIN = "https://${cfg.domain}";
         SMTP_HOST = cfg.mail.host;
-        SMTP_FROM = "Vaultwarden <${cfg.mail.mail}>";
+        SMTP_FROM = cfg.mail.mail;
         SMTP_PORT = toString cfg.mail.port;
         SMTP_SECURITY = cfg.mail.security;
         SMTP_USERNAME = cfg.mail.username;
