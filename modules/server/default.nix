@@ -18,6 +18,7 @@
     ./podman.nix
     ./postgresql.nix
     ./radicale.nix
+    ./vaultwarden.nix
     ./virgilribeyre-com.nix
   ];
 
