@@ -12,7 +12,7 @@ in {
     {
       backupDir = mkOption {
         type = types.path;
-        default = cleanSource /var/calibre/library;
+        default = cleanSource /var/vaultwarden/backup;
         description = "The directory under which vaultwarden will backup its persistent data.";
       };
 

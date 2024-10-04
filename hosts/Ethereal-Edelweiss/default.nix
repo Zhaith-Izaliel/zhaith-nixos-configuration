@@ -83,6 +83,23 @@
         };
       };
 
+      vaultwarden = {
+        enable = true;
+        subdomain = "vaultwarden";
+        registration.domainsWhitelist = [config.networking.domain];
+        secretEnvFile = config.age.secrets."vaultwarden/secret-env".path;
+
+        mail = {
+          username = "noreply";
+          mail = "noreply@vaultwarden.ethereal-edelweiss.cloud";
+          security = "force_tls";
+          host = config.mailserver.fqdn;
+          port = 465;
+        };
+
+        backupDir = "/mnt/datas/vaultwarden.bak";
+      };
+
       nextcloud = {
         enable = true;
         subdomain = "nextcloud";

@@ -35,6 +35,12 @@ in {
       group = "radicale";
     };
 
+    "vaultwarden/secret-env" = enableSecret "vaultwarden" {
+      file = ./apps/vaultwarden/secret-env.age;
+      owner = "vaultwarden";
+      group = "vaultwarden";
+    };
+
     "mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud" = enableSecret "mail" {
       file = ./mail-accounts/virgil-ribeyre-at-ethereal-edelweiss-cloud.age;
       owner = config.hellebore.server.mail.user;
