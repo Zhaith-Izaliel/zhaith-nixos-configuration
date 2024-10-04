@@ -143,7 +143,6 @@ in {
         };
 
         settings = {
-          enable = true;
           port = "80,443,${toString cfg.port}";
           banaction = "%(banaction_allports)s";
           backend = "systemd";
@@ -164,7 +163,6 @@ in {
         };
 
         settings = {
-          enable = true;
           port = "80,443";
           banaction = "%(banaction_allports)s";
           backend = "systemd";
