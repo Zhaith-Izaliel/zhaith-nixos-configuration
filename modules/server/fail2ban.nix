@@ -3,7 +3,7 @@
   lib,
   ...
 }: let
-  inherit (lib) mkIf mkEnableOption mkOption types;
+  inherit (lib) mkIf mkEnableOption mkOption types mkForce;
   cfg = config.hellebore.server.fail2ban;
 in {
   options.hellebore.server.fail2ban = {
@@ -11,7 +11,7 @@ in {
 
     maxretry = mkOption {
       type = types.ints.unsigned;
-      default = 5;
+      default = 3;
       description = "Defines the number of max retries before Fail2Ban bans the IP.";
     };
   };
@@ -27,6 +27,14 @@ in {
         "192.168.0.0/99"
         "8.8.8.8"
       ];
+
+      jails.DEFAULT = {
+        settings = {
+          maxretry = 3;
+          bantime = mkForce "10m";
+          findtime = 600;
+        };
+      };
     };
   };
 }

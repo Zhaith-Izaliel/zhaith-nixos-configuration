@@ -74,9 +74,6 @@ in {
           port = "smtp,submission,submissions";
           banaction = "%(banaction_allports)s";
           filter = ''postfix[mode=aggressive]'';
-          maxretry = 3;
-          bantime = 14400;
-          findtime = 14400;
         };
       };
 
@@ -85,9 +82,6 @@ in {
           port = "pop3,pop3s,imap,imaps";
           banaction = "%(banaction_allports)s";
           filter = ''dovecot[mode=aggressive]'';
-          maxretry = 3;
-          bantime = 14400;
-          findtime = 14400;
         };
       };
     };
