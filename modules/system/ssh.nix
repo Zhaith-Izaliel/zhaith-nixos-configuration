@@ -18,9 +18,11 @@ in {
 
   config = mkIf cfg.enable {
     services.openssh = {
-      inherit (cfg.openssh) ports;
+      inherit (cfg) ports;
       enable = true;
+
       openFirewall = true;
+
       settings = {
         PasswordAuthentication = false;
         LogLevel = "VERBOSE";
