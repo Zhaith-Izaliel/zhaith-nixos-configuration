@@ -53,7 +53,7 @@ in {
       hyprland = {
         enable = true;
 
-        input.mouse.scrollFactor = 1.0;
+        input.mouse.scrollFactor = 0.95;
 
         picture-in-picture = {
           enable = true;
@@ -197,6 +197,10 @@ in {
         package = pkgs.firefox-bin;
         profiles.zhaith.enable = true;
       };
+    };
+
+    ssh-agent = {
+      enable = true;
     };
 
     tools = {

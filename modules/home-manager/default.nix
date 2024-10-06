@@ -34,6 +34,7 @@
     ./development
     ./locale.nix
     ./shell
+    ./ssh.nix
     ./desktop-environment
     ./games.nix
     ./tools

@@ -319,10 +319,7 @@
 
     ssh = {
       enable = true;
-      openssh = {
-        enable = true;
-        ports = [4242];
-      };
+      ports = [4242];
     };
 
     power-management = {

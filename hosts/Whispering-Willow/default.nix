@@ -188,10 +188,6 @@
       enableDocumentation = true;
     };
 
-    ssh = {
-      enable = true;
-    };
-
     tex = {
       enable = true;
       scheme = "full";
