@@ -41,6 +41,8 @@ in {
 
     qt.enable = true;
 
+    services.dbus.packages = [pkgs.gcr];
+
     services.gvfs.enable = true;
 
     services.gnome.gnome-keyring.enable = true;
