@@ -15,8 +15,8 @@ in {
 
   imports = [
     ./bat.nix
-    ./git
     ./erd.nix
+    ./git
     ./tools.nix
   ];
 }

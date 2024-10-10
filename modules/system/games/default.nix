@@ -132,24 +132,21 @@ in {
       };
     };
 
-    environment.systemPackages = with pkgs;
-      [
+    environment.systemPackages =
+      (with pkgs; [
         wineWowPackages.stable
         wineWowPackages.unstableFull
         winetricks
-        game-run-script
-      ]
-      ++ optional cfg.steam.enable protontricks
+      ])
+      ++ [game-run-script]
+      ++ optional cfg.steam.enable pkgs.protontricks
       ++ optional cfg.heroic-launcher.enable cfg.heroic-launcher.package
       ++ optional cfg.cartridges.enable cfg.cartridges.package
       ++ optionals cfg.lutris.enable [
         cfg.lutris.package
-        dxvk
+        pkgs.dxvk
       ]
-      ++ optionals cfg.minecraft.enable
-      [
-        cfg.minecraft.package
-      ]
+      ++ optional cfg.minecraft.enable cfg.minecraft.package
       ++ optional cfg.minecraft.mods.enable cfg.minecraft.mods.package;
   };
 }

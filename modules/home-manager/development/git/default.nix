@@ -10,8 +10,8 @@
   theme = config.hellebore.theme.themes.${cfg.gitui.theme};
 in {
   imports = [
-    ./h.nix
     ./commitizen.nix
+    ./h.nix
   ];
 
   options.hellebore.development.git = {

@@ -31,13 +31,13 @@
     };
   };
   imports = [
+    ./desktop-environment
     ./development
+    ./games.nix
     ./locale.nix
+    ./multimedia
     ./shell
     ./ssh.nix
-    ./desktop-environment
-    ./games.nix
     ./tools
-    ./multimedia
   ];
 }

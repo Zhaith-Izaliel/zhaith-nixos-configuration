@@ -39,11 +39,11 @@ in {
     ./display-manager.nix
     ./fonts.nix
     ./games
+    ./graphics.nix
     ./hardware
     ./hyprland.nix
     ./locale.nix
     ./network.nix
-    ./graphics.nix
     ./power-management.nix
     ./power-profiles.nix
     ./shell.nix
