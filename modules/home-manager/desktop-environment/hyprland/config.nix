@@ -140,6 +140,14 @@ in {
             optionals config.hellebore.tools.discord.enable
             (mkWindowOrLayerRule "class:(discord|vesktop)" [
               "workspace 3"
+              "maximize"
+            ])
+          )
+          (
+            optionals config.hellebore.tools.slack.enable
+            (mkWindowOrLayerRule "class:(Slack)" [
+              "workspace 3"
+              "maximize"
             ])
           )
           (
@@ -216,6 +224,8 @@ in {
             #   "[workspace 2 silent] ${getExe config.hellebore.tools.affine.package}")
             (optionalString config.hellebore.tools.discord.enable
               "[workspace 3 silent] ${getExe config.hellebore.tools.discord.finalPackage}")
+            (optionalString config.hellebore.tools.discord.enable
+              "[workspace 3 silent] ${getExe config.hellebore.tools.slack.package}")
             (optionalString config.hellebore.desktop-environment.mail.enable
               "[workspace 4 silent] ${config.hellebore.desktop-environment.mail.bin}")
             (optionalString os-config.hellebore.games.cartridges.enable

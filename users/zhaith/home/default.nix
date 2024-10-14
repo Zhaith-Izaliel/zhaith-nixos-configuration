@@ -189,7 +189,7 @@ in {
 
       mail = {
         enable = true;
-        protonmail.enable = true;
+        # protonmail.enable = true;
       };
 
       browsers = {
@@ -209,6 +209,7 @@ in {
         enable = true;
         tts.enable = true;
       };
+      slack.enable = true;
       office.enable = true;
       tasks.enable = true;
       docs.enable = true;
