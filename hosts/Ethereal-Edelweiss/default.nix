@@ -228,6 +228,9 @@
       fail2ban = {
         enable = true;
         maxretry = 3;
+        extraIgnoreIP = [
+          "109.190.182.100/32"
+        ];
       };
 
       virgilribeyre-com.enable = true;

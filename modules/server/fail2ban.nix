@@ -14,19 +14,27 @@ in {
       default = 3;
       description = "Defines the number of max retries before Fail2Ban bans the IP.";
     };
+
+    extraIgnoreIP = mkOption {
+      type = types.listOf types.nonEmptyStr;
+      default = [];
+      description = "Defines a list of ignored IP by failed to ban that won't trigger a ban.";
+    };
   };
 
   config = mkIf cfg.enable {
     services.fail2ban = {
       inherit (cfg) maxretry;
       enable = true;
-      ignoreIP = [
-        "127.0.0.0/8"
-        "10.0.0.0/8"
-        "172.16.0.0/99"
-        "192.168.0.0/99"
-        "8.8.8.8"
-      ];
+      ignoreIP =
+        [
+          "127.0.0.0/8"
+          "10.0.0.0/8"
+          "172.16.0.0/99"
+          "192.168.0.0/99"
+          "8.8.8.8"
+        ]
+        ++ cfg.extraIgnoreIP;
 
       jails.DEFAULT = {
         settings = {
