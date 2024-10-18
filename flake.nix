@@ -71,16 +71,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # HACK: Using Wezterm nightly until they finish the wayland reimplementation.
     wezterm = {
-      url = "github:wez/wezterm?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      url = "github:wez/wezterm/30345b36d8a00fed347e4df5dadd83915a7693fb?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # # HACK: disable this until https://github.com/hyprwm/Hyprland/issues/5880 is fixed
-    # hyprland = {
-    #   url = "github:hyprwm/Hyprland/v0.39.1";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
 
     # Theme packages
     # NOTE: include them as "{theme-name}-{app-name}"
