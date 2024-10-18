@@ -2,15 +2,22 @@
   config,
   lib,
   pkgs,
+  unstable-pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf mkPackageOption;
+  inherit (lib) mkEnableOption mkIf mkPackageOption optional;
   cfg = config.hellebore.desktop-environment.browsers;
 in {
   options.hellebore.desktop-environment.browsers = {
     enable = mkEnableOption "Hellebore Browsers configuration";
 
     package = mkPackageOption pkgs "firefox" {};
+
+    progressiveWebApps = {
+      enable = mkEnableOption "PWA support in Firefox. You need to install the PWA extension on Firefox";
+
+      package = mkPackageOption unstable-pkgs "firefoxpwa" {};
+    };
 
     profiles.zhaith = {
       enable = mkEnableOption "Zhaith's Firefox profile";
@@ -20,16 +27,14 @@ in {
   config = mkIf cfg.enable {
     programs.chromium.enable = true;
 
-    home.packages = with pkgs; [
-      firefoxpwa
-    ];
+    home.packages = optional cfg.progressiveWebApps.enable cfg.progressiveWebApps.package;
 
     programs.firefox = {
       inherit (cfg) package;
 
       enable = true;
 
-      nativeMessagingHosts = [pkgs.firefoxpwa];
+      nativeMessagingHosts = optional cfg.progressiveWebApps.enable cfg.progressiveWebApps.package;
 
       profiles."zhaith" = mkIf cfg.profiles.zhaith.enable {
         isDefault = true;

@@ -68,7 +68,7 @@ in {
 
         progressiveWebApps = {
           outline = {
-            id = "01J7XS0VJ6CNEKDAMPJAH4E77A";
+            id = "01JAFZXMG3VF8E3XNXAJM4WQNE";
             execRules = [
               "workspace 2 silent"
             ];
@@ -196,6 +196,7 @@ in {
         enable = true;
         package = pkgs.firefox-bin;
         profiles.zhaith.enable = true;
+        progressiveWebApps.enable = true;
       };
     };
 
