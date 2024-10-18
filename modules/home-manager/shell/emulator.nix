@@ -3,6 +3,7 @@
   lib,
   pkgs,
   extra-types,
+  inputs,
   ...
 }: let
   inherit (lib) mkOption mkEnableOption getExe types mkIf mkPackageOption concatStringsSep optionalString;
@@ -10,7 +11,7 @@
   cfg = config.hellebore.shell.emulator;
   emulator-bin = pkgs.writeScriptBin "emulator-bin" ''
     # WAYLAND_DISPLAY=1
-    ${cfg.package}/bin/wezterm
+    ${getExe cfg.package}
   '';
   theme = config.hellebore.theme.themes.${cfg.theme}.wezterm;
 in {
