@@ -215,7 +215,13 @@
 
       factorio = {
         enable = false;
-        package = unstable-pkgs.factorio-headless;
+        package = unstable-pkgs.factorio-headless.overrideAttrs (final: prev: {
+          src = pkgs.fetchurl {
+            url = "https://factorio.com/get-download/2.0.8/headless/linux64";
+            name = "factorio_headless_x64-2.0.8.tar.xz";
+            sha256 = "1jp1vlc4indicgy0xnrxq87h32wcv9s4g2hqbfb4ygiaam6lqnfr";
+          };
+        });
         admins = [
           "Zhaith-Izaliel"
           "savaleinart"
