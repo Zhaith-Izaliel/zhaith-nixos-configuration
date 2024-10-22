@@ -15,8 +15,12 @@ in {
       group = "factorio";
     };
 
-    invoiceshelf-env = enableSecret "invoiceshelf" {
-      file = ./apps/invoiceshelf-env.age;
+    "invoiceshelf/secret-env" = enableSecret "invoiceshelf" {
+      file = ./apps/invoiceshelf/secret-env.age;
+    };
+
+    "invoiceshelf/mail-password" = enableSecret "invoiceshelf" {
+      file = ./apps/invoiceshelf/mail-password.age;
     };
 
     "inadyn/silvered-ivy" = enableSecret "inadyn" {

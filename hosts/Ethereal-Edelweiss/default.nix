@@ -60,6 +60,7 @@
         enable = true;
         subdomain = "enclosed";
         volume = "/mnt/datas/enclosed/volume";
+        secretEnvFile = config.age.secrets."enclosed/secret-env".path;
       };
 
       authelia = {
@@ -135,7 +136,15 @@
         enable = true;
         subdomain = "invoices";
         volume = "/mnt/datas/invoiceshelf/volume";
-        secretEnvFile = config.age.secrets.invoiceshelf-env.path;
+        secretEnvFile = config.age.secrets."invoiceshelf/secret-env".path;
+        mail = {
+          username = "noreply";
+          passwordFile = config.age.secrets."invoiceshelf/mail-password".path;
+          mail = "noreply@invoices.ethereal-edelweiss.cloud";
+          host = config.mailserver.fqdn;
+          encryption = "ssl";
+          port = 465;
+        };
       };
 
       jellyfin = {
@@ -206,6 +215,7 @@
               "noreply@outline.ethereal-edelweiss.cloud"
               "noreply@nextcloud.ethereal-edelweiss.cloud"
               "noreply@vaultwarden.ethereal-edelweiss.cloud"
+              "noreply@invoices.ethereal-edelweiss.cloud"
             ];
           };
         };

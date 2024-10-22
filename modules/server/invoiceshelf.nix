@@ -26,6 +26,49 @@ in {
           ```
         '';
       };
+
+      mail = {
+        username = mkOption {
+          default = "";
+          type = types.nonEmptyStr;
+          description = "The no-reply account username to send mail from.";
+        };
+
+        mail = mkOption {
+          default = "";
+          type = types.nonEmptyStr;
+          description = "The no-reply account mail address to send mail from.";
+        };
+
+        encryption = mkOption {
+          default = "none";
+          type = types.enum ["tls" "none" "ssl" "starttls"];
+          description = "The encryption level of the SMTP server.";
+        };
+
+        passwordFile = mkOption {
+          default = "";
+          type = types.path;
+          description = ''
+            The file containing the mail account password, in the form:
+            ```
+              password
+            ```
+          '';
+        };
+
+        port = mkOption {
+          type = types.ints.unsigned;
+          default = 25;
+          description = "The port of the mail server to use.";
+        };
+
+        host = mkOption {
+          type = types.nonEmptyStr;
+          default = "";
+          description = "The host of the mail server to use.";
+        };
+      };
     }
     // extra-types.server-app {
       inherit domain;
@@ -63,10 +106,18 @@ in {
           DB_DATABASE = cfg.database;
           DB_USERNAME = cfg.user;
           STARTUP_DELAY = "0";
+          MAIL_DRIVER = "smtp";
+          MAIL_HOST = cfg.mail.host;
+          MAIL_PORT = toString cfg.mail.port;
+          MAIL_USERNAME = cfg.mail.username;
+          MAIL_ENCRYPTION = cfg.mail.encryption;
+          MAIL_FROM_NAME = "Invoiceshelf";
+          MAIL_FROM_ADDRESS = cfg.mail.mail;
         };
 
         environmentFiles = [
           cfg.secretEnvFile
+          cfg.mail.passwordFile
         ];
 
         extraOptions = [
