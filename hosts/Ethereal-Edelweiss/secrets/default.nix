@@ -23,6 +23,10 @@ in {
       file = ./apps/invoiceshelf/mail-password.age;
     };
 
+    "enclosed/secret-env" = enableSecret "enclosed" {
+      file = ./apps/enclosed/secret-env.age;
+    };
+
     "inadyn/silvered-ivy" = enableSecret "inadyn" {
       file = ./services/inadyn/silvered-ivy.age;
     };

@@ -15,6 +15,19 @@ in {
         description = lib.mdDoc "Directory to store Invoiceshelf volume.";
         type = types.nonEmptyStr;
       };
+
+      secretEnvFile = mkOption {
+        default = "";
+        type = types.path;
+        description = ''
+          The env file containing the DB password, in the form:
+          ```
+          # Generated with
+          # `authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric`
+            AUTHENTICATION_JWT_SECRET="token"
+          ```
+        '';
+      };
     }
     // extra-types.server-app {
       inherit domain;
@@ -24,11 +37,15 @@ in {
 
   config = mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
-      invoiceshelf = {
+      enclosed = {
         image = "corentinth/enclosed";
 
         volumes = [
           "${cfg.volume}:/app/.data"
+        ];
+
+        environmentFiles = [
+          cfg.secretEnvFile
         ];
 
         ports = [
