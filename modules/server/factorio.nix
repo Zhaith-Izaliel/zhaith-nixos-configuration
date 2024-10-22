@@ -57,5 +57,29 @@ in {
         then []
         else builtins.map modToDrv modList;
     };
+
+    services.fail2ban.jails = {
+      factorio = {
+        filter = {
+          INCLUDES.before = "common.conf";
+
+          Definition = {
+            journalmatch = "_SYSTEMD_UNIT=factorio.service";
+            failregex = ''^.*Refusing connection for address \(IP ADDR:\(\{<HOST>.* PasswordMismatch.*$'';
+            ignoreregex = "";
+          };
+        };
+
+        settings = {
+          port = "${toString cfg.port}";
+          banaction = "%(banaction_allports)s";
+          backend = "systemd";
+          filter = "factorio";
+          maxretry = 3;
+          bantime = 14400;
+          findtime = 14400;
+        };
+      };
+    };
   };
 }

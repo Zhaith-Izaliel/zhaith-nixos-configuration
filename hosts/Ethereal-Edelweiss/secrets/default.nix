@@ -11,6 +11,8 @@ in {
   age.secrets = {
     factorio = enableSecret "factorio" {
       file = ./apps/factorio.age;
+      owner = "factorio";
+      group = "factorio";
     };
 
     invoiceshelf-env = enableSecret "invoiceshelf" {

@@ -214,8 +214,10 @@
       };
 
       factorio = {
-        enable = false;
+        enable = true;
         package = unstable-pkgs.factorio-headless.overrideAttrs (final: prev: {
+          version = "2.0.8";
+
           src = pkgs.fetchurl {
             url = "https://factorio.com/get-download/2.0.8/headless/linux64";
             name = "factorio_headless_x64-2.0.8.tar.xz";
