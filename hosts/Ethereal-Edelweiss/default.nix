@@ -214,15 +214,14 @@
       };
 
       factorio = {
-        enable = true;
-        subdomain = "factorio";
+        enable = false;
         package = unstable-pkgs.factorio-headless;
         admins = [
           "Zhaith-Izaliel"
           "savaleinart"
         ];
         extraSettingsFile = config.age.secrets.factorio.path;
-        game-name = "Modded Maxime-Virgil";
+        game-name = "Cracktorio: Space Age";
       };
 
       fail2ban = {
