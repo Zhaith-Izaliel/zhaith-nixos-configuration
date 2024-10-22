@@ -56,6 +56,12 @@
         setDomainAsDefault = true;
       };
 
+      enclosed = {
+        enable = true;
+        subdomain = "enclosed";
+        volume = "/mnt/datas/enclosed/volume";
+      };
+
       authelia = {
         enable = true;
         package = unstable-pkgs.authelia;
@@ -256,6 +262,7 @@
           config.hellebore.server.outline.domain
           config.hellebore.server.authelia.domain
           config.hellebore.server.vaultwarden.domain
+          config.hellebore.server.enclosed.domain
         ];
       in {
         enable = true;

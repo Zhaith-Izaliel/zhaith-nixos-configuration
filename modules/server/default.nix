@@ -3,6 +3,7 @@
     ./acme.nix
     ./authelia.nix
     ./calibre.nix
+    ./enclosed.nix
     ./factorio.nix
     ./fail2ban.nix
     ./ghost.nix
