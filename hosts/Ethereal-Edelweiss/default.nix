@@ -243,6 +243,7 @@
         admins = [
           "Zhaith-Izaliel"
           "savaleinart"
+          "Nelyth"
         ];
         extraSettingsFile = config.age.secrets.factorio.path;
         game-name = "Cracktorio: Space Age";
