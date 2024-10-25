@@ -58,6 +58,12 @@ in {
         else builtins.map modToDrv modList;
     };
 
+    users.users."factorio" = {
+      isSystemUser = true;
+      group = "factorio";
+    };
+    users.groups."factorio" = {};
+
     services.fail2ban.jails = {
       factorio = {
         filter = {

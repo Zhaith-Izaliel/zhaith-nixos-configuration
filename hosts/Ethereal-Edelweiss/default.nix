@@ -231,13 +231,13 @@
 
       factorio = {
         enable = true;
-        package = unstable-pkgs.factorio-headless.overrideAttrs (final: prev: {
-          version = "2.0.8";
+        package = unstable-pkgs.factorio-headless.overrideAttrs (final: prev: rec {
+          version = "2.0.10";
 
           src = pkgs.fetchurl {
-            url = "https://factorio.com/get-download/2.0.8/headless/linux64";
-            name = "factorio_headless_x64-2.0.8.tar.xz";
-            sha256 = "1jp1vlc4indicgy0xnrxq87h32wcv9s4g2hqbfb4ygiaam6lqnfr";
+            url = "https://factorio.com/get-download/${version}/headless/linux64";
+            name = "factorio_headless_x64-${version}.tar.xz";
+            sha256 = "sha256-LX3SEvpvcVIYpeM7rX1ZOviZj6e/fOcnNDFZ7h+MI/Q=";
           };
         });
         admins = [
