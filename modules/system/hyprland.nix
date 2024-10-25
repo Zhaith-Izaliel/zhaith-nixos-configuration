@@ -37,6 +37,7 @@ in {
       AQ_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
       # Change to WLR_DRM_DEVICES when on Wlroots
       WLR_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
+      NIXOS_OZONE_WL = "1";
     };
 
     qt.enable = true;

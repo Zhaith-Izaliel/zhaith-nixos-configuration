@@ -125,7 +125,7 @@
 
         #     patches = [rcu_patch];
         #   };
-        power-management.enable = true;
+        # power-management.enable = true;
         modesetting.enable = true;
         deviceFilterName = "RTX 3060";
         open = false;
