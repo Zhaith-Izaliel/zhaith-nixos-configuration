@@ -232,12 +232,12 @@
       factorio = {
         enable = true;
         package = unstable-pkgs.factorio-headless.overrideAttrs (final: prev: rec {
-          version = "2.0.12";
+          version = "2.0.13";
 
           src = pkgs.fetchurl {
             url = "https://factorio.com/get-download/${version}/headless/linux64";
             name = "factorio_headless_x64-${version}.tar.xz";
-            sha256 = "0ccd92a4znvmmbh0lf664dikqay807dw88ims5742r3swbjj1y6j";
+            sha256 = "1lf74md41gb9fcy9cmnihfgplv1c2j30532153gklncylc0nkcr7";
           };
         });
         admins = [
