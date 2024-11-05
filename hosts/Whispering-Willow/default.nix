@@ -37,6 +37,8 @@
     KERNEL=="card*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x10de", ATTRS{device}=="0x2520", SYMLINK+="dri/by-name/nvidia-geforce-rtx-3060-mobile"
   '';
 
+  services.teamviewer.enable = true;
+
   hellebore = {
     font.size = 12;
 
