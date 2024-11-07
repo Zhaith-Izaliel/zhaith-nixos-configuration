@@ -4,16 +4,16 @@
   extra-types,
   ...
 }: let
-  inherit (lib) mkOption types mkIf cleanSource mkDefault toUpper;
+  inherit (lib) mkOption types mkIf mdDoc mkDefault toUpper;
   cfg = config.hellebore.server.mealie;
   domain = "${cfg.subdomain}.${config.networking.domain}";
 in {
   options.hellebore.server.mealie =
     {
-      library = mkOption {
-        type = types.path;
-        default = cleanSource /var/calibre/library;
-        description = "";
+      storagePath = mkOption {
+        default = "/var/lib/mealie";
+        description = mdDoc "Directory to store Invoiceshelf volume.";
+        type = types.nonEmptyStr;
       };
 
       secretEnvFile = mkOption {
@@ -105,6 +105,9 @@ in {
       credentialsFile = cfg.secretEnvFile;
       settings = {
         TZ = config.time.timeZone;
+        DATA_DIR = cfg.storagePath;
+        CRF_MODEL_PATH = "${cfg.storagePath}/model.crfmodel";
+        ALLOW_SIGNUP = "false";
         DB_ENGINE = "postgres";
         POSTGRES_USER = cfg.user;
         POSTGRES_SERVER = "localhost";
@@ -114,7 +117,7 @@ in {
         SMTP_PORT = cfg.mail.port;
         SMTP_FROM_NAME = "Mealie";
         SMTP_FROM_EMAIL = cfg.mail.mail;
-        SMTP_USER = cfg.mail.user;
+        SMTP_USER = cfg.mail.username;
         SMTP_AUTH_STRATEGY = toUpper cfg.mail.encryption;
         OIDC_AUTH_ENABLED = "true";
         OIDC_SIGNUP_ENABLED = "true";
@@ -126,7 +129,7 @@ in {
       };
     };
 
-    systemd.services.mealie = {
+    systemd.services.mealie.serviceConfig = {
       User = cfg.user;
       Group = cfg.group;
     };
@@ -183,9 +186,9 @@ in {
           ensureDBOwnership = true;
         }
       ];
-      authentication = ''
-        host ${cfg.database} ${cfg.user} 127.0.0.1 md5
-      '';
+      # authentication = ''
+      #   host ${cfg.database} ${cfg.user} 127.0.0.1 md5
+      # '';
     };
   };
 }

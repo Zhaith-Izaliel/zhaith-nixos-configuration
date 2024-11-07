@@ -23,7 +23,7 @@ in {
     {
       storagePath = mkOption {
         default = "/var/lib/outline/data";
-        description = mdDoc "Directory to store Invoiceshelf volume.";
+        description = mdDoc "Directory to store the Outline volume.";
         type = types.nonEmptyStr;
       };
 

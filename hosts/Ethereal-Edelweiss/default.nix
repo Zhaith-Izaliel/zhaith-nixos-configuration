@@ -133,9 +133,10 @@
       };
 
       mealie = {
-        enable = true;
+        enable = false;
         subdomain = "mealie";
         secretEnvFile = config.age.secrets."mealie/secret-env".path;
+        # storagePath = "/mnt/datas/mealie/data";
 
         authentication.OIDC = {
           hashedClientSecret = "$pbkdf2-sha512$310000$BLpApuMTaOw4nDHZWUlz2A$m8pBnPq5t0IbYF7iQm2R/X2kuM/uoYfg1IEsCJyBzFqLphYzCENcvSvifck0K6QUkrfYgjNz8rv5u8OQQjO1Pw";

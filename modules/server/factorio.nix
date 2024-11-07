@@ -66,7 +66,7 @@ in {
     };
     users.groups.${cfg.group} = {};
 
-    systemd.services.factorio = {
+    systemd.services.factorio.serviceConfig = {
       User = cfg.user;
       Group = cfg.group;
     };
