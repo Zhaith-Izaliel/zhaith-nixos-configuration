@@ -135,7 +135,6 @@
       mealie = {
         enable = true;
         subdomain = "mealie";
-        storagePath = "/mnt/datas/mealie/data";
         secretEnvFile = config.age.secrets."mealie/secret-env".path;
 
         authentication.OIDC = {

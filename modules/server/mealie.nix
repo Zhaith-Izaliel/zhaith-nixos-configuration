@@ -104,6 +104,7 @@ in {
       enable = true;
       credentialsFile = cfg.secretEnvFile;
       settings = {
+        TZ = config.time.timeZone;
         DB_ENGINE = "postgres";
         POSTGRES_USER = cfg.user;
         POSTGRES_SERVER = "localhost";
