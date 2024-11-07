@@ -53,7 +53,7 @@ in {
       hyprland = {
         enable = true;
 
-        input.mouse.scrollFactor = 0.95;
+        input.mouse.scrollFactor = 0.85;
 
         picture-in-picture = {
           enable = true;
