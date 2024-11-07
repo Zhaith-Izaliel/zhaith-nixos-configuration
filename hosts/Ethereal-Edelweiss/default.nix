@@ -132,6 +132,25 @@
         };
       };
 
+      mealie = {
+        enable = true;
+        subdomain = "mealie";
+        storagePath = "/mnt/datas/mealie/data";
+        secretEnvFile = config.age.secrets."mealie/secret-env".path;
+
+        authentication.OIDC = {
+          hashedClientSecret = "$pbkdf2-sha512$310000$BLpApuMTaOw4nDHZWUlz2A$m8pBnPq5t0IbYF7iQm2R/X2kuM/uoYfg1IEsCJyBzFqLphYzCENcvSvifck0K6QUkrfYgjNz8rv5u8OQQjO1Pw";
+        };
+
+        mail = {
+          username = "noreply";
+          mail = "noreply@mealie.ethereal-edelweiss.cloud";
+          host = config.mailserver.fqdn;
+          encryption = "ssl";
+          port = 465;
+        };
+      };
+
       invoiceshelf = {
         enable = true;
         subdomain = "invoices";
@@ -216,6 +235,7 @@
               "noreply@nextcloud.ethereal-edelweiss.cloud"
               "noreply@vaultwarden.ethereal-edelweiss.cloud"
               "noreply@invoices.ethereal-edelweiss.cloud"
+              "noreply@mealie.ethereal-edelweiss.cloud"
             ];
           };
         };
@@ -274,6 +294,7 @@
           config.hellebore.server.authelia.domain
           config.hellebore.server.vaultwarden.domain
           config.hellebore.server.enclosed.domain
+          config.hellebore.server.mealie.domain
         ];
       in {
         enable = true;

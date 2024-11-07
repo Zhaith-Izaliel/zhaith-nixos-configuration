@@ -13,6 +13,7 @@
     ./jellyfin.nix
     ./mailserver.nix
     ./mariadb.nix
+    ./mealie.nix
     ./nextcloud.nix
     ./nginx.nix
     ./outline.nix

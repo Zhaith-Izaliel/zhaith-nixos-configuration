@@ -43,6 +43,8 @@ in {
     // extra-types.server-app {
       name = "Factorio Server";
       package = "factorio-headless";
+      user = "factorio";
+      group = "factorio";
       port = 34197;
     };
 
@@ -58,11 +60,16 @@ in {
         else builtins.map modToDrv modList;
     };
 
-    users.users."factorio" = {
+    users.users.${cfg.user} = {
       isSystemUser = true;
-      group = "factorio";
+      group = cfg.group;
     };
-    users.groups."factorio" = {};
+    users.groups.${cfg.group} = {};
+
+    systemd.services.factorio = {
+      User = cfg.user;
+      Group = cfg.group;
+    };
 
     services.fail2ban.jails = {
       factorio = {
