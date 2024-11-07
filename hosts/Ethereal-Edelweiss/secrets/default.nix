@@ -11,8 +11,8 @@ in {
   age.secrets = {
     factorio = enableSecret "factorio" {
       file = ./apps/factorio.age;
-      owner = "factorio";
-      group = "factorio";
+      owner = config.hellebore.server.factorio.user;
+      group = config.hellebore.server.factorio.group;
     };
 
     "invoiceshelf/secret-env" = enableSecret "invoiceshelf" {
@@ -25,6 +25,12 @@ in {
 
     "enclosed/secret-env" = enableSecret "enclosed" {
       file = ./apps/enclosed/secret-env.age;
+    };
+
+    "mealie/secret-env" = enableSecret "mealie" {
+      file = ./apps/mealie/secret-env.age;
+      owner = config.hellebore.server.mealie.user;
+      group = config.hellebore.server.mealie.group;
     };
 
     "inadyn/silvered-ivy" = enableSecret "inadyn" {
