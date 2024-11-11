@@ -240,12 +240,18 @@ in {
         };
         h.enable = true;
       };
+
       bat.enable = true;
+
       tools = {
         enable = true;
         direnv = {
           enable = true;
         };
+      };
+
+      game-development = {
+        godot.enable = true;
       };
     };
 

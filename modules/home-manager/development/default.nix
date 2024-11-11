@@ -1,13 +1,9 @@
-{
-  config,
-  lib,
-  ...
-}: let
-  cfg = config.hellebore.development;
+{lib, ...}: let
+  inherit (lib) mkOption types;
 in {
   options.hellebore.development = {
-    codeDirectory = lib.mkOption {
-      type = lib.types.nonEmptyStr;
+    codeDirectory = mkOption {
+      type = types.nonEmptyStr;
       default = "~/Development";
       description = "Define the directory containing all your source codes.";
     };
@@ -16,6 +12,7 @@ in {
   imports = [
     ./bat.nix
     ./erd.nix
+    ./game-development
     ./git
     ./tools.nix
   ];
