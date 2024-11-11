@@ -210,7 +210,7 @@ in {
         enable = true;
         tts.enable = true;
       };
-      slack.enable = true;
+      # slack.enable = true;
       office.enable = true;
       tasks.enable = true;
       docs.enable = true;

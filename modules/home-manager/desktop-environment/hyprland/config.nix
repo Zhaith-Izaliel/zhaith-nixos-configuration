@@ -138,10 +138,12 @@ in {
         windowrulev2 = flatten [
           (
             optionals config.hellebore.tools.discord.enable
-            (mkWindowOrLayerRule "class:(discord|vesktop)" [
-              "workspace 3"
-              "maximize"
-            ])
+            (
+              mkWindowOrLayerRule "class:(discord|vesktop)" [
+                "workspace 3"
+              ]
+              ++ (optional config.hellebore.tools.slack.enable "maximize")
+            )
           )
           (
             optionals config.hellebore.tools.slack.enable
@@ -224,7 +226,7 @@ in {
             #   "[workspace 2 silent] ${getExe config.hellebore.tools.affine.package}")
             (optionalString config.hellebore.tools.discord.enable
               "[workspace 3 silent] ${getExe config.hellebore.tools.discord.finalPackage}")
-            (optionalString config.hellebore.tools.discord.enable
+            (optionalString config.hellebore.tools.slack.enable
               "[workspace 3 silent] ${getExe config.hellebore.tools.slack.package}")
             (optionalString config.hellebore.desktop-environment.mail.enable
               "[workspace 4 silent] ${config.hellebore.desktop-environment.mail.bin}")
