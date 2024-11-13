@@ -27,12 +27,13 @@
 
   moduleSettings = {
     appConfig = {
+      disableConfiguration = true;
       auth = {
         enableOidc = true;
         oidc = {
           clientId = cfg.domain;
-          endpoint = "https://${autheliaCfg.domain}/api/oidc/authorization";
-          scope = cfg.authentication.OIDC.scopes;
+          endpoint = "https://${autheliaCfg.domain}";
+          scope = concatStringsSep " " cfg.authentication.OIDC.scopes;
         };
       };
     };
@@ -132,9 +133,9 @@ in {
           default = [
             "openid"
             "profile"
-            "roles"
             "email"
             "groups"
+            "roles"
           ];
           readOnly = true;
           type = types.listOf types.nonEmptyStr;
@@ -177,7 +178,7 @@ in {
         };
 
         volumes = [
-          "${cfg.volume}:/user-data"
+          "${configLocation}:/app/user-data/conf.yml"
         ];
 
         ports = [

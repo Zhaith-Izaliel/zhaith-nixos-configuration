@@ -430,7 +430,7 @@ in {
 
             cors = {
               endpoints = ["authorization" "token" "revocation" "introspection" "userinfo"];
-              allowed_origins = ["https://${cfg.domain}"];
+              allowed_origins = ["*"];
               allowed_origins_from_client_redirect_uris = false;
             };
           };
