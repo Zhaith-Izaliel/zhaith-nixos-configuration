@@ -50,12 +50,6 @@
 
       nginx.enable = true;
 
-      homepage = {
-        enable = true;
-        subdomain = "www";
-        setDomainAsDefault = true;
-      };
-
       enclosed = {
         enable = true;
         subdomain = "enclosed";
@@ -170,6 +164,13 @@
         enable = true;
         group = "nextcloud";
         subdomain = "jellyfin";
+      };
+
+      dashy = {
+        enable = true;
+        setDomainAsDefault = true;
+        volume = "/mnt/datas/dashy";
+        subdomain = "www";
       };
 
       ghost = {

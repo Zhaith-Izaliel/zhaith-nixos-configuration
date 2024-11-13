@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkIf types mkOption mkDefault getExe concatStringsSep mapAttrsToList recursiveUpdate;
+  inherit (lib) mkIf types mkOption mkDefault getExe concatStringsSep mapAttrsToList recursiveUpdate mkEnableOption;
   cfg = config.hellebore.server.dashy;
   autheliaCfg = config.hellebore.server.authelia;
   domain = "${cfg.subdomain}.${config.networking.domain}";
@@ -57,6 +57,12 @@ in {
         default = {};
         description = "Configuration for Dashy written as yaml in the corresponding `configLocation`.";
       };
+
+      setDomainAsDefault =
+        mkEnableOption null
+        // {
+          description = "Wether to set the domain as the default domain for Nginx.";
+        };
 
       authentication.OIDC = {
         scopes = mkOption {
@@ -209,6 +215,7 @@ in {
     services.nginx.virtualHosts.${cfg.domain} = {
       forceSSL = true;
       enableACME = true;
+      default = cfg.setDomainAsDefault;
       locations = {
         "/" = {
           proxyPass = "http://localhost:${toString cfg.port}";
