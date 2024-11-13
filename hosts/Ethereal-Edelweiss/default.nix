@@ -284,18 +284,19 @@
         inherit (config.networking) domain;
         domains = [
           domain
-          config.hellebore.server.nextcloud.domain
-          config.hellebore.server.calibre-web.domain
-          config.hellebore.server.jellyfin.domain
-          config.hellebore.server.invoiceshelf.domain
-          config.hellebore.server.radicale.domain
-          config.hellebore.server.mail.domain
-          config.hellebore.server.ghost.domain
-          config.hellebore.server.outline.domain
           config.hellebore.server.authelia.domain
-          config.hellebore.server.vaultwarden.domain
+          config.hellebore.server.calibre-web.domain
+          config.hellebore.server.dashy.domain
           config.hellebore.server.enclosed.domain
+          config.hellebore.server.ghost.domain
+          config.hellebore.server.invoiceshelf.domain
+          config.hellebore.server.jellyfin.domain
+          config.hellebore.server.mail.domain
           config.hellebore.server.mealie.domain
+          config.hellebore.server.nextcloud.domain
+          config.hellebore.server.outline.domain
+          config.hellebore.server.radicale.domain
+          config.hellebore.server.vaultwarden.domain
         ];
       in {
         enable = true;

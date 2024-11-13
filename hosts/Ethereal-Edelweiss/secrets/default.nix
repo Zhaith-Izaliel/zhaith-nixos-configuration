@@ -89,14 +89,14 @@ in {
 
     "ghost/mail-password" = enableSecret "ghost" {
       file = ./apps/ghost/mail-password.age;
-      owner = config.hellebore.server.ghost.user;
-      group = config.hellebore.server.ghost.group;
+      # owner = config.hellebore.server.ghost.user;
+      # group = config.hellebore.server.ghost.group;
     };
 
     "ghost/database-password" = enableSecret "ghost" {
       file = ./apps/ghost/database-password.age;
-      owner = config.hellebore.server.ghost.user;
-      group = config.hellebore.server.ghost.group;
+      # owner = config.hellebore.server.ghost.user;
+      # group = config.hellebore.server.ghost.group;
     };
 
     "outline/client-secret" = enableSecret "outline" {

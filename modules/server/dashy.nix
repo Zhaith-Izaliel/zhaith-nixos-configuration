@@ -5,19 +5,23 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkIf types mkOption mkDefault getExe concatStringsSep mapAttrsToList recursiveUpdate mkEnableOption;
+  inherit (lib) mkIf types mkOption mkDefault getExe concatStringsSep mapAttrsToList recursiveUpdate mkEnableOption pipe;
   cfg = config.hellebore.server.dashy;
   autheliaCfg = config.hellebore.server.authelia;
   domain = "${cfg.subdomain}.${config.networking.domain}";
 
   yamlFormat = pkgs.formats.yaml {};
 
-  replace-secret = concatStringsSep "\n" (
-    mapAttrsToList (
-      name: value: ''${getExe pkgs.replace-secret} "${name}" "${value}" "${configLocation}"''
-    )
-    cfg.secrets
-  );
+  replace-secret =
+    if cfg.secrets == null
+    then ""
+    else
+      pipe cfg.secrets [
+        (mapAttrsToList (
+          name: value: ''${getExe pkgs.replace-secret} "${name}" "${value}" "${configLocation}"''
+        ))
+        (concatStringsSep "\n")
+      ];
 
   configLocation = "${cfg.volume}/conf.yml";
 
@@ -36,14 +40,11 @@
 
   finalConfig = yamlFormat.generate "dashy-conf.yml" (recursiveUpdate cfg.settings moduleSettings);
 
-  preStart =
-    if (cfg.secrets != null)
-    then ''
-      mkdir -p ${cfg.volume}
-      install --mode=600 --owner=1000 --group=root ${finalConfig} ${configLocation}
-      ${replace-secret}
-    ''
-    else "";
+  preStart = ''
+    mkdir -p ${cfg.volume}
+    install --mode=600 --owner=1000 --group=root "${finalConfig}" "${configLocation}"
+    ${replace-secret}
+  '';
 in {
   options.hellebore.server.dashy =
     {
@@ -54,33 +55,6 @@ in {
 
       settings = mkOption {
         type = yamlFormat.type;
-        default = {};
-        description = "Configuration for Dashy written as yaml in the corresponding `configLocation`.";
-      };
-
-      setDomainAsDefault =
-        mkEnableOption null
-        // {
-          description = "Wether to set the domain as the default domain for Nginx.";
-        };
-
-      authentication.OIDC = {
-        scopes = mkOption {
-          default = [
-            "openid"
-            "profile"
-            "roles"
-            "email"
-            "groups"
-          ];
-          readOnly = true;
-          type = types.listOf types.nonEmptyStr;
-          description = "The scope used in OIDC auth. Read-only.";
-        };
-      };
-
-      secrets = {
-        type = types.nullOr (types.attrsOf types.path);
         default = {
           pageInfo = {
             title = "Dashy";
@@ -144,7 +118,33 @@ in {
             }
           ];
         };
+        description = "Configuration for Dashy written as yaml in the corresponding `configLocation`.";
+      };
 
+      setDomainAsDefault =
+        mkEnableOption null
+        // {
+          description = "Wether to set the domain as the default domain for Nginx.";
+        };
+
+      authentication.OIDC = {
+        scopes = mkOption {
+          default = [
+            "openid"
+            "profile"
+            "roles"
+            "email"
+            "groups"
+          ];
+          readOnly = true;
+          type = types.listOf types.nonEmptyStr;
+          description = "The scope used in OIDC auth. Read-only.";
+        };
+      };
+
+      secrets = mkOption {
+        type = types.nullOr (types.attrsOf types.path);
+        default = null;
         description = ''
           Defines secrets for Dashy in the form `{ placeholder = "path/to/file" }` where:
           - `placeholder` corresponds to the placeholder used in your `settings` for the corresponding secrets, i.e. "@password_placeholder@"
@@ -176,12 +176,8 @@ in {
           NODE_ENV = "production";
         };
 
-        environmentFiles = [
-          cfg.secretEnvFile
-        ];
-
         volumes = [
-          "${cfg.configLocation}:/user-data"
+          "${cfg.volume}:/user-data"
         ];
 
         ports = [
@@ -189,16 +185,6 @@ in {
         ];
 
         log-driver = "journald";
-
-        extraOptions = [
-          "--health-cmd=[\"node\", \"/app/services/healthcheck\"]"
-          "--health-interval=1m30s"
-          "--health-retries=3"
-          "--health-start-period=40s"
-          "--health-timeout=10s"
-          "--network-alias=dashy"
-          "--network=dashy_default"
-        ];
       };
     };
 
