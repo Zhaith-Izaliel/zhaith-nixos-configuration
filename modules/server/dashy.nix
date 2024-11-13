@@ -1,0 +1,180 @@
+{
+  config,
+  lib,
+  extra-types,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkIf types mkOption mkDefault getExe concatStringsSep mapAttrsToList recursiveUpdate;
+  cfg = config.hellebore.server.dashy;
+  autheliaCfg = config.hellebore.server.authelia;
+  domain = "${cfg.subdomain}.${config.networking.domain}";
+
+  yamlFormat = pkgs.formats.yaml {};
+
+  replace-secret = concatStringsSep "\n" (
+    mapAttrsToList (
+      name: value: ''${getExe pkgs.replace-secret} "${name}" "${value}" "${configLocation}"''
+    )
+    cfg.secrets
+  );
+
+  configLocation = "${cfg.volume}/conf.yml";
+
+  moduleSettings = {
+    appConfig = {
+      auth = {
+        enableOidc = true;
+        oidc = {
+          clientId = cfg.domain;
+          endpoint = "https://${autheliaCfg.domain}/api/oidc/authorization";
+          scope = cfg.authentication.OIDC.scopes;
+        };
+      };
+    };
+  };
+
+  finalConfig = yamlFormat.generate "dashy-conf.yml" (recursiveUpdate cfg.settings moduleSettings);
+
+  preStart =
+    if (cfg.secrets != null)
+    then ''
+      mkdir -p ${cfg.volume}
+      install --mode=600 --owner=${cfg.user} --group=${cfg.group} ${finalConfig} ${configLocation}
+      ${replace-secret}
+    ''
+    else "";
+in {
+  options.hellebore.server.dashy =
+    {
+      volume = mkOption {
+        type = types.nonEmptyStr;
+        default = "/var/lib/dashy";
+      };
+
+      settings = mkOption {
+        type = yamlFormat.type;
+        default = {};
+        description = "Configuration for Dashy written as yaml in the corresponding `configLocation`.";
+      };
+
+      authentication.OIDC = {
+        scopes = mkOption {
+          default = [
+            "openid"
+            "profile"
+            "roles"
+            "email"
+            "groups"
+          ];
+          readOnly = true;
+          type = types.listOf types.nonEmptyStr;
+          description = "The scope used in OIDC auth. Read-only.";
+        };
+      };
+
+      secrets = {
+        type = types.nullOr (types.attrsOf types.path);
+        default = null;
+        description = ''
+          Defines secrets for Dashy in the form `{ placeholder = "path/to/file" }` where:
+          - `placeholder` corresponds to the placeholder used in your `settings` for the corresponding secrets, i.e. "@password_placeholder@"
+          - `path/to/file` corresponds to the file containing the secret. The file must be only readable for the user/group defined in the module.
+        '';
+      };
+    }
+    // extra-types.server-app {
+      inherit domain;
+      name = "Dashy";
+      user = "dashy";
+      group = "dashy";
+      port = 0661;
+    };
+
+  config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = autheliaCfg.enable;
+        message = "Authelia should be enabled and configured using its Hellebore's module for Dashy to work properly";
+      }
+    ];
+
+    virtualisation.oci-containers.containers = {
+      dashy = {
+        image = "lissy93/dashy";
+
+        environment = {
+          NODE_ENV = "production";
+        };
+
+        environmentFiles = [
+          cfg.secretEnvFile
+        ];
+
+        volumes = [
+          "${cfg.configLocation}:/user-data"
+        ];
+
+        ports = [
+          "${toString cfg.port}:8080/tcp"
+        ];
+
+        log-driver = "journald";
+
+        extraOptions = [
+          "--health-cmd=[\"node\", \"/app/services/healthcheck\"]"
+          "--health-interval=1m30s"
+          "--health-retries=3"
+          "--health-start-period=40s"
+          "--health-timeout=10s"
+          "--network-alias=dashy"
+          "--network=dashy_default"
+        ];
+      };
+    };
+
+    systemd.services.podman-dashy = {
+      inherit preStart;
+      serviceConfig = {
+        User = cfg.user;
+        Group = cfg.group;
+      };
+    };
+
+    hellebore.server.nginx.enable = mkDefault true;
+
+    services.nginx.virtualHosts.${cfg.domain} = {
+      forceSSL = true;
+      enableACME = true;
+      locations = {
+        "/" = {
+          proxyPass = "http://localhost:${toString cfg.port}";
+        };
+      };
+    };
+
+    services.authelia.instances.${autheliaCfg.instance} = {
+      settings = {
+        identity_providers = {
+          oidc = {
+            clients = [
+              {
+                client_id = cfg.domain;
+                client_name = "Dashy";
+                public = true;
+                authorization_policy = "two_factor";
+                redirect_uris = [
+                  "https://${cfg.domain}"
+                ];
+                grant_types = ["authorization_code"];
+                scopes = cfg.authentication.OIDC.scopes;
+                require_pkce = true;
+                pkce_challenge_method = "S256";
+              }
+            ];
+          };
+        };
+      };
+    };
+  };
+}
