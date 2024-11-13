@@ -35,14 +35,20 @@ in {
 
     "inadyn/silvered-ivy" = enableSecret "inadyn" {
       file = ./services/inadyn/silvered-ivy.age;
+      owner = config.hellebore.server.inadyn.user;
+      group = config.hellebore.server.inadyn.group;
     };
 
     "inadyn/virgilribeyre" = enableSecret "inadyn" {
       file = ./services/inadyn/virgilribeyre.age;
+      owner = config.hellebore.server.inadyn.user;
+      group = config.hellebore.server.inadyn.group;
     };
 
     "inadyn/ethereal-edelweiss" = enableSecret "inadyn" {
       file = ./services/inadyn/ethereal-edelweiss.age;
+      owner = config.hellebore.server.inadyn.user;
+      group = config.hellebore.server.inadyn.group;
     };
 
     radicale = enableSecret "radicale" {
@@ -83,10 +89,14 @@ in {
 
     "ghost/mail-password" = enableSecret "ghost" {
       file = ./apps/ghost/mail-password.age;
+      owner = config.hellebore.server.ghost.user;
+      group = config.hellebore.server.ghost.group;
     };
 
     "ghost/database-password" = enableSecret "ghost" {
       file = ./apps/ghost/database-password.age;
+      owner = config.hellebore.server.ghost.user;
+      group = config.hellebore.server.ghost.group;
     };
 
     "outline/client-secret" = enableSecret "outline" {

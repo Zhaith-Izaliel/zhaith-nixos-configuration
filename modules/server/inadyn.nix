@@ -28,7 +28,7 @@
     if (cfg.passwords != null)
     then ''
       mkdir -p "/run/inadyn"
-      install --mode=600 --owner=$USER ${configText} ${configFile}
+      install --mode=600 --owner=${cfg.user} --group=${cfg.group} ${configText} ${configFile}
       ${replace-secret}
     ''
     else "";
@@ -71,6 +71,18 @@ in {
       '';
     };
 
+    group = mkOption {
+      type = types.nonEmptyStr;
+      default = "inadyn";
+      description = "Defines the user group for Inadyn.";
+    };
+
+    user = mkOption {
+      type = types.nonEmptyStr;
+      default = "inadyn";
+      description = "Defines the user for Inadyn";
+    };
+
     extraArgs = mkOption {
       type = types.listOf types.str;
       default = [];
@@ -80,6 +92,13 @@ in {
   };
 
   config = mkIf cfg.enable {
+    users.users.${cfg.user} = {
+      isSystemUser = true;
+      group = cfg.group;
+    };
+
+    users.groups.${cfg.group} = {};
+
     systemd.services.inadyn = {
       description = "Internet Dynamic DNS Client";
       wantedBy = ["multi-user.target"];
@@ -89,7 +108,8 @@ in {
 
       serviceConfig = {
         Type = "simple";
-        User = "root";
+        User = cfg.user;
+        Group = cfg.group;
         ExecStartPre = "!${pkgs.writeShellScript "inadyn-prestart" preStart}";
         ExecStart = "${lib.getBin cfg.package}/bin/inadyn -f ${configFile} ${extraArgs}";
       };
