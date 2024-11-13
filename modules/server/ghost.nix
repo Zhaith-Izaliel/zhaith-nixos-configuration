@@ -62,7 +62,7 @@
 
   preStart = ''
     mkdir -p "${cfg.volume}"/{content,config}
-    install --mode=600 --owner=${cfg.user} --group=${cfg.group} "${finalConfig}" "${configLocation}"
+    install --mode=600 --owner=1000 "${finalConfig}" "${configLocation}"
     ${replace-secret}
   '';
 in {
@@ -192,8 +192,10 @@ in {
     systemd.services.podman-ghost = {
       inherit preStart;
       serviceConfig = {
-        User = cfg.user;
-        Group = cfg.group;
+        # User = cfg.user;
+        # Group = cfg.group;
+        Restart = "always";
+        # WorkingDirectory = "${cfg.volume}";
       };
     };
 
