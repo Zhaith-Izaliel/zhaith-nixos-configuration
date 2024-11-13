@@ -75,7 +75,70 @@ in {
 
       secrets = {
         type = types.nullOr (types.attrsOf types.path);
-        default = null;
+        default = {
+          pageInfo = {
+            title = "Dashy";
+            description = "Welcome to your new dashboard!";
+            navLinks = [
+              {
+                title = "GitHub";
+                path = "https://github.com/Lissy93/dashy";
+              }
+              {
+                title = "Documentation";
+                path = "https://dashy.to/docs";
+              }
+            ];
+          };
+          appConfig = {theme = "colorful";};
+          sections = [
+            {
+              name = "Getting Started";
+              icon = "fas fa-rocket";
+              items = [
+                {
+                  title = "Dashy Live";
+                  description = "Development a project management links for Dashy";
+                  icon = "https://i.ibb.co/qWWpD0v/astro-dab-128.png";
+                  url = "https://live.dashy.to/";
+                  target = "newtab";
+                }
+                {
+                  title = "GitHub";
+                  description = "Source Code, Issues and Pull Requests";
+                  url = "https://github.com/lissy93/dashy";
+                  icon = "favicon";
+                }
+                {
+                  title = "Docs";
+                  description = "Configuring & Usage Documentation";
+                  provider = "Dashy.to";
+                  icon = "far fa-book";
+                  url = "https://dashy.to/docs";
+                }
+                {
+                  title = "Showcase";
+                  description = "See how others are using Dashy";
+                  url = "https://github.com/Lissy93/dashy/blob/master/docs/showcase.md";
+                  icon = "far fa-grin-hearts";
+                }
+                {
+                  title = "Config Guide";
+                  description = "See full list of configuration options";
+                  url = "https://github.com/Lissy93/dashy/blob/master/docs/configuring.md";
+                  icon = "fas fa-wrench";
+                }
+                {
+                  title = "Support";
+                  description = "Get help with Dashy, raise a bug, or get in contact";
+                  url = "https://github.com/Lissy93/dashy/blob/master/.github/SUPPORT.md";
+                  icon = "far fa-hands-helping";
+                }
+              ];
+            }
+          ];
+        };
+
         description = ''
           Defines secrets for Dashy in the form `{ placeholder = "path/to/file" }` where:
           - `placeholder` corresponds to the placeholder used in your `settings` for the corresponding secrets, i.e. "@password_placeholder@"
