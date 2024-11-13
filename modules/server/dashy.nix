@@ -40,7 +40,7 @@
     if (cfg.secrets != null)
     then ''
       mkdir -p ${cfg.volume}
-      install --mode=600 --owner=${cfg.user} --group=${cfg.group} ${finalConfig} ${configLocation}
+      install --mode=600 --owner=1000 --group=root ${finalConfig} ${configLocation}
       ${replace-secret}
     ''
     else "";
@@ -198,10 +198,10 @@ in {
 
     systemd.services.podman-dashy = {
       inherit preStart;
-      serviceConfig = {
-        User = cfg.user;
-        Group = cfg.group;
-      };
+      # serviceConfig = {
+      #   User = cfg.user;
+      #   Group = cfg.group;
+      # };
     };
 
     hellebore.server.nginx.enable = mkDefault true;
