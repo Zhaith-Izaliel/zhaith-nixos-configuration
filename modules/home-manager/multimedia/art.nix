@@ -14,18 +14,19 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs;
-      [
+    home.packages =
+      (with pkgs; [
         inkscape
         gimp
         krita
         drawio
-      ]
+        aseprite
+      ])
       ++ optionals cfg.gmic.enable
-      [
+      (with pkgs; [
         gmic
         gmic-qt
         gimpPlugins.gmic
-      ];
+      ]);
   };
 }

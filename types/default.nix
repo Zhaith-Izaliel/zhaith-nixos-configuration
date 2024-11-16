@@ -113,7 +113,7 @@ in rec {
       default = themes;
       # TEMP: should be submodule, it's for testing purposes only
       type = types.attrsOf types.anything;
-      description = "The attribut set containing the theme elements. Read only.";
+      description = "The attributes set containing the theme elements. Read only.";
       readOnly = true;
     };
   };

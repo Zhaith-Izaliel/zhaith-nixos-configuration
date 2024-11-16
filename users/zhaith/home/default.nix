@@ -249,6 +249,10 @@ in {
           enable = true;
         };
       };
+
+      game-development = {
+        godot.enable = true;
+      };
     };
 
     shell = {

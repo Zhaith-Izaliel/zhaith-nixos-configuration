@@ -12,6 +12,7 @@ in {
   imports = [
     ./bat.nix
     ./erd.nix
+    ./game-development
     ./git
     ./tools.nix
   ];
