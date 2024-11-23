@@ -191,6 +191,11 @@ in {
 
     systemd.services.podman-dashy = {
       inherit preStart;
+
+      restartTriggers = [
+        finalConfig
+      ];
+
       # serviceConfig = {
       #   User = cfg.user;
       #   Group = cfg.group;
