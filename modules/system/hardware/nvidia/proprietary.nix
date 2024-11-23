@@ -63,14 +63,6 @@ in {
         message = "You must enable graphics support for Nvidia.";
       }
       {
-        assertion = config.hellebore.vm.enable -> cfg.forceWaylandOnMesa;
-        message = "Forcing wayland on Mesa is a required step if you're using a VM with GPU passthrough.";
-      }
-      {
-        assertion = cfg.prime.sync.enable -> !(cfg.forceWaylandOnMesa);
-        message = "You shouldn't force Wayland on Mesa when using PRIME Sync with Nvidia.";
-      }
-      {
         assertion = cfg.enable -> !config.hellebore.hardware.nvidia.nouveau.enable;
         message = "Nouveau and the proprietary Nvidia drivers are mutually exclusive, you should enable only one of them.";
       }
