@@ -9,4 +9,5 @@ in
   // {
     compose2nix = inputs.compose2nix.packages.${system}.default;
     wezterm = inputs.wezterm.packages.${system}.default;
+    umu = inputs.umu.packages.${system}.umu;
   }

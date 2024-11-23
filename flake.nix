@@ -31,6 +31,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    umu = {
+      url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging\/nix&submodules=1";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     compose2nix = {
       url = "github:aksiksi/compose2nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -114,8 +119,6 @@
 
   outputs = inputs @ {
     nixpkgs,
-    nixpkgs-unstable,
-    home-manager-unstable,
     grub2-themes,
     nix-alien,
     sddm-sugar-candy-nix,

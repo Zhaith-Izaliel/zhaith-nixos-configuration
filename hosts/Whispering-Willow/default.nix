@@ -100,6 +100,7 @@
         enable = true;
         capSysNice = true;
       };
+      umu.enable = true;
     };
 
     power-profiles.enable = true;

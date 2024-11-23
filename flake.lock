@@ -969,6 +969,7 @@
         "rofi-applets": "rofi-applets",
         "sddm-sugar-candy-nix": "sddm-sugar-candy-nix",
         "simple-nixos-mail-server": "simple-nixos-mail-server",
+        "umu": "umu",
         "virgilribeyre-com": "virgilribeyre-com",
         "virgutils": "virgutils",
         "wezterm": "wezterm",
@@ -1246,6 +1247,30 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
+      }
+    },
+    "umu": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "dir": "packaging/nix",
+        "lastModified": 1732337089,
+        "narHash": "sha256-dwFza03ETqrcmVGSCdgDDKTWKRgckpQ3vXkZRCYtM9g=",
+        "ref": "refs/heads/main",
+        "rev": "f6a6af3191f5497d95d8f8aaa08826a45da199c4",
+        "revCount": 842,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging/nix"
+      },
+      "original": {
+        "dir": "packaging/nix",
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging/nix"
       }
     },
     "utils": {

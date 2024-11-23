@@ -60,6 +60,12 @@ in {
       package = mkPackageOption pkgs "heroic" {};
     };
 
+    umu = {
+      enable = mkEnableOption "UMU, the unified launcher for Windows games on Linux";
+
+      package = mkPackageOption pkgs "umu" {};
+    };
+
     gamemode = {
       enable = mkEnableOption "Feral's Gamemode";
 
@@ -147,6 +153,7 @@ in {
         pkgs.dxvk
       ]
       ++ optional cfg.minecraft.enable cfg.minecraft.package
-      ++ optional cfg.minecraft.mods.enable cfg.minecraft.mods.package;
+      ++ optional cfg.minecraft.mods.enable cfg.minecraft.mods.package
+      ++ optional cfg.umu.enable cfg.umu.package;
   };
 }
