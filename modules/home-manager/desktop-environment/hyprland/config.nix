@@ -126,9 +126,18 @@ in {
 
         monitor = mkMonitors cfg.monitors;
 
-        env = [
-          "XCURSOR_SIZE,24"
-        ];
+        env =
+          [
+            "XCURSOR_SIZE,24"
+          ]
+          ++ optionals os-config.hellebore.hardware.nvidia.proprietary.prime.sync.enable [
+            "LIBVA_DRIVER_NAME,nvidia"
+            "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+          ];
+
+        cursor = {
+          no_hardware_cursors = true;
+        };
 
         workspace =
           map
