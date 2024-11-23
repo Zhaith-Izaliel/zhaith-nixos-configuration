@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./asus.nix
+    ./amd.nix
     ./bluetooth.nix
     ./gaming.nix
     ./graphics-tablet.nix
