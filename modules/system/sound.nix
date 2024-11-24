@@ -4,11 +4,27 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkIf mkEnableOption mkOption types mkPackageOption optionalAttrs mkMerge optionals;
+  inherit
+    (lib)
+    mkIf
+    mkEnableOption
+    mkOption
+    types
+    mkPackageOption
+    optionalAttrs
+    mkMerge
+    optionals
+    getExe
+    concatStringsSep
+    ;
+
   cfg = config.hellebore.sound;
   toPeriod = quantum: "${toString quantum}/${toString cfg.lowLatency.rate}";
   finalPackage = pkgs.pipewire.override (optionalAttrs cfg.soundSharing.enable {zeroconfSupport = true;});
   isSoundSharingSender = builtins.any (item: item == cfg.soundSharing.mode) ["sender" "both"];
+  screamExec = pkgs.writeScriptBin "scream-receiver" ''
+    ${getExe cfg.soundSharing.scream.package} -i ${cfg.soundSharing.scream.networkInterface} ${concatStringsSep " " cfg.soundSharing.scream.extraArgs}
+  '';
 in {
   options.hellebore.sound = {
     enable = mkEnableOption "Hellebore sound configuration";
@@ -49,7 +65,7 @@ in {
     };
 
     soundSharing = {
-      enable = mkEnableOption "sound sharing between computers over the network using pipewire-pulsaudio";
+      enable = mkEnableOption "sound sharing between Linux computers over the network using pipewire-pulseaudio";
 
       mode = mkOption {
         type = types.enum ["receiver" "sender" "both"];
@@ -61,6 +77,24 @@ in {
         type = types.nonEmptyStr;
         default = "";
         description = "The local IP address of the sender. It is only used when your machine is sending sound to the network.";
+      };
+
+      scream = {
+        enable = mkEnableOption "Scream, audio receiver for sharing sound between Linux and Windows";
+
+        package = mkPackageOption pkgs "scream" {};
+
+        networkInterface = mkOption {
+          type = types.nonEmptyStr;
+          default = "";
+          description = "The network interface on which Scream checks for";
+        };
+
+        extraArgs = mkOption {
+          type = types.listOf types.nonEmptyStr;
+          default = [];
+          description = "Extra arguments to append to Scream when it is running.";
+        };
       };
     };
   };
@@ -129,6 +163,32 @@ in {
               args = "module-zeroconf-publish";
             }
           ];
+      };
+    })
+
+    (mkIf (cfg.soundSharing.enable && cfg.soundSharing.scream.enable) {
+      users.users.scream = {
+        isSystemUser = true;
+        group = "scream";
+      };
+
+      users.groups.scream = {};
+
+      systemd.services.scream-receiver = {
+        description = "Receiver for Scream, a virtual network sound card for Microsoft Windows.";
+        wantedBy = ["multi-user.target"];
+        after = ["network-online.target" "sound.target"];
+        requires = ["network-online.target" "sound.target"];
+        restartTriggers = [
+          screamExec
+        ];
+
+        serviceConfig = {
+          Type = "simple";
+          User = cfg.user;
+          Group = cfg.group;
+          ExecStart = screamExec;
+        };
       };
     })
 
