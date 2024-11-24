@@ -11,6 +11,8 @@ in {
     enable = mkEnableOption "Bluetooth support";
 
     package = mkPackageOption pkgs "bluez" {};
+
+    enableExperimentalFeatures = mkEnableOption "Bluez Experimental Features";
   };
 
   config = mkIf cfg.enable {
@@ -18,6 +20,12 @@ in {
       inherit (cfg) package;
       enable = true;
       powerOnBoot = true;
+
+      settings = {
+        General = {
+          Experimental = cfg.enableExperimentalFeatures;
+        };
+      };
     };
   };
 }
