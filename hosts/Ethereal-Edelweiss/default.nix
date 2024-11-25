@@ -36,7 +36,7 @@
 
       acme = {
         enable = true;
-        email = "virgil.ribeyre@protonmail.com";
+        email = "support@ethereal-edelweiss.cloud";
       };
 
       postgresql = {
