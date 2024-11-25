@@ -14,6 +14,13 @@ in {
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = config.hellebore.graphics.enable;
+        message = "You must enable graphics support for AMD.";
+      }
+    ];
+
     environment.systemPackages = [cfg.package];
     systemd.packages = [cfg.package];
     systemd.services.lactd.wantedBy = ["multi-user.target"];
