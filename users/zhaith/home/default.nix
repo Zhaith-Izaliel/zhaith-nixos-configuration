@@ -189,7 +189,6 @@ in {
 
       mail = {
         enable = true;
-        # protonmail.enable = true;
       };
 
       browsers = {
@@ -263,9 +262,5 @@ in {
         enable = true;
       };
     };
-  };
-
-  programs.vscode = {
-    enable = true; # TEMP: Only for Jupyter notebooks until I find a better solution
   };
 }

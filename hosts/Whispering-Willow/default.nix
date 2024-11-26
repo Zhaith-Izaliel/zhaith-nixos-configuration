@@ -46,7 +46,7 @@
 
     monitors = [
       {
-        name = "eDP-1";
+        name = "eDP-2";
         width = 2560;
         height = 1440;
         refreshRate = 165;
@@ -80,50 +80,40 @@
 
     games = {
       enable = true;
-      steam = {
-        enable = true;
-      };
-      minecraft = {
-        enable = true;
-        mods.enable = true;
-      };
+
       cartridges = {
         enable = true;
         package = unstable-pkgs.cartridges;
       };
-      lutris = {
-        enable = true;
-        package = unstable-pkgs.lutris;
-      };
-      gamemode.enable = false;
+
       gamescope = {
         enable = true;
         capSysNice = true;
       };
+
+      lutris = {
+        enable = true;
+        package = unstable-pkgs.lutris;
+      };
+
+      minecraft = {
+        enable = true;
+        mods.enable = true;
+      };
+
+      moonlight.enable = true;
+
+      steam = {
+        enable = true;
+      };
+
       umu.enable = true;
     };
 
     power-profiles.enable = true;
 
     hardware = {
-      nvidia.nouveau.enable = false;
-      nvidia.proprietary = {
-        enable = true;
-        # package = config.boot.kernelPackages.nvidiaPackages.beta;
-        package = config.boot.kernelPackages.nvidiaPackages.legacy_535;
-        # power-management.enable = true;
-        modesetting.enable = true;
-        deviceFilterName = "RTX 3060";
-        open = false;
-        prime = {
-          offload.enable = true;
-          intelBusId = "PCI:0:2:0";
-          nvidiaBusId = "PCI:1:0:0";
-        };
-        # fixes = {
-        #   usbCDriversWronglyLoaded = true;
-        # };
-      };
+      nvidia.nouveau.enable = true;
 
       ntfs.enable = true;
 
@@ -227,43 +217,6 @@
         percentageCritical = 10;
         percentageAction = 5;
       };
-    };
-
-    vm = {
-      enable = false;
-
-      useSecureBoot = true;
-
-      cpuIsolation = {
-        totalCores = "0-15";
-        hostCores = "0-3,8-11";
-        variableName = "ISOLATE_CPUS";
-      };
-
-      name = "Luminous-Rafflesia";
-
-      pcisBinding = {
-        enableDynamicBinding = true;
-        vendorIds = [
-          "10de:2520" # GPU
-          "10de:228e" # Audio
-        ];
-      };
-
-      username = "zhaith";
-    };
-  };
-  specialisation = {
-    hdmi.configuration.hellebore = {
-      hardware.nvidia = {
-        nouveau.enable = lib.mkForce true;
-        proprietary.enable = lib.mkForce false;
-      };
-
-      hyprland.renderingCards.defaultCards = lib.mkForce [
-        "/dev/dri/by-name/intel-tigerlake-h-gt1"
-        "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
-      ];
     };
   };
 

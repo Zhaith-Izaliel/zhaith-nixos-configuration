@@ -66,6 +66,12 @@ in {
       package = mkPackageOption pkgs "umu" {};
     };
 
+    moonlight = {
+      enable = mkEnableOption "Moonlight, a GameStream client for PCs.";
+
+      package = mkPackageOption pkgs "moonlight-qt" {};
+    };
+
     gamemode = {
       enable = mkEnableOption "Feral's Gamemode";
 
@@ -154,6 +160,7 @@ in {
       ]
       ++ optional cfg.minecraft.enable cfg.minecraft.package
       ++ optional cfg.minecraft.mods.enable cfg.minecraft.mods.package
-      ++ optional cfg.umu.enable cfg.umu.package;
+      ++ optional cfg.umu.enable cfg.umu.package
+      ++ optional cfg.moonlight.enable cfg.moonlight.package;
   };
 }
