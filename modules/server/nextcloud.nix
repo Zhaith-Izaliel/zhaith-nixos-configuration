@@ -14,7 +14,7 @@ in {
     // extra-types.server-app {
       inherit domain;
       name = "Nextcloud";
-      package = "nextcloud29";
+      package = "nextcloud30";
       database = "nextcloud";
     };
 

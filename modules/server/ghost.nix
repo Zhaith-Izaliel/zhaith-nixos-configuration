@@ -29,10 +29,10 @@
     };
     mail = {
       transport = "SMTP";
+      from = "Ghost <${cfg.mail.mail}>";
       options = {
         inherit (cfg.mail) host port secure;
         service = "ethereal-edelweiss.cloud";
-        from = "Ghost <${cfg.mail.mail}>";
         auth = {
           user = cfg.mail.username;
           pass = "@mail_account_pass_placeholder@";

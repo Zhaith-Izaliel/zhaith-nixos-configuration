@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }: let
@@ -19,6 +20,10 @@ in {
         # Required for container networking to be able to use names.
         dns_enabled = true;
       };
+
+      extraPackages = with pkgs; [
+        slirp4netns
+      ];
     };
     virtualisation.oci-containers.backend = "podman";
   };
