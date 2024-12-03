@@ -6,6 +6,7 @@
 }: let
   inherit (lib) mkEnableOption mkPackageOption optionalString mkIf types concatStringsSep mkOption;
   cfg = config.hellebore.hyprland;
+  finalPackage = cfg.package.override {enableXWayland = true;};
 in {
   options.hellebore.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
@@ -13,6 +14,8 @@ in {
     package = mkPackageOption pkgs "hyprland" {};
 
     enableSwaylockPam = mkEnableOption "Swaylock PAM configuration";
+
+    enableHyprlockPam = mkEnableOption "Hyprlock PAM configuration";
 
     renderingCards = {
       enable = mkEnableOption "using different rendering cards for WLRoots based compositors";
@@ -32,10 +35,15 @@ in {
 
     # NOTE: This gives granular control over which cards should be used, in order, when rendering Hyprland.
     environment.variables = mkIf cfg.renderingCards.enable {
+      AQ_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
+      # Change to WLR_DRM_DEVICES when on Wlroots
       WLR_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
+      NIXOS_OZONE_WL = "1";
     };
 
     qt.enable = true;
+
+    services.dbus.packages = [pkgs.gcr];
 
     services.gvfs.enable = true;
 
@@ -46,6 +54,12 @@ in {
     programs.dconf.enable = true;
 
     security.pam.services.swaylock.text = optionalString cfg.enableSwaylockPam ''
+      # PAM configuration file for the swaylock screen locker. By default, it includes
+      # the 'login' configuration file (see /etc/pam.d/login)
+      auth include login
+    '';
+
+    security.pam.services.hyprlock.text = optionalString cfg.enableHyprlockPam ''
       # PAM configuration file for the swaylock screen locker. By default, it includes
       # the 'login' configuration file (see /etc/pam.d/login)
       auth include login
@@ -65,14 +79,10 @@ in {
       };
     };
 
-    boot.extraModprobeConfig = ''
-      blacklist nouveau
-      options nouveau modeset=0
-    '';
-
     programs.hyprland = {
       enable = true;
-      package = cfg.package;
+      package = finalPackage;
+      withUWSM = true;
       xwayland = {
         enable = true;
       };

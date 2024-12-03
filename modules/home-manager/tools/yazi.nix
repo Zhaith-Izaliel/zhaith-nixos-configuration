@@ -16,7 +16,7 @@ in {
 
     theme = extra-types.theme.name {
       default = config.hellebore.theme.name;
-      description = "Defines Bat's theme. Default to global theme.";
+      description = "Defines Yazi's theme. Default to global theme.";
     };
   };
 

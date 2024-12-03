@@ -9,6 +9,8 @@
   inherit (lib) types mkOption mkEnableOption mkIf mkPackageOption;
   cfg = config.hellebore.desktop-environment.hyprland;
   theme = config.hellebore.theme.themes.${cfg.theme};
+
+  finalPackage = cfg.package.override {enableXWayland = true;};
   extraRulesType = types.submodule {
     options = {
       rules = mkOption {
@@ -24,6 +26,34 @@
       };
     };
   };
+
+  pwaType = types.attrsOf (types.submodule {
+    options = {
+      enable =
+        mkEnableOption "this particular Progressive Web App"
+        // {
+          default = true;
+        };
+
+      id = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "The ID of the PWA used by `pkgs.firefoxpwa`.";
+      };
+
+      execRules = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "A list of exec rules to add to the exec-once call.";
+      };
+
+      windowRules = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "The window rules to apply on the PWA.";
+      };
+    };
+  });
 in {
   imports = [
     ./config.nix
@@ -32,7 +62,11 @@ in {
   options.hellebore.desktop-environment.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
 
-    package = mkPackageOption pkgs "hyprland" {};
+    package =
+      (mkPackageOption pkgs "hyprland" {})
+      // {
+        default = os-config.programs.hyprland.package;
+      };
 
     monitors =
       extra-types.monitors
@@ -58,6 +92,18 @@ in {
       description = "Set the wallpaper.";
     };
 
+    extraExec = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "Defines a list of extra `exec` rules to be applied.";
+    };
+
+    extraExecOnce = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "Defines a list of extra `exec-once` rules to be applied.";
+    };
+
     extraWindowRules = mkOption {
       type = types.listOf extraRulesType;
       default = [];
@@ -68,6 +114,16 @@ in {
       type = types.listOf extraRulesType;
       default = [];
       description = "Defines a list of extra rules for windows to be applied.";
+    };
+
+    misc = {
+      middleClickPaste = mkEnableOption "middle click paste";
+    };
+
+    progressiveWebApps = mkOption {
+      type = pwaType;
+      default = {};
+      description = "Defines all progressive web-apps to be run on startup as well as their own window rules.";
     };
 
     input = {
@@ -166,11 +222,11 @@ in {
       # XDG_CURRENT_DESKTOP = "Hyprland";
       XDG_SESSION_TYPE = "wayland";
       # XDG_SESSION_DESKTOP = "Hyprland";
-      WLR_NO_HARDWARE_CURSORS = "1";
+      ADW_DISABLE_PORTAL = "1";
     };
 
-    home.packages = with pkgs;
-      [
+    home.packages =
+      (with pkgs; [
         swww
         swayosd
         power-management
@@ -179,8 +235,8 @@ in {
         volume-brightness
         screenshot
         power-management
-        gnome.gnome-themes-extra # Add default Gnome theme as well for Adwaita
-      ]
+        gnome-themes-extra # Add default Gnome theme as well for Adwaita
+      ])
       ++ theme.gtk.packages;
 
     gtk = {
@@ -191,10 +247,18 @@ in {
         inherit (theme.gtk.font) name package;
         size = config.hellebore.font.size;
       };
+
+      gtk3.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
+
+      gtk4.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
     };
 
     wayland.windowManager.hyprland = {
-      inherit (cfg) package;
+      package = finalPackage;
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;

@@ -12,8 +12,10 @@ in {
     {
     }
     // extra-types.server-app {
+      inherit domain;
       name = "Nextcloud";
-      package = "nextcloud29";
+      package = "nextcloud30";
+      database = "nextcloud";
     };
 
   config = mkIf cfg.enable {
@@ -22,7 +24,7 @@ in {
       inherit (cfg) package;
 
       enable = true;
-      hostName = domain;
+      hostName = cfg.domain;
       home = "/mnt/datas/nextcloud";
 
       # Use HTTPS for links
@@ -56,7 +58,7 @@ in {
         dbtype = "pgsql";
         dbuser = "nextcloud";
         dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
-        dbname = "nextcloud";
+        dbname = cfg.database;
 
         adminpassFile = "/mnt/datas/nextcloud/nextcloud-admin-pass";
         dbpassFile = "/mnt/datas/nextcloud/nextcloud-db-pass";
@@ -83,8 +85,20 @@ in {
       ];
     };
 
+    services.postgresql = {
+      enable = mkDefault true;
+      ensureDatabases = [cfg.database];
+
+      ensureUsers = [
+        {
+          name = "nextcloud";
+          ensureDBOwnership = true;
+        }
+      ];
+    };
+
     hellebore.server.nginx.enable = mkDefault true;
-    services.nginx.virtualHosts.${domain} = {
+    services.nginx.virtualHosts.${cfg.domain} = {
       # Nextcloud
       enableACME = true;
       forceSSL = true;

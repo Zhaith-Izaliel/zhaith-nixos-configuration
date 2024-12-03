@@ -3,9 +3,23 @@
     theme.name = "catppuccin-macchiato";
     font.size = 12;
 
-    development = {
-      git.enable = true;
+    dev-env = {
+      helix = {
+        enable = true;
+        defaultEditor = true;
+      };
+      yazi = {
+        enable = true;
+        shellIntegrations.zsh = true;
+      };
       erdtree.enable = true;
+    };
+
+    development = {
+      git = {
+        enable = true;
+        gitui.enable = true;
+      };
 
       bat.enable = true;
       tools = {

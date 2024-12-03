@@ -38,13 +38,14 @@ in {
     ./development.nix
     ./display-manager.nix
     ./fonts.nix
-    ./games.nix
+    ./games
+    ./graphics.nix
     ./hardware
     ./hyprland.nix
     ./locale.nix
     ./network.nix
-    ./opengl.nix
     ./power-management.nix
+    ./power-profiles.nix
     ./shell.nix
     ./sound.nix
     ./ssh.nix

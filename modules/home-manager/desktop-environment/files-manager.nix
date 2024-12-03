@@ -22,17 +22,17 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs;
       [
-        cinnamon.nemo
+        nemo
       ]
-      ++ optionals cfg.supports.images (with pkgs; [
+      ++ optionals cfg.supports.images [
         qview
-      ])
-      ++ optionals cfg.supports.archives (with pkgs; [
-        cinnamon.nemo-fileroller
-        gnome.file-roller
+      ]
+      ++ optionals cfg.supports.archives [
         zip
         unzip
-      ])
-      ++ optional cfg.supports.torrents pkgs.fragments;
+        nemo-fileroller
+        file-roller
+      ]
+      ++ optional cfg.supports.torrents fragments;
   };
 }

@@ -15,7 +15,7 @@ in {
     setUpAlias =
       mkEnableOption null
       // {
-        description = "Enable the alias `gc` to refer to `cz` directly when commiting.";
+        description = "Enable the alias `gcz` to refer to `cz` directly when commiting.";
       };
   };
 

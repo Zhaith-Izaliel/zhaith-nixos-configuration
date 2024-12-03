@@ -16,6 +16,7 @@
     optionalString
     recursiveUpdate
     mkPackageOption
+    getExe
     ;
 
   cfg = config.hellebore.desktop-environment.applications-launcher;
@@ -197,11 +198,11 @@ in {
           enable = true;
           settings = {
             favorites = {
-              "" = "kitty";
+              "" = config.hellebore.shell.emulator.bin;
               "" = "nemo";
-              "󰖟" = "firefox";
-              "󰤌" = "kitty -e nvim";
-              "󰽴" = "kitty -e ncmpcpp";
+              "󰖟" = getExe config.hellebore.desktop-environment.browsers.package;
+              "󰤌" = "${config.hellebore.shell.emulator.bin} -e hx";
+              "󰽴" = "${config.hellebore.shell.emulator.bin} -e ncmpcpp";
             };
             order = [
               ""
@@ -235,13 +236,14 @@ in {
           };
         };
 
-        network-manager = {
+        ronema = {
           enable = os-config.networking.networkmanager.enable;
           theme = mkAppletTheme "network-manager";
           settings = {
             notifications = "true";
             ascii_out = true;
             width_fix_main = 100;
+            selection_prefix = " ";
           };
         };
 

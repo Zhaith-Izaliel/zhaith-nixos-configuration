@@ -1,20 +1,20 @@
 {...}: {
   imports = [
+    ./applications-launcher.nix
+    ./bluetooth.nix
     ./browsers.nix
     ./clipboard.nix
-    ./mail.nix
+    ./cloud.nix
     ./disks.nix
     ./files-manager.nix
-    ./cloud.nix
-    ./bluetooth.nix
-    ./i18n.nix
-    ./network.nix
     ./hyprland
-    ./logout.nix
+    ./i18n.nix
     ./lockscreen.nix
+    ./logout.nix
+    ./mail.nix
+    ./network.nix
     ./notifications.nix
-    ./applications-launcher.nix
-    ./status-bar.nix
     ./sound.nix
+    ./status-bar.nix
   ];
 }

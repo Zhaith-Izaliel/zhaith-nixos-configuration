@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  unstable-pkgs,
   ...
 }: {
   imports = [
@@ -26,7 +27,7 @@
   ];
 
   boot = {
-    kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
+    # kernelPackages = unstable-pkgs.linuxPackages_zen;
     # initrd.kernelModules = ["i915"];
   };
 
@@ -36,6 +37,8 @@
     KERNEL=="card*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x10de", ATTRS{device}=="0x2520", SYMLINK+="dri/by-name/nvidia-geforce-rtx-3060-mobile"
   '';
 
+  services.teamviewer.enable = true;
+
   hellebore = {
     font.size = 12;
 
@@ -43,7 +46,7 @@
 
     monitors = [
       {
-        name = "eDP-1";
+        name = "eDP-2";
         width = 2560;
         height = 1440;
         refreshRate = 165;
@@ -59,10 +62,10 @@
         xOffset = 0;
         yOffset = 0;
         scaling = 1.0;
-        extraArgs = [
-          "mirror"
-          (builtins.elemAt config.hellebore.monitors 0).name
-        ];
+        # extraArgs = [
+        #   "mirror"
+        #   (builtins.elemAt config.hellebore.monitors 0).name
+        # ];
       }
     ];
 
@@ -77,35 +80,40 @@
 
     games = {
       enable = true;
-      steam.enable = true;
+
+      cartridges = {
+        enable = true;
+        package = unstable-pkgs.cartridges;
+      };
+
+      gamescope = {
+        enable = true;
+        capSysNice = true;
+      };
+
+      lutris = {
+        enable = true;
+        package = unstable-pkgs.lutris;
+      };
+
       minecraft = {
         enable = true;
         mods.enable = true;
       };
-      cartridges.enable = true;
-      lutris.enable = true;
-      gamemode.enable = true;
-      gamescope.enable = true;
+
+      moonlight.enable = true;
+
+      steam = {
+        enable = true;
+      };
+
+      umu.enable = true;
     };
 
+    power-profiles.enable = true;
+
     hardware = {
-      nvidia = {
-        enable = true;
-        package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
-        power-profiles.enable = true;
-        power-management.enable = false;
-        modesetting.enable = true;
-        deviceFilterName = "RTX 3060";
-        open = false;
-        prime = {
-          offload.enable = true;
-          intelBusId = "PCI:0:2:0";
-          nvidiaBusId = "PCI:1:0:0";
-        };
-        fixes = {
-          usbCDriversWronglyLoaded = true;
-        };
-      };
+      nvidia.nouveau.enable = true;
 
       ntfs.enable = true;
 
@@ -116,13 +124,7 @@
         numerization.enable = true;
         drivers = with pkgs; [
           epson-escpr
-          (epson-escpr2.overrideAttrs (final: prev: {
-            nativeBuildInputs = with pkgs; [
-              coreutils # HACK: fixes `stat` missing some common arguments
-              # (like `--printf`)
-              busybox
-            ];
-          }))
+          epson-escpr2
         ];
       };
 
@@ -149,6 +151,7 @@
     tools = {
       enable = true;
       nix-alien.enable = true;
+      input-remapper.enable = true;
     };
 
     shell.enable = true;
@@ -161,9 +164,10 @@
       enableDocumentation = true;
     };
 
-    ssh.enable = true;
-
-    tex.enable = true;
+    tex = {
+      enable = true;
+      scheme = "full";
+    };
 
     sound = {
       enable = true;
@@ -176,16 +180,16 @@
       };
     };
 
-    opengl.enable = true;
+    graphics.enable = true;
 
     hyprland = {
       enable = true;
-      enableSwaylockPam = true;
+      enableHyprlockPam = true;
       renderingCards = {
         enable = true;
         defaultCards = [
           "/dev/dri/by-name/intel-tigerlake-h-gt1"
-          # "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
+          "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
         ];
       };
     };
@@ -208,35 +212,11 @@
 
       upower = {
         enable = true;
-        notify = true;
+        notify = false;
         percentageLow = 15;
         percentageCritical = 10;
         percentageAction = 5;
       };
-    };
-
-    vm = {
-      enable = false;
-
-      useSecureBoot = true;
-
-      cpuIsolation = {
-        totalCores = "0-15";
-        hostCores = "0-3,8-11";
-        variableName = "ISOLATE_CPUS";
-      };
-
-      name = "Luminous-Rafflesia";
-
-      pcisBinding = {
-        enableDynamicBinding = true;
-        vendorIds = [
-          "10de:2520" # GPU
-          "10de:228e" # Audio
-        ];
-      };
-
-      username = "zhaith";
     };
   };
 

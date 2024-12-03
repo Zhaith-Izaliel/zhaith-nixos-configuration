@@ -12,7 +12,7 @@ in rec {
     name = "catppuccin_macchiato";
     palette =
       builtins.fromTOML (builtins.readFile (palette.package
-          + /palettes/macchiato.toml));
+          + /themes/macchiato.toml));
     package = pkgs.stdenvNoCC.mkDerivation {
       pname = "catppuccin-starship";
       version = inputs.catppuccin-starship.rev;
@@ -20,7 +20,7 @@ in rec {
 
       installPhase = ''
         mkdir -p $out
-        cp -r palettes $out
+        cp -r themes $out
       '';
     };
   };
@@ -34,11 +34,11 @@ in rec {
 
       continuation_prompt = "[∙](bright-black) ";
 
-      right_format = lib.concatStrings [
-        "[](fg:${gitMetricsSegmentBg})"
-        "$git_metrics"
-        "[▓▒░](${gitMetricsSegmentBg})"
-      ];
+      # right_format = lib.concatStrings [
+      #   "[](fg:${gitMetricsSegmentBg})"
+      #   "$git_metrics"
+      #   "[▓▒░](${gitMetricsSegmentBg})"
+      # ];
 
       format = lib.concatStrings [
         "$nix_shell"
@@ -71,12 +71,12 @@ in rec {
       # Inserts a blank line between shell prompts
       add_newline = true;
 
-      git_metrics = {
-        disabled = false;
-        format = "[ ](bold bg:${gitMetricsSegmentBg})[+$added]($added_style)[ ▏](bg:${gitMetricsSegmentBg})[-$deleted ]($deleted_style)";
-        added_style = "bold fg:green bg:${gitMetricsSegmentBg}";
-        deleted_style = "bold fg:red bg:${gitMetricsSegmentBg}";
-      };
+      # git_metrics = {
+      #   disabled = false;
+      #   format = "[ ](bold bg:${gitMetricsSegmentBg})[+$added]($added_style)[ ▏](bg:${gitMetricsSegmentBg})[-$deleted ]($deleted_style)";
+      #   added_style = "bold fg:green bg:${gitMetricsSegmentBg}";
+      #   deleted_style = "bold fg:red bg:${gitMetricsSegmentBg}";
+      # };
 
       hostname = {
         style = "bold green";

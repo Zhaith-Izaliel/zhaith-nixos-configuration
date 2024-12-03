@@ -9,6 +9,7 @@
   domain = "${cfg.subdomain}.${config.networking.domain}";
 in {
   options.hellebore.server.jellyfin = extra-types.server-app {
+    inherit domain;
     name = "Jellyfin";
     package = "jellyfin";
     port = 8096;
@@ -22,7 +23,7 @@ in {
 
     hellebore.server.nginx.enable = mkDefault true;
 
-    services.nginx.virtualHosts.${domain} = {
+    services.nginx.virtualHosts.${cfg.domain} = {
       enableACME = true;
       forceSSL = true;
 

@@ -16,15 +16,16 @@
         allowUnfreePredicate = _: true;
       };
     };
-    types = import ../types {inherit lib pkgs inputs;};
-    stable-pkgs = import inputs.nixpkgs-stable {
+    extra-utils = import ./default.nix {inherit lib;};
+    types = import ../types {inherit lib pkgs inputs extra-utils;};
+    stable-pkgs = import inputs.nixpkgs {
       inherit overlays system;
       config = {
         allowUnfree = true;
         allowUnfreePredicate = _: true;
       };
     };
-    unstable-pkgs = import inputs.nixpkgs {
+    unstable-pkgs = import inputs.nixpkgs-unstable {
       inherit overlays system;
       config = {
         allowUnfree = true;
@@ -35,7 +36,7 @@
     lib.nixosSystem {
       inherit system;
       specialArgs = {
-        inherit hostname system inputs stable-pkgs unstable-pkgs;
+        inherit hostname system inputs stable-pkgs unstable-pkgs extra-utils;
         extra-types = types;
       };
       modules =
@@ -77,7 +78,8 @@
     home-manager ? inputs.home-manager,
   }: let
     lib = nixpkgs.lib;
-    types = import ../types {inherit lib pkgs inputs;};
+    extra-utils = import ./default.nix {inherit lib;};
+    types = import ../types {inherit lib pkgs inputs extra-utils;};
     pkgs = import nixpkgs {
       inherit overlays system;
       config = {
@@ -85,14 +87,14 @@
         allowUnfreePredicate = _: true;
       };
     };
-    stable-pkgs = import inputs.nixpkgs-stable {
+    stable-pkgs = import inputs.nixpkgs {
       inherit overlays system;
       config = {
         allowUnfree = true;
         allowUnfreePredicate = _: true;
       };
     };
-    unstable-pkgs = import inputs.nixpkgs {
+    unstable-pkgs = import inputs.nixpkgs-unstable {
       inherit overlays system;
       config = {
         allowUnfree = true;
@@ -104,7 +106,7 @@
       inherit pkgs;
 
       extraSpecialArgs = {
-        inherit system hostname inputs stable-pkgs unstable-pkgs;
+        inherit system hostname inputs stable-pkgs unstable-pkgs extra-utils;
         extra-types = types;
         os-config = inputs.self.nixosConfigurations.${hostname}.config;
       };

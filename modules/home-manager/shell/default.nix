@@ -42,11 +42,11 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs;
-      [
+    home.packages =
+      (with pkgs; [
         any-nix-shell
-      ]
-      ++ optional cfg.enableImageSupport chafa;
+      ])
+      ++ optional cfg.enableImageSupport pkgs.chafa;
 
     programs = {
       command-not-found.enable = true;

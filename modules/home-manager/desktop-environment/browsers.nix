@@ -2,15 +2,22 @@
   config,
   lib,
   pkgs,
+  unstable-pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf mkPackageOption;
+  inherit (lib) mkEnableOption mkIf mkPackageOption optional;
   cfg = config.hellebore.desktop-environment.browsers;
 in {
   options.hellebore.desktop-environment.browsers = {
     enable = mkEnableOption "Hellebore Browsers configuration";
 
     package = mkPackageOption pkgs "firefox" {};
+
+    progressiveWebApps = {
+      enable = mkEnableOption "PWA support in Firefox. You need to install the PWA extension on Firefox";
+
+      package = mkPackageOption unstable-pkgs "firefoxpwa" {};
+    };
 
     profiles.zhaith = {
       enable = mkEnableOption "Zhaith's Firefox profile";
@@ -20,10 +27,14 @@ in {
   config = mkIf cfg.enable {
     programs.chromium.enable = true;
 
+    home.packages = optional cfg.progressiveWebApps.enable cfg.progressiveWebApps.package;
+
     programs.firefox = {
       inherit (cfg) package;
 
       enable = true;
+
+      nativeMessagingHosts = optional cfg.progressiveWebApps.enable cfg.progressiveWebApps.package;
 
       profiles."zhaith" = mkIf cfg.profiles.zhaith.enable {
         isDefault = true;
@@ -108,10 +119,37 @@ in {
             };
 
             "NixOS Wiki" = {
-              urls = [{template = "https://nixos.wiki/index.php?search={searchTerms}";}];
-              iconUpdateURL = "https://nixos.wiki/favicon.png";
+              urls = [
+                {
+                  template = "https://wiki.nixos.org/w/index.php";
+                  params = [
+                    {
+                      name = "search";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+              iconUpdateURL = "https://wiki.nixos.org/favicon.ico";
               updateInterval = 24 * 60 * 60 * 1000; # every day
               definedAliases = ["@nw"];
+            };
+
+            "Crates.io" = {
+              urls = [
+                {
+                  template = "https://crates.io/search";
+                  params = [
+                    {
+                      name = "q";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+              iconUpdateURL = "https://crates.io/favicon.ico";
+              updateInterval = 24 * 60 * 60 * 1000; # every day
+              definedAliases = ["@cr"];
             };
 
             "Bing".metaData.hidden = true;

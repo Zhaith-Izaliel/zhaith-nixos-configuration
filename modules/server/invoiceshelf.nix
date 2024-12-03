@@ -16,15 +16,9 @@ in {
         type = types.nonEmptyStr;
       };
 
-      user = mkOption {
-        default = "invoiceshelf";
-        type = types.nonEmptyStr;
-        description = "Defines the user running InvoiceShelf.";
-      };
-
-      dbPasswordFile = mkOption {
+      secretEnvFile = mkOption {
         default = "";
-        type = types.nonEmptyStr;
+        type = types.path;
         description = ''
           The env file containing the DB password, in the form:
           ```
@@ -32,9 +26,55 @@ in {
           ```
         '';
       };
+
+      mail = {
+        username = mkOption {
+          default = "";
+          type = types.nonEmptyStr;
+          description = "The no-reply account username to send mail from.";
+        };
+
+        mail = mkOption {
+          default = "";
+          type = types.nonEmptyStr;
+          description = "The no-reply account mail address to send mail from.";
+        };
+
+        encryption = mkOption {
+          default = "none";
+          type = types.enum ["tls" "none" "ssl" "starttls"];
+          description = "The encryption level of the SMTP server.";
+        };
+
+        passwordFile = mkOption {
+          default = "";
+          type = types.path;
+          description = ''
+            The file containing the mail account password, in the form:
+            ```
+              password
+            ```
+          '';
+        };
+
+        port = mkOption {
+          type = types.ints.unsigned;
+          default = 25;
+          description = "The port of the mail server to use.";
+        };
+
+        host = mkOption {
+          type = types.nonEmptyStr;
+          default = "";
+          description = "The host of the mail server to use.";
+        };
+      };
     }
     // extra-types.server-app {
+      inherit domain;
       name = "InvoiceShelf";
+      user = "invoiceshelf";
+      database = "invoiceshelf";
       group = "invoiceshelf";
       port = 0660;
     };
@@ -54,22 +94,30 @@ in {
 
         environment = {
           APP_ENV = "production";
-          SESSION_DOMAIN = domain;
-          SANCTUM_STATEFUL_DOMAINS = domain;
-          APP_URL = "https://${domain}";
+          SESSION_DOMAIN = cfg.domain;
+          SANCTUM_STATEFUL_DOMAINS = cfg.domain;
+          APP_URL = "https://${cfg.domain}";
           APP_FORCE_HTTPS = "true";
           PHP_TZ = config.time.timeZone;
           TIMEZONE = config.time.timeZone;
           DB_CONNECTION = "pgsql";
           DB_HOST = "10.0.2.2";
-          DB_PORT = toString config.services.postgresql.port;
-          DB_DATABASE = "invoiceshelf";
+          DB_PORT = toString config.services.postgresql.settings.port;
+          DB_DATABASE = cfg.database;
           DB_USERNAME = cfg.user;
           STARTUP_DELAY = "0";
+          MAIL_DRIVER = "smtp";
+          MAIL_HOST = cfg.mail.host;
+          MAIL_PORT = toString cfg.mail.port;
+          MAIL_USERNAME = cfg.mail.username;
+          MAIL_ENCRYPTION = cfg.mail.encryption;
+          MAIL_FROM_NAME = "Invoiceshelf";
+          MAIL_FROM_ADDRESS = cfg.mail.mail;
         };
 
         environmentFiles = [
-          cfg.dbPasswordFile
+          cfg.secretEnvFile
+          cfg.mail.passwordFile
         ];
 
         extraOptions = [
@@ -81,7 +129,7 @@ in {
 
     hellebore.server.nginx.enable = mkDefault true;
 
-    services.nginx.virtualHosts.${domain} = {
+    services.nginx.virtualHosts.${cfg.domain} = {
       forceSSL = true;
       enableACME = true;
       locations = {
@@ -91,8 +139,19 @@ in {
       };
     };
 
-    services.postgresql.authentication = ''
-      host invoiceshelf invoiceshelf 10.88.0.0/16 md5
-    '';
+    services.postgresql = {
+      enable = mkDefault true;
+      ensureDatabases = [cfg.database];
+
+      ensureUsers = [
+        {
+          name = cfg.user;
+          ensureDBOwnership = true;
+        }
+      ];
+      authentication = ''
+        host ${cfg.database} ${cfg.user} 10.88.0.0/16 md5
+      '';
+    };
   };
 }

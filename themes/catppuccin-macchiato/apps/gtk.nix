@@ -23,12 +23,12 @@
       size = "standard";
       variant = "macchiato";
     };
-    name = "Catppuccin-Macchiato-Standard-Lavender-Dark";
+    name = "catppuccin-macchiato-lavender-standard";
   };
 
   cursorTheme = {
     package = pkgs.catppuccin-cursors.macchiatoDark;
-    name = "Catppuccin-Macchiato-Dark-Cursors";
+    name = "catppuccin-macchiato-dark-cursors";
   };
 
   iconTheme = {

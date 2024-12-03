@@ -43,6 +43,8 @@ in {
     // extra-types.server-app {
       name = "Factorio Server";
       package = "factorio-headless";
+      user = "factorio";
+      group = "factorio";
       port = 34197;
     };
 
@@ -56,6 +58,41 @@ in {
         if cfg.modsDir == null
         then []
         else builtins.map modToDrv modList;
+    };
+
+    users.users.${cfg.user} = {
+      isSystemUser = true;
+      group = cfg.group;
+    };
+    users.groups.${cfg.group} = {};
+
+    systemd.services.factorio.serviceConfig = {
+      User = cfg.user;
+      Group = cfg.group;
+    };
+
+    services.fail2ban.jails = {
+      factorio = {
+        filter = {
+          INCLUDES.before = "common.conf";
+
+          Definition = {
+            journalmatch = "_SYSTEMD_UNIT=factorio.service";
+            failregex = ''^.*Refusing connection for address \(IP ADDR:\(\{<HOST>.* PasswordMismatch.*$'';
+            ignoreregex = "";
+          };
+        };
+
+        settings = {
+          port = "${toString cfg.port}";
+          banaction = "%(banaction_allports)s";
+          backend = "systemd";
+          filter = "factorio";
+          maxretry = 3;
+          bantime = 14400;
+          findtime = 14400;
+        };
+      };
     };
   };
 }

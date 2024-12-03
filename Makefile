@@ -37,6 +37,10 @@ repl:
 clean:
 	sudo nix profile wipe-history --profile /nix/var/nix/profiles/system  --older-than 7d
 
+store-optimise:
+	nix store optimise
+	sudo nix store optimise
+	
 gc:
 	sudo nix-collect-garbage -d
 	nix-collect-garbage -d
@@ -44,6 +48,5 @@ gc:
 full-gc:
 	nix-store --gc --print-roots | egrep -v "^(/nix/var|/run/\w+-system|\{memory|/proc)" | awk '{ print $$1 }' | grep -vE 'home-manager|flake-registry\.json|\{censored\}|profile-([1-9])*-link' | xargs -L1 unlink
 	$(MAKE) gc
-	nix store optimise
-	sudo nix store optimise
+	$(MAKE) store-optimise
 	

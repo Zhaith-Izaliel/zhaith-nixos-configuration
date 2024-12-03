@@ -12,21 +12,72 @@ in {
 
     locale.enable = true;
 
+    dev-env = {
+      helix = {
+        enable = true;
+        defaultEditor = true;
+        settings = {
+          languages = let
+            flakeUrl = "gitlab:Zhaith-Izaliel/zhaith-nixos-configuration/develop";
+            nixosConfigName = "Whispering-Willow";
+            homeConfigName = "zhaith@Whispering-Willow";
+          in {
+            language-server.nixd.config.nixd = {
+              nixpkgs.expr = ''import (builtins.getFlake "${flakeUrl}").inputs.nixpkgs-unstable {}'';
+              options = {
+                nixos.expr = ''(builtins.getFlake "${flakeUrl}").nixosConfigurations.${nixosConfigName}.options'';
+                home_manager.expr = ''(builtins.getFlake "${flakeUrl}").homeConfigurations."${homeConfigName}".options'';
+              };
+            };
+          };
+        };
+      };
+
+      zellij = {
+        enable = true;
+        shellIntegrations.zsh = true;
+        layoutAlias = true;
+        enableSideBar = true;
+        autoAttach = true;
+      };
+      yazi = {
+        enable = true;
+        shellIntegrations.zsh = true;
+      };
+      erdtree.enable = true;
+    };
+
     desktop-environment = {
       clipboard.enable = true;
 
       hyprland = {
         enable = true;
-        input.mouse.scrollFactor = 0.8;
+
+        input.mouse.scrollFactor = 0.85;
+
         picture-in-picture = {
           enable = true;
           position = "top-right";
         };
+
         switches = {
           lid = {
             enable = true;
           };
         };
+
+        progressiveWebApps = {
+          outline = {
+            id = "01JAFZXMG3VF8E3XNXAJM4WQNE";
+            execRules = [
+              "workspace 2 silent"
+            ];
+            windowRules = [
+              "workspace 2"
+            ];
+          };
+        };
+
         extraWindowRules = let
           gameRules = [
             "workspace 5"
@@ -42,8 +93,13 @@ in {
               rules = gameRules;
             }
             {
-              regex = "class:(gw2).*";
-              rules = gameRules;
+              regex = "class:(gamescope).*";
+              rules = [
+                "workspace 5"
+                "noblur"
+                "noborder"
+                "noshadow"
+              ];
             }
             {
               regex = "class:(factorio).*";
@@ -67,6 +123,7 @@ in {
           dim.enable = true;
           lock.enable = true;
           powerSaving.enable = true;
+          suspend.enable = false;
         };
       };
 
@@ -132,14 +189,18 @@ in {
 
       mail = {
         enable = true;
-        protonmail.enable = true;
       };
 
       browsers = {
         enable = true;
         package = pkgs.firefox-bin;
         profiles.zhaith.enable = true;
+        progressiveWebApps.enable = true;
       };
+    };
+
+    ssh-agent = {
+      enable = true;
     };
 
     tools = {
@@ -148,10 +209,10 @@ in {
         enable = true;
         tts.enable = true;
       };
+      # slack.enable = true;
       office.enable = true;
       tasks.enable = true;
       docs.enable = true;
-      yazi.enable = true;
     };
 
     multimedia = {
@@ -178,15 +239,18 @@ in {
         };
         h.enable = true;
       };
-      erdtree = {
-        enable = true;
-      };
+
       bat.enable = true;
+
       tools = {
         enable = true;
         direnv = {
           enable = true;
         };
+      };
+
+      game-development = {
+        godot.enable = true;
       };
     };
 
@@ -194,17 +258,9 @@ in {
       enable = true;
       enableImageSupport = true;
       prompt.enable = true;
-      workspace.enable = true;
       emulator = {
         enable = true;
-        enableZshIntegration = true;
       };
     };
-  };
-
-  # programs.neovim.zhaith-config.enable = true;
-  programs.helix.zhaith-configuration = {
-    enable = true;
-    defaultEditor = true;
   };
 }

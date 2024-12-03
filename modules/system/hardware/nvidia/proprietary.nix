@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption types mkIf optionalString concatStringsSep;
-  cfg = config.hellebore.hardware.nvidia;
+  inherit (lib) mkEnableOption mkOption types mkIf;
+  cfg = config.hellebore.hardware.nvidia.proprietary;
 in {
-  options.hellebore.hardware.nvidia = {
+  options.hellebore.hardware.nvidia.proprietary = {
     enable = mkEnableOption "Nvidia Support";
 
     package = mkOption {
@@ -15,8 +15,6 @@ in {
       default = config.boot.kernelPackages.nvidiaPackages.production;
       description = "Defines the default Nvidia driver package to use.";
     };
-
-    power-profiles.enable = mkEnableOption "power-profiles-daemon support";
 
     power-management.enable = mkEnableOption "Nvidia power management
       capabilities";
@@ -61,23 +59,14 @@ in {
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion =
-          config.hardware.opengl.enable
-          && config.hardware.opengl.driSupport
-          && config.hardware.opengl.driSupport32Bit;
-        message = "You must enable OpenGL with DRI support (64 bits and 32 bits) to support Nvidia.";
+        assertion = config.hellebore.graphics.enable;
+        message = "You must enable graphics support for Nvidia.";
       }
       {
-        assertion = config.hellebore.vm.enable -> cfg.forceWaylandOnMesa;
-        message = "Forcing wayland on Mesa is a required step if you're using a VM with GPU passthrough.";
-      }
-      {
-        assertion = cfg.prime.sync.enable -> !(cfg.forceWaylandOnMesa);
-        message = "You shouldn't force Wayland on Mesa when using PRIME Sync with Nvidia.";
+        assertion = cfg.enable -> !config.hellebore.hardware.nvidia.nouveau.enable;
+        message = "Nouveau and the proprietary Nvidia drivers are mutually exclusive, you should enable only one of them.";
       }
     ];
-
-    services.power-profiles-daemon.enable = cfg.power-profiles.enable;
 
     environment.systemPackages = with pkgs; [
       mesa-demos
@@ -115,9 +104,9 @@ in {
       };
     };
 
-    # NOTE: Fix Kernel Panics with the Kernel trying to use the USB-C driver on a non-USB-C compatible Nvidia Card.
-    boot.extraModprobeConfig = optionalString cfg.fixes.usbCDriversWronglyLoaded ''
-      blacklist i2c_nvidia_gpu
+    boot.extraModprobeConfig = ''
+      blacklist nouveau
+      options nouveau modeset=0
     '';
   };
 }

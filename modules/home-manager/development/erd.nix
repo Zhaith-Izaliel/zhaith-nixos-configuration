@@ -41,6 +41,6 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = [cfg.package];
-    home.file."${config.xdg.configHome}/erdtree/.erdtreerc".text = cfg.settings;
+    xdg.configHome."erdtree/.erdtreerc".text = cfg.settings;
   };
 }
