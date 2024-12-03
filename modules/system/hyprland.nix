@@ -6,6 +6,7 @@
 }: let
   inherit (lib) mkEnableOption mkPackageOption optionalString mkIf types concatStringsSep mkOption;
   cfg = config.hellebore.hyprland;
+  finalPackage = cfg.package.override {enableXWayland = true;};
 in {
   options.hellebore.hyprland = {
     enable = mkEnableOption "Hellebore Hyprland configuration";
@@ -80,7 +81,8 @@ in {
 
     programs.hyprland = {
       enable = true;
-      package = cfg.package;
+      package = finalPackage;
+      withUWSM = true;
       xwayland = {
         enable = true;
       };

@@ -391,13 +391,6 @@ in {
           workspace_swipe = false;
         };
       };
-
-      extraConfig = ''
-        bind = $mainMod SHIFT, G, submap, grab_keyboard
-        submap = grab_keyboard
-        bind = $mainMod, escape, submap, reset
-        submap = reset
-      '';
     };
   };
 }

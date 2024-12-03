@@ -9,6 +9,8 @@
   inherit (lib) types mkOption mkEnableOption mkIf mkPackageOption;
   cfg = config.hellebore.desktop-environment.hyprland;
   theme = config.hellebore.theme.themes.${cfg.theme};
+
+  finalPackage = cfg.package.override {enableXWayland = true;};
   extraRulesType = types.submodule {
     options = {
       rules = mkOption {
@@ -256,7 +258,7 @@ in {
     };
 
     wayland.windowManager.hyprland = {
-      inherit (cfg) package;
+      package = finalPackage;
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;

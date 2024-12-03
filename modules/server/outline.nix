@@ -2,7 +2,6 @@
   config,
   lib,
   extra-types,
-  inputs,
   ...
 }: let
   inherit (lib) mkIf mkDefault mkOption types mdDoc mkEnableOption;
@@ -10,15 +9,6 @@
   domain = "${cfg.subdomain}.${config.networking.domain}";
   autheliaCfg = config.hellebore.server.authelia;
 in {
-  # COMPATIBILITY: Move to Authelia and Outline unstable for Outline OIDC to work
-  imports = [
-    "${inputs.nixpkgs-unstable}/nixos/modules/services/security/authelia.nix"
-  ];
-
-  disabledModules = [
-    "services/security/authelia.nix"
-  ];
-
   options.hellebore.server.outline =
     {
       storagePath = mkOption {

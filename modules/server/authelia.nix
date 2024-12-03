@@ -2,7 +2,6 @@
   config,
   lib,
   extra-types,
-  inputs,
   ...
 }: let
   inherit (lib) mkIf mkDefault types mkOption;
@@ -81,12 +80,6 @@
     };
   };
 in {
-  imports = [
-    "${inputs.nixpkgs-unstable}/nixos/modules/services/security/authelia.nix"
-  ]; # COMPATIBILITY: Move to Authelia unstable for Outline OIDC to work
-
-  disabledModules = ["services/security/authelia.nix"];
-
   options.hellebore.server.authelia =
     {
       instance = mkOption {
