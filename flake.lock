@@ -213,6 +213,22 @@
         "type": "github"
       }
     },
+    "ctags-lsp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733228567,
+        "narHash": "sha256-b2e35t6+t39nhkVEllwriC0119aqacOei/5JkuVaw2o=",
+        "owner": "netmute",
+        "repo": "ctags-lsp",
+        "rev": "8321b4979b5efbd812798ea9beeebd9d78abd9ce",
+        "type": "github"
+      },
+      "original": {
+        "owner": "netmute",
+        "repo": "ctags-lsp",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -1280,7 +1296,7 @@
         "harfbuzz": "harfbuzz",
         "libpng": "libpng",
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ],
         "rust-overlay": "rust-overlay",
         "zlib": "zlib"
@@ -1303,6 +1319,7 @@
     },
     "zhaith-helix": {
       "inputs": {
+        "ctags-lsp": "ctags-lsp",
         "flake-parts": "flake-parts_3",
         "helix": "helix",
         "nil": "nil",
@@ -1312,11 +1329,11 @@
         "simple-completion-language-server": "simple-completion-language-server"
       },
       "locked": {
-        "lastModified": 1733229471,
-        "narHash": "sha256-a8yxbKHl6Cdv/vpLiuR17loRKi/+9j/EkjTyuR47VyQ=",
+        "lastModified": 1733252563,
+        "narHash": "sha256-Kn4785udf2y1wAQIVdfpAZ5b/hKqFmxhP46lSepHCbk=",
         "owner": "Zhaith-Izaliel",
         "repo": "helix-config",
-        "rev": "f80de3d120b3d2ca147f138d052c3b0392b57583",
+        "rev": "7f31a12ca4e9f9ce5d4ccc6fbdfb53a7d6a75fe5",
         "type": "gitlab"
       },
       "original": {

@@ -189,7 +189,7 @@
         enable = true;
         defaultCards = [
           "/dev/dri/by-name/intel-tigerlake-h-gt1"
-          "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
+          # "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
         ];
       };
     };

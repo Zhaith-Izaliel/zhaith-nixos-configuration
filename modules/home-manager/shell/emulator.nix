@@ -3,7 +3,6 @@
   lib,
   pkgs,
   extra-types,
-  inputs,
   ...
 }: let
   inherit (lib) mkOption mkEnableOption getExe types mkIf mkPackageOption concatStringsSep optionalString;

@@ -79,7 +79,7 @@
     # HACK: Using Wezterm nightly until they finish the wayland reimplementation.
     wezterm = {
       url = "github:wez/wezterm/?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Theme packages
