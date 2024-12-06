@@ -54,7 +54,11 @@
     refreshRate = toString monitor.refreshRate;
     scaling = toString monitor.scaling;
     extraArgs = concatStringsSep "," monitor.extraArgs;
-  in "${name},${width}x${height}@${refreshRate},${xOffset}x${yOffset},${scaling},${extraArgs}";
+    resolution =
+      if monitor.resolution == ""
+      then "${width}x${height}@${refreshRate}"
+      else monitor.resolution;
+  in "${name},${resolution},${xOffset}x${yOffset},${scaling},${extraArgs}";
 
   mkMonitors = monitors: builtins.map mkMonitor monitors;
 

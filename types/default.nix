@@ -26,6 +26,11 @@ in rec {
         type = types.int;
         description = "The refresh rate (in Hz) of the monitor.";
       };
+      resolution = mkOption {
+        type = types.str;
+        default = "";
+        description = "The resolution string, according to Hyprland monitors. See https://wiki.hyprland.org/Configuring/Monitors/";
+      };
       xOffset = mkOption {
         type = types.int;
         description = "The offset (in pixel) of the monitor, on the X axis.";
