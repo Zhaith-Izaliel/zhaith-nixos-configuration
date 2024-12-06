@@ -50,6 +50,8 @@ in {
     desktop-environment = {
       clipboard.enable = true;
 
+      nightlights.enable = true;
+
       hyprland = {
         enable = true;
 

@@ -13,6 +13,7 @@
     ./logout.nix
     ./mail.nix
     ./network.nix
+    ./nightlights.nix
     ./notifications.nix
     ./sound.nix
     ./status-bar.nix
