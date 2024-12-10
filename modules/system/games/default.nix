@@ -4,7 +4,20 @@
   pkgs,
   ...
 }: let
-  inherit (lib) optional mkEnableOption mkIf optionals mkPackageOption optionalString;
+  inherit
+    (lib)
+    optional
+    mkEnableOption
+    mkIf
+    optionals
+    mkPackageOption
+    optionalString
+    types
+    mkOption
+    mkMerge
+    recursiveUpdate
+    ;
+
   cfg = config.hellebore.games;
 
   nvidia-command =
@@ -16,13 +29,44 @@
   game-run-script = pkgs.writeShellScriptBin "game-run" ''
     ${nvidia-command} ${gamemode-command} "''${@}"
   '';
+
+  enabled = builtins.any (item: item) [
+    cfg.cartridges.enable
+    cfg.game-run.enable
+    cfg.gamemode.enable
+    cfg.heroic-launcher.enable
+    cfg.minecraft.enable
+    cfg.moonlight.enable
+    cfg.steam.enable
+    cfg.umu.enable
+    cfg.wine.enable
+  ];
 in {
   imports = [
     ./gamescope.nix
   ];
 
   options.hellebore.games = {
-    enable = mkEnableOption "Hellebore's games support";
+    enabled = mkOption {
+      type = types.bool;
+      default = enabled || cfg.gamescope.enable;
+      description = "Defines if one of these submodules are enabled.";
+      readOnly = true;
+    };
+
+    game-run = {
+      enable = mkEnableOption "Game-Run wrapper script";
+    };
+
+    wine = {
+      enable = mkEnableOption "Windows game support through WINE. It is required for Steam";
+
+      extraPackages = mkOption {
+        type = types.listOf types.package;
+        default = [];
+        description = "Extra WINE packages to install.";
+      };
+    };
 
     minecraft = {
       enable = mkEnableOption "Minecraft Prismlauncher";
@@ -113,26 +157,36 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = config.hellebore.graphics.enable;
-        message = "You need to enable OpenGl to run games.";
-      }
-    ];
+  config = mkIf enabled (mkMerge [
+    {
+      assertions = [
+        {
+          assertion = config.hellebore.graphics.enable;
+          message = "You need to enable OpenGl to run games.";
+        }
+      ];
+    }
 
-    programs = {
-      steam = {
-        inherit (cfg.steam) enable package;
+    (mkIf cfg.steam.enable {
+      programs.steam = {
+        inherit (cfg.steam) package;
+        enable = true;
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
       };
 
-      gamemode = {
-        inherit (cfg.gamemode) enable enableRenice;
+      environment.systemPackages = with pkgs; [
+        protontricks
+      ];
+    })
+
+    (mkIf cfg.gamemode.enable {
+      programs.gamemode = {
+        inherit (cfg.gamemode) enableRenice;
+        enable = true;
 
         settings =
-          {
+          recursiveUpdate {
             general = {
               renice = 10;
               inhibit_screensaver = 1;
@@ -140,27 +194,33 @@ in {
               igpu_desiredgov = "powersave";
             };
           }
-          // cfg.gamemode.settings;
+          cfg.gamemode.settings;
       };
-    };
+    })
 
-    environment.systemPackages =
-      (with pkgs; [
-        wineWowPackages.stable
-        wineWowPackages.unstableFull
-        winetricks
-      ])
-      ++ [game-run-script]
-      ++ optional cfg.steam.enable pkgs.protontricks
-      ++ optional cfg.heroic-launcher.enable cfg.heroic-launcher.package
-      ++ optional cfg.cartridges.enable cfg.cartridges.package
-      ++ optionals cfg.lutris.enable [
-        cfg.lutris.package
-        pkgs.dxvk
-      ]
-      ++ optional cfg.minecraft.enable cfg.minecraft.package
-      ++ optional cfg.minecraft.mods.enable cfg.minecraft.mods.package
-      ++ optional cfg.umu.enable cfg.umu.package
-      ++ optional cfg.moonlight.enable cfg.moonlight.package;
-  };
+    (mkIf cfg.wine.enable {
+      environment.systemPackages =
+        (with pkgs; [
+          wineWowPackages.stable
+          wineWowPackages.unstableFull
+          winetricks
+        ])
+        ++ cfg.wine.extraPackages;
+    })
+
+    {
+      environment.systemPackages =
+        optional cfg.game-run.enable game-run-script
+        ++ optional cfg.heroic-launcher.enable cfg.heroic-launcher.package
+        ++ optional cfg.cartridges.enable cfg.cartridges.package
+        ++ optionals cfg.lutris.enable [
+          cfg.lutris.package
+          pkgs.dxvk
+        ]
+        ++ optional cfg.minecraft.enable cfg.minecraft.package
+        ++ optional cfg.minecraft.mods.enable cfg.minecraft.mods.package
+        ++ optional cfg.umu.enable cfg.umu.package
+        ++ optional cfg.moonlight.enable cfg.moonlight.package;
+    }
+  ]);
 }

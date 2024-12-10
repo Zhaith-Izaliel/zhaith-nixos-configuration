@@ -187,7 +187,7 @@
         inherit system overlays extraModules;
         username = "zhaith";
         hostname = "Whispering-Willow";
-        stateVersion = "23.11";
+        stateVersion = "24.11";
       };
 
       "lilith@Ethereal-Edelweiss" = customHelpers.mkHome {

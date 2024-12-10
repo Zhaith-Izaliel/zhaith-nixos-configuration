@@ -98,7 +98,7 @@
     config.hellebore.tools.office.enable
     config.hellebore.tools.discord.enable
     config.hellebore.desktop-environment.mail.enable
-    os-config.hellebore.games.enable
+    os-config.hellebore.games.enabled
   ];
 
   appletsConfig = config.programs.rofi.applets;

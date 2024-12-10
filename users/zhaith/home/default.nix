@@ -1,8 +1,9 @@
 {
   config,
-  os-config,
-  lib,
   pkgs,
+  lib,
+  unstable-pkgs,
+  os-config,
   ...
 }: let
   inherit (lib) optional;
@@ -35,6 +36,7 @@ in {
 
       zellij = {
         enable = true;
+        packages.zellij = unstable-pkgs.zellij;
         shellIntegrations.zsh = true;
         layoutAlias = true;
         enableSideBar = true;
@@ -93,15 +95,6 @@ in {
             {
               regex = "class:(steam_app_).*";
               rules = gameRules;
-            }
-            {
-              regex = "class:(gamescope).*";
-              rules = [
-                "workspace 5"
-                "noblur"
-                "noborder"
-                "noshadow"
-              ];
             }
             {
               regex = "class:(factorio).*";
@@ -211,7 +204,6 @@ in {
         enable = true;
         tts.enable = true;
       };
-      # slack.enable = true;
       office.enable = true;
       tasks.enable = true;
       docs.enable = true;

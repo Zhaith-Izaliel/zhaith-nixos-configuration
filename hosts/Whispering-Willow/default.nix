@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  unstable-pkgs,
   ...
 }: {
   imports = [
@@ -22,20 +21,14 @@
     options = "--delete-older-than 30d";
   };
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-12.2.3" # Etcher
-  ];
+  # nixpkgs.config.permittedInsecurePackages = [
+  #   "electron-12.2.3" # Etcher
+  # ];
 
   boot = {
     # kernelPackages = unstable-pkgs.linuxPackages_zen;
     # initrd.kernelModules = ["i915"];
   };
-
-  # Find vendor and device using `udevadm info /dev/dri/cardX --attribute-walk`
-  services.udev.extraRules = ''
-    KERNEL=="card*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x9a60", SYMLINK+="dri/by-name/intel-tigerlake-h-gt1"
-    KERNEL=="card*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x10de", ATTRS{device}=="0x2520", SYMLINK+="dri/by-name/nvidia-geforce-rtx-3060-mobile"
-  '';
 
   services.teamviewer.enable = true;
 
@@ -56,16 +49,16 @@
       }
       {
         name = "";
-        width = 1920;
-        height = 1080;
-        refreshRate = 60;
+        width = 2560;
+        height = 1440;
+        refreshRate = 165;
         xOffset = 0;
         yOffset = 0;
         scaling = 1.0;
-        # extraArgs = [
-        #   "mirror"
-        #   (builtins.elemAt config.hellebore.monitors 0).name
-        # ];
+        extraArgs = [
+          "mirror"
+          (builtins.elemAt config.hellebore.monitors 0).name
+        ];
       }
     ];
 
@@ -79,23 +72,6 @@
     };
 
     games = {
-      enable = true;
-
-      cartridges = {
-        enable = true;
-        package = unstable-pkgs.cartridges;
-      };
-
-      gamescope = {
-        enable = true;
-        capSysNice = true;
-      };
-
-      lutris = {
-        enable = true;
-        package = unstable-pkgs.lutris;
-      };
-
       minecraft = {
         enable = true;
         mods.enable = true;
@@ -106,14 +82,12 @@
       steam = {
         enable = true;
       };
-
-      umu.enable = true;
     };
 
     power-profiles.enable = true;
 
     hardware = {
-      nvidia.nouveau.enable = true;
+      amd.enable = true;
 
       ntfs.enable = true;
 
@@ -187,10 +161,6 @@
       enableHyprlockPam = true;
       renderingCards = {
         enable = true;
-        defaultCards = [
-          # "/dev/dri/by-name/nvidia-geforce-rtx-3060-mobile"
-          "/dev/dri/by-name/intel-tigerlake-h-gt1"
-        ];
       };
     };
 
@@ -226,5 +196,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 }

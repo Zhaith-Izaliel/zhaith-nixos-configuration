@@ -34,7 +34,7 @@
       "hyprland/window"
       "tray"
       "idle_inhibitor"
-      (optional os-config.hellebore.games.enable "gamemode")
+      (optional os-config.hellebore.games.gamescope.enable "gamemode")
       (optional os-config.hardware.bluetooth.enable "bluetooth")
       "network"
       "backlight"
