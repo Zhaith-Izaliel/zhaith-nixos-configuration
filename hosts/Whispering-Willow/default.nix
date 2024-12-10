@@ -66,8 +66,7 @@
       enable = true;
       enableNetworkManager = true;
       interfaces = [
-        "enp46s0"
-        "wlp47s0"
+        "wlp2s0"
       ];
     };
 
@@ -102,7 +101,7 @@
 
       integratedCamera = {
         disable = true;
-        cameraBus = "3-13";
+        cameraBus = "3-1";
       };
 
       gaming = {
