@@ -168,6 +168,13 @@ in {
     }
 
     (mkIf cfg.steam.enable {
+      assertions = [
+        {
+          assertion = cfg.wine.enable;
+          message = "You need to enable Wine for Proton to work with Steam.";
+        }
+      ];
+
       programs.steam = {
         inherit (cfg.steam) package;
         enable = true;

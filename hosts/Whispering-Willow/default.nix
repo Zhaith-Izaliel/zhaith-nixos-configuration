@@ -78,10 +78,8 @@
       };
 
       moonlight.enable = true;
-
-      steam = {
-        enable = true;
-      };
+      steam.enable = true;
+      wine.enable = true;
     };
 
     power-profiles.enable = true;
