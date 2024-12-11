@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkPackageOption optionalString mkIf types concatStringsSep mkOption;
+  inherit (lib) mkEnableOption mkPackageOption optionalString mkIf types concatStringsSep mkOption optionalAttrs;
   cfg = config.hellebore.hyprland;
   finalPackage = cfg.package.override {enableXWayland = true;};
 in {
@@ -26,6 +26,12 @@ in {
         description = "Defines the cards used for rendering WLRoots based compositors, in order of priority.";
       };
     };
+
+    screenRotation = {
+      enable = mkEnableOption "automatic screen rotation using IIO sensors";
+
+      package = mkPackageOption pkgs "iio-hyprland" {};
+    };
   };
 
   config = mkIf cfg.enable {
@@ -34,12 +40,14 @@ in {
     ];
 
     # NOTE: This gives granular control over which cards should be used, in order, when rendering Hyprland.
-    environment.variables = mkIf cfg.renderingCards.enable {
-      AQ_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
-      # Change to WLR_DRM_DEVICES when on Wlroots
-      WLR_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
-      NIXOS_OZONE_WL = "1";
-    };
+    environment.variables =
+      mkIf cfg.renderingCards.enable {
+        # Change to WLR_DRM_DEVICES when on Wlroots
+        NIXOS_OZONE_WL = "1";
+      }
+      // (optionalAttrs (builtins.length cfg.renderingCards.defaultCards > 0) {
+        AQ_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
+      });
 
     qt.enable = true;
 
@@ -79,12 +87,18 @@ in {
       };
     };
 
-    programs.hyprland = {
-      enable = true;
-      package = finalPackage;
-      withUWSM = true;
-      xwayland = {
+    programs = {
+      hyprland = {
         enable = true;
+        package = finalPackage;
+        withUWSM = true;
+        xwayland = {
+          enable = true;
+        };
+      };
+
+      iio-hyprland = {
+        inherit (cfg.screenRotation) enable package;
       };
     };
   };

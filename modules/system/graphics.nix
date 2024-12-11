@@ -1,9 +1,6 @@
 {
   config,
-  options,
-  extra-utils,
   lib,
-  pkgs,
   ...
 }: let
   inherit (lib) mkEnableOption mkOption mkIf types;
@@ -23,15 +20,7 @@ in {
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
-      extraPackages = with pkgs;
-        [
-          intel-media-driver
-          vaapiIntel
-          vaapiVdpau
-          libvdpau-va-gl
-          mesa
-        ]
-        ++ cfg.extraPackages;
+      extraPackages = cfg.extraPackages;
     };
   };
 }

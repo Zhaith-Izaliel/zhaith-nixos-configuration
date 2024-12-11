@@ -245,8 +245,8 @@ in {
               "[workspace 4 silent] ${config.hellebore.desktop-environment.mail.bin}")
             (optionalString os-config.hellebore.games.cartridges.enable
               "[workspace 5 silent] ${getExe os-config.hellebore.games.cartridges.package}")
-            (optionalString os-config.hellebore.games.cartridges.enable
-              "[workspace 5 silent] ${getExe os-config.hellebore.games.steam.package} -silent")
+            (optionalString os-config.hellebore.games.steam.enable
+              "[workspace 5 silent] ${getExe os-config.hellebore.games.steam.package} ${optionalString os-config.hellebore.games.cartridges.enable "-silent"}")
             (optionalString os-config.hardware.logitech.wireless.enableGraphical
               "${pkgs.solaar}/bin/solaar --window hide")
           ]
@@ -384,6 +384,16 @@ in {
           };
 
           sensitivity = toString cfg.input.mouse.sensitivity; # -1.0 - 1.0, 0 means no modification.
+        };
+
+        plugin = {
+          touch_gestures = mkIf cfg.input.touchscreen.enable {
+            sensitivity = cfg.input.touchscreen.sensitivity;
+            workspace_swipe_fingers = cfg.input.touchscreen.workspaceSwipeFingers;
+            long_press_delay = cfg.input.touchscreen.longPressDelay;
+            resize_on_border_long_press = cfg.input.touchscreen.resizeWindowsByLongPressing;
+            edge_margin = cfg.input.touchscreen.edgeMargin;
+          };
         };
 
         dwindle = {

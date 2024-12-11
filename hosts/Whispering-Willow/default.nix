@@ -33,16 +33,16 @@
   services.teamviewer.enable = true;
 
   hellebore = {
-    font.size = 12;
+    font.size = 9;
 
     theme.name = "catppuccin-macchiato";
 
     monitors = [
       {
         name = "eDP-1";
-        width = 2560;
-        height = 1440;
-        refreshRate = 165;
+        width = 1920;
+        height = 1200;
+        refreshRate = 60;
         xOffset = 0;
         yOffset = 0;
         scaling = 1.0;
@@ -51,7 +51,7 @@
         name = "";
         width = 2560;
         height = 1440;
-        refreshRate = 165;
+        refreshRate = 60;
         xOffset = 0;
         yOffset = 0;
         scaling = 1.0;
@@ -159,6 +159,7 @@
       renderingCards = {
         enable = true;
       };
+      screenRotation.enable = true;
     };
 
     display-manager = {

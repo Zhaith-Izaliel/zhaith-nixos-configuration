@@ -179,7 +179,6 @@ in {
           format = "{icon} {capacity}%";
           format-discharging = "⇣{icon} {capacity}%";
           format-charging = "⇡󰂄 {capacity}%";
-          format-plugged = " {capacity}%";
           format-icons = ["󰁺" "󰁻" "󰁼" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
           states = {
             full = 100;

@@ -57,7 +57,10 @@ in {
       hyprland = {
         enable = true;
 
-        input.mouse.scrollFactor = 0.85;
+        input = {
+          mouse.scrollFactor = 0.85;
+          touchscreen.enable = true;
+        };
 
         picture-in-picture = {
           enable = true;
@@ -72,7 +75,7 @@ in {
 
         progressiveWebApps = {
           outline = {
-            id = "01JAFZXMG3VF8E3XNXAJM4WQNE";
+            id = "01JESC6QZSGR7VASS75KY9ZQ9T";
             execRules = [
               "workspace 2 silent"
             ];
@@ -150,12 +153,16 @@ in {
         };
       };
 
-      notifications.enable = true;
+      notifications = {
+        enable = true;
+
+        height = 200;
+      };
 
       status-bar = {
         enable = true;
         font.size = 11;
-        backlight-device = "intel_backlight";
+        backlight-device = "amdgpu_bl1";
         tray = {
           icon-size = 22;
           spacing = 5;

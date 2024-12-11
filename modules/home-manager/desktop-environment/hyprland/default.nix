@@ -6,7 +6,7 @@
   extra-types,
   ...
 }: let
-  inherit (lib) types mkOption mkEnableOption mkIf mkPackageOption;
+  inherit (lib) types mkOption mkEnableOption mkIf mkPackageOption optional;
   cfg = config.hellebore.desktop-environment.hyprland;
   theme = config.hellebore.theme.themes.${cfg.theme};
 
@@ -165,6 +165,42 @@ in {
           description = "Tapping the touchpad throw a left click.";
         };
       };
+
+      touchscreen = {
+        enable = mkEnableOption "support for touchscreens using Hyprgrass";
+
+        package = mkPackageOption pkgs ["hyprlandPlugins" "hyprgrass"] {};
+
+        sensitivity = mkOption {
+          type = types.float;
+          default = 1.0;
+          description = "Defines the touch sensitivity.";
+        };
+
+        workspaceSwipeFingers = mkOption {
+          default = 3;
+          type = types.ints.unsigned;
+          description = "The number of fingers to switch workspace when swiping. Must be greater or equal to 3.";
+        };
+
+        longPressDelay = mkOption {
+          default = 400;
+          type = types.ints.unsigned;
+          description = "The time required for a press to be long, in milliseconds.";
+        };
+
+        resizeWindowsByLongPressing =
+          (mkEnableOption "allowing resizing windows on long pressing their borders and gap")
+          // {
+            default = true;
+          };
+
+        edgeMargin = mkOption {
+          type = types.ints.unsigned;
+          default = 10;
+          description = "The distance from the physical edge of the screen that is considered an edge";
+        };
+      };
     };
 
     picture-in-picture = {
@@ -262,6 +298,7 @@ in {
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;
+      plugins = optional cfg.input.touchscreen.enable cfg.input.touchscreen.package;
     };
   };
 }
