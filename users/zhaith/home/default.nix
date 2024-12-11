@@ -6,7 +6,7 @@
   os-config,
   ...
 }: let
-  inherit (lib) optional;
+  inherit (lib) optionalString getExe optional;
 in {
   hellebore = {
     theme.name = "catppuccin-macchiato";
@@ -69,6 +69,25 @@ in {
           position = "top-right";
         };
 
+        extraExecOnce = [
+          (optionalString config.hellebore.desktop-environment.browsers.enable "[workspace 1] ${getExe config.hellebore.desktop-environment.browsers.package}")
+          (optionalString config.hellebore.shell.emulator.enable "[workspace 1] ${config.hellebore.shell.emulator.bin}")
+          (optionalString config.hellebore.tools.discord.enable "[workspace 3] ${getExe config.hellebore.tools.discord.finalPackage}")
+          (optionalString config.hellebore.desktop-environment.mail.enable "[workspace 4] ${getExe config.hellebore.desktop-environment.mail.package}")
+          (optionalString os-config.hellebore.games.steam.enable "[workspace 5] ${getExe os-config.hellebore.games.steam.package}")
+        ];
+
+        extraWorkspaceRules = [
+          {
+            selector = "1";
+            rules = ["persistent:true" "default:true"];
+          }
+          {
+            selector = "r[2-5]";
+            rules = ["persistent:true"];
+          }
+        ];
+
         switches = {
           lid = {
             enable = true;
@@ -97,10 +116,6 @@ in {
           ];
         in
           [
-            {
-              regex = "class:(steam_app_).*";
-              rules = gameRules;
-            }
             {
               regex = "class:(factorio).*";
               rules = gameRules;

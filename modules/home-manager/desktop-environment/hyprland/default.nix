@@ -6,23 +6,48 @@
   extra-types,
   ...
 }: let
-  inherit (lib) types mkOption mkEnableOption mkIf mkPackageOption optional;
+  inherit
+    (lib)
+    types
+    mkOption
+    mkEnableOption
+    mkIf
+    mkPackageOption
+    optional
+    ;
+
   cfg = config.hellebore.desktop-environment.hyprland;
   theme = config.hellebore.theme.themes.${cfg.theme};
 
   finalPackage = cfg.package.override {enableXWayland = true;};
-  extraRulesType = types.submodule {
+  extraWindowAndLayerRulesType = types.submodule {
     options = {
       rules = mkOption {
         type = types.listOf types.nonEmptyStr;
         default = [];
-        description = "Defines the rules to apply to the game window";
+        description = "Defines the rules to apply to the window or layer.";
       };
 
       regex = mkOption {
         type = types.nonEmptyStr;
         default = "";
         description = "Defines the regular expression used to find the window or layer on Hyprland. See: https://wiki.hyprland.org/Configuring/Window-Rules/#window-rules-v2 and https://wiki.hyprland.org/Configuring/Window-Rules/#layer-rules";
+      };
+    };
+  };
+
+  extraWorkspaceRulesType = types.submodule {
+    options = {
+      rules = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "Defines the rules to apply to the workspace.";
+      };
+
+      selector = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "Defines the selector used to select workspace(s) to apply these rules. See https://wiki.hyprland.org/Configuring/Workspace-Rules/#workspace-selectors";
       };
     };
   };
@@ -111,15 +136,21 @@ in {
     };
 
     extraWindowRules = mkOption {
-      type = types.listOf extraRulesType;
+      type = types.listOf extraWindowAndLayerRulesType;
       default = [];
       description = "Defines a list of extra rules for windows to be applied.";
     };
 
     extraLayerRules = mkOption {
-      type = types.listOf extraRulesType;
+      type = types.listOf extraWindowAndLayerRulesType;
       default = [];
-      description = "Defines a list of extra rules for windows to be applied.";
+      description = "Defines a list of extra rules for layers to be applied.";
+    };
+
+    extraWorkspaceRules = mkOption {
+      type = types.listOf extraWorkspaceRulesType;
+      default = [];
+      description = "Defines a list of extra rules for workspaces to be applied.";
     };
 
     misc = {

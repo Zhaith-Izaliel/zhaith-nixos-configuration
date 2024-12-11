@@ -16,7 +16,6 @@
     range
     mkIf
     recursiveUpdate
-    count
     mapAttrsToList
     removeSuffix
     pipe
@@ -43,7 +42,9 @@
       gsettings set $gnome_schema color-scheme "prefer-dark"
     '';
 
-  mkWindowOrLayerRule = window: rules: (map (rule: "${rule},${window}") rules);
+  mkWindowOrLayerRule = regex: rules: map (rule: "${rule},${regex}") rules;
+
+  mkWorkspaceRule = selector: rules: map (rule: "${selector},${rule}") rules;
 
   mkMonitor = monitor: let
     inherit (monitor) name;
@@ -62,7 +63,15 @@
 
   mkMonitors = monitors: builtins.map mkMonitor monitors;
 
-  mkExtraRules = rules: builtins.map (item: mkWindowOrLayerRule item.regex item.rules) rules;
+  mkExtraRules = rules:
+    pipe rules [
+      (map (rule: mkWindowOrLayerRule rule.regex rule.rules))
+    ];
+
+  mkExtraWorkspaceRules = workspaceRules:
+    pipe workspaceRules [
+      (map (rule: mkWorkspaceRule rule.selector rule.rules))
+    ];
 
   pwas = pipe cfg.progressiveWebApps [
     (mapAttrsToList (name: value: value))
@@ -91,15 +100,9 @@
 
   extraLayerRules = mkExtraRules cfg.extraLayerRules;
 
-  getMonitor = index: builtins.elemAt cfg.monitors index;
+  extraWorkspaceRules = mkExtraWorkspaceRules cfg.extraWorkspaceRules;
 
-  maxPersistentWorkspaces = count (x: x) [
-    true
-    config.hellebore.tools.office.enable
-    config.hellebore.tools.discord.enable
-    config.hellebore.desktop-environment.mail.enable
-    os-config.hellebore.games.enabled
-  ];
+  getMonitor = index: builtins.elemAt cfg.monitors index;
 
   appletsConfig = config.programs.rofi.applets;
 
@@ -143,66 +146,30 @@ in {
           no_hardware_cursors = true;
         };
 
-        workspace =
-          map
-          (x: "${toString x},${optionalString (x == 1) "default:true"},persistent:true")
-          (range 1 maxPersistentWorkspaces);
+        workspace = flatten extraWorkspaceRules;
 
         windowrulev2 = flatten [
-          (
-            optionals config.hellebore.tools.discord.enable
-            (
-              mkWindowOrLayerRule "class:(discord|vesktop)" [
-                "workspace 3"
-              ]
-              ++ (optional config.hellebore.tools.slack.enable "maximize")
-            )
-          )
-          (
-            optionals config.hellebore.tools.slack.enable
-            (mkWindowOrLayerRule "class:(Slack)" [
-              "workspace 3"
-              "maximize"
-            ])
-          )
-          (
-            optionals config.hellebore.desktop-environment.mail.enable
-            (mkWindowOrLayerRule "class:(thunderbird)" [
-              "workspace 4"
-            ])
-          )
+          # (optionals os-config.hellebore.games.steam.enable (mkWindowOrLayerRule "class:(steam)" [
+          #   "workspace 5 silent"
+          # ]))
 
-          (optionals os-config.hellebore.games.steam.enable (mkWindowOrLayerRule "class:(steam)" [
-            "workspace 5 silent"
-          ]))
+          # (optionals os-config.hellebore.games.gamescope.enable (mkWindowOrLayerRule "class:(.gamescope-wrapped)" [
+          #   "workspace 5"
+          #   "idleinhibit"
+          # ]))
 
-          (optionals os-config.hellebore.games.gamescope.enable (mkWindowOrLayerRule "class:(.gamescope-wrapped)" [
-            "workspace 5"
-            "idleinhibit"
-          ]))
+          # (optionals os-config.hellebore.games.lutris.enable (mkWindowOrLayerRule "class:(lutris)" [
+          #   "workspace 5"
+          # ]))
 
-          (optionals os-config.hellebore.games.lutris.enable (mkWindowOrLayerRule "class:(lutris)" [
-            "workspace 5"
-          ]))
+          # (optionals os-config.hellebore.games.cartridges.enable (mkWindowOrLayerRule "class:^.*(Cartridges).*$" [
+          #   "workspace 5"
+          # ]))
 
-          (optionals os-config.hellebore.games.cartridges.enable (mkWindowOrLayerRule "class:^.*(Cartridges).*$" [
-            "workspace 5"
-          ]))
+          # (mkWindowOrLayerRule "class:^.*(heroic).*$" [
+          #   "workspace 5"
+          # ])
 
-          (mkWindowOrLayerRule "class:^.*(heroic).*$" [
-            "workspace 5"
-          ])
-
-          (optionals os-config.hellebore.vm.enable [
-            (mkWindowOrLayerRule "title:(${os-config.hellebore.vm.name})class:(looking-glass-client)" [
-              "fullscreen"
-              "idleinhibit always"
-              "workspace 6"
-            ])
-            (mkWindowOrLayerRule "class:(virt-manager)" [
-              "workspace 6"
-            ])
-          ])
           (optionals cfg.picture-in-picture.enable (mkWindowOrLayerRule "class:^.*(firefox).*$, title:${pInPName}" [
             "float"
             "pin"
@@ -227,26 +194,12 @@ in {
           [
             "${getExe pkgs.swww} init"
             "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
-            # "swayosd --max-volume 150"
-            # "${pkgs.wl-clipboard}/bin/wl-paste --watch ${getExe pkgs.cliphist} store"
             "hyprctl setcursor ${theme.gtk.cursorTheme.name} ${toString cfg.cursorSize}"
             (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
-            (optionalString config.hellebore.desktop-environment.browsers.enable
-              "[workspace 1] ${getExe pkgs.firefox}")
-            (optionalString config.hellebore.shell.emulator.enable
-              "[workspace 1] ${config.hellebore.shell.emulator.bin}")
-            # (optionalString config.hellebore.tools.affine.enable
-            #   "[workspace 2 silent] ${getExe config.hellebore.tools.affine.package}")
-            (optionalString config.hellebore.tools.discord.enable
-              "[workspace 3 silent] ${getExe config.hellebore.tools.discord.finalPackage}")
-            (optionalString config.hellebore.tools.slack.enable
-              "[workspace 3 silent] ${getExe config.hellebore.tools.slack.package}")
-            (optionalString config.hellebore.desktop-environment.mail.enable
-              "[workspace 4 silent] ${config.hellebore.desktop-environment.mail.bin}")
-            (optionalString os-config.hellebore.games.cartridges.enable
-              "[workspace 5 silent] ${getExe os-config.hellebore.games.cartridges.package}")
-            (optionalString os-config.hellebore.games.steam.enable
-              "[workspace 5 silent] ${getExe os-config.hellebore.games.steam.package} ${optionalString os-config.hellebore.games.cartridges.enable "-silent"}")
+            # (optionalString os-config.hellebore.games.cartridges.enable
+            #   "[workspace 5 silent] ${getExe os-config.hellebore.games.cartridges.package}")
+            # (optionalString os-config.hellebore.games.steam.enable
+            #   "[workspace 5 silent] ${getExe os-config.hellebore.games.steam.package} ${optionalString os-config.hellebore.games.cartridges.enable "-silent"}")
             (optionalString os-config.hardware.logitech.wireless.enableGraphical
               "${pkgs.solaar}/bin/solaar --window hide")
           ]
@@ -358,10 +311,6 @@ in {
           ", XF86AudioLowerVolume, exec, ${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 5%-"
           ", XF86MonBrightnessUp, exec, ${getExe pkgs.volume-brightness} -b 5%+"
           ", XF86MonBrightnessDown, exec, ${getExe pkgs.volume-brightness} -b 5%-"
-        ];
-
-        bindr = [
-          "CAPS, Caps_Lock, exec, swayosd --caps-lock"
         ];
 
         bindm = [
