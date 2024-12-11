@@ -178,6 +178,7 @@ in {
         battery = {
           format = "{icon} {capacity}%";
           format-discharging = "⇣{icon} {capacity}%";
+          format-plugged = " {capacity}%";
           format-charging = "⇡󰂄 {capacity}%";
           format-icons = ["󰁺" "󰁻" "󰁼" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
           states = {

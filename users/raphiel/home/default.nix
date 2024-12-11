@@ -150,7 +150,6 @@ in {
 
       bluetooth.enable = true;
       network.enable = true;
-      cloud.enable = true;
 
       i18n = {
         enable = true;
