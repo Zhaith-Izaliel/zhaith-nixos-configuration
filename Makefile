@@ -6,7 +6,7 @@ rebuild-boot:
 	nixos-rebuild boot --flake . --use-remote-sudo
 	
 rebuild-home:
-	rm -f /home/zhaith/.mozilla/firefox/zhaith/search.json.mozlz4.backup
+	rm -f $(HOME)/.mozilla/firefox/zhaith/search.json.mozlz4.backup
 	home-manager switch --flake . -b backup
 
 debug:

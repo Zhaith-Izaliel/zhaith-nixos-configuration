@@ -95,17 +95,6 @@ in {
           };
       };
 
-      lockscreen = {
-        enable = true;
-        font.size = config.hellebore.font.size + 10;
-        timeouts = {
-          dim.enable = true;
-          lock.enable = true;
-          powerSaving.enable = true;
-          suspend.enable = false;
-        };
-      };
-
       logout = {
         enable = true;
         useLayerBlur = true;
