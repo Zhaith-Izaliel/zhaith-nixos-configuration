@@ -127,7 +127,7 @@
       ports = [4243];
     };
 
-    hellebore.server = {
+    server = {
       fail2ban = {
         enable = true;
         maxretry = 3;
