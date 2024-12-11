@@ -34,7 +34,7 @@
         name = "DP-1";
         width = 2560;
         height = 1440;
-        refreshRate = 165.0;
+        refreshRate = 164.84;
         xOffset = 0;
         yOffset = 0;
         scaling = 1.0;
