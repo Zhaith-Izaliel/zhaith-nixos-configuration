@@ -57,11 +57,8 @@ in {
       hyprland = {
         enable = true;
 
-        cursorSize = 18;
-
         input = {
           mouse.scrollFactor = 0.85;
-          touchscreen.enable = true;
         };
 
         picture-in-picture = {
@@ -69,27 +66,9 @@ in {
           position = "top-right";
         };
 
-        switches = {
-          lid = {
-            enable = true;
-          };
-        };
-
-        progressiveWebApps = {
-          outline = {
-            id = "01JESC6QZSGR7VASS75KY9ZQ9T";
-            execRules = [
-              "workspace 2 silent"
-            ];
-            windowRules = [
-              "workspace 2"
-            ];
-          };
-        };
-
         extraWindowRules = let
           gameRules = [
-            "workspace 5"
+            "workspace 1"
             "idleinhibit"
             "noblur"
             "noborder"
@@ -157,8 +136,6 @@ in {
 
       notifications = {
         enable = true;
-
-        height = 200;
       };
 
       status-bar = {
@@ -191,15 +168,10 @@ in {
 
       disks.enable = true;
 
-      mail = {
-        enable = true;
-      };
-
       browsers = {
         enable = true;
         package = pkgs.firefox-bin;
         profiles.zhaith.enable = true;
-        progressiveWebApps.enable = true;
       };
     };
 
@@ -208,28 +180,7 @@ in {
     };
 
     tools = {
-      affine.enable = true;
-      discord = {
-        enable = true;
-        tts.enable = true;
-      };
-      office.enable = true;
-      tasks.enable = true;
       docs.enable = true;
-    };
-
-    multimedia = {
-      enable = true;
-      mpris.enable = true;
-      art.enable = true;
-      obs.enable = true;
-      mpd = {
-        enable = true;
-        visualizer = {
-          enable = true;
-          spectrumSmoothLook = true;
-        };
-      };
     };
 
     development = {

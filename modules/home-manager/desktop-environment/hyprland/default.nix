@@ -86,6 +86,12 @@ in {
       applications.";
     };
 
+    cursorSize = mkOption {
+      default = 24;
+      type = types.ints.unsigned;
+      description = "Defines the cursor size to use.";
+    };
+
     wallpaper = mkOption {
       type = types.path;
       default = ../../../../assets/images/wallpaper/wallpaper.png;
@@ -248,6 +254,10 @@ in {
       {
         assertion = os-config.programs.hyprland.xwayland.enable;
         message = "Hyprland XWayland must be enabled in your system configuration";
+      }
+      {
+        assertion = cfg.input.touchscreen.enable -> cfg.input.touchscreen.workspaceSwipeFingers >= 3;
+        message = "You need at least 3 fingers to swipe workspaces with a touchscreen.";
       }
     ];
 

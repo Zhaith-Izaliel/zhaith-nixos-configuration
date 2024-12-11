@@ -76,7 +76,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # HACK: Using Wezterm nightly until they finish the wayland reimplementation.
+    # HACK: Using Wezterm nightly until they finish the wayland reimplementation and it's pushed to nixpkgs.
     wezterm = {
       url = "github:wez/wezterm/?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -168,6 +168,14 @@
           modules.server
         ];
       };
+      Luminous-Rafflesia = customHelpers.mkSystem {
+        inherit system overlays;
+        hostname = "Luminous-Rafflesia";
+        users = ["raphiel"];
+        extraModules = [
+          modules.system
+        ];
+      };
       Ethereal-Edelweiss = customHelpers.mkSystem {
         inherit system overlays;
         hostname = "Ethereal-Edelweiss";
@@ -187,6 +195,13 @@
         inherit system overlays extraModules;
         username = "zhaith";
         hostname = "Whispering-Willow";
+        stateVersion = "24.11";
+      };
+
+      "raphiel@Luminous-Rafflesia" = customHelpers.mkHome {
+        inherit system overlays extraModules;
+        username = "raphiel";
+        hostname = "Luminous-Rafflesia";
         stateVersion = "24.11";
       };
 

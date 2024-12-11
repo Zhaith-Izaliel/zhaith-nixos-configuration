@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  extra-types,
   ...
 }: let
   inherit (lib) optional types mkEnableOption mkOption mkIf mkPackageOption concatStringsSep getExe;
@@ -33,14 +34,14 @@
     args =
       [
         "--fullscreen"
-        "--nested-refresh ${toString gameMonitor.refreshRate}"
+        "--nested-refresh ${toString cfg.monitor.refreshRate}"
         "--generate-drm-mode fixed"
         "--hdr-enabled"
         # "--backend sdl"
-        "-w ${toString gameMonitor.width}"
-        "-h ${toString gameMonitor.height}"
-        "-W ${toString gameMonitor.width}"
-        "-H ${toString gameMonitor.height}"
+        "-w ${toString cfg.monitor.width}"
+        "-h ${toString cfg.monitor.height}"
+        "-W ${toString cfg.monitor.width}"
+        "-H ${toString cfg.monitor.height}"
         "--steam"
       ]
       ++ optional config.programs.hyprland.enable "--expose-wayland"
@@ -100,8 +101,6 @@
       }
       // cfg.extraEnv;
   };
-
-  gameMonitor = builtins.elemAt config.hellebore.monitors cfg.monitorID;
 in {
   options.hellebore.games.gamescope = {
     enable = mkEnableOption "Gamescope, through `steam-gamescope` and its own Display-Manager session";
@@ -140,9 +139,9 @@ in {
       '';
     };
 
-    monitorID = mkOption {
-      type = types.ints.unsigned;
-      default = 0;
+    monitor = mkOption {
+      type = extra-types.monitor;
+      default = builtins.length config.hellebore.monitors 0;
       description = "The monitor ID used for gaming. The ID corresponds to the
       index of the monitor in {option}`config.hellebore.monitors`.";
     };
@@ -152,7 +151,11 @@ in {
     assertions = [
       {
         assertion = config.hellebore.graphics.enable;
-        message = "You need to enable OpenGl to run gamescope.";
+        message = "You need to enable OpenGl to run Gamescope.";
+      }
+      {
+        assertion = builtins.length config.hellebore.monitors > 0;
+        message = "You need at least one monitor in `config.hellebore.monitors` to use Gamescope.";
       }
     ];
 
@@ -161,7 +164,7 @@ in {
       gamescopeScripts.gamescope-run
     ];
 
-    programs.steam.gamescopeSession.enable = true;
+    programs.steam.gamescopeSession.enable = cfg.session;
 
     hardware.pulseaudio.support32Bit = config.hardware.pulseaudio.enable;
 

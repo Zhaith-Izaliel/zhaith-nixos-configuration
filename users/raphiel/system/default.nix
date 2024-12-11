@@ -1,9 +1,9 @@
 {pkgs, ...}: {
   # Define user accounts. Don't forget to set a password with ‘passwd’.
 
-  users.groups.zhaith = {};
+  users.groups.raphiel = {};
 
-  users.users.zhaith = {
+  users.users.raphiel = {
     isNormalUser = true;
     extraGroups = [
       "wheel" # 'wheel' Enable ‘sudo’ for the user.
@@ -13,8 +13,8 @@
       "video"
       "gamemode"
     ];
-    group = "zhaith";
-    description = "Virgil Ribeyre";
+    group = "raphiel";
+    description = "Raphiel Izaliel";
     shell = pkgs.zsh;
   };
 }

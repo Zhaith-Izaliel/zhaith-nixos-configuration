@@ -30,6 +30,7 @@ in {
         unzip
         pstree
         pciutils
+        usbutils
         wget
         curl
         rar
@@ -39,6 +40,7 @@ in {
         bandwhich
         dust
         agenix
+        pv
         nvtopPackages.full
       ])
       ++ optional cfg.nix-alien.enable pkgs.nix-alien;

@@ -23,7 +23,7 @@ in rec {
         description = "The height (in pixel) of the monitor.";
       };
       refreshRate = mkOption {
-        type = types.int;
+        type = types.float;
         description = "The refresh rate (in Hz) of the monitor.";
       };
       resolution = mkOption {

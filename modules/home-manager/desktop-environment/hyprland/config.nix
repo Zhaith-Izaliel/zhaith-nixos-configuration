@@ -132,7 +132,7 @@ in {
 
         env =
           [
-            "XCURSOR_SIZE,24"
+            "XCURSOR_SIZE,${toString cfg.cursorSize}"
           ]
           ++ optionals os-config.hellebore.hardware.nvidia.proprietary.prime.sync.enable [
             "LIBVA_DRIVER_NAME,nvidia"
@@ -229,7 +229,7 @@ in {
             "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
             # "swayosd --max-volume 150"
             # "${pkgs.wl-clipboard}/bin/wl-paste --watch ${getExe pkgs.cliphist} store"
-            "hyprctl setcursor ${theme.gtk.cursorTheme.name} 32"
+            "hyprctl setcursor ${theme.gtk.cursorTheme.name} ${toString cfg.cursorSize}"
             (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
             (optionalString config.hellebore.desktop-environment.browsers.enable
               "[workspace 1] ${getExe pkgs.firefox}")

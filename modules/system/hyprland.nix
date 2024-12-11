@@ -17,14 +17,10 @@ in {
 
     enableHyprlockPam = mkEnableOption "Hyprlock PAM configuration";
 
-    renderingCards = {
-      enable = mkEnableOption "using different rendering cards for WLRoots based compositors";
-
-      defaultCards = mkOption {
-        type = types.listOf types.nonEmptyStr;
-        default = [];
-        description = "Defines the cards used for rendering WLRoots based compositors, in order of priority.";
-      };
+    renderingCards = mkOption {
+      type = types.listOf types.nonEmptyStr;
+      default = [];
+      description = "Defines the cards used for rendering WLRoots based compositors, in order of priority.";
     };
 
     screenRotation = {
@@ -41,12 +37,12 @@ in {
 
     # NOTE: This gives granular control over which cards should be used, in order, when rendering Hyprland.
     environment.variables =
-      mkIf cfg.renderingCards.enable {
+      {
         # Change to WLR_DRM_DEVICES when on Wlroots
         NIXOS_OZONE_WL = "1";
       }
-      // (optionalAttrs (builtins.length cfg.renderingCards.defaultCards > 0) {
-        AQ_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards.defaultCards);
+      // (optionalAttrs (builtins.length cfg.renderingCards > 0) {
+        AQ_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards);
       });
 
     qt.enable = true;

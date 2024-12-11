@@ -1,9 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: {
+{lib, ...}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -25,48 +20,20 @@
     # kernelPackages = unstable-pkgs.linuxPackages_zen;
   };
 
-  services.teamviewer.enable = true;
-
   hellebore = {
-    font.size = 10;
+    font.size = 12;
 
     theme.name = "catppuccin-macchiato";
 
     monitors = [
       {
-        name = "eDP-1";
-        width = 1920;
-        height = 1200;
-        refreshRate = 60.0;
-        xOffset = 0;
-        yOffset = 0;
-        scaling = 1.0;
-      }
-      {
         name = "DP-1";
         width = 2560;
         height = 1440;
-        refreshRate = 59.95;
+        refreshRate = 165.0;
         xOffset = 0;
         yOffset = 0;
         scaling = 1.0;
-        extraArgs = [
-          "mirror"
-          (builtins.elemAt config.hellebore.monitors 0).name
-        ];
-      }
-      {
-        name = "HDMI-A-1";
-        width = 1920;
-        height = 1080;
-        refreshRate = 60.0;
-        xOffset = 0;
-        yOffset = 0;
-        scaling = 1.0;
-        extraArgs = [
-          "mirror"
-          (builtins.elemAt config.hellebore.monitors 0).name
-        ];
       }
     ];
 
@@ -74,7 +41,7 @@
       enable = true;
       enableNetworkManager = true;
       interfaces = [
-        "wlp2s0"
+        "wlp2s0" # FIXME: Use the correct interface name
       ];
     };
 
@@ -84,9 +51,20 @@
         mods.enable = true;
       };
 
-      moonlight.enable = true;
       steam.enable = true;
+      gamescope = {
+        enable = true;
+        capSysNice = true;
+      };
+      lutris.enable = true;
+      umu.enable = true;
+      heroic-launcher.enable = true;
       wine.enable = true;
+    };
+
+    development = {
+      enable = true;
+      enableDocumentation = true;
     };
 
     power-profiles.enable = true;
@@ -98,20 +76,6 @@
 
       bluetooth.enable = true;
 
-      printing = {
-        enable = true;
-        numerization.enable = true;
-        drivers = with pkgs; [
-          epson-escpr
-          epson-escpr2
-        ];
-      };
-
-      integratedCamera = {
-        disable = true;
-        cameraBus = "3-1";
-      };
-
       gaming = {
         enable = true;
         steam.enable = true;
@@ -122,31 +86,18 @@
     bootloader = {
       enable = true;
       efiSupport = true;
-      theme.screen = "1080p";
+      theme.screen = "2k";
     };
 
     fonts.enable = true;
 
     tools = {
       enable = true;
-      nix-alien.enable = true;
-      input-remapper.enable = true;
     };
 
     shell.enable = true;
 
     locale.enable = true;
-
-    development = {
-      enable = true;
-      enablePodman = true;
-      enableDocumentation = true;
-    };
-
-    tex = {
-      enable = true;
-      scheme = "full";
-    };
 
     sound = {
       enable = true;
@@ -164,7 +115,9 @@
     hyprland = {
       enable = true;
       enableHyprlockPam = true;
-      screenRotation.enable = true;
+      renderingCards = {
+        enable = true;
+      };
     };
 
     display-manager = {
@@ -181,14 +134,6 @@
         reminders = [
           "50 2 * * *"
         ];
-      };
-
-      upower = {
-        enable = true;
-        notify = false;
-        percentageLow = 15;
-        percentageCritical = 10;
-        percentageAction = 5;
       };
     };
   };
