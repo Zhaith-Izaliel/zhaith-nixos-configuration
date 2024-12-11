@@ -20,6 +20,10 @@
     # kernelPackages = unstable-pkgs.linuxPackages_zen;
   };
 
+  users.extraUsers.raphiel.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMjUrrPSGJtAmf57wGDbaMos00GgQYcfZ6+hVYKAkEah virgil.ribeyre@ethereal-edelweiss.cloud"
+  ];
+
   hellebore = {
     font.size = 12;
 
