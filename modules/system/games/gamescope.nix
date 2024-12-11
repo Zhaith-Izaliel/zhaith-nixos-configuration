@@ -141,7 +141,7 @@ in {
 
     monitor = mkOption {
       type = extra-types.monitor;
-      default = builtins.length config.hellebore.monitors 0;
+      default = builtins.elemAt config.hellebore.monitors 0;
       description = "The monitor ID used for gaming. The ID corresponds to the
       index of the monitor in {option}`config.hellebore.monitors`.";
     };

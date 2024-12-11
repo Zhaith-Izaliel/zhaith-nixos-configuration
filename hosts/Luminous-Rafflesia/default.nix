@@ -41,7 +41,7 @@
       enable = true;
       enableNetworkManager = true;
       interfaces = [
-        "wlp2s0" # FIXME: Use the correct interface name
+        "enp6s0"
       ];
     };
 
@@ -115,9 +115,6 @@
     hyprland = {
       enable = true;
       enableHyprlockPam = true;
-      renderingCards = {
-        enable = true;
-      };
     };
 
     display-manager = {
