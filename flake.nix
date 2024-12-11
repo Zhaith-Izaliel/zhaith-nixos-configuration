@@ -174,6 +174,7 @@
         users = ["raphiel"];
         extraModules = [
           modules.system
+          modules.server
         ];
       };
       Ethereal-Edelweiss = customHelpers.mkSystem {

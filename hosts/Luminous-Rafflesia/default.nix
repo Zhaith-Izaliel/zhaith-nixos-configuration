@@ -122,6 +122,21 @@
       background.path = lib.cleanSource ../../assets/images/sddm/greeter.png;
     };
 
+    ssh = {
+      enable = true;
+      ports = [4243];
+    };
+
+    hellebore.server = {
+      fail2ban = {
+        enable = true;
+        maxretry = 3;
+        extraIgnoreIP = [
+          "109.190.182.100/32"
+        ];
+      };
+    };
+
     power-management = {
       enable = true;
       autoShutdown = {
