@@ -128,7 +128,7 @@ in {
               }
             ])
           ++ (optional (cfg.soundSharing.mode == "sender") {
-            cmd = "load-modules";
+            cmd = "load-module";
             args = "module-zeroconf-discover";
           });
       };
