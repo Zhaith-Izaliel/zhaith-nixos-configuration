@@ -116,7 +116,7 @@ in {
 
       services.pipewire.extraConfig.pipewire-pulse."50-network-sharing" = {
         "pulse.cmd" =
-          (optionals (cfg.soundSharing.mode == "receiver")
+          (optionals (cfg.soundSharing.mode == "sender")
             [
               {
                 cmd = "load-module";
@@ -127,7 +127,7 @@ in {
                 args = "module-zeroconf-publish";
               }
             ])
-          ++ (optional (cfg.soundSharing.mode == "sender") {
+          ++ (optional (cfg.soundSharing.mode == "receiver") {
             cmd = "load-module";
             args = "module-zeroconf-discover";
           });
