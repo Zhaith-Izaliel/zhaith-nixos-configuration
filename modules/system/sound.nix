@@ -13,7 +13,6 @@
     mkPackageOption
     mkMerge
     optional
-    optionals
     ;
 
   cfg = config.hellebore.sound;
@@ -120,7 +119,7 @@ in {
         };
       };
 
-      services.pipewire.extraConfig."50-network-sharing" = {
+      services.pipewire.extraConfig.pipewire."50-network-sharing" = {
         context.modules =
           (optional (cfg.soundSharing.mode == "receiver")
             {
