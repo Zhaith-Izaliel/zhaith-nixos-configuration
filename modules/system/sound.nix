@@ -11,16 +11,12 @@
     mkOption
     types
     mkPackageOption
-    optionalAttrs
     mkMerge
-    optionals
-    optionalString
-    concatStringsSep
+    optional
     ;
 
   cfg = config.hellebore.sound;
   toPeriod = quantum: "${toString quantum}/${toString cfg.lowLatency.rate}";
-  finalPackage = pkgs.pipewire.override (optionalAttrs cfg.soundSharing.pipewire.enable {zeroconfSupport = true;});
 in {
   options.hellebore.sound = {
     enable = mkEnableOption "Hellebore sound configuration";
@@ -61,20 +57,24 @@ in {
     };
 
     soundSharing = {
-      pipewire = {
-        enable = mkEnableOption "sound sharing between Linux computers over the network using pipewire-pulseaudio";
+      enable = mkEnableOption "sound sharing between Linux computers over the network using pipewire-pulseaudio";
 
-        anonymousClients = {
-          allowAll = lib.mkEnableOption "all anonymous clients to stream to the server";
-          allowedIpRanges = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            default = [];
-            example = lib.literalExpression ''[ "127.0.0.1" "192.168.1.0/24" ]'';
-            description = ''
-              A list of IP subnets that are allowed to stream to the server.
-            '';
-          };
-        };
+      port = mkOption {
+        type = types.ints.unsigned;
+        default = 4713;
+        description = "The port of the receiver. You need it for both sender and receiver.";
+      };
+
+      mode = mkOption {
+        type = types.enum ["sender" "receiver"];
+        default = "";
+        description = "Defines if this machine is the receiver or the sender.";
+      };
+
+      receiverAddress = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "Defines the receiver IP address used to connect to it.";
       };
     };
   };
@@ -84,8 +84,8 @@ in {
       security.rtkit.enable = true;
 
       services.pipewire = {
+        inherit (cfg) package;
         enable = true;
-        package = finalPackage;
 
         wireplumber = {
           enable = true;
@@ -114,32 +114,26 @@ in {
       };
     })
 
-    (mkIf cfg.soundSharing.pipewire.enable {
-      services.avahi = {
-        enable = true;
-        openFirewall = true;
-
-        publish = {
-          enable = true;
-          userServices = true;
+    (mkIf cfg.soundSharing.enable {
+      networking = mkIf (cfg.soundSharing.mode == "receiver") {
+        firewall = {
+          allowedTCPPorts = [
+            cfg.soundSharing.port
+          ];
         };
       };
 
       services.pipewire.extraConfig.pipewire-pulse."50-network-sharing" = {
-        pulse.cmd = [
-          {
+        pulse.cmd =
+          (optional (cfg.soundSharing.mode == "receiver")
+            {
+              cmd = "load-modules";
+              args = "module-native-protocol-tcp port=${toString cfg.soundSharing.port} listen=127.0.0.1";
+            })
+          ++ (optional (cfg.soundSharing.mode == "sender") {
             cmd = "load-modules";
-            args = "module-native-protocol-tcp ${optionalString cfg.soundSharing.pipewire.anonymousClients.allowAll "auth-anonymous=1"} ${optionalString (cfg.soundSharing.pipewire.anonymousClients.allowedIpRanges != []) (concatStringsSep ";" cfg.soundSharing.pipewire.anonymousClients.allowedIpRanges)}";
-          }
-          {
-            cmd = "load-module";
-            args = "module-zeroconf-discover";
-          }
-          {
-            cmd = "load-modules";
-            args = "module-zeroconf-publish";
-          }
-        ];
+            args = "module-tunnel-sink server=tcp:${cfg.soundSharing.receiverIP}:${toString cfg.soundSharing.port}";
+          });
       };
     })
 

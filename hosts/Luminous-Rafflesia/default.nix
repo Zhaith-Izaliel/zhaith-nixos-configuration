@@ -135,16 +135,9 @@
       };
 
       soundSharing = {
-        pipewire = {
-          enable = true;
-          anonymousClients = {
-            allowAll = true;
-            allowedIpRanges = [
-              "127.0.0.1"
-              "192.168.1.0/150"
-            ];
-          };
-        };
+        enable = true;
+        receiverAddress = "192.168.1.150";
+        mode = "sender";
       };
     };
 
