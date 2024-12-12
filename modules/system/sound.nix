@@ -109,36 +109,16 @@ in {
     })
 
     (mkIf cfg.soundSharing.enable {
-      networking.firewall = mkIf (cfg.soundSharing.mode == "receiver") {
-        allowedTCPPorts = [
-          10001
-          10002
-          10003
-        ];
-
-        allowedUDPPorts = [
-          10001
-          10002
-          10003
-        ];
-      };
-
       services.pipewire.extraConfig.pipewire = {
         "roc-source" = mkIf (cfg.soundSharing.mode == "receiver") {
-          context.modules = [
+          "context.modules" = [
             {
               name = "libpipewire-module-roc-source";
               args = {
-                local.ip = "0.0.0.0";
-                resampler.profile = "medium";
-                fec.code = "ldpc";
-                sess.latency.msec = "100";
-                local.source.port = "10001";
-                local.repair.port = "10002";
-                local.control.port = "10003";
-                source.name = "Roc Source";
-                source.props = {
-                  node.name = "roc-source";
+                "fec.code" = "ldpc";
+                "source.name" = "Roc Source";
+                "source.props" = {
+                  "node.name" = "roc-source";
                 };
               };
               flags = ["nofail"];
@@ -147,18 +127,15 @@ in {
         };
 
         "roc-sink" = mkIf (cfg.soundSharing.mode == "sender") {
-          context.modules = [
+          "context.modules" = [
             {
               name = "libpipewire-module-roc-sink";
               args = {
-                fec.code = "ldpc";
-                remote.ip = cfg.soundSharing.receiverAddress;
-                remote.source.port = "10001";
-                remote.repair.port = "10002";
-                remote.control.port = "10003";
-                sink.name = "Roc Sink";
-                sink.props = {
-                  node.name = "roc-sink";
+                "fec.code" = "ldpc";
+                "remote.ip" = cfg.soundSharing.receiverAddress;
+                "sink.name" = "Roc Sink";
+                "sink.props" = {
+                  "node.name" = "roc-sink";
                 };
               };
             }
