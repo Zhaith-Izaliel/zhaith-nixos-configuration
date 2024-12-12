@@ -153,7 +153,13 @@
       soundSharing = {
         pipewire = {
           enable = true;
-          mode = "receiver";
+          anonymousClients = {
+            allowAll = true;
+            allowedIpRanges = [
+              "127.0.0.1"
+              "192.168.1.0/150"
+            ];
+          };
         };
       };
 

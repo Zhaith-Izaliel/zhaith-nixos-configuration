@@ -137,7 +137,6 @@
       soundSharing = {
         pipewire = {
           enable = true;
-          mode = "sender";
           anonymousClients = {
             allowAll = true;
             allowedIpRanges = [
