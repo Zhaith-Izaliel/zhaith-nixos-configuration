@@ -6,7 +6,7 @@
   os-config,
   ...
 }: let
-  inherit (lib) optionalString getExe optional;
+  inherit (lib) optionalString getExe optional range;
 in {
   hellebore = {
     theme.name = "catppuccin-macchiato";
@@ -77,16 +77,12 @@ in {
           (optionalString os-config.hellebore.games.steam.enable "[workspace 5] ${getExe os-config.hellebore.games.steam.package}")
         ];
 
-        extraWorkspaceRules = [
-          {
-            selector = "1";
-            rules = ["persistent:true" "default:true"];
+        extraWorkspaceRules = builtins.map (
+          item: {
+            selector = toString item;
+            rules = ["persistent:true"] ++ (optional (item == 1) "default:true");
           }
-          {
-            selector = "r[2-5]";
-            rules = ["persistent:true"];
-          }
-        ];
+        ) (range 1 5);
 
         switches = {
           lid = {
@@ -117,7 +113,17 @@ in {
         in
           [
             {
+              regex = "class:(steam)";
+              rules = [
+                "workspace 5 silent"
+              ];
+            }
+            {
               regex = "class:(factorio).*";
+              rules = gameRules;
+            }
+            {
+              regex = "class:(steam_app_).*";
               rules = gameRules;
             }
           ]
