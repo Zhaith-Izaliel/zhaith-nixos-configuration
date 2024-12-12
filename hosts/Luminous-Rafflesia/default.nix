@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  lib,
+  config,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -38,6 +42,19 @@
         xOffset = 0;
         yOffset = 0;
         scaling = 1.0;
+      }
+      {
+        name = "HDMI-A-1";
+        width = 2560;
+        height = 1440;
+        refreshRate = 164.84;
+        xOffset = 0;
+        yOffset = 0;
+        scaling = 1.0;
+        extraArgs = [
+          "mirror"
+          (builtins.elemAt config.hellebore.monitors 0).name
+        ];
       }
     ];
 

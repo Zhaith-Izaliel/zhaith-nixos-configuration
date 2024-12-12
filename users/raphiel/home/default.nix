@@ -6,7 +6,7 @@
   os-config,
   ...
 }: let
-  inherit (lib) optional optionalString getExe;
+  inherit (lib) optional optionalString getExe flatten;
 in {
   hellebore = {
     theme.name = "catppuccin-macchiato";
@@ -93,7 +93,7 @@ in {
             "noshadow"
           ];
         in
-          [
+          flatten [
             {
               regex = "class:(steam_app_).*";
               rules = gameRules;
@@ -139,15 +139,16 @@ in {
                 "workspace 2"
               ];
             })
-          ]
-          ++ optional os-config.hellebore.games.minecraft.enable {
-            regex = "class:(Minecraft).*";
-            rules =
-              gameRules
-              ++ [
-                "fullscreen"
-              ];
-          };
+
+            (optional os-config.hellebore.games.minecraft.enable {
+              regex = "class:(Minecraft).*";
+              rules =
+                gameRules
+                ++ [
+                  "fullscreen"
+                ];
+            })
+          ];
       };
 
       logout = {
