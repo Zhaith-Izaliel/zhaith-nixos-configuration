@@ -153,7 +153,6 @@
       soundSharing = {
         enable = true;
         mode = "receiver";
-        senderAddress = "192.168.1.43";
       };
 
       lowLatency = {

@@ -13,6 +13,7 @@
     mkPackageOption
     mkMerge
     optional
+    optionals
     ;
 
   cfg = config.hellebore.sound;
@@ -59,22 +60,10 @@ in {
     soundSharing = {
       enable = mkEnableOption "sound sharing between Linux computers over the network using pipewire-pulseaudio";
 
-      port = mkOption {
-        type = types.ints.unsigned;
-        default = 4713;
-        description = "The port of the receiver. You need it for both sender and receiver.";
-      };
-
       mode = mkOption {
         type = types.enum ["sender" "receiver"];
         default = "";
         description = "Defines if this machine is the receiver or the sender.";
-      };
-
-      senderAddress = mkOption {
-        type = types.nonEmptyStr;
-        default = "";
-        description = "Defines the sender IP address used to connect to it.";
       };
     };
   };
@@ -115,24 +104,32 @@ in {
     })
 
     (mkIf cfg.soundSharing.enable {
-      networking = mkIf (cfg.soundSharing.mode == "sender") {
-        firewall = {
-          allowedTCPPorts = [
-            cfg.soundSharing.port
-          ];
+      services.avahi = {
+        enable = true;
+        openFirewall = true;
+
+        publish = mkIf (cfg.soundSharing.mode == "receiver") {
+          enable = true;
+          userServices = true;
         };
       };
 
       services.pipewire.extraConfig.pipewire-pulse."50-network-sharing" = {
-        pulse.cmd =
-          (optional (cfg.soundSharing.mode == "sender")
-            {
-              cmd = "load-modules";
-              args = "module-native-protocol-tcp port=${toString cfg.soundSharing.port} listen=127.0.0.1 auth-anonymous=true";
-            })
-          ++ (optional (cfg.soundSharing.mode == "receiver") {
+        "pulse.cmd" =
+          (optionals (cfg.soundSharing.mode == "receiver")
+            [
+              {
+                cmd = "load-module";
+                args = "module-native-protocol-tcp";
+              }
+              {
+                cmd = "load-module";
+                args = "module-zeroconf-publish";
+              }
+            ])
+          ++ (optional (cfg.soundSharing.mode == "sender") {
             cmd = "load-modules";
-            args = "module-tunnel-sink server=tcp:${cfg.soundSharing.senderAddress}:${toString cfg.soundSharing.port}";
+            args = "module-zeroconf-discover";
           });
       };
     })
