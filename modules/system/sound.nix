@@ -65,6 +65,12 @@ in {
         default = "";
         description = "Defines if this machine is the receiver or the sender.";
       };
+
+      receiverAddress = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "The receiver IP address to connect to.";
+      };
     };
   };
 
@@ -114,22 +120,36 @@ in {
         };
       };
 
-      services.pipewire.extraConfig.pipewire-pulse."50-network-sharing" = {
-        "pulse.cmd" =
-          (optionals (cfg.soundSharing.mode == "sender")
-            [
-              {
-                cmd = "load-module";
-                args = "module-native-protocol-tcp";
-              }
-              {
-                cmd = "load-module";
-                args = "module-zeroconf-publish";
-              }
-            ])
-          ++ (optional (cfg.soundSharing.mode == "receiver") {
-            cmd = "load-module";
-            args = "module-zeroconf-discover";
+      services.pipewire.extraConfig."50-network-sharing" = {
+        context.modules =
+          (optional (cfg.soundSharing.mode == "receiver")
+            {
+              name = "libpipewire-module-roc-source";
+              args = {
+                local.ip = "0.0.0.0";
+                resampler.profile = "medium";
+                fec.code = "rs8m";
+                sess.latency.msec = 100;
+                local.source.port = 10001;
+                local.repair.port = 10002;
+                source.name = "Roc Source";
+                source.props = {
+                  node.name = "roc-source";
+                };
+              };
+            })
+          ++ (optional (cfg.soundSharing.mode == "sender") {
+            name = "libpipewire-module-roc-sink";
+            args = {
+              fec.code = "rs8m";
+              remote.ip = cfg.soundSharing.receiverAddress;
+              remote.source.port = 10001;
+              remote.repair.port = 10002;
+              sink.name = "Roc Sink";
+              sink.props = {
+                node.name = "roc-sink";
+              };
+            };
           });
       };
     })
