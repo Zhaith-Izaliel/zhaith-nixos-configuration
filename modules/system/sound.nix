@@ -109,13 +109,33 @@ in {
     })
 
     (mkIf cfg.soundSharing.enable {
+      networking.firewall = {
+        allowedTCPPorts = [
+          10001
+          10002
+          10003
+        ];
+
+        allowedUDPPorts = [
+          10001
+          10002
+          10003
+        ];
+      };
+
       services.pipewire.extraConfig.pipewire = {
-        "roc-source" = mkIf (cfg.soundSharing.mode == "receiver") {
+        "99-roc-source" = mkIf (cfg.soundSharing.mode == "receiver") {
           "context.modules" = [
             {
               name = "libpipewire-module-roc-source";
               args = {
                 "fec.code" = "ldpc";
+                "local.ip" = "0.0.0.0";
+                "resampler.profile" = "medium";
+                "sess.latency.msec" = "5000";
+                "local.source.port" = "10001";
+                "local.repair.port" = "10002";
+                "local.control.port" = "10003";
                 "source.name" = "Roc Source";
                 "source.props" = {
                   "node.name" = "roc-source";
@@ -133,6 +153,9 @@ in {
               args = {
                 "fec.code" = "ldpc";
                 "remote.ip" = cfg.soundSharing.receiverAddress;
+                "remote.source.port" = "10001";
+                "remote.repair.port" = "10002";
+                "remote.control.port" = "10003";
                 "sink.name" = "Roc Sink";
                 "sink.props" = {
                   "node.name" = "roc-sink";
