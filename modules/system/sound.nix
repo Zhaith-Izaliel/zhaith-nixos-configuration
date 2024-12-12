@@ -68,10 +68,10 @@ in {
           description = "Defines if the current machine is a receiver, a sender, or both.";
         };
 
-        senderAddress = mkOption {
+        receiverAddress = mkOption {
           type = types.nonEmptyStr;
           default = "";
-          description = "The local IP address of the sender. It is only used when your machine is sending sound to the network.";
+          description = "The local IP address of the receiver. It is only used when your machine is sending sound to the network.";
         };
       };
     };
@@ -134,7 +134,7 @@ in {
           ++ optionals (cfg.soundSharing.pipewire.mode == "sender") [
             {
               cmd = "load-modules";
-              args = "module-native-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/255";
+              args = "module-native-protocol-tcp listen=${cfg.soundSharing.pipewire.receiverAddress}";
             }
             {
               cmd = "load-modules";

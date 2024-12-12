@@ -138,7 +138,7 @@
         pipewire = {
           enable = true;
           mode = "sender";
-          senderAddress = "192.168.1.43";
+          receiverAddress = "192.168.1.150";
         };
       };
     };
