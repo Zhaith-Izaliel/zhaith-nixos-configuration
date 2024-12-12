@@ -149,27 +149,6 @@ in {
         workspace = flatten extraWorkspaceRules;
 
         windowrulev2 = flatten [
-          # (optionals os-config.hellebore.games.steam.enable (mkWindowOrLayerRule "class:(steam)" [
-          #   "workspace 5 silent"
-          # ]))
-
-          # (optionals os-config.hellebore.games.gamescope.enable (mkWindowOrLayerRule "class:(.gamescope-wrapped)" [
-          #   "workspace 5"
-          #   "idleinhibit"
-          # ]))
-
-          # (optionals os-config.hellebore.games.lutris.enable (mkWindowOrLayerRule "class:(lutris)" [
-          #   "workspace 5"
-          # ]))
-
-          # (optionals os-config.hellebore.games.cartridges.enable (mkWindowOrLayerRule "class:^.*(Cartridges).*$" [
-          #   "workspace 5"
-          # ]))
-
-          # (mkWindowOrLayerRule "class:^.*(heroic).*$" [
-          #   "workspace 5"
-          # ])
-
           (optionals cfg.picture-in-picture.enable (mkWindowOrLayerRule "class:^.*(firefox).*$, title:${pInPName}" [
             "float"
             "pin"
@@ -196,10 +175,6 @@ in {
             "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
             "hyprctl setcursor ${theme.gtk.cursorTheme.name} ${toString cfg.cursorSize}"
             (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
-            # (optionalString os-config.hellebore.games.cartridges.enable
-            #   "[workspace 5 silent] ${getExe os-config.hellebore.games.cartridges.package}")
-            # (optionalString os-config.hellebore.games.steam.enable
-            #   "[workspace 5 silent] ${getExe os-config.hellebore.games.steam.package} ${optionalString os-config.hellebore.games.cartridges.enable "-silent"}")
             (optionalString os-config.hardware.logitech.wireless.enableGraphical
               "${pkgs.solaar}/bin/solaar --window hide")
           ]

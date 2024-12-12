@@ -50,19 +50,23 @@
     };
 
     games = {
+      cartridges.enable = true;
+
+      gamescope = {
+        enable = true;
+        capSysNice = true;
+      };
+
+      heroic-launcher.enable = true;
+      lutris.enable = true;
+
       minecraft = {
         enable = true;
         mods.enable = true;
       };
 
       steam.enable = true;
-      gamescope = {
-        enable = true;
-        capSysNice = true;
-      };
-      lutris.enable = true;
       umu.enable = true;
-      heroic-launcher.enable = true;
       wine.enable = true;
     };
 

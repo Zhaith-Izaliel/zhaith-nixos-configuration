@@ -6,7 +6,7 @@
   os-config,
   ...
 }: let
-  inherit (lib) optional;
+  inherit (lib) optional optionalString getExe;
 in {
   hellebore = {
     theme.name = "catppuccin-macchiato";
@@ -66,9 +66,27 @@ in {
           position = "top-right";
         };
 
+        extraExecOnce = [
+          (optionalString config.hellebore.desktop-environment.browsers.enable "[workspace 1] ${getExe config.hellebore.desktop-environment.browsers.package}")
+          (optionalString config.hellebore.shell.emulator.enable "[workspace 1] ${config.hellebore.shell.emulator.bin}")
+          (optionalString os-config.hellebore.games.steam.enable "[workspace 2] ${getExe os-config.hellebore.games.steam.package} -silent")
+          (optionalString os-config.hellebore.games.cartridges.enable "[workspace 2] ${getExe os-config.hellebore.games.cartridges.package}")
+        ];
+
+        extraWorkspaceRules = [
+          {
+            selector = "1";
+            rules = ["persistent:true" "default:true"];
+          }
+          {
+            selector = "2";
+            rules = ["persistent:true"];
+          }
+        ];
+
         extraWindowRules = let
           gameRules = [
-            "workspace 1"
+            "workspace 2"
             "idleinhibit"
             "noblur"
             "noborder"
