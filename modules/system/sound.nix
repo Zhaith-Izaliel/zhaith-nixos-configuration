@@ -70,6 +70,31 @@ in {
         default = "";
         description = "The receiver IP address to connect to.";
       };
+
+      openFirewall =
+        (mkEnableOption null)
+        // {
+          description = "Whether to open the ports in the firewall.";
+        };
+
+      targetLatency = mkOption {
+        type = types.ints.unsigned;
+        default = 50;
+        description = "Your target sound latency. Note that higher latencies will effectively delay the sound played on receiver.";
+      };
+
+      ports = let
+        mkPorts = default: name:
+          mkOption {
+            inherit default;
+            type = types.ints.unsigned;
+            description = "The ${name} port for the ROC Source.";
+          };
+      in {
+        source = mkPorts 10001 "source";
+        repair = mkPorts 10002 "repair";
+        control = mkPorts 10003 "control";
+      };
     };
   };
 
@@ -109,19 +134,21 @@ in {
     })
 
     (mkIf cfg.soundSharing.enable {
-      networking.firewall = {
-        allowedTCPPorts = [
-          10001
-          10002
-          10003
-        ];
+      networking.firewall =
+        mkIf (cfg.soundSharing.mode == "receiver")
+        {
+          allowedTCPPorts = [
+            cfg.soundSharing.ports.source
+            cfg.soundSharing.ports.repair
+            cfg.soundSharing.ports.control
+          ];
 
-        allowedUDPPorts = [
-          10001
-          10002
-          10003
-        ];
-      };
+          allowedUDPPorts = [
+            cfg.soundSharing.ports.source
+            cfg.soundSharing.ports.repair
+            cfg.soundSharing.ports.control
+          ];
+        };
 
       services.pipewire.extraConfig.pipewire = {
         "99-roc-source" = mkIf (cfg.soundSharing.mode == "receiver") {
@@ -132,10 +159,10 @@ in {
                 "fec.code" = "ldpc";
                 "local.ip" = "0.0.0.0";
                 "resampler.profile" = "medium";
-                "sess.latency.msec" = "5000";
-                "local.source.port" = "10001";
-                "local.repair.port" = "10002";
-                "local.control.port" = "10003";
+                "sess.latency.msec" = toString cfg.soundSharing.targetLatency;
+                "local.source.port" = toString cfg.soundSharing.ports.source;
+                "local.repair.port" = toString cfg.soundSharing.ports.repair;
+                "local.control.port" = toString cfg.soundSharing.ports.control;
                 "source.name" = "Roc Source";
                 "source.props" = {
                   "node.name" = "roc-source";
@@ -146,16 +173,16 @@ in {
           ];
         };
 
-        "roc-sink" = mkIf (cfg.soundSharing.mode == "sender") {
+        "99-roc-sink" = mkIf (cfg.soundSharing.mode == "sender") {
           "context.modules" = [
             {
               name = "libpipewire-module-roc-sink";
               args = {
                 "fec.code" = "ldpc";
                 "remote.ip" = cfg.soundSharing.receiverAddress;
-                "remote.source.port" = "10001";
-                "remote.repair.port" = "10002";
-                "remote.control.port" = "10003";
+                "remote.source.port" = toString cfg.soundSharing.ports.source;
+                "remote.repair.port" = toString cfg.soundSharing.ports.repair;
+                "remote.control.port" = toString cfg.soundSharing.ports.control;
                 "sink.name" = "Roc Sink";
                 "sink.props" = {
                   "node.name" = "roc-sink";
