@@ -14,17 +14,12 @@
     optionalAttrs
     mkMerge
     optionals
-    getExe
-    concatStringsSep
     ;
 
   cfg = config.hellebore.sound;
   toPeriod = quantum: "${toString quantum}/${toString cfg.lowLatency.rate}";
-  finalPackage = pkgs.pipewire.override (optionalAttrs cfg.soundSharing.enable {zeroconfSupport = true;});
-  isSoundSharingSender = builtins.any (item: item == cfg.soundSharing.mode) ["sender" "both"];
-  screamExec = pkgs.writeScriptBin "scream-receiver" ''
-    ${getExe cfg.soundSharing.scream.package} -i ${cfg.soundSharing.scream.networkInterface} ${concatStringsSep " " cfg.soundSharing.scream.extraArgs}
-  '';
+  finalPackage = pkgs.pipewire.override (optionalAttrs cfg.soundSharing.pipewire.enable {zeroconfSupport = true;});
+  isSoundSharingSender = builtins.any (item: item == cfg.soundSharing.pipewire.mode) ["sender" "both"];
 in {
   options.hellebore.sound = {
     enable = mkEnableOption "Hellebore sound configuration";
@@ -65,35 +60,19 @@ in {
     };
 
     soundSharing = {
-      enable = mkEnableOption "sound sharing between Linux computers over the network using pipewire-pulseaudio";
+      pipewire = {
+        enable = mkEnableOption "sound sharing between Linux computers over the network using pipewire-pulseaudio";
 
-      mode = mkOption {
-        type = types.enum ["receiver" "sender" "both"];
-        default = "both";
-        description = "Defines if the current machine is a receiver, a sender, or both.";
-      };
-
-      senderAddress = mkOption {
-        type = types.nonEmptyStr;
-        default = "";
-        description = "The local IP address of the sender. It is only used when your machine is sending sound to the network.";
-      };
-
-      scream = {
-        enable = mkEnableOption "Scream, audio receiver for sharing sound between Linux and Windows";
-
-        package = mkPackageOption pkgs "scream" {};
-
-        networkInterface = mkOption {
-          type = types.nonEmptyStr;
-          default = "";
-          description = "The network interface on which Scream checks for";
+        mode = mkOption {
+          type = types.enum ["receiver" "sender" "both"];
+          default = "both";
+          description = "Defines if the current machine is a receiver, a sender, or both.";
         };
 
-        extraArgs = mkOption {
-          type = types.listOf types.nonEmptyStr;
-          default = [];
-          description = "Extra arguments to append to Scream when it is running.";
+        senderAddress = mkOption {
+          type = types.nonEmptyStr;
+          default = "";
+          description = "The local IP address of the sender. It is only used when your machine is sending sound to the network.";
         };
       };
     };
@@ -134,7 +113,7 @@ in {
       };
     })
 
-    (mkIf cfg.soundSharing.enable {
+    (mkIf cfg.soundSharing.pipewire.enable {
       services.avahi = {
         enable = true;
         openFirewall = true;
@@ -156,39 +135,13 @@ in {
           ++ optionals isSoundSharingSender [
             {
               cmd = "load-modules";
-              args = "module-native-protocol-tcp listen=${cfg.soundSharing.senderAddress}";
+              args = "module-native-protocol-tcp listen=${cfg.soundSharing.pipewire.senderAddress}";
             }
             {
               cmd = "load-modules";
               args = "module-zeroconf-publish";
             }
           ];
-      };
-    })
-
-    (mkIf (cfg.soundSharing.enable && cfg.soundSharing.scream.enable) {
-      users.users.scream = {
-        isSystemUser = true;
-        group = "scream";
-      };
-
-      users.groups.scream = {};
-
-      systemd.services.scream-receiver = {
-        description = "Receiver for Scream, a virtual network sound card for Microsoft Windows.";
-        wantedBy = ["multi-user.target"];
-        after = ["network-online.target" "sound.target"];
-        requires = ["network-online.target" "sound.target"];
-        restartTriggers = [
-          screamExec
-        ];
-
-        serviceConfig = {
-          Type = "simple";
-          User = cfg.user;
-          Group = cfg.group;
-          ExecStart = screamExec;
-        };
       };
     })
 

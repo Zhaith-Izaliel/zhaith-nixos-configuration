@@ -333,6 +333,7 @@ tooltip label {
 /* BATTERY */
 
 #battery.charging,
+#battery.plugged,
 #battery.full {
   color: @teal;
 }

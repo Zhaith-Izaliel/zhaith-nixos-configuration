@@ -119,6 +119,12 @@ in {
               ];
             }
             {
+              regex = "class:(vesktop|discord)";
+              rules = [
+                "workspace 3 silent"
+              ];
+            }
+            {
               regex = "class:(factorio).*";
               rules = gameRules;
             }

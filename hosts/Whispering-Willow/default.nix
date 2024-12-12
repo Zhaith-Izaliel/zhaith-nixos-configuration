@@ -150,6 +150,13 @@
 
     sound = {
       enable = true;
+      soundSharing = {
+        pipewire = {
+          enable = true;
+          mode = "receiver";
+        };
+      };
+
       lowLatency = {
         enable = true;
         rate = 48000;

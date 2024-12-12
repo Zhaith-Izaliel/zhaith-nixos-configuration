@@ -133,6 +133,14 @@
         minQuantum = 32;
         maxQuantum = 32;
       };
+
+      soundSharing = {
+        pipewire = {
+          enable = true;
+          mode = "sender";
+          senderAddress = "192.168.1.43";
+        };
+      };
     };
 
     graphics.enable = true;
