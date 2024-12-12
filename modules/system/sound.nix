@@ -69,7 +69,7 @@ in {
           default = "both";
           description = "Defines if the current machine is a receiver, a sender, or both.";
         };
-        
+
         anonymousClients = {
           allowAll = lib.mkEnableOption "all anonymous clients to stream to the server";
           allowedIpRanges = lib.mkOption {
@@ -80,6 +80,7 @@ in {
               A list of IP subnets that are allowed to stream to the server.
             '';
           };
+        };
       };
     };
   };
@@ -132,13 +133,13 @@ in {
 
       services.pipewire.extraConfig.pipewire-pulse."50-network-sharing" = {
         pulse.cmd =
-        [
+          [
             {
               cmd = "load-modules";
               args = "module-native-protocol-tcp ${optionalString cfg.soundSharing.pipewire.anonymousClients.allowAll "auth-anonymous=1"} ${optionalString (cfg.soundSharing.pipewire.anonymousClients.allowedIpRanges != []) (concatStringsSep ";" cfg.soundSharing.pipewire.anonymousClients.allowedIpRanges)}";
             }
-        ] ++ 
-          optionals (cfg.soundSharing.pipewire.mode == "receiver") [
+          ]
+          ++ optionals (cfg.soundSharing.pipewire.mode == "receiver") [
             {
               cmd = "load-module";
               args = "module-zeroconf-discover";
