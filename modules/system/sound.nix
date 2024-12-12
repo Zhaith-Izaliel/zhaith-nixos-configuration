@@ -14,6 +14,8 @@
     optionalAttrs
     mkMerge
     optionals
+    optionalString
+    concatStringsSep
     ;
 
   cfg = config.hellebore.sound;
@@ -67,12 +69,17 @@ in {
           default = "both";
           description = "Defines if the current machine is a receiver, a sender, or both.";
         };
-
-        receiverAddress = mkOption {
-          type = types.nonEmptyStr;
-          default = "";
-          description = "The local IP address of the receiver. It is only used when your machine is sending sound to the network.";
-        };
+        
+        anonymousClients = {
+          allowAll = lib.mkEnableOption "all anonymous clients to stream to the server";
+          allowedIpRanges = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [];
+            example = lib.literalExpression ''[ "127.0.0.1" "192.168.1.0/24" ]'';
+            description = ''
+              A list of IP subnets that are allowed to stream to the server.
+            '';
+          };
       };
     };
   };
@@ -125,6 +132,12 @@ in {
 
       services.pipewire.extraConfig.pipewire-pulse."50-network-sharing" = {
         pulse.cmd =
+        [
+            {
+              cmd = "load-modules";
+              args = "module-native-protocol-tcp ${optionalString cfg.soundSharing.pipewire.anonymousClients.allowAll "auth-anonymous=1"} ${optionalString (cfg.soundSharing.pipewire.anonymousClients.allowedIpRanges != []) (concatStringsSep ";" cfg.soundSharing.pipewire.anonymousClients.allowedIpRanges)}";
+            }
+        ] ++ 
           optionals (cfg.soundSharing.pipewire.mode == "receiver") [
             {
               cmd = "load-module";
@@ -132,10 +145,6 @@ in {
             }
           ]
           ++ optionals (cfg.soundSharing.pipewire.mode == "sender") [
-            {
-              cmd = "load-modules";
-              args = "module-native-protocol-tcp listen=${cfg.soundSharing.pipewire.receiverAddress}";
-            }
             {
               cmd = "load-modules";
               args = "module-zeroconf-publish";

@@ -138,7 +138,13 @@
         pipewire = {
           enable = true;
           mode = "sender";
-          receiverAddress = "192.168.1.150";
+          anonymousClients = {
+            allowAll = true;
+            allowedIpRanges = [
+              "127.0.0.1"
+              "192.168.1.0/150"
+            ];
+          };
         };
       };
     };
