@@ -19,7 +19,6 @@
   cfg = config.hellebore.sound;
   toPeriod = quantum: "${toString quantum}/${toString cfg.lowLatency.rate}";
   finalPackage = pkgs.pipewire.override (optionalAttrs cfg.soundSharing.pipewire.enable {zeroconfSupport = true;});
-  isSoundSharingSender = builtins.any (item: item == cfg.soundSharing.pipewire.mode) ["sender" "both"];
 in {
   options.hellebore.sound = {
     enable = mkEnableOption "Hellebore sound configuration";
@@ -64,7 +63,7 @@ in {
         enable = mkEnableOption "sound sharing between Linux computers over the network using pipewire-pulseaudio";
 
         mode = mkOption {
-          type = types.enum ["receiver" "sender" "both"];
+          type = types.enum ["receiver" "sender"];
           default = "both";
           description = "Defines if the current machine is a receiver, a sender, or both.";
         };
@@ -118,7 +117,7 @@ in {
         enable = true;
         openFirewall = true;
 
-        publish = mkIf isSoundSharingSender {
+        publish = mkIf (cfg.soundSharing.pipewire.mode == "sender") {
           enable = true;
           userServices = true;
         };
@@ -126,13 +125,13 @@ in {
 
       services.pipewire.extraConfig.pipewire-pulse."50-network-sharing" = {
         pulse.cmd =
-          [
+          optionals (cfg.soundSharing.pipewire.mode == "receiver") [
             {
               cmd = "load-module";
               args = "module-zeroconf-discover";
             }
           ]
-          ++ optionals isSoundSharingSender [
+          ++ optionals (cfg.soundSharing.pipewire.mode == "sender") [
             {
               cmd = "load-modules";
               args = "module-native-protocol-tcp listen=${cfg.soundSharing.pipewire.senderAddress}";
