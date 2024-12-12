@@ -12,11 +12,11 @@
     types
     mkPackageOption
     mkMerge
-    optional
     ;
 
   cfg = config.hellebore.sound;
   toPeriod = quantum: "${toString quantum}/${toString cfg.lowLatency.rate}";
+  finalPackage = cfg.package.override {rocSupport = cfg.soundSharing.enable;};
 in {
   options.hellebore.sound = {
     enable = mkEnableOption "Hellebore sound configuration";
@@ -78,8 +78,8 @@ in {
       security.rtkit.enable = true;
 
       services.pipewire = {
-        inherit (cfg) package;
         enable = true;
+        package = finalPackage;
 
         wireplumber = {
           enable = true;
@@ -109,47 +109,61 @@ in {
     })
 
     (mkIf cfg.soundSharing.enable {
-      services.avahi = {
-        enable = true;
-        openFirewall = true;
+      networking.firewall = mkIf (cfg.soundSharing.mode == "receiver") {
+        allowedTCPPorts = [
+          10001
+          10002
+          10003
+        ];
 
-        publish = mkIf (cfg.soundSharing.mode == "receiver") {
-          enable = true;
-          userServices = true;
-        };
+        allowedUDPPorts = [
+          10001
+          10002
+          10003
+        ];
       };
 
-      services.pipewire.extraConfig.pipewire."50-network-sharing" = {
-        context.modules =
-          (optional (cfg.soundSharing.mode == "receiver")
+      services.pipewire.extraConfig.pipewire = {
+        "roc-source" = mkIf (cfg.soundSharing.mode == "receiver") {
+          context.modules = [
             {
               name = "libpipewire-module-roc-source";
               args = {
                 local.ip = "0.0.0.0";
                 resampler.profile = "medium";
-                fec.code = "rs8m";
-                sess.latency.msec = 100;
-                local.source.port = 10001;
-                local.repair.port = 10002;
+                fec.code = "ldpc";
+                sess.latency.msec = "100";
+                local.source.port = "10001";
+                local.repair.port = "10002";
+                local.control.port = "10003";
                 source.name = "Roc Source";
                 source.props = {
                   node.name = "roc-source";
                 };
               };
-            })
-          ++ (optional (cfg.soundSharing.mode == "sender") {
-            name = "libpipewire-module-roc-sink";
-            args = {
-              fec.code = "rs8m";
-              remote.ip = cfg.soundSharing.receiverAddress;
-              remote.source.port = 10001;
-              remote.repair.port = 10002;
-              sink.name = "Roc Sink";
-              sink.props = {
-                node.name = "roc-sink";
+              flags = ["nofail"];
+            }
+          ];
+        };
+
+        "roc-sink" = mkIf (cfg.soundSharing.mode == "sender") {
+          context.modules = [
+            {
+              name = "libpipewire-module-roc-sink";
+              args = {
+                fec.code = "ldpc";
+                remote.ip = cfg.soundSharing.receiverAddress;
+                remote.source.port = "10001";
+                remote.repair.port = "10002";
+                remote.control.port = "10003";
+                sink.name = "Roc Sink";
+                sink.props = {
+                  node.name = "roc-sink";
+                };
               };
-            };
-          });
+            }
+          ];
+        };
       };
     })
 
