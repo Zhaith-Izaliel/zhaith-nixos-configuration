@@ -120,42 +120,6 @@ in {
               regex = "class:(factorio).*";
               rules = gameRules;
             }
-
-            (optional os-config.hellebore.games.steam.enable {
-              regex = "class:(steam)";
-              rules = [
-                "workspace 2 silent"
-              ];
-            })
-
-            (optional os-config.hellebore.games.gamescope.enable {
-              regex = "class:(.gamescope-wrapped)";
-              rules = [
-                "workspace 2"
-                "idleinhibit"
-              ];
-            })
-
-            (optional os-config.hellebore.games.lutris.enable {
-              regex = "class:(lutris)";
-              rules = [
-                "workspace 2"
-              ];
-            })
-
-            (optional os-config.hellebore.games.heroic-launcher.enable {
-              regex = "class:^.*(heroic).*$";
-              rules = [
-                "workspace 2"
-              ];
-            })
-
-            (optional os-config.hellebore.games.cartridges.enable {
-              regex = "class:^.*(Cartridges).*$";
-              rules = [
-                "workspace 2"
-              ];
-            })
           ]
           ++ optional os-config.hellebore.games.minecraft.enable {
             regex = "class:(Minecraft).*";
