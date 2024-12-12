@@ -136,7 +136,6 @@
 
       soundSharing = {
         enable = true;
-        receiverAddress = "192.168.1.150";
         mode = "sender";
       };
     };

@@ -71,10 +71,10 @@ in {
         description = "Defines if this machine is the receiver or the sender.";
       };
 
-      receiverAddress = mkOption {
+      senderAddress = mkOption {
         type = types.nonEmptyStr;
         default = "";
-        description = "Defines the receiver IP address used to connect to it.";
+        description = "Defines the sender IP address used to connect to it.";
       };
     };
   };
@@ -115,7 +115,7 @@ in {
     })
 
     (mkIf cfg.soundSharing.enable {
-      networking = mkIf (cfg.soundSharing.mode == "receiver") {
+      networking = mkIf (cfg.soundSharing.mode == "sender") {
         firewall = {
           allowedTCPPorts = [
             cfg.soundSharing.port
@@ -125,14 +125,14 @@ in {
 
       services.pipewire.extraConfig.pipewire-pulse."50-network-sharing" = {
         pulse.cmd =
-          (optional (cfg.soundSharing.mode == "receiver")
+          (optional (cfg.soundSharing.mode == "sender")
             {
               cmd = "load-modules";
-              args = "module-native-protocol-tcp port=${toString cfg.soundSharing.port} listen=127.0.0.1";
+              args = "module-native-protocol-tcp port=${toString cfg.soundSharing.port} listen=127.0.0.1 auth-anonymous=true";
             })
-          ++ (optional (cfg.soundSharing.mode == "sender") {
+          ++ (optional (cfg.soundSharing.mode == "receiver") {
             cmd = "load-modules";
-            args = "module-tunnel-sink server=tcp:${cfg.soundSharing.receiverIP}:${toString cfg.soundSharing.port}";
+            args = "module-tunnel-sink server=tcp:${cfg.soundSharing.senderAddress}:${toString cfg.soundSharing.port}";
           });
       };
     })
