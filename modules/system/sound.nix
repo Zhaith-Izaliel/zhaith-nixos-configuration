@@ -134,7 +134,7 @@ in {
           ++ optionals (cfg.soundSharing.pipewire.mode == "sender") [
             {
               cmd = "load-modules";
-              args = "module-native-protocol-tcp listen=${cfg.soundSharing.pipewire.senderAddress}";
+              args = "module-native-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/255";
             }
             {
               cmd = "load-modules";
