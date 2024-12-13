@@ -230,7 +230,7 @@ in {
     multimedia.sonobus = {
       enable = true;
       service = {
-        # enable = true;
+        enable = true;
         groupName = "Cordyceps-Sound-Sharing";
         setupFile = cleanSource ./sonobus/raphiel-at-luminous-rafflesia.xml;
       };

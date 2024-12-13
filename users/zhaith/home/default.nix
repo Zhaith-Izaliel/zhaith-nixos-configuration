@@ -75,7 +75,6 @@ in {
           (optionalString config.hellebore.tools.discord.enable "[workspace 3] ${getExe config.hellebore.tools.discord.finalPackage}")
           (optionalString config.hellebore.desktop-environment.mail.enable "[workspace 4] ${getExe config.hellebore.desktop-environment.mail.package}")
           (optionalString os-config.hellebore.games.steam.enable "[workspace 5] ${getExe os-config.hellebore.games.steam.package}")
-          (optionalString config.hellebore.multimedia.sonobus.enable "[workspace 6] ${getExe config.hellebore.multimedia.sonobus.package}")
         ];
 
         extraWorkspaceRules = builtins.map (
@@ -83,7 +82,7 @@ in {
             selector = toString item;
             rules = ["persistent:true"] ++ (optional (item == 1) "default:true");
           }
-        ) (range 1 6);
+        ) (range 1 5);
 
         switches = {
           lid = {
@@ -122,7 +121,6 @@ in {
             {
               regex = "class:(SonoBus)";
               rules = [
-                "workspace 6"
                 "tile"
               ];
             }
@@ -257,11 +255,11 @@ in {
       enable = true;
       sonobus = {
         enable = true;
-        # service = {
-        #   enable = true;
-        #   groupName = "Cordyceps-Sound-Sharing";
-        #   setupFile = cleanSource ./sonobus/zhaith-at-whispering-willow.xml;
-        # };
+        service = {
+          enable = true;
+          groupName = "Cordyceps-Sound-Sharing";
+          setupFile = cleanSource ./sonobus/zhaith-at-whispering-willow.xml;
+        };
       };
 
       mpris.enable = true;

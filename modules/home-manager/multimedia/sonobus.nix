@@ -61,7 +61,7 @@ in {
       };
 
       Service = {
-        ExecStart = "${getExe cfg.package} --headless --group ${cfg.service.groupName} --load-setup ${cfg.service.setupFile} ${concatStringsSep " " cfg.service.extraArgs}";
+        ExecStart = ''${getExe cfg.package} --headless --group="${cfg.service.groupName}" --load-setup ${cfg.service.setupFile} ${concatStringsSep " " cfg.service.extraArgs}'';
         ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR2 $MAINPID";
         Restart = "on-failure";
       };
