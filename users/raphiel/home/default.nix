@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  unstable-pkgs,
   os-config,
   ...
 }: let
@@ -34,18 +33,6 @@ in {
         };
       };
 
-      zellij = {
-        enable = true;
-        packages.zellij = unstable-pkgs.zellij;
-        shellIntegrations.zsh = true;
-        layoutAlias = true;
-        enableSideBar = true;
-        autoAttach = true;
-      };
-      yazi = {
-        enable = true;
-        shellIntegrations.zsh = true;
-      };
       erdtree.enable = true;
     };
 
