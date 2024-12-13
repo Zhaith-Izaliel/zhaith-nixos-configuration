@@ -25,12 +25,6 @@ in {
 
     open = mkEnableOption "Nvidia Open-Source Driver";
 
-    deviceFilterName = mkOption {
-      type = types.nonEmptyStr;
-      default = "";
-      description = "Defines the device filter name for DXVK for Nvidia.";
-    };
-
     prime = {
       intelBusId = mkOption {
         type = types.nonEmptyStr;

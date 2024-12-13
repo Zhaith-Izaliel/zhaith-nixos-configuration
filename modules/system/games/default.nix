@@ -22,12 +22,12 @@
 
   nvidia-command =
     optionalString config.hardware.nvidia.prime.offload.enableOffloadCmd
-    ''DXVK_FILTER_DEVICE_NAME="${config.hellebore.hardware.nvidia.proprietary.deviceFilterName}" nvidia-offload'';
+    "nvidia-offload";
 
   gamemode-command = optionalString cfg.gamemode.enable "gamemoderun";
 
   game-run-script = pkgs.writeShellScriptBin "game-run" ''
-    ${nvidia-command} ${gamemode-command} "''${@}"
+    DXVK_FILTER_DEVICE_NAME="${cfg.game-run.deviceFilterName}" ${nvidia-command} ${gamemode-command} "''${@}"
   '';
 
   enabled = builtins.any (item: item) [
@@ -56,6 +56,12 @@ in {
 
     game-run = {
       enable = mkEnableOption "Game-Run wrapper script";
+
+      deviceFilterName = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "The graphics card to run games on with DXVK.";
+      };
     };
 
     wine = {
@@ -165,6 +171,8 @@ in {
           message = "You need to enable OpenGl to run games.";
         }
       ];
+
+      users.groups."games" = {};
     }
 
     (mkIf cfg.steam.enable {

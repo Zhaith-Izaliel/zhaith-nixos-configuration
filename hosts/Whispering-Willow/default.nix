@@ -79,13 +79,21 @@
     };
 
     games = {
+      cartridges.enable = true;
+
+      lutris.enable = true;
+
       minecraft = {
         enable = true;
         mods.enable = true;
       };
 
       moonlight.enable = true;
+
       steam.enable = true;
+
+      umu.enable = true;
+
       wine.enable = true;
     };
 

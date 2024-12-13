@@ -6,7 +6,7 @@
   os-config,
   ...
 }: let
-  inherit (lib) optionalString getExe optional range cleanSource;
+  inherit (lib) optionalString getExe optional range cleanSource flatten;
 in {
   hellebore = {
     theme.name = "catppuccin-macchiato";
@@ -74,7 +74,8 @@ in {
           (optionalString config.hellebore.shell.emulator.enable "[workspace 1] ${config.hellebore.shell.emulator.bin}")
           (optionalString config.hellebore.tools.discord.enable "[workspace 3] ${getExe config.hellebore.tools.discord.finalPackage}")
           (optionalString config.hellebore.desktop-environment.mail.enable "[workspace 4] ${getExe config.hellebore.desktop-environment.mail.package}")
-          (optionalString os-config.hellebore.games.steam.enable "[workspace 5] ${getExe os-config.hellebore.games.steam.package}")
+          (optionalString os-config.hellebore.games.steam.enable "[workspace 5] ${getExe os-config.hellebore.games.steam.package} -silent")
+          (optionalString os-config.hellebore.games.cartridges.enable "[workspace 5] ${getExe os-config.hellebore.games.cartridges.package}")
         ];
 
         extraWorkspaceRules = builtins.map (
@@ -111,19 +112,33 @@ in {
             "noshadow"
           ];
         in
-          [
-            {
+          flatten [
+            (optional os-config.hellebore.games.steam.enable {
               regex = "class:(steam)";
               rules = [
                 "workspace 5 silent"
               ];
-            }
+            })
+
             {
-              regex = "class:(SonoBus)";
-              rules = [
-                "tile"
-              ];
+              regex = "class:(steam_app_).*";
+              rules = gameRules;
             }
+
+            (optional os-config.hellebore.games.lutris.enable {
+              regex = "class:(lutris)";
+              rules = [
+                "workspace 5"
+              ];
+            })
+
+            (optional os-config.hellebore.games.cartridges.enable {
+              regex = "class:^.*(Cartridges).*$";
+              rules = [
+                "workspace 5"
+              ];
+            })
+
             {
               regex = "class:(vesktop|discord)";
               rules = [
