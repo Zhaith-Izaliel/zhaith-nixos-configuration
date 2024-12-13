@@ -150,14 +150,9 @@
 
     sound = {
       enable = true;
-      soundSharing = {
-        enable = true;
-        mode = "receiver";
-        multicastAddress = "224.0.0.1";
-      };
 
       lowLatency = {
-        enable = true;
+        enable = false;
         rate = 48000;
         quantum = 32;
         minQuantum = 32;

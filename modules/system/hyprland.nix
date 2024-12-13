@@ -38,7 +38,6 @@ in {
     # NOTE: This gives granular control over which cards should be used, in order, when rendering Hyprland.
     environment.variables =
       {
-        # Change to WLR_DRM_DEVICES when on Wlroots
         NIXOS_OZONE_WL = "1";
       }
       // (optionalAttrs (builtins.length cfg.renderingCards > 0) {

@@ -135,6 +135,7 @@ in {
 
         env =
           [
+            "XCURSOR_THEME,${theme.gtk.cursorTheme.name}"
             "XCURSOR_SIZE,${toString cfg.cursorSize}"
           ]
           ++ optionals os-config.hellebore.hardware.nvidia.proprietary.prime.sync.enable [
@@ -143,7 +144,7 @@ in {
           ];
 
         cursor = {
-          no_hardware_cursors = true;
+          no_hardware_cursors = false;
         };
 
         workspace = flatten extraWorkspaceRules;
@@ -173,7 +174,7 @@ in {
           [
             "${getExe pkgs.swww} init"
             "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
-            "hyprctl setcursor ${theme.gtk.cursorTheme.name} ${toString cfg.cursorSize}"
+            # "hyprctl setcursor ${theme.gtk.cursorTheme.name} ${toString cfg.cursorSize}"
             (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
             (optionalString os-config.hardware.logitech.wireless.enableGraphical
               "${pkgs.solaar}/bin/solaar --window hide")

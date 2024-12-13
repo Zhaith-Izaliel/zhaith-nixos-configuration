@@ -124,22 +124,7 @@
 
     locale.enable = true;
 
-    sound = {
-      enable = true;
-      lowLatency = {
-        enable = true;
-        rate = 48000;
-        quantum = 32;
-        minQuantum = 32;
-        maxQuantum = 32;
-      };
-
-      soundSharing = {
-        enable = true;
-        mode = "sender";
-        multicastAddress = "224.0.0.1";
-      };
-    };
+    sound.enable = true;
 
     graphics.enable = true;
 

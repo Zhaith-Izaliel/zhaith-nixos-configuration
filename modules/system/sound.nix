@@ -55,47 +55,6 @@ in {
         PipeWire.";
       };
     };
-
-    soundSharing = {
-      enable = mkEnableOption "sound sharing between Linux computers over the network using pipewire-pulseaudio";
-
-      mode = mkOption {
-        type = types.enum ["sender" "receiver"];
-        default = "";
-        description = "Defines if this machine is the receiver or the sender.";
-      };
-
-      multicastAddress = mkOption {
-        type = types.nonEmptyStr;
-        default = "";
-        description = "The multicast IP address to connect to.";
-      };
-
-      openFirewall =
-        (mkEnableOption null)
-        // {
-          default = true;
-          description = "Whether to open the ports in the firewall.";
-        };
-
-      targetLatency = mkOption {
-        type = types.ints.unsigned;
-        default = 2;
-        description = "Defines the latency in cycles.";
-      };
-
-      networkInterface = mkOption {
-        type = types.nonEmptyStr;
-        default = builtins.elemAt config.hellebore.network.interfaces 0;
-        description = "The network interface to use for sound sharing";
-      };
-
-      port = mkOption {
-        default = 19000;
-        type = types.ints.unsigned;
-        description = "Defines the UDP port for network sound sharing.";
-      };
-    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -129,53 +88,6 @@ in {
           "bluez5.enable-msbc" = true;
           "bluez5.enable-hw-volume" = true;
           "bluez5.roles" = ["hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag"];
-        };
-      };
-    })
-
-    (mkIf cfg.soundSharing.enable {
-      networking.firewall =
-        mkIf (cfg.soundSharing.mode == "receiver" && cfg.soundSharing.openFirewall)
-        {
-          allowedUDPPorts = [
-            cfg.soundSharing.port
-          ];
-        };
-
-      services.pipewire.extraConfig.pipewire = {
-        "99-netjack2-manager" = mkIf (cfg.soundSharing.mode == "receiver") {
-          "context.modules" = [
-            {
-              name = "libpipewire-module-netjack2-manager";
-              args = {
-                "local.ifname" = cfg.soundSharing.networkInterface;
-                "net.ip" = cfg.soundSharing.multicastAddress;
-                "net.port" = toString cfg.soundSharing.port;
-                "netjack2.connect" = true;
-                "source.props" = {
-                  "node.name" = "${config.networking.hostName}-netjack2-master";
-                };
-              };
-            }
-          ];
-        };
-
-        "99-netjack2-driver" = mkIf (cfg.soundSharing.mode == "sender") {
-          "context.modules" = [
-            {
-              name = "libpipewire-module-netjack2-driver";
-              args = {
-                "local.ifname" = cfg.soundSharing.networkInterface;
-                "net.ip" = cfg.soundSharing.multicastAddress;
-                "net.port" = toString cfg.soundSharing.port;
-                "netjack2.client-name" = "${config.networking.hostName}-pipewire";
-                "netjack2.latency" = cfg.soundSharing.targetLatency;
-                "sink.props" = {
-                  "node.name" = "${config.networking.hostName}-netjack2-slave";
-                };
-              };
-            }
-          ];
         };
       };
     })
