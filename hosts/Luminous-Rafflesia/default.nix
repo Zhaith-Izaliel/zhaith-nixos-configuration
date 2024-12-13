@@ -134,12 +134,6 @@
         minQuantum = 32;
         maxQuantum = 32;
       };
-
-      soundSharing = {
-        enable = true;
-        mode = "sender";
-        multicastAddress = "224.0.0.1";
-      };
     };
 
     graphics.enable = true;

@@ -2,8 +2,8 @@
 
 <PROPERTIES>
   <VALUE name="audioSetup">
-    <DEVICESETUP deviceType="ALSA" audioOutputDeviceName="Default ALSA Output (currently PipeWire Media Server)"
-                 audioInputDeviceName="" audioDeviceRate="48000.0" audioDeviceBufferSize="256"/>
+    <DEVICESETUP deviceType="ALSA" audioOutputDeviceName="" audioInputDeviceName="Default ALSA Output (currently PipeWire Media Server)"
+                 audioDeviceRate="48000.0" audioDeviceBufferSize="256"/>
   </VALUE>
   <VALUE name="filterStateXML">
     <SonoBusAoO>
@@ -37,7 +37,7 @@
       <PARAM id="mettempo" value="100.0"/>
       <PARAM id="nmainreverblevel" value="1.0"/>
       <PARAM id="reconnectlast" value="0.0"/>
-      <PARAM id="sendchannels" value="1.0"/>
+      <PARAM id="sendchannels" value="2.0"/>
       <PARAM id="sendfileaudio" value="0.0"/>
       <PARAM id="sendmetaudio" value="0.0"/>
       <PARAM id="sendsoundboardaudio" value="0.0"/>
