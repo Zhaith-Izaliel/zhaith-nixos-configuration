@@ -61,6 +61,10 @@ in {
           "pipewire.service"
           "network.target"
         ];
+
+        After = [
+          "pipewire.service"
+        ];
       };
 
       Service = {
