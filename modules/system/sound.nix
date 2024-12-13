@@ -65,10 +65,10 @@ in {
         description = "Defines if this machine is the receiver or the sender.";
       };
 
-      receiverAddress = mkOption {
+      multicastAddress = mkOption {
         type = types.nonEmptyStr;
         default = "";
-        description = "The receiver IP address to connect to.";
+        description = "The multicast IP address to connect to.";
       };
 
       openFirewall =
@@ -149,7 +149,7 @@ in {
               name = "libpipewire-module-netjack2-manager";
               args = {
                 "local.ifname" = cfg.soundSharing.networkInterface;
-                "net.ip" = cfg.soundSharing.receiverAddress;
+                "net.ip" = cfg.soundSharing.multicastAddress;
                 "net.port" = toString cfg.soundSharing.port;
                 "netjack2.connect" = true;
                 "source.props" = {
@@ -166,7 +166,7 @@ in {
               name = "libpipewire-module-netjack2-driver";
               args = {
                 "local.ifname" = cfg.soundSharing.networkInterface;
-                "net.ip" = cfg.soundSharing.receiverAddress;
+                "net.ip" = cfg.soundSharing.multicastAddress;
                 "net.port" = toString cfg.soundSharing.port;
                 "netjack2.client-name" = "${config.networking.hostName}-pipewire";
                 "netjack2.latency" = cfg.soundSharing.targetLatency;

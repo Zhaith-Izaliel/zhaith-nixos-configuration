@@ -137,7 +137,7 @@
       soundSharing = {
         enable = true;
         mode = "sender";
-        receiverAddress = "192.168.1.150";
+        multicastAddress = "224.0.0.1";
       };
     };
 
