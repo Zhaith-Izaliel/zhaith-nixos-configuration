@@ -74,26 +74,26 @@ in {
       openFirewall =
         (mkEnableOption null)
         // {
+          default = true;
           description = "Whether to open the ports in the firewall.";
         };
 
       targetLatency = mkOption {
         type = types.ints.unsigned;
-        default = 50;
-        description = "Your target sound latency. Note that higher latencies will effectively delay the sound played on receiver.";
+        default = 2;
+        description = "Defines the latency in cycles.";
       };
 
-      ports = let
-        mkPorts = default: name:
-          mkOption {
-            inherit default;
-            type = types.ints.unsigned;
-            description = "The ${name} port for the ROC Source.";
-          };
-      in {
-        source = mkPorts 10001 "source";
-        repair = mkPorts 10002 "repair";
-        control = mkPorts 10003 "control";
+      networkInterface = mkOption {
+        type = types.nonEmptyStr;
+        default = builtins.elemAt config.hellebore.network.interfaces 0;
+        description = "The network interface to use for sound sharing";
+      };
+
+      port = mkOption {
+        default = 19000;
+        type = types.ints.unsigned;
+        description = "Defines the UDP port for network sound sharing.";
       };
     };
   };
@@ -135,57 +135,43 @@ in {
 
     (mkIf cfg.soundSharing.enable {
       networking.firewall =
-        mkIf (cfg.soundSharing.mode == "receiver")
+        mkIf (cfg.soundSharing.mode == "receiver" && cfg.soundSharing.openFirewall)
         {
-          allowedTCPPorts = [
-            cfg.soundSharing.ports.source
-            cfg.soundSharing.ports.repair
-            cfg.soundSharing.ports.control
-          ];
-
           allowedUDPPorts = [
-            cfg.soundSharing.ports.source
-            cfg.soundSharing.ports.repair
-            cfg.soundSharing.ports.control
+            cfg.soundSharing.port
           ];
         };
 
       services.pipewire.extraConfig.pipewire = {
-        "99-roc-source" = mkIf (cfg.soundSharing.mode == "receiver") {
+        "99-netjack2-manager" = mkIf (cfg.soundSharing.mode == "receiver") {
           "context.modules" = [
             {
-              name = "libpipewire-module-roc-source";
+              name = "libpipewire-module-netjack2-manager";
               args = {
-                "fec.code" = "ldpc";
-                "local.ip" = "0.0.0.0";
-                "resampler.profile" = "medium";
-                "sess.latency.msec" = toString cfg.soundSharing.targetLatency;
-                "local.source.port" = toString cfg.soundSharing.ports.source;
-                "local.repair.port" = toString cfg.soundSharing.ports.repair;
-                "local.control.port" = toString cfg.soundSharing.ports.control;
-                "source.name" = "Roc Source";
+                "local.ifname" = cfg.soundSharing.networkInterface;
+                "net.ip" = cfg.soundSharing.receiverAddress;
+                "net.port" = toString cfg.soundSharing.port;
+                "netjack2.connect" = true;
                 "source.props" = {
-                  "node.name" = "roc-source";
+                  "node.name" = "${config.networking.hostName}-netjack2-master";
                 };
               };
-              flags = ["nofail"];
             }
           ];
         };
 
-        "99-roc-sink" = mkIf (cfg.soundSharing.mode == "sender") {
+        "99-netjack2-driver" = mkIf (cfg.soundSharing.mode == "sender") {
           "context.modules" = [
             {
-              name = "libpipewire-module-roc-sink";
+              name = "libpipewire-module-netjack2-driver";
               args = {
-                "fec.code" = "ldpc";
-                "remote.ip" = cfg.soundSharing.receiverAddress;
-                "remote.source.port" = toString cfg.soundSharing.ports.source;
-                "remote.repair.port" = toString cfg.soundSharing.ports.repair;
-                "remote.control.port" = toString cfg.soundSharing.ports.control;
-                "sink.name" = "Roc Sink";
+                "local.ifname" = cfg.soundSharing.networkInterface;
+                "net.ip" = cfg.soundSharing.receiverAddress;
+                "net.port" = toString cfg.soundSharing.port;
+                "netjack2.client-name" = "${config.networking.hostName}-pipewire";
+                "netjack2.latency" = cfg.soundSharing.targetLatency;
                 "sink.props" = {
-                  "node.name" = "roc-sink";
+                  "node.name" = "${config.networking.hostName}-netjack2-slave";
                 };
               };
             }
