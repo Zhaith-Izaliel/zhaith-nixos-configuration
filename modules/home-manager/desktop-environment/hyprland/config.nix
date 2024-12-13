@@ -137,6 +137,8 @@ in {
           [
             "XCURSOR_THEME,${theme.gtk.cursorTheme.name}"
             "XCURSOR_SIZE,${toString cfg.cursorSize}"
+            "QT_QPA_PLATFORMTHEME,gtk2"
+            "QT_STYLE_OVERRIDE,gtk2"
           ]
           ++ optionals os-config.hellebore.hardware.nvidia.proprietary.prime.sync.enable [
             "LIBVA_DRIVER_NAME,nvidia"

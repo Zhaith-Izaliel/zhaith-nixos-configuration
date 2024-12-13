@@ -44,7 +44,10 @@ in {
         AQ_DRM_DEVICES = concatStringsSep ":" (cfg.renderingCards);
       });
 
-    qt.enable = true;
+    qt = {
+      enable = true;
+      platformTheme = "gtk2";
+    };
 
     services.dbus.packages = [pkgs.gcr];
 
