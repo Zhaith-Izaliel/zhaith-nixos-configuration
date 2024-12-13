@@ -30,7 +30,7 @@ in {
 
       target = mkOption {
         type = types.str;
-        default = "graphical-session.target";
+        default = "default.target";
         description = ''
           The systemd target that will automatically start the Sonobus service.
         '';
@@ -57,7 +57,10 @@ in {
     systemd.user.services.sonobus = mkIf cfg.service.enable {
       Unit = {
         Description = "Headless Sonobus daemon";
-        Requires = ["pipewire.service"];
+        Wants = [
+          "pipewire.service"
+          "network.target"
+        ];
       };
 
       Service = {

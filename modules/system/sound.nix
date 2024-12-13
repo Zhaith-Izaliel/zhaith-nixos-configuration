@@ -66,7 +66,7 @@ in {
 
       description = mkOption {
         type = types.nonEmptyStr;
-        default = "Virtual Microphone";
+        default = "VirtualMicrophone";
         description = "Defines the input sink description.";
       };
     };
