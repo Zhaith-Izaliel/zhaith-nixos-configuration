@@ -134,6 +134,8 @@
         minQuantum = 32;
         maxQuantum = 32;
       };
+
+      virtualMicrophone.enable = true;
     };
 
     graphics.enable = true;

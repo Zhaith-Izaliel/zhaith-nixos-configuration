@@ -54,6 +54,22 @@ in {
         PipeWire.";
       };
     };
+
+    virtualMicrophone = {
+      enable = mkEnableOption "virtual microphone input sink, to reroute playback to it.";
+
+      name = mkOption {
+        type = types.nonEmptyStr;
+        default = "VirtualMicrophone";
+        description = "Defines the input sink name.";
+      };
+
+      description = mkOption {
+        type = types.nonEmptyStr;
+        default = "Virtual Microphone";
+        description = "Defines the input sink description.";
+      };
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -79,6 +95,17 @@ in {
         pulseaudio.enable = false;
       };
     }
+
+    (mkIf cfg.virtualMicrophone.enable {
+      services.pipewire.extraConfig.pipewire-pulse."99-virtual-microphone" = {
+        "pulse.cmd" = [
+          {
+            cmd = "load-module";
+            args = ''module-null-sink sink_name="${cfg.virtualMicrophone.name}" sink_properties=device.description="${cfg.virtualMicrophone.description}"'';
+          }
+        ];
+      };
+    })
 
     (mkIf cfg.bluetoothEnhancements {
       services.pipewire.wireplumber.extraConfig.bluetoothEnhancements = {
