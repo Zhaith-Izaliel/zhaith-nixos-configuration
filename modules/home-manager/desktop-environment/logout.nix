@@ -11,7 +11,7 @@
     (optional cfg.useLayerBlur "--no-bg")
     ++ [
       "--protocol layer-shell"
-      "-b 5"
+      "-b ${toString (builtins.length layout)}"
       "-T 400"
       "-B 400"
     ];
@@ -19,6 +19,40 @@
   cfg = config.hellebore.desktop-environment.logout;
 
   theme = config.hellebore.theme.themes.${cfg.theme};
+
+  layout =
+    (optional config.hellebore.desktop-environment.lockscreen.enable {
+      label = "lock";
+      action = "${pkgs.systemd}/bin/loginctl lock-session";
+      text = "Lock";
+      keybind = "l";
+    })
+    ++ [
+      {
+        label = "reboot";
+        action = "${pkgs.systemd}/bin/systemctl reboot";
+        text = "Reboot";
+        keybind = "r";
+      }
+      {
+        label = "shutdown";
+        action = "${pkgs.systemd}/bin/systemctl poweroff";
+        text = "Shutdown";
+        keybind = "s";
+      }
+      {
+        label = "logout";
+        action = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch exit 0";
+        text = "Logout";
+        keybind = "e";
+      }
+      {
+        label = "suspend";
+        action = "${pkgs.systemd}/bin/systemctl suspend";
+        text = "Suspend";
+        keybind = "u";
+      }
+    ];
 in {
   options.hellebore.desktop-environment.logout = {
     enable = mkEnableOption "Hellebore logout screen configuration";
@@ -69,39 +103,8 @@ in {
     ];
 
     programs.wlogout = {
+      inherit layout;
       enable = true;
-      layout = [
-        {
-          label = "lock";
-          action = "${pkgs.systemd}/bin/loginctl lock-session";
-          text = "Lock";
-          keybind = "l";
-        }
-        {
-          label = "reboot";
-          action = "${pkgs.systemd}/bin/systemctl reboot";
-          text = "Reboot";
-          keybind = "r";
-        }
-        {
-          label = "shutdown";
-          action = "${pkgs.systemd}/bin/systemctl poweroff";
-          text = "Shutdown";
-          keybind = "s";
-        }
-        {
-          label = "logout";
-          action = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch exit 0";
-          text = "Logout";
-          keybind = "e";
-        }
-        {
-          label = "suspend";
-          action = "${pkgs.systemd}/bin/systemctl suspend";
-          text = "Suspend";
-          keybind = "u";
-        }
-      ];
 
       style =
         ''
