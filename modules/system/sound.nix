@@ -16,7 +16,6 @@
 
   cfg = config.hellebore.sound;
   toPeriod = quantum: "${toString quantum}/${toString cfg.lowLatency.rate}";
-  finalPackage = cfg.package.override {rocSupport = cfg.soundSharing.enable;};
 in {
   options.hellebore.sound = {
     enable = mkEnableOption "Hellebore sound configuration";
@@ -62,8 +61,8 @@ in {
       security.rtkit.enable = true;
 
       services.pipewire = {
+        inherit (cfg) package;
         enable = true;
-        package = finalPackage;
 
         wireplumber = {
           enable = true;
