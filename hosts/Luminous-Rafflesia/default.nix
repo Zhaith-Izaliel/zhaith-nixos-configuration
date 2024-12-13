@@ -99,8 +99,6 @@
 
       ntfs.enable = true;
 
-      bluetooth.enable = true;
-
       gaming = {
         enable = true;
         steam.enable = true;

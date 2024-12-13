@@ -193,7 +193,6 @@ in {
         };
       };
 
-      bluetooth.enable = true;
       network.enable = true;
 
       i18n = {
