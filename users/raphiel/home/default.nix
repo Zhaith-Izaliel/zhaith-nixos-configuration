@@ -6,7 +6,7 @@
   os-config,
   ...
 }: let
-  inherit (lib) optional optionalString getExe flatten;
+  inherit (lib) optional optionalString getExe flatten cleanSource;
 in {
   hellebore = {
     theme.name = "catppuccin-macchiato";
@@ -225,6 +225,15 @@ in {
 
     tools = {
       docs.enable = true;
+    };
+
+    multimedia.sonobus = {
+      enable = true;
+      service = {
+        # enable = true;
+        groupName = "Cordyceps-Sound-Sharing";
+        setupFile = cleanSource ./sonobus/raphiel-at-luminous-rafflesia.xml;
+      };
     };
 
     development = {

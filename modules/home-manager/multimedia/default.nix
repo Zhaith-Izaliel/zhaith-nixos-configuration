@@ -12,6 +12,7 @@ in {
     ./art.nix
     ./mpd.nix
     ./obs.nix
+    ./sonobus.nix
   ];
 
   options.hellebore.multimedia = {
