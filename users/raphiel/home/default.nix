@@ -53,6 +53,8 @@ in {
           position = "top-right";
         };
 
+        bugFixes.cursorRenderingInXWaylandApps = true;
+
         extraExecOnce = [
           (optionalString config.hellebore.desktop-environment.browsers.enable "[workspace 1] ${getExe config.hellebore.desktop-environment.browsers.package}")
           (optionalString config.hellebore.shell.emulator.enable "[workspace 1] ${config.hellebore.shell.emulator.bin}")

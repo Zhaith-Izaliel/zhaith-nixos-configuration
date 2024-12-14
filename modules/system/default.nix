@@ -13,13 +13,28 @@ in {
       name = theme.gtk.font.name;
       size = 12;
       sizeDescription = ''
-        Define a global font size for applications. Each
+        Defines a global font size for applications. Each
         application's font size can be changed granularly, or set globally using
         this option.
       '';
       nameDescription = ''
-        Define a global font family for applications. Each
+        Defines a global font family for applications. Each
         application's font family can be changed granularly, or set globally using
+        this option.
+      '';
+    };
+
+    cursor = extra-types.cursor {
+      name = theme.gtk.cursorTheme.name;
+      size = 24;
+      sizeDescription = ''
+        Defines a global cursor size for applications. Each
+        application's cursor size can be changed granularly, or set globally using
+        this option.
+      '';
+      nameDescription = ''
+        Defines a global cursor theme for applications. Each
+        application's cursor theme can be changed granularly, or set globally using
         this option.
       '';
     };

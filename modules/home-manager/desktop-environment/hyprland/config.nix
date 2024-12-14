@@ -135,10 +135,10 @@ in {
 
         env =
           [
-            "XCURSOR_THEME,${theme.gtk.cursorTheme.name}"
-            "XCURSOR_SIZE,${toString cfg.cursorSize}"
-            "QT_QPA_PLATFORMTHEME,gtk2"
-            "QT_STYLE_OVERRIDE,gtk2"
+            "XCURSOR_THEME,${cfg.cursor.name}"
+            "XCURSOR_SIZE,${toString cfg.cursor.size}"
+            # "HYPRCURSOR_THEME,${cfg.cursor.name}"
+            # "HYPRCURSOR_SIZE,${toString cfg.cursor.size}"
           ]
           ++ optionals os-config.hellebore.hardware.nvidia.proprietary.prime.sync.enable [
             "LIBVA_DRIVER_NAME,nvidia"
@@ -146,7 +146,8 @@ in {
           ];
 
         cursor = {
-          no_hardware_cursors = false;
+          no_hardware_cursors = !cfg.cursor.hardwareCursors;
+          allow_dumb_copy = cfg.cursor.hardwareCursors;
         };
 
         workspace = flatten extraWorkspaceRules;
@@ -176,12 +177,12 @@ in {
           [
             "${getExe pkgs.swww} init"
             "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
-            # "hyprctl setcursor ${theme.gtk.cursorTheme.name} ${toString cfg.cursorSize}"
             (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
             (optionalString os-config.hardware.logitech.wireless.enableGraphical
               "${pkgs.solaar}/bin/solaar --window hide")
           ]
-          ++ (mkPWAExec pwas)
+          ++ mkPWAExec pwas
+          ++ optional cfg.bugFixes.cursorRenderingInXWaylandApps "${getExe pkgs.xorg.xsetroot} -cursor_name left_ptr"
           ++ cfg.extraExecOnce;
 
         exec = cfg.extraExec;

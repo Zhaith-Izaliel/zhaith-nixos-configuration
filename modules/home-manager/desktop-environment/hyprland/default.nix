@@ -111,11 +111,20 @@ in {
       applications.";
     };
 
-    cursorSize = mkOption {
-      default = 24;
-      type = types.ints.unsigned;
-      description = "Defines the cursor size to use.";
-    };
+    cursor =
+      (extra-types.cursor {
+        name = theme.gtk.cursorTheme.name;
+        size = config.hellebore.cursor.size;
+        nameDescription = "Defines the name of the cursor theme to use.";
+        sizeDescription = "Defines the size of the cursor theme to use.";
+      })
+      // {
+        hardwareCursors =
+          (mkEnableOption "hardware cursors. Off by default")
+          // {
+            default = false;
+          };
+      };
 
     wallpaper = mkOption {
       type = types.path;
@@ -155,6 +164,14 @@ in {
 
     misc = {
       middleClickPaste = mkEnableOption "middle click paste";
+    };
+
+    bugFixes = {
+      cursorRenderingInXWaylandApps =
+        (mkEnableOption null)
+        // {
+          description = "Fix invisible cursors in some XWayland applications. Should be kept until https://github.com/hyprwm/Hyprland/issues/7335 is fixed upstream.";
+        };
     };
 
     progressiveWebApps = mkOption {
@@ -293,13 +310,13 @@ in {
     ];
 
     home.sessionVariables = {
-      GDK_BACKEND = "wayland,x11";
-      QT_QPA_PLATFORM = "wayland;xcb";
-      CLUTTER_BACKEND = "wayland";
+      # GDK_BACKEND = "wayland,x11";
+      # QT_QPA_PLATFORM = "wayland;xcb";
+      # CLUTTER_BACKEND = "wayland";
       # XDG_CURRENT_DESKTOP = "Hyprland";
-      XDG_SESSION_TYPE = "wayland";
+      # XDG_SESSION_TYPE = "wayland";
       # XDG_SESSION_DESKTOP = "Hyprland";
-      ADW_DISABLE_PORTAL = "1";
+      # ADW_DISABLE_PORTAL = "1";
     };
 
     home.packages =

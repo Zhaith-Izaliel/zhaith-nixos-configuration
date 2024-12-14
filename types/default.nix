@@ -82,6 +82,25 @@ in rec {
     };
   };
 
+  cursor = {
+    name,
+    nameDescription,
+    size,
+    sizeDescription,
+  }: {
+    size = mkOption {
+      default = size;
+      type = types.ints.unsigned;
+      description = sizeDescription;
+    };
+
+    name = mkOption {
+      type = types.nonEmptyStr;
+      default = name;
+      description = nameDescription;
+    };
+  };
+
   keyboard = {
     layout,
     variant,

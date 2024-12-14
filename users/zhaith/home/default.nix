@@ -57,7 +57,11 @@ in {
       hyprland = {
         enable = true;
 
-        cursorSize = 18;
+        cursor = {
+          size = 18;
+        };
+
+        bugFixes.cursorRenderingInXWaylandApps = true;
 
         input = {
           mouse.scrollFactor = 0.85;
