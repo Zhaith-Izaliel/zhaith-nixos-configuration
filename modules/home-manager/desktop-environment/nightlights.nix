@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkIf mkEnableOption mkOption types mkPackageOption getExe concatStringsSep;
+  inherit (lib) mkIf mkEnableOption mkOption types mkPackageOption getExe;
   cfg = config.hellebore.desktop-environment.nightlights;
 in {
   options.hellebore.desktop-environment.nightlights = {
@@ -24,10 +24,10 @@ in {
       description = "The time at which night lights are removed. Must be a systemd timer, see systemd.time(7).";
     };
 
-    extraArgs = mkOption {
-      default = [];
-      type = types.listOf types.nonEmptyStr;
-      description = "Extra arguments to pass to hyprsunset.";
+    temperature = mkOption {
+      default = 6000;
+      type = types.ints.unsigned;
+      description = "Temperature of the screen, in Kelvins.";
     };
   };
 
@@ -40,7 +40,7 @@ in {
 
         Service = {
           Type = "oneshot";
-          ExecStart = "${getExe cfg.package} ${concatStringsSep " " cfg.extraArgs}";
+          ExecStart = "${getExe cfg.package} -t ${toString cfg.temperature}";
         };
       };
     };

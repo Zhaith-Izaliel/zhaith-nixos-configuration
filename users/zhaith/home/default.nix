@@ -52,13 +52,16 @@ in {
     desktop-environment = {
       clipboard.enable = true;
 
-      nightlights.enable = true;
+      nightlights = {
+        enable = true;
+        temperature = 5000;
+      };
 
       hyprland = {
         enable = true;
 
         cursor = {
-          size = 18;
+          size = 12;
         };
 
         bugFixes.cursorRenderingInXWaylandApps = true;
@@ -166,6 +169,10 @@ in {
                 "fullscreen"
               ];
           };
+
+        hyprscroller = {
+          enable = true;
+        };
       };
 
       lockscreen = {

@@ -20,6 +20,12 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable && !cfg.isWacom) {
+      nixpkgs.config.permittedInsecurePackages = [
+        "dotnet-runtime-6.0.36"
+        "dotnet-sdk-wrapped-6.0.428"
+        "dotnet-sdk-6.0.428"
+      ];
+
       hardware.opentabletdriver = {
         enable = true;
         daemon.enable = true;

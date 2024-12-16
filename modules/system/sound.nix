@@ -22,7 +22,33 @@ in {
 
     package = mkPackageOption pkgs "pipewire" {};
 
-    bluetoothEnhancements = mkEnableOption "the mSBC and SBC-XQ bluetooth codec in Wireplumber.";
+    bluetoothEnhancements = {
+      enable = mkEnableOption "the mSBC and SBC-XQ bluetooth codec in Wireplumber.";
+
+      soundCodecs = mkOption {
+        type = types.listOf (types.enum [
+          "hsp_hs"
+          "hsp_ag"
+          "hfp_hf"
+          "hfp_ag"
+          "a2dp_source"
+          "a2dp_sink"
+          "bap_sink"
+          "bap_source"
+        ]);
+        default = [
+          "hsp_hs"
+          "hsp_ag"
+          "hfp_hf"
+          "hfp_ag"
+          "a2dp_source"
+          "a2dp_sink"
+          "bap_sink"
+          "bap_source"
+        ];
+        description = "Defines the list of sound codecs to use with Bluez.";
+      };
+    };
 
     lowLatency = {
       enable = mkEnableOption "PipeWire low-latency configuration";
@@ -107,13 +133,13 @@ in {
       };
     })
 
-    (mkIf cfg.bluetoothEnhancements {
+    (mkIf cfg.bluetoothEnhancements.enable {
       services.pipewire.wireplumber.extraConfig.bluetoothEnhancements = {
         "monitor.bluez.properties" = {
           "bluez5.enable-sbc-xq" = true;
           "bluez5.enable-msbc" = true;
           "bluez5.enable-hw-volume" = true;
-          "bluez5.roles" = ["hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag"];
+          "bluez5.roles" = cfg.bluetoothEnhancements.soundCodecs;
         };
       };
     })

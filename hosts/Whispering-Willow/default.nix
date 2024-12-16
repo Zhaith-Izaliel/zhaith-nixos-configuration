@@ -1,11 +1,13 @@
 {
   pkgs,
+  inputs,
   lib,
   config,
   ...
 }: {
   imports = [
     ./hardware-configuration.nix
+    inputs.nixos-hardware.nixosModules.lenovo-ideapad-16ahp9
   ];
 
   # Set your time zone.
@@ -25,7 +27,7 @@
     # kernelPackages = unstable-pkgs.linuxPackages_zen;
   };
 
-  services.teamviewer.enable = true;
+  # services.teamviewer.enable = true;
 
   hellebore = {
     font.size = 10;
@@ -125,6 +127,13 @@
         steam.enable = true;
         logitech.wireless.enable = true;
       };
+
+      touchscreen.enable = true;
+
+      graphics-tablet = {
+        enable = true;
+        isWacom = true;
+      };
     };
 
     bootloader = {
@@ -158,6 +167,8 @@
 
     sound = {
       enable = true;
+
+      bluetoothEnhancements.enable = true;
 
       lowLatency = {
         enable = false;

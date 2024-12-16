@@ -20,7 +20,15 @@
     removeSuffix
     pipe
     filter
+    concatStrings
+    foldAttrs
+    filterAttrs
+    foldr
+    hasAttr
     ;
+
+  recursiveUpdates = foldr (acc: attrs: recursiveUpdate acc attrs) {};
+  optionalBind = name: optionals (hasAttr name binds) binds.${name};
 
   cfg = config.hellebore.desktop-environment.hyprland;
 
@@ -118,221 +126,249 @@
   };
 
   pInPName = "^.*(Picture-in-Picture).*$";
+
+  binds = pipe cfg.extraBinds [
+    (map (item: {"bind${concatStrings item.flags}" = item.binds;}))
+    (foldAttrs (bind: acc: bind ++ acc) [])
+  ];
+
+  otherBinds = filterAttrs (name: value:
+    !(builtins.any (item: name == item) [
+      "bind"
+      "bindle"
+      "bindl"
+      "bindm"
+    ]))
+  binds;
 in {
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
-      settings = recursiveUpdate theme.hyprland.settings {
-        "$mainMod" = "SUPER";
-        "$mainModKey" = "SUPER_L";
+      settings = recursiveUpdates [
+        theme.hyprland.settings
 
-        general = {
-          layout = cfg.layout;
-        };
+        {
+          "$mainMod" = "SUPER";
+          "$mainModKey" = "SUPER_L";
 
-        misc.middle_click_paste = cfg.misc.middleClickPaste;
+          general = {
+            layout = cfg.layout;
+          };
 
-        monitor = mkMonitors cfg.monitors;
+          misc.middle_click_paste = cfg.misc.middleClickPaste;
 
-        env =
-          [
-            "XCURSOR_THEME,${cfg.cursor.name}"
-            "XCURSOR_SIZE,${toString cfg.cursor.size}"
-            # "HYPRCURSOR_THEME,${cfg.cursor.name}"
-            # "HYPRCURSOR_SIZE,${toString cfg.cursor.size}"
-          ]
-          ++ optionals os-config.hellebore.hardware.nvidia.proprietary.prime.sync.enable [
-            "LIBVA_DRIVER_NAME,nvidia"
-            "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+          monitor = mkMonitors cfg.monitors;
+
+          env =
+            [
+              "XCURSOR_THEME,${cfg.cursor.name}"
+              "XCURSOR_SIZE,${toString cfg.cursor.size}"
+              # "HYPRCURSOR_THEME,${cfg.cursor.name}"
+              # "HYPRCURSOR_SIZE,${toString cfg.cursor.size}"
+            ]
+            ++ optionals os-config.hellebore.hardware.nvidia.proprietary.prime.sync.enable [
+              "LIBVA_DRIVER_NAME,nvidia"
+              "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+            ];
+
+          cursor = {
+            no_hardware_cursors = !cfg.cursor.hardwareCursors;
+            allow_dumb_copy = cfg.cursor.hardwareCursors;
+          };
+
+          workspace = flatten extraWorkspaceRules;
+
+          windowrulev2 = flatten [
+            (optionals cfg.picture-in-picture.enable (mkWindowOrLayerRule "class:^.*(firefox).*$, title:${pInPName}" [
+              "float"
+              "pin"
+              "size ${toString ((getMonitor 0).width / 8)} ${toString ((getMonitor 0).height / 8)}"
+              "suppressevent fullscreen maximize"
+              "noinitialfocus"
+              "move ${pInPPositions.${cfg.picture-in-picture.position}}"
+            ]))
+            (mkPWAWindowRules pwas)
+            extraWindowRules
           ];
 
-        cursor = {
-          no_hardware_cursors = !cfg.cursor.hardwareCursors;
-          allow_dumb_copy = cfg.cursor.hardwareCursors;
-        };
+          layerrule = flatten [
+            (optionals config.hellebore.desktop-environment.logout.useLayerBlur (mkWindowOrLayerRule "logout_dialog" [
+              "blur"
+              "xray off"
+            ]))
+            extraLayerRules
+          ];
 
-        workspace = flatten extraWorkspaceRules;
+          unbinds = cfg.extraUnbinds;
 
-        windowrulev2 = flatten [
-          (optionals cfg.picture-in-picture.enable (mkWindowOrLayerRule "class:^.*(firefox).*$, title:${pInPName}" [
-            "float"
-            "pin"
-            "size ${toString ((getMonitor 0).width / 8)} ${toString ((getMonitor 0).height / 8)}"
-            "suppressevent fullscreen maximize"
-            "noinitialfocus"
-            "move ${pInPPositions.${cfg.picture-in-picture.position}}"
-          ]))
-          (mkPWAWindowRules pwas)
-          extraWindowRules
-        ];
+          exec-once =
+            [
+              "${getExe pkgs.swww} init"
+              "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
+              (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
+              (optionalString os-config.hardware.logitech.wireless.enableGraphical
+                "${pkgs.solaar}/bin/solaar --window hide")
+            ]
+            ++ mkPWAExec pwas
+            ++ optional cfg.bugFixes.cursorRenderingInXWaylandApps "${getExe pkgs.xorg.xsetroot} -cursor_name left_ptr"
+            ++ cfg.extraExecOnce;
 
-        layerrule = flatten [
-          (optionals config.hellebore.desktop-environment.logout.useLayerBlur (mkWindowOrLayerRule "logout_dialog" [
-            "blur"
-            "xray off"
-          ]))
-          extraLayerRules
-        ];
+          exec = cfg.extraExec;
 
-        exec-once =
-          [
-            "${getExe pkgs.swww} init"
-            "sleep 5; ${getExe pkgs.swww} img ${cfg.wallpaper}"
-            (optionalString config.gtk.enable "${getExe (configure-gtk theme.gtk)}")
-            (optionalString os-config.hardware.logitech.wireless.enableGraphical
-              "${pkgs.solaar}/bin/solaar --window hide")
-          ]
-          ++ mkPWAExec pwas
-          ++ optional cfg.bugFixes.cursorRenderingInXWaylandApps "${getExe pkgs.xorg.xsetroot} -cursor_name left_ptr"
-          ++ cfg.extraExecOnce;
+          bind = flatten [
+            ", code:107, exec, ${getExe pkgs.screenshot} area"
+            "$mainMod, code:107, exec, ${getExe pkgs.screenshot} screen"
 
-        exec = cfg.extraExec;
+            "$mainMod, C, killactive,"
+            "$mainMod, E, exec, nemo"
+            "$mainMod, P, exec, ${getExe pkgs.hyprpicker} -a"
 
-        bind = flatten [
-          ", code:107, exec, ${getExe pkgs.screenshot} area"
-          "$mainMod, code:107, exec, ${getExe pkgs.screenshot} screen"
+            "$mainMod, J, togglesplit," # Dwindle
+            "$mainMod, M, fullscreen, 1" # Maximize window
+            "$mainMod, F, fullscreen, 0" # fullscreen window
+            "$mainMod SHIFT, F, togglefloating,"
 
-          "$mainMod, C, killactive,"
-          "$mainMod, E, exec, nemo"
-          "$mainMod, P, exec, ${getExe pkgs.hyprpicker} -a"
+            "$mainMod, left, movefocus, l"
+            "$mainMod, right, movefocus, r"
+            "$mainMod, up, movefocus, u"
+            "$mainMod, down, movefocus, d"
 
-          "$mainMod, J, togglesplit," # Dwindle
-          "$mainMod, M, fullscreen, 1" # Maximize window
-          "$mainMod, F, fullscreen, 0" # fullscreen window
-          "$mainMod SHIFT, F, togglefloating,"
+            "$mainMod ALT, left, movewindow, l"
+            "$mainMod ALT, right, movewindow, r"
+            "$mainMod ALT, up, movewindow, u"
+            "$mainMod ALT, down, movewindow, d"
 
-          "$mainMod, left, movefocus, l"
-          "$mainMod, right, movefocus, r"
-          "$mainMod, up, movefocus, u"
-          "$mainMod, down, movefocus, d"
+            "$mainMod SHIFT, right, workspace, e+1"
+            "$mainMod SHIFT, left, workspace, e-1"
+            "$mainMod CTRL, right, movetoworkspace, +1"
+            "$mainMod CTRL, left, movetoworkspace, -1"
 
-          "$mainMod ALT, left, movewindow, l"
-          "$mainMod ALT, right, movewindow, r"
-          "$mainMod ALT, up, movewindow, u"
-          "$mainMod ALT, down, movewindow, d"
+            "$mainMod, mouse_down, workspace, e+1"
+            "$mainMod, mouse_up, workspace, e-1"
 
-          "$mainMod SHIFT, right, workspace, e+1"
-          "$mainMod SHIFT, left, workspace, e-1"
-          "$mainMod CTRL, right, movetoworkspace, +1"
-          "$mainMod CTRL, left, movetoworkspace, -1"
+            # Switch workspaces with mainMod + F[1-10]
+            (
+              map
+              (item: "$mainMod, F${toString item}, workspace, ${toString item}")
+              (range 1 10)
+            )
 
-          "$mainMod, mouse_down, workspace, e+1"
-          "$mainMod, mouse_up, workspace, e-1"
+            # Move active window to a workspace with mainMod + CONTROL + F[1-10]
+            (
+              map
+              (item: "$mainMod CONTROL, F${toString item}, movetoworkspace, ${toString item}")
+              (range 1 10)
+            )
 
-          # Switch workspaces with mainMod + F[1-10]
-          (
-            map
-            (item: "$mainMod, F${toString item}, workspace, ${toString item}")
-            (range 1 10)
-          )
+            (optional config.hellebore.desktop-environment.logout.enable
+              "$mainMod, L, exec, ${config.hellebore.desktop-environment.logout.bin}")
+            (optional config.hellebore.shell.emulator.enable
+              "$mainMod, Q, exec, ${config.hellebore.shell.emulator.bin}")
+            (
+              optional os-config.hellebore.vm.enable
+              ''
+                $mainMod, W, exec, start-vm --resolution=${toString (getMonitor 0).width}x${toString (getMonitor 0).height} -Fi
+              ''
+            )
+            (optional config.hellebore.desktop-environment.applications-launcher.enable
+              "$mainMod, R, exec, ${config.hellebore.desktop-environment.applications-launcher.command}")
+            (optional config.hellebore.desktop-environment.i18n.enable
+              "$mainMod, I, exec, fcitx5-remote -t")
 
-          # Move active window to a workspace with mainMod + CONTROL + F[1-10]
-          (
-            map
-            (item: "$mainMod CONTROL, F${toString item}, movetoworkspace, ${toString item}")
-            (range 1 10)
-          )
+            # Rofi Applets
+            (optional appletsConfig.favorites.enable
+              "$mainMod SHIFT, R, exec, ${getExe appletsConfig.favorites.package}")
 
-          (optional config.hellebore.desktop-environment.logout.enable
-            "$mainMod, L, exec, ${config.hellebore.desktop-environment.logout.bin}")
-          (optional config.hellebore.shell.emulator.enable
-            "$mainMod, Q, exec, ${config.hellebore.shell.emulator.bin}")
-          (
-            optional os-config.hellebore.vm.enable
-            ''
-              $mainMod, W, exec, start-vm --resolution=${toString (getMonitor 0).width}x${toString (getMonitor 0).height} -Fi
-            ''
-          )
-          (optional config.hellebore.desktop-environment.applications-launcher.enable
-            "$mainMod, R, exec, ${config.hellebore.desktop-environment.applications-launcher.command}")
-          (optional config.hellebore.desktop-environment.i18n.enable
-            "$mainMod, I, exec, fcitx5-remote -t")
+            (optional appletsConfig.quicklinks.enable
+              "$mainMod CTRL, R, exec, ${getExe appletsConfig.quicklinks.package}")
 
-          # Rofi Applets
-          (optional appletsConfig.favorites.enable
-            "$mainMod SHIFT, R, exec, ${getExe appletsConfig.favorites.package}")
+            (optional appletsConfig.bluetooth.enable
+              "$mainMod, B, exec, ${getExe appletsConfig.bluetooth.package}")
 
-          (optional appletsConfig.quicklinks.enable
-            "$mainMod CTRL, R, exec, ${getExe appletsConfig.quicklinks.package}")
+            (optional appletsConfig.mpd.enable
+              "$mainMod, A, exec, ${getExe appletsConfig.mpd.package}")
 
-          (optional appletsConfig.bluetooth.enable
-            "$mainMod, B, exec, ${getExe appletsConfig.bluetooth.package}")
+            (optional appletsConfig.ronema.enable
+              "$mainMod, N, exec, ${getExe appletsConfig.ronema.package}")
 
-          (optional appletsConfig.mpd.enable
-            "$mainMod, A, exec, ${getExe appletsConfig.mpd.package}")
+            (optional appletsConfig.power-profiles.enable
+              "$mainMod, Z, exec, ${getExe appletsConfig.power-profiles.package}")
 
-          (optional appletsConfig.ronema.enable
-            "$mainMod, N, exec, ${getExe appletsConfig.ronema.package}")
+            "$mainMod SHIFT, Q, exec, ${getExe pkgs.qalculate-gtk}"
 
-          (optional appletsConfig.power-profiles.enable
-            "$mainMod, Z, exec, ${getExe appletsConfig.power-profiles.package}")
+            (
+              optional os-config.hellebore.games.steam.enable
+              "$mainMod, S, exec, ${getExe os-config.hellebore.games.steam.package}"
+            )
+            (
+              optional os-config.hellebore.games.gamescope.enable
+              "$mainMod SHIFT, S, exec, steam-gamescope"
+            )
 
-          "$mainMod SHIFT, Q, exec, ${getExe pkgs.qalculate-gtk}"
+            (optional cfg.switches.lid.enable ", switch:[${cfg.switches.lid.name}], exec, ${config.hellebore.desktop-environment.lockscreen.bin} --lid")
+            (optionalBind "bind")
+          ];
 
-          (
-            optional os-config.hellebore.games.steam.enable
-            "$mainMod, S, exec, ${getExe os-config.hellebore.games.steam.package}"
-          )
-          (
-            optional os-config.hellebore.games.gamescope.enable
-            "$mainMod SHIFT, S, exec, steam-gamescope"
-          )
+          bindl =
+            [
+              ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+              ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+            ]
+            ++ optionalBind "bindl";
 
-          (optional cfg.switches.lid.enable ", switch:[${cfg.switches.lid.name}], exec, ${config.hellebore.desktop-environment.lockscreen.bin} --lid")
-        ];
+          bindle =
+            [
+              ", XF86AudioRaiseVolume, exec, ${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
+              ", XF86AudioLowerVolume, exec, ${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 5%-"
+              ", XF86MonBrightnessUp, exec, ${getExe pkgs.volume-brightness} -b 5%+"
+              ", XF86MonBrightnessDown, exec, ${getExe pkgs.volume-brightness} -b 5%-"
+            ]
+            ++ optionalBind "bindle";
 
-        bindl = [
-          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-          ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        ];
+          bindm =
+            [
+              "$mainMod, mouse:272, movewindow"
+              "$mainMod, mouse:273, resizewindow"
+            ]
+            ++ optionalBind "bindm";
 
-        bindle = [
-          ", XF86AudioRaiseVolume, exec, ${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
-          ", XF86AudioLowerVolume, exec, ${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 5%-"
-          ", XF86MonBrightnessUp, exec, ${getExe pkgs.volume-brightness} -b 5%+"
-          ", XF86MonBrightnessDown, exec, ${getExe pkgs.volume-brightness} -b 5%-"
-        ];
+          input = {
+            kb_layout = cfg.input.keyboard.layout;
+            kb_variant = cfg.input.keyboard.variant;
 
-        bindm = [
-          "$mainMod, mouse:272, movewindow"
-          "$mainMod, mouse:273, resizewindow"
-        ];
+            follow_mouse = 1;
 
-        input = {
-          kb_layout = cfg.input.keyboard.layout;
-          kb_variant = cfg.input.keyboard.variant;
+            scroll_factor = cfg.input.mouse.scrollFactor;
 
-          follow_mouse = 1;
+            touchpad = {
+              natural_scroll = toString cfg.input.touchpad.naturalScroll;
+              tap-to-click = toString cfg.input.touchpad.tapToClick;
+              scroll_factor = cfg.input.touchpad.scrollFactor;
+            };
 
-          scroll_factor = cfg.input.mouse.scrollFactor;
-
-          touchpad = {
-            natural_scroll = toString cfg.input.touchpad.naturalScroll;
-            tap-to-click = toString cfg.input.touchpad.tapToClick;
-            scroll_factor = cfg.input.touchpad.scrollFactor;
+            sensitivity = toString cfg.input.mouse.sensitivity; # -1.0 - 1.0, 0 means no modification.
           };
 
-          sensitivity = toString cfg.input.mouse.sensitivity; # -1.0 - 1.0, 0 means no modification.
-        };
-
-        plugin = {
-          touch_gestures = mkIf cfg.input.touchscreen.enable {
-            sensitivity = cfg.input.touchscreen.sensitivity;
-            workspace_swipe_fingers = cfg.input.touchscreen.workspaceSwipeFingers;
-            long_press_delay = cfg.input.touchscreen.longPressDelay;
-            resize_on_border_long_press = cfg.input.touchscreen.resizeWindowsByLongPressing;
-            edge_margin = cfg.input.touchscreen.edgeMargin;
+          plugin = {
+            touch_gestures = mkIf cfg.input.touchscreen.enable {
+              sensitivity = cfg.input.touchscreen.sensitivity;
+              workspace_swipe_fingers = cfg.input.touchscreen.workspaceSwipeFingers;
+              long_press_delay = cfg.input.touchscreen.longPressDelay;
+              resize_on_border_long_press = cfg.input.touchscreen.resizeWindowsByLongPressing;
+              edge_margin = cfg.input.touchscreen.edgeMargin;
+            };
           };
-        };
 
-        dwindle = {
-          pseudotile = true;
-          preserve_split = true;
-        };
+          dwindle = {
+            pseudotile = true;
+            preserve_split = true;
+          };
 
-        gestures = {
-          workspace_swipe = false;
-        };
-      };
+          gestures = {
+            workspace_swipe = false;
+          };
+        }
+        otherBinds
+      ];
     };
   };
 }

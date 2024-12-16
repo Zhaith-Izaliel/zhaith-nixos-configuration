@@ -8,5 +8,6 @@
     ./ntfs.nix
     ./nvidia
     ./printing.nix
+    ./touchscreen.nix
   ];
 }

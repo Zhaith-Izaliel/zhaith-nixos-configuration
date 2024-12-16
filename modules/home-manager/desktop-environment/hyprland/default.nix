@@ -20,6 +20,23 @@
   theme = config.hellebore.theme.themes.${cfg.theme};
 
   finalPackage = cfg.package.override {enableXWayland = true;};
+
+  extraBindsType = types.submodule {
+    options = {
+      binds = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "The actual binds to add. See https://wiki.hyprland.org/Configuring/Binds";
+      };
+
+      flags = mkOption {
+        type = types.listOf types.nonEmptyStr;
+        default = [];
+        description = "Defines the flags applied to the bind. See https://wiki.hyprland.org/Configuring/Binds/#bind-flags";
+      };
+    };
+  };
+
   extraWindowAndLayerRulesType = types.submodule {
     options = {
       rules = mkOption {
@@ -31,7 +48,7 @@
       regex = mkOption {
         type = types.nonEmptyStr;
         default = "";
-        description = "Defines the regular expression used to find the window or layer on Hyprland. See: https://wiki.hyprland.org/Configuring/Window-Rules/#window-rules-v2 and https://wiki.hyprland.org/Configuring/Window-Rules/#layer-rules";
+        description = "Defines the regular expression used to find the window or layer on Hyprland. See https://wiki.hyprland.org/Configuring/Window-Rules/#window-rules-v2 and https://wiki.hyprland.org/Configuring/Window-Rules/#layer-rules";
       };
     };
   };
@@ -82,6 +99,7 @@
 in {
   imports = [
     ./config.nix
+    ./hyprscroller.nix
   ];
 
   options.hellebore.desktop-environment.hyprland = {
@@ -160,6 +178,18 @@ in {
       type = types.listOf extraWorkspaceRulesType;
       default = [];
       description = "Defines a list of extra rules for workspaces to be applied.";
+    };
+
+    extraBinds = mkOption {
+      type = types.listOf extraBindsType;
+      default = [];
+      description = "Defines a list of extra binds to add, with their own flags.";
+    };
+
+    extraUnbinds = mkOption {
+      type = types.listOf types.nonEmptyStr;
+      default = [];
+      description = "Defines a list of extra unbinds to remove default bindings.";
     };
 
     misc = {
@@ -306,6 +336,10 @@ in {
       {
         assertion = cfg.input.touchscreen.enable -> cfg.input.touchscreen.workspaceSwipeFingers >= 3;
         message = "You need at least 3 fingers to swipe workspaces with a touchscreen.";
+      }
+      {
+        assertion = cfg.input.touchscreen.enable -> os-config.hellebore.hardware.touchscreen.enable;
+        message = "You need to enable touchscreen support on the OS side with `hellebore.hardware.touchscreen.enable`.";
       }
     ];
 
