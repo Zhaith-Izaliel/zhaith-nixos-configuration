@@ -54,6 +54,7 @@ in {
     ./display-manager.nix
     ./fonts.nix
     ./games
+    ./gnupg.nix
     ./graphics.nix
     ./hardware
     ./hyprland.nix
