@@ -48,11 +48,6 @@ in {
           mouse.scrollFactor = 0.85;
         };
 
-        picture-in-picture = {
-          enable = true;
-          position = "top-right";
-        };
-
         bugFixes.cursorRenderingInXWaylandApps = true;
 
         extraExecOnce = [
@@ -183,11 +178,6 @@ in {
 
       network.enable = true;
 
-      i18n = {
-        enable = true;
-        enableAnthy = true;
-      };
-
       files-manager = {
         enable = true;
         supports = {
@@ -208,6 +198,9 @@ in {
 
     ssh-agent = {
       enable = true;
+      keys = [
+        "gitlab"
+      ];
     };
 
     tools = {

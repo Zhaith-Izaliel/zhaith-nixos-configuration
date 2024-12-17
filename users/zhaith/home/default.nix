@@ -74,6 +74,7 @@ in {
         picture-in-picture = {
           enable = true;
           position = "top-right";
+          ratio = 6;
         };
 
         extraExecOnce = [
@@ -304,7 +305,7 @@ in {
 
       mpris.enable = true;
       art.enable = true;
-      obs.enable = true;
+      obs-studio.enable = true;
       mpd = {
         enable = true;
         visualizer = {

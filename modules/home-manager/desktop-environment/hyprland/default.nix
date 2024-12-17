@@ -196,6 +196,13 @@ in {
 
     misc = {
       middleClickPaste = mkEnableOption "middle click paste";
+
+      font = extra-types.font {
+        name = config.hellebore.font.name;
+        nameDescription = "Defines the font family used for Hyprland.";
+        size = config.hellebore.font.size;
+        sizeDescription = "Defines the font size used for Hyprland.";
+      };
     };
 
     bugFixes = {
@@ -293,6 +300,191 @@ in {
       enable = mkEnableOption "Hyprscroller for Hyprland. Hyprland needs to be enabled for Hyprscroller to work";
 
       package = mkPackageOption pkgs ["hyprlandPlugins" "hyprscroller"] {};
+
+      settings = {
+        defaultColumnWidth = mkOption {
+          type = types.enum [
+            "oneeighth"
+            "onesixth"
+            "onefourth"
+            "onethird"
+            "threeeighths"
+            "onehalf"
+            "fiveeighths"
+            "twothirds"
+            "threequarters"
+            "fivesixths"
+            "seveneighths"
+            "maximized"
+            "floating"
+          ];
+          default = "onehalf";
+          description = "Determines the width of new columns in row mode.";
+        };
+
+        defaultWindowHeight = mkOption {
+          type = types.enum [
+            "oneeighth"
+            "onesixth"
+            "onefourth"
+            "onethird"
+            "threeeighths"
+            "onehalf"
+            "fiveeighths"
+            "twothirds"
+            "threequarters"
+            "fivesixths"
+            "seveneighths"
+            "one"
+          ];
+          default = "one";
+          description = "Determines the height of new windows.";
+        };
+
+        focusWrap =
+          (mkEnableOption null)
+          // {
+            default = true;
+            description = "Determines whether focus will wrap when at the first or last window of a row/column.";
+          };
+
+        centerRowIfSpaceAvailable =
+          (mkEnableOption null)
+          // {
+            description = "If there is empty space in the viewport, the row will be centered, leaving the same amount of empty space on each side (respecting `gaps_out`).";
+          };
+
+        overviewScaleContent =
+          (mkEnableOption null)
+          // {
+            default = true;
+            description = "Scales the content of the windows in overview mode, like GNOME/MacOS/Windows overview mode.";
+          };
+
+        columnWidths = mkOption {
+          type = types.listOf (types.enum [
+            "oneeighth"
+            "onesixth"
+            "onefourth"
+            "onethird"
+            "threeeighths"
+            "onehalf"
+            "fiveeighths"
+            "twothirds"
+            "threequarters"
+            "fivesixths"
+            "seveneighths"
+            "one"
+          ]);
+          default = [
+            "onehalf"
+            "twothirds"
+            "onethird"
+          ];
+          description = "Determines the set of column widths hyprscroller will cycle through when resizing the width of a column in row mode.";
+        };
+
+        windowHeights = mkOption {
+          type = types.listOf (types.enum [
+            "oneeighth"
+            "onesixth"
+            "onefourth"
+            "onethird"
+            "threeeighths"
+            "onehalf"
+            "fiveeighths"
+            "twothirds"
+            "threequarters"
+            "fivesixths"
+            "seveneighths"
+            "one"
+          ]);
+          default = [
+            "one"
+            "onethird"
+            "onehalf"
+            "twothirds"
+          ];
+          description = "Determines the set of window heights hyprscroller will cycle through when resizing the height of a window in column mode.";
+        };
+
+        selectionBorderColor = mkOption {
+          type = types.nonEmptyStr;
+          default = "0xff9e1515";
+          description = "Color of the text for the jump labels.";
+        };
+
+        jumpLabels = {
+          color = mkOption {
+            type = types.nonEmptyStr;
+            default = "0x80159e30";
+            description = "Color of the text for the jump labels.";
+          };
+
+          scale = mkOption {
+            type = types.numbers.between 0.1 1.0;
+            default = 0.5;
+            description = "jump labels will be centered in each window, and this parameter scales their size.";
+          };
+
+          keys = mkOption {
+            type = types.listOf types.nonEmptyStr;
+            default = ["1" "2" "3" "4"];
+            description = "It is a string with the keys that will be used for the labels. The default is 1234, which means labels will show a unique combination of 1, 2, 3 and 4. The more keys you set on this option, the shorter the combination of key presses to reach any window, but some times, reaching for those keys can be slower.";
+          };
+        };
+
+        gestures = {
+          scroll = {
+            enable =
+              (mkEnableOption "touchpad gestures for scrolling (changing focus)")
+              // {
+                default = true;
+              };
+
+            fingers = mkOption {
+              type = types.ints.unsigned;
+              default = 3;
+              description = "Defines the number of fingers used to swipe when scrolling.";
+            };
+
+            distance = mkOption {
+              type = types.ints.unsigned;
+              default = 60;
+              description = "Delta generated by swiping to move focus one window. It is like a sensitivity value; the smaller, the more sensitive scrolling will be to swipes.";
+            };
+          };
+
+          overview = {
+            enable =
+              (mkEnableOption "touchpad gestures to call overview mode and workspace switching.")
+              // {
+                default = true;
+              };
+
+            fingers = mkOption {
+              type = types.ints.unsigned;
+              default = 4;
+              description = "Defines the number of fingers used to swipe for overview or changing workspace.";
+            };
+
+            distance = mkOption {
+              type = types.ints.unsigned;
+              default = 5;
+              description = "Delta generated by swiping to call overview mode or change workspace. It is like a sensitivity value; the smaller, the easier it will be to trigger the command. Each swipe triggers it only once, regardless of the length or the swipe.";
+            };
+          };
+
+          workspaceSwitchPrefix = mkOption {
+            type = types.str;
+            default = "";
+            description = ''
+              It is the prefix used when calling the dispatcher to switch to a different workspace. Read Workspaces in the Hyprland wiki to understand in detail what each prefix means.
+
+              The prefix value will be concatenated to +1 or -1 to change workspace when swiping to one side or the other.'';
+          };
+        };
+      };
     };
 
     picture-in-picture = {
@@ -313,8 +505,12 @@ in {
         description = "Defines the initial position of the Picture-in-Picture window.";
       };
 
-      keymaps = {
-        enable = mkEnableOption "keymaps for moving picture-in-picture floating window";
+      enableBinds = mkEnableOption "binds for moving picture-in-picture floating window";
+
+      ratio = mkOption {
+        type = types.ints.unsigned;
+        default = 8;
+        description = "The ratio used to calculate the picture-in-picture window size. It is the divider for the monitor height and size.";
       };
     };
 

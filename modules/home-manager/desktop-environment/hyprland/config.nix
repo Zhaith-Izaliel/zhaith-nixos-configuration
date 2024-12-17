@@ -121,6 +121,8 @@
 
   pInPName = "^.*(Picture-in-Picture).*$";
 
+  pInPSize = "${toString ((getMonitor 0).width / cfg.picture-in-picture.ratio)} ${toString ((getMonitor 0).height / cfg.picture-in-picture.ratio)}";
+
   binds = pipe cfg.extraBinds [
     (map (item: {"bind${concatStrings item.flags}" = item.binds;}))
     (foldAttrs (bind: acc: bind ++ acc) [])
@@ -139,7 +141,10 @@ in {
             layout = cfg.layout;
           };
 
-          misc.middle_click_paste = cfg.misc.middleClickPaste;
+          misc = {
+            middle_click_paste = cfg.misc.middleClickPaste;
+            font_family = cfg.misc.font.name;
+          };
 
           monitor = mkMonitors cfg.monitors;
 
@@ -166,7 +171,7 @@ in {
             (optionals cfg.picture-in-picture.enable (mkWindowOrLayerRule "class:^.*(firefox).*$, title:${pInPName}" [
               "float"
               "pin"
-              "size ${toString ((getMonitor 0).width / 8)} ${toString ((getMonitor 0).height / 8)}"
+              "size ${pInPSize}"
               "suppressevent fullscreen maximize"
               "noinitialfocus"
               "move ${pInPPositions.${cfg.picture-in-picture.position}}"
@@ -248,12 +253,6 @@ in {
               "$mainMod, L, exec, ${config.hellebore.desktop-environment.logout.bin}")
             (optional config.hellebore.shell.emulator.enable
               "$mainMod, Q, exec, ${config.hellebore.shell.emulator.bin}")
-            (
-              optional os-config.hellebore.vm.enable
-              ''
-                $mainMod, W, exec, start-vm --resolution=${toString (getMonitor 0).width}x${toString (getMonitor 0).height} -Fi
-              ''
-            )
             (optional config.hellebore.desktop-environment.applications-launcher.enable
               "$mainMod, R, exec, ${config.hellebore.desktop-environment.applications-launcher.command}")
             (optional config.hellebore.desktop-environment.i18n.enable
@@ -345,6 +344,31 @@ in {
             workspace_swipe = false;
           };
         }
+
+        (mkIf cfg.hyprscroller.enable {
+          plugin = {
+            scroller = {
+              column_default_width = cfg.hyprscroller.settings.defaultColumnWidth;
+              window_default_height = cfg.hyprscroller.settings.defaultWindowHeight;
+              focus_wrap = cfg.hyprscroller.settings.focusWrap;
+              center_row_if_space_available = cfg.hyprscroller.settings.centerRowIfSpaceAvailable;
+              overview_scale_content = cfg.hyprscroller.settings.overviewScaleContent;
+              column_widths = concatStringsSep " " cfg.hyprscroller.settings.columnWidths;
+              window_heights = concatStringsSep " " cfg.hyprscroller.settings.windowHeights;
+              jump_labels_color = cfg.hyprscroller.settings.jumpLabels.color;
+              jump_labels_scale = cfg.hyprscroller.settings.jumpLabels.scale;
+              jump_labels_keys = concatStrings cfg.hyprscroller.settings.jumpLabels.keys;
+              gesture_scroll_enable = cfg.hyprscroller.settings.gestures.scroll.enable;
+              gesture_scroll_fingers = cfg.hyprscroller.settings.gestures.scroll.fingers;
+              gesture_scroll_distance = cfg.hyprscroller.settings.gestures.scroll.distance;
+              gesture_overview_enable = cfg.hyprscroller.settings.gestures.overview.enable;
+              gesture_overview_fingers = cfg.hyprscroller.settings.gestures.overview.fingers;
+              gesture_overview_distance = cfg.hyprscroller.settings.gestures.overview.distance;
+              gesture_workspace_switch_prefix = cfg.hyprscroller.settings.gestures.workspaceSwitchPrefix;
+              col.selection_border = cfg.hyprscroller.settings.selectionBorderColor;
+            };
+          };
+        })
         binds
       ];
     };

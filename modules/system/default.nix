@@ -66,6 +66,5 @@ in {
     ./ssh.nix
     ./tex.nix
     ./tools.nix
-    ./vm.nix
   ];
 }
