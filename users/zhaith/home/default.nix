@@ -81,7 +81,7 @@ in {
           (optionalString config.hellebore.shell.emulator.enable "[workspace 1] ${config.hellebore.shell.emulator.bin}")
           (optionalString config.hellebore.tools.discord.enable "[workspace 3] ${getExe config.hellebore.tools.discord.finalPackage}")
           (optionalString config.hellebore.desktop-environment.mail.enable "[workspace 4] ${getExe config.hellebore.desktop-environment.mail.package}")
-          (optionalString os-config.hellebore.games.steam.enable "[workspace 5] ${getExe os-config.hellebore.games.steam.package} -silent")
+          (optionalString os-config.hellebore.games.steam.enable "[workspace 5] ${getExe os-config.hellebore.games.steam.package}")
           (optionalString os-config.hellebore.games.cartridges.enable "[workspace 5] ${getExe os-config.hellebore.games.cartridges.package}")
         ];
 
@@ -106,6 +106,7 @@ in {
             ];
             windowRules = [
               "workspace 2"
+              "maximize"
             ];
           };
         };
@@ -124,6 +125,12 @@ in {
               regex = "class:(steam)";
               rules = [
                 "workspace 5 silent"
+              ];
+            })
+            (optional (config.hellebore.desktop-environment.mail.enable || config.hellebore.tools.discord.enable) {
+              regex = "class:(thunderbird-esr|vesktop)";
+              rules = [
+                "maximize"
               ];
             })
 

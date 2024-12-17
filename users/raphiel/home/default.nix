@@ -104,7 +104,6 @@ in {
               regex = "class:(.gamescope-wrapped)";
               rules = [
                 "workspace 2"
-                "idleinhibit"
               ];
             })
 
