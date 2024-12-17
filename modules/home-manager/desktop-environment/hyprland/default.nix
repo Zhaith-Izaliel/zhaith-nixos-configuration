@@ -99,7 +99,6 @@
 in {
   imports = [
     ./config.nix
-    ./hyprscroller.nix
   ];
 
   options.hellebore.desktop-environment.hyprland = {
@@ -118,9 +117,12 @@ in {
       };
 
     layout = mkOption {
-      type = types.enum ["dwindle" "master"];
+      type = types.enum ["dwindle" "master" "scroller"];
       description = "Defines the layout used in Hyprland.";
-      default = "dwindle";
+      default =
+        if cfg.hyprscroller.enable
+        then "scroller"
+        else "dwindle";
     };
 
     theme = extra-types.theme.name {
@@ -287,6 +289,12 @@ in {
       };
     };
 
+    hyprscroller = {
+      enable = mkEnableOption "Hyprscroller for Hyprland. Hyprland needs to be enabled for Hyprscroller to work";
+
+      package = mkPackageOption pkgs ["hyprlandPlugins" "hyprscroller"] {};
+    };
+
     picture-in-picture = {
       enable = mkEnableOption "Firefox's Picture-in-Picture support";
 
@@ -341,6 +349,10 @@ in {
         assertion = cfg.input.touchscreen.enable -> os-config.hellebore.hardware.touchscreen.enable;
         message = "You need to enable touchscreen support on the OS side with `hellebore.hardware.touchscreen.enable`.";
       }
+      {
+        assertion = cfg.layout == "scroller" -> cfg.hyprscroller.enable;
+        message = "You need to enable Hyprscroller to use the scroller layout.";
+      }
     ];
 
     home.sessionVariables = {
@@ -390,7 +402,9 @@ in {
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;
-      plugins = optional cfg.input.touchscreen.enable cfg.input.touchscreen.package;
+      plugins =
+        optional cfg.input.touchscreen.enable cfg.input.touchscreen.package
+        ++ optional cfg.hyprscroller.enable cfg.hyprscroller.package;
     };
   };
 }

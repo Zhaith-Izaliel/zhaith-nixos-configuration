@@ -262,9 +262,7 @@ in {
       };
     };
 
-    # ssh-agent = {
-    #   enable = true;
-    # };
+    ssh-agent.enable = true;
 
     tools = {
       affine.enable = true;

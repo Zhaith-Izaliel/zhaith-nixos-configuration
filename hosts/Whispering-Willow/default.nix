@@ -144,8 +144,6 @@
 
     fonts.enable = true;
 
-    gnupg.enable = true;
-
     tools = {
       enable = true;
       nix-alien.enable = true;

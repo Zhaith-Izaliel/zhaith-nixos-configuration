@@ -15,20 +15,14 @@
     flatten
     range
     mkIf
-    recursiveUpdate
     mapAttrsToList
     removeSuffix
     pipe
     filter
     concatStrings
     foldAttrs
-    filterAttrs
-    foldr
-    hasAttr
+    mkMerge
     ;
-
-  recursiveUpdates = foldr (acc: attrs: recursiveUpdate acc attrs) {};
-  optionalBind = name: optionals (hasAttr name binds) binds.${name};
 
   cfg = config.hellebore.desktop-environment.hyprland;
 
@@ -131,19 +125,10 @@
     (map (item: {"bind${concatStrings item.flags}" = item.binds;}))
     (foldAttrs (bind: acc: bind ++ acc) [])
   ];
-
-  otherBinds = filterAttrs (name: value:
-    !(builtins.any (item: name == item) [
-      "bind"
-      "bindle"
-      "bindl"
-      "bindm"
-    ]))
-  binds;
 in {
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
-      settings = recursiveUpdates [
+      settings = mkMerge [
         theme.hyprland.settings
 
         {
@@ -305,31 +290,24 @@ in {
             )
 
             (optional cfg.switches.lid.enable ", switch:[${cfg.switches.lid.name}], exec, ${config.hellebore.desktop-environment.lockscreen.bin} --lid")
-            (optionalBind "bind")
           ];
 
-          bindl =
-            [
-              ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-              ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-            ]
-            ++ optionalBind "bindl";
+          bindl = [
+            ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+            ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+          ];
 
-          bindle =
-            [
-              ", XF86AudioRaiseVolume, exec, ${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
-              ", XF86AudioLowerVolume, exec, ${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 5%-"
-              ", XF86MonBrightnessUp, exec, ${getExe pkgs.volume-brightness} -b 5%+"
-              ", XF86MonBrightnessDown, exec, ${getExe pkgs.volume-brightness} -b 5%-"
-            ]
-            ++ optionalBind "bindle";
+          bindle = [
+            ", XF86AudioRaiseVolume, exec, ${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
+            ", XF86AudioLowerVolume, exec, ${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 5%-"
+            ", XF86MonBrightnessUp, exec, ${getExe pkgs.volume-brightness} -b 5%+"
+            ", XF86MonBrightnessDown, exec, ${getExe pkgs.volume-brightness} -b 5%-"
+          ];
 
-          bindm =
-            [
-              "$mainMod, mouse:272, movewindow"
-              "$mainMod, mouse:273, resizewindow"
-            ]
-            ++ optionalBind "bindm";
+          bindm = [
+            "$mainMod, mouse:272, movewindow"
+            "$mainMod, mouse:273, resizewindow"
+          ];
 
           input = {
             kb_layout = cfg.input.keyboard.layout;
@@ -367,7 +345,7 @@ in {
             workspace_swipe = false;
           };
         }
-        otherBinds
+        binds
       ];
     };
   };
