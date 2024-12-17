@@ -262,7 +262,16 @@ in {
       };
     };
 
-    ssh-agent.enable = true;
+    ssh-agent = {
+      enable = true;
+      keys = [
+        "luminous-rafflesia"
+        "mandelbrot"
+        "whispering-willow"
+        "filevirtuelle"
+        "ethereal-edelweiss"
+      ];
+    };
 
     tools = {
       affine.enable = true;
