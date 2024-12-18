@@ -130,6 +130,106 @@
 in {
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
+      extraConfig = concatStringsSep "\n" [
+        (optionalString cfg.hyprscroller.enable ''
+          # Center
+          bind = $mainMod CTRL, W, submap, center
+          submap = center
+          bind = , C, scroller:alignwindow, c
+          bind = , C, submap, reset
+          bind = , m, scroller:alignwindow, m
+          bind = , m, submap, reset
+          bind = , right, scroller:alignwindow, r
+          bind = , right, submap, reset
+          bind = , left, scroller:alignwindow, l
+          bind = , left, submap, reset
+          bind = , up, scroller:alignwindow, u
+          bind = , up, submap, reset
+          bind = , down, scroller:alignwindow, d
+          bind = , down, submap, reset
+          bind = , escape, submap, reset
+          submap = reset
+
+          # Resize
+          bind = $mainMod, W, submap, resize
+          submap = resize
+          binde = , right, resizeactive, 100 0
+          binde = , left, resizeactive, -100 0
+          binde = , up, resizeactive, 0 -100
+          binde = , down, resizeactive, 0 100
+          bind = , escape, submap, reset
+          submap = reset
+
+          # Fit size
+          bind = $mainMod SHIFT, W, submap, fitsize
+          submap = fitsize
+          bind = , W, scroller:fitsize, visible
+          bind = , W, submap, reset
+          bind = , right, scroller:fitsize, toend
+          bind = , right, submap, reset
+          bind = , left, scroller:fitsize, tobeg
+          bind = , left, submap, reset
+          bind = , up, scroller:fitsize, active
+          bind = , up, submap, reset
+          bind = , down, scroller:fitsize, all
+          bind = , down, submap, reset
+          bind = , escape, submap, reset
+          submap = reset
+
+          # Trails and Trailmarks
+          bind = $mainMod SHIFT, semicolon, submap, trail
+          submap = trail
+          bind = , bracketright, scroller:trailnext,
+          bind = , bracketleft, scroller:trailprevious,
+          bind = , semicolon, scroller:trailnew,
+          bind = , semicolon, submap, reset
+          bind = , d, scroller:traildelete,
+          bind = , d, submap, reset
+          bind = , c, scroller:trailclear,
+          bind = , c, submap, reset
+          bind = , Insert, scroller:trailtoselection,
+          bind = , Insert, submap, reset
+          bind = , escape, submap, reset
+          submap = reset
+
+          bind = $mainMod, semicolon, submap, trailmark
+          submap = trailmark
+          bind = , bracketright, scroller:trailmarknext,
+          bind = , bracketleft, scroller:trailmarkprevious,
+          bind = , semicolon, scroller:trailmarktoggle,
+          bind = , semicolon, submap, reset
+          bind = , escape, submap, reset
+          submap = reset
+
+          # Marks
+          bind = $mainMod, apostrophe, submap, marks
+          submap = marks
+          bind = SHIFT, A, scroller:marksadd, a
+          bind = SHIFT, A, submap, reset
+          bind = SHIFT, B, scroller:marksadd, b
+          bind = SHIFT, B, submap, reset
+          bind = SHIFT, C, scroller:marksadd, c
+          bind = SHIFT, C, submap, reset
+
+          bind = CTRL, A, scroller:marksdelete, a
+          bind = CTRL, A, submap, reset
+          bind = CTRL, B, scroller:marksdelete, b
+          bind = CTRL, B, submap, reset
+          bind = CTRL, C, scroller:marksdelete, c
+          bind = CTRL, C, submap, reset
+
+          bind = , A, scroller:marksvisit, a
+          bind = , A, submap, reset
+          bind = , B, scroller:marksvisit, b
+          bind = , B, submap, reset
+          bind = , C, scroller:marksvisit, c
+          bind = , C, submap, reset
+
+          bind = , escape, submap, reset
+          submap = reset
+        '')
+      ];
+
       settings = mkMerge [
         theme.hyprland.settings
 
@@ -368,6 +468,41 @@ in {
               col.selection_border = cfg.hyprscroller.settings.selectionBorderColor;
             };
           };
+
+          bind = [
+            # Extra move focus
+            "$mainMod, KP_Home, scroller:movefocus, begin"
+            "$mainMod, KP_End, scroller:movefocus, end"
+
+            # Extra move windows
+            "$mainMod ALT, KP_Home, scroller:movewindow, begin"
+            "$mainMod ALT, KP_End, scroller:movewindow, end"
+
+            # Switch between Col and Row
+            "$mainMod, parenleft, scroller:setmode, row"
+            "$mainMod, parenright, scroller:setmode, col"
+
+            # Cycle size
+            "$mainMod, KP_Add, scroller:cyclewidth, next"
+            "$mainMod, KP_Subtract, scroller:cyclewidth, prev"
+            "$mainMod SHIFT, KP_Add, scroller:cycleheight, next"
+            "$mainMod SHIFT, KP_Subtract, scroller:cycleheight, prev"
+
+            # Admit/Expel
+            "$mainMod, I, scroller:admitwindow,"
+            "$mainMod, O, scroller:expelwindow,"
+
+            # Overview
+            "$mainMod, tab, scroller:toggleoverview"
+
+            # Pin Windows
+            "$mainMod SHIFT, P, scroller:pin,"
+
+            # Windows copy/paste
+            "$mainMod, Insert, scroller:selectiontoggle,"
+            "$mainMod CTRL, Insert, scroller:selectionreset,"
+            "$mainMod SHIFT, Insert, scroller:selectionmove, right"
+          ];
         })
         binds
       ];

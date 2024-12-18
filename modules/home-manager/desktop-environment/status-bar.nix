@@ -18,20 +18,23 @@
     flatten
     optional
     concatStringsSep
+    optionalAttrs
     ;
+
   cfg = config.hellebore.desktop-environment.status-bar;
   theme = config.hellebore.theme.themes.${cfg.theme};
   waybar-theme = theme.waybar modules;
   modules = {
     modules = flatten [
       "custom/icon"
+      (optional (cfg.enableSubmap && config.hellebore.desktop-environment.hyprland.enable) "hyprland/submap")
       # (optional os-config.services.power-profiles-daemon.enable "custom/power-profiles")
       (optional config.services.dunst.enable "custom/notifications")
       "clock"
       "custom/weather"
       (optional config.services.mpd.enable "mpd")
-      "hyprland/workspaces"
-      "hyprland/window"
+      (optional config.hellebore.desktop-environment.hyprland.enable "hyprland/workspaces")
+      (optional config.hellebore.desktop-environment.hyprland.enable "hyprland/window")
       "tray"
       "idle_inhibitor"
       (optional os-config.hellebore.games.gamescope.enable "gamemode")
@@ -90,6 +93,8 @@ in {
       };
     };
 
+    enableSubmap = mkEnableOption "the submap module";
+
     backlight-device = mkOption {
       type = types.nonEmptyStr;
       default = "";
@@ -139,7 +144,7 @@ in {
           "custom/weather" = {
             tooltip = true;
             interval = 3600;
-            exec = "${getExe pkgs.wttrbar} --custom-indicator '{ICON} {temp_C}°C ({FeelsLikeC}°C)'";
+            exec = "${getExe pkgs.wttrbar} --custom-indicator '{ICON} {temp_C}°C'";
             return-type = "json";
           };
 
@@ -195,17 +200,21 @@ in {
             on-scroll-down = "${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
           };
 
-          "hyprland/window" = {
-            format = "{}";
-            rewrite = {
-              "(.*) — Mozilla Firefox" = "${mkBig ""} $1";
-              "Zellij (.*)" = "${mkBig ""} $1";
-              "Discord (.*)" = "${mkBig "󰙯"} Discord";
-              "(.*) - Mozilla Thunderbird" = "${mkBig ""} $1";
-              "Cartridges" = "${mkBig "󰊗"} Cartridges";
-              "Steam" = "${mkBig "󰓓"} Steam";
-            };
-          };
+          "hyprland/window" =
+            {
+              format = "{}";
+              rewrite = {
+                "(.*) — Mozilla Firefox" = "${mkBig ""} $1";
+                "Zellij (.*)" = "${mkBig ""} $1";
+                "Discord (.*)" = "${mkBig "󰙯"} Discord";
+                "(.*) - Mozilla Thunderbird" = "${mkBig ""} $1";
+                "Cartridges" = "${mkBig "󰊗"} Cartridges";
+                "Steam" = "${mkBig "󰓓"} Steam";
+              };
+            }
+            // (optionalAttrs cfg.enableSubmap {
+              max-length = 20;
+            });
         };
       };
 

@@ -4,11 +4,11 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf mkPackageOption mkOption types;
+  inherit (lib) mkEnableOption mkIf mkPackageOption mkOption types optional;
   cfg = config.hellebore.multimedia.obs-studio;
 in {
   options.hellebore.multimedia.obs-studio = {
-    enable = mkEnableOption "Hellebore OBS Studio configuration";
+    enable = mkEnableOption "OBS Studio configuration";
 
     package = mkPackageOption pkgs "obs-studio" {};
 
@@ -17,9 +17,17 @@ in {
       default = [];
       description = "The plugins to install to OBS Studio";
     };
+
+    cli = {
+      enable = mkEnableOption "OBS Studio Websocket CLI";
+
+      package = mkPackageOption pkgs "obs-do" {};
+    };
   };
 
   config = mkIf cfg.enable {
+    home.packages = optional cfg.cli.enable cfg.cli.package;
+
     programs.obs-studio = {
       inherit (cfg) package plugins;
       enable = true;

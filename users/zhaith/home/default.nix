@@ -180,6 +180,7 @@ in {
 
         hyprscroller = {
           enable = true;
+          package = unstable-pkgs.hyprlandPlugins.hyprscroller;
         };
       };
 
@@ -230,6 +231,7 @@ in {
 
       status-bar = {
         enable = true;
+        enableSubmap = true;
         font.size = 11;
         backlight-device = "amdgpu_bl1";
         tray = {
@@ -304,8 +306,14 @@ in {
       };
 
       mpris.enable = true;
+
       art.enable = true;
-      obs-studio.enable = true;
+
+      obs-studio = {
+        enable = true;
+        cli.enable = true;
+      };
+
       mpd = {
         enable = true;
         visualizer = {

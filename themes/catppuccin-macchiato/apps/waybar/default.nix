@@ -11,6 +11,7 @@
   modulesPosition = {
     modules-left = [
       "custom/icon"
+      "hyprland/submap"
       "custom/power-profiles"
       "clock"
       "custom/weather"
@@ -70,6 +71,13 @@ in {
         "custom/icon" = {
           format = mkBig "🪷";
           tooltip = false;
+        };
+
+        "hyprland/submap" = {
+          format = "<span text-transform='capitalize'> {}</span>";
+          default-submap = "normal";
+          tooltip = false;
+          always-on = true;
         };
 
         "group/power" = {

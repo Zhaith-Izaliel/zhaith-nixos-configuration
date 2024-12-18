@@ -108,6 +108,7 @@ tooltip label {
 #custom-notifications,
 #idle_inhibitor,
 #workspaces button,
+#submap,
 #power {
   border: solid @text0;
   border-width: 1px 1px 4px;
@@ -117,6 +118,42 @@ tooltip label {
 }
 
 /* GRANULAR MODULES STYLE */
+
+#submap {
+  padding: 0 0.5em;
+  color: @teal;
+  border-color: @teal;
+}
+
+#submap.trail {
+  color: @maroon;
+  border-color: @maroon;
+}
+
+#submap.trailmark {
+  color: @mauve;
+  border-color: @mauve;
+}
+
+#submap.marks {
+  color: @sapphire;
+  border-color: @sapphire;
+}
+
+#submap.center {
+  color: @flamingo;
+  border-color: @flamingo;
+}
+
+#submap.fitsize {
+  color: @pink;
+  border-color: @pink;
+}
+
+#submap.resize {
+  color: @yellow;
+  border-color: @yellow;
+}
 
 #custom-power-profiles {
   padding: 0 0.4em;

@@ -46,7 +46,6 @@ in {
 
     qt = {
       enable = true;
-      platformTheme = "gtk2";
     };
 
     services.dbus.packages = [pkgs.gcr];
