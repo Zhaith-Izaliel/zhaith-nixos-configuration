@@ -102,7 +102,10 @@
     power-profiles.enable = true;
 
     hardware = {
-      amd.enable = true;
+      amd = {
+        enable = true;
+        openCL.enable = true;
+      };
 
       ntfs.enable = true;
 

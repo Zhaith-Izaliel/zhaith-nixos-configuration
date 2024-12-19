@@ -124,111 +124,205 @@
   pInPSize = "${toString ((getMonitor 0).width / cfg.picture-in-picture.ratio)} ${toString ((getMonitor 0).height / cfg.picture-in-picture.ratio)}";
 
   binds = pipe cfg.extraBinds [
-    (map (item: {"bind${concatStrings item.flags}" = item.binds;}))
+    (map (item: {"bind${concatStrings item.flags}" = [item.bind];}))
     (foldAttrs (bind: acc: bind ++ acc) [])
+  ];
+
+  obsSceneBinds = pipe cfg.submaps.obs.sceneBinds [
+    (map (item: ''
+      bind = ${item.keys}, exec, ${getExe obsCli} set-scene '${item.scene}'
+      bind = ${item.keys}, submap, reset
+    ''))
+    (concatStringsSep "\n")
+  ];
+
+  hyprscrollerCfg = cfg.hyprscroller;
+  obsCli = config.hellebore.multimedia.obs-studio.cli.package;
+
+  submapMoveFocus = concatStringsSep "\n" [
+    ''
+      bind = $mainMod, left, movefocus, l
+      bind = $mainMod, right, movefocus, r
+      bind = $mainMod, up, movefocus, u
+      bind = $mainMod, down, movefocus, d
+
+      bind = $mainMod SHIFT, right, workspace, e+1
+      bind = $mainMod SHIFT, left, workspace, e-1
+    ''
+    (optionalString hyprscrollerCfg.enable ''
+      bind = $mainMod, KP_Home, scroller:movefocus, begin
+      bind = $mainMod, KP_End, scroller:movefocus, end
+    '')
   ];
 in {
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
-      extraConfig = concatStringsSep "\n" [
-        (optionalString cfg.hyprscroller.enable ''
-          # Center
-          bind = $mainMod CTRL, W, submap, center
-          submap = center
-          bind = , C, scroller:alignwindow, c
-          bind = , C, submap, reset
-          bind = , m, scroller:alignwindow, m
-          bind = , m, submap, reset
-          bind = , right, scroller:alignwindow, r
-          bind = , right, submap, reset
-          bind = , left, scroller:alignwindow, l
-          bind = , left, submap, reset
-          bind = , up, scroller:alignwindow, u
-          bind = , up, submap, reset
-          bind = , down, scroller:alignwindow, d
-          bind = , down, submap, reset
-          bind = , escape, submap, reset
-          submap = reset
+      extraConfig = concatStringsSep "\n" (flatten [
+        (optionals hyprscrollerCfg.enable [
+          ''
+            # Center
+            bind = $mainMod CTRL, W, submap, center
+            submap = center
+            bind = , C, scroller:alignwindow, c
+            bind = , C, submap, reset
+            bind = , m, scroller:alignwindow, m
+            bind = , m, submap, reset
+            bind = , right, scroller:alignwindow, r
+            bind = , right, submap, reset
+            bind = , left, scroller:alignwindow, l
+            bind = , left, submap, reset
+            bind = , up, scroller:alignwindow, u
+            bind = , up, submap, reset
+            bind = , down, scroller:alignwindow, d
+            bind = , down, submap, reset
+            bind = , escape, submap, reset
+            submap = reset
 
-          # Resize
-          bind = $mainMod, W, submap, resize
-          submap = resize
-          binde = , right, resizeactive, 100 0
-          binde = , left, resizeactive, -100 0
-          binde = , up, resizeactive, 0 -100
-          binde = , down, resizeactive, 0 100
-          bind = , escape, submap, reset
-          submap = reset
+            # Resize
+            bind = $mainMod, W, submap, resize
+            submap = resize
+          ''
+          submapMoveFocus
+          ''
+            binde = , right, resizeactive, 100 0
+            binde = , left, resizeactive, -100 0
+            binde = , up, resizeactive, 0 -100
+            binde = , down, resizeactive, 0 100
+            bind = , escape, submap, reset
+            submap = reset
 
-          # Fit size
-          bind = $mainMod SHIFT, W, submap, fitsize
-          submap = fitsize
-          bind = , W, scroller:fitsize, visible
-          bind = , W, submap, reset
-          bind = , right, scroller:fitsize, toend
-          bind = , right, submap, reset
-          bind = , left, scroller:fitsize, tobeg
-          bind = , left, submap, reset
-          bind = , up, scroller:fitsize, active
-          bind = , up, submap, reset
-          bind = , down, scroller:fitsize, all
-          bind = , down, submap, reset
-          bind = , escape, submap, reset
-          submap = reset
+            # Fit size
+            bind = $mainMod SHIFT, W, submap, fitsize
+            submap = fitsize
+          ''
+          submapMoveFocus
+          ''
+            bind = , W, scroller:fitsize, visible
+            bind = , W, submap, reset
+            bind = , right, scroller:fitsize, toend
+            bind = , right, submap, reset
+            bind = , left, scroller:fitsize, tobeg
+            bind = , left, submap, reset
+            bind = , up, scroller:fitsize, active
+            bind = , up, submap, reset
+            bind = , down, scroller:fitsize, all
+            bind = , down, submap, reset
+            bind = , escape, submap, reset
+            submap = reset
 
-          # Trails and Trailmarks
-          bind = $mainMod SHIFT, semicolon, submap, trail
-          submap = trail
-          bind = , bracketright, scroller:trailnext,
-          bind = , bracketleft, scroller:trailprevious,
-          bind = , semicolon, scroller:trailnew,
-          bind = , semicolon, submap, reset
-          bind = , d, scroller:traildelete,
-          bind = , d, submap, reset
-          bind = , c, scroller:trailclear,
-          bind = , c, submap, reset
-          bind = , Insert, scroller:trailtoselection,
-          bind = , Insert, submap, reset
-          bind = , escape, submap, reset
-          submap = reset
+            # Trails and Trailmarks
+            bind = $mainMod SHIFT, semicolon, submap, trail
+            submap = trail
+          ''
+          submapMoveFocus
+          ''
+            bind = , bracketright, scroller:trailnext,
+            bind = , bracketleft, scroller:trailprevious,
+            bind = , semicolon, scroller:trailnew,
+            bind = , semicolon, submap, reset
+            bind = , d, scroller:traildelete,
+            bind = , d, submap, reset
+            bind = , c, scroller:trailclear,
+            bind = , c, submap, reset
+            bind = , Insert, scroller:trailtoselection,
+            bind = , Insert, submap, reset
+            bind = , escape, submap, reset
+            submap = reset
 
-          bind = $mainMod, semicolon, submap, trailmark
-          submap = trailmark
-          bind = , bracketright, scroller:trailmarknext,
-          bind = , bracketleft, scroller:trailmarkprevious,
-          bind = , semicolon, scroller:trailmarktoggle,
-          bind = , semicolon, submap, reset
-          bind = , escape, submap, reset
-          submap = reset
+            bind = $mainMod, semicolon, submap, trailmark
+            submap = trailmark
+            bind = , bracketright, scroller:trailmarknext,
+            bind = , bracketleft, scroller:trailmarkprevious,
+            bind = , semicolon, scroller:trailmarktoggle,
+            bind = , semicolon, submap, reset
+            bind = , escape, submap, reset
+            submap = reset
 
-          # Marks
-          bind = $mainMod, apostrophe, submap, marks
-          submap = marks
-          bind = SHIFT, A, scroller:marksadd, a
-          bind = SHIFT, A, submap, reset
-          bind = SHIFT, B, scroller:marksadd, b
-          bind = SHIFT, B, submap, reset
-          bind = SHIFT, C, scroller:marksadd, c
-          bind = SHIFT, C, submap, reset
+            # Selections
+            bind = $mainMod, V, submap, selection
+            submap = selection
+          ''
+          submapMoveFocus
+          ''
+            bind = , A, scroller:selectiontoggle,
+            bind = , R, scroller:selectionreset,
 
-          bind = CTRL, A, scroller:marksdelete, a
-          bind = CTRL, A, submap, reset
-          bind = CTRL, B, scroller:marksdelete, b
-          bind = CTRL, B, submap, reset
-          bind = CTRL, C, scroller:marksdelete, c
-          bind = CTRL, C, submap, reset
+            bind = , right, scroller:selectionmove, right
+            bind = , right, submap, reset
+            bind = , left, scroller:selectionmove, left
+            bind = , left, submap, reset
+            bind = , up, scroller:selectionmove, up
+            bind = , up, submap, reset
+            bind = , down, scroller:selectionmove, down
+            bind = , down, submap, reset
+            bind = , KP_End, scroller:selectionmove, end
+            bind = , KP_End, submap, reset
+            bind = , KP_Begin, scroller:selectionmove, begin
+            bind = , KP_Begin, submap, reset
 
-          bind = , A, scroller:marksvisit, a
-          bind = , A, submap, reset
-          bind = , B, scroller:marksvisit, b
-          bind = , B, submap, reset
-          bind = , C, scroller:marksvisit, c
-          bind = , C, submap, reset
+            bind = , escape, scroller:selectionreset,
+            bind = , escape, submap, reset
+            submap = reset
+
+            # Marks
+            bind = $mainMod, apostrophe, submap, marks
+            submap = marks
+            bind = SHIFT, A, scroller:marksadd, a
+            bind = SHIFT, A, submap, reset
+            bind = SHIFT, B, scroller:marksadd, b
+            bind = SHIFT, B, submap, reset
+            bind = SHIFT, C, scroller:marksadd, c
+            bind = SHIFT, C, submap, reset
+
+            bind = CTRL, A, scroller:marksdelete, a
+            bind = CTRL, A, submap, reset
+            bind = CTRL, B, scroller:marksdelete, b
+            bind = CTRL, B, submap, reset
+            bind = CTRL, C, scroller:marksdelete, c
+            bind = CTRL, C, submap, reset
+
+            bind = , A, scroller:marksvisit, a
+            bind = , A, submap, reset
+            bind = , B, scroller:marksvisit, b
+            bind = , B, submap, reset
+            bind = , C, scroller:marksvisit, c
+            bind = , C, submap, reset
+
+            bind = , escape, submap, reset
+            submap = reset
+          ''
+        ])
+
+        (optionals cfg.submaps.obs.enable [
+          ''
+            bind = $mainMod, exclam, submap, obs
+            submap = obs
+            bind = , S, exec, ${getExe obsCli} toggle-stream
+            bind = , S, submap, reset
+            bind = , R, exec, ${getExe obsCli} toggle-record
+            bind = , R, submap, reset
+            bind = , M, exec, ${getExe obsCli} toggle-mute
+            bind = , M, submap, reset
+          ''
+          obsSceneBinds
+          ''
+            bind = , escape, submap, reset
+            submap = reset
+          ''
+        ])
+
+        (optionalString cfg.submaps.discord.enable ''
+          bind = $mainMod, colon, submap, discord
+          submap = discord
+          bind = , M, sendshortcut, CTRL SHIFT, M, vesktop
+          bind = , M, submap, reset
+          bind = , D, sendshortcut, CTRL SHIFT, D, vesktop
+          bind = , D, submap, reset
 
           bind = , escape, submap, reset
           submap = reset
         '')
-      ];
+      ]);
 
       settings = mkMerge [
         theme.hyprland.settings
@@ -445,27 +539,25 @@ in {
           };
         }
 
-        (mkIf cfg.hyprscroller.enable {
+        (mkIf hyprscrollerCfg.enable {
           plugin = {
             scroller = {
-              column_default_width = cfg.hyprscroller.settings.defaultColumnWidth;
-              window_default_height = cfg.hyprscroller.settings.defaultWindowHeight;
-              focus_wrap = cfg.hyprscroller.settings.focusWrap;
-              center_row_if_space_available = cfg.hyprscroller.settings.centerRowIfSpaceAvailable;
-              overview_scale_content = cfg.hyprscroller.settings.overviewScaleContent;
-              column_widths = concatStringsSep " " cfg.hyprscroller.settings.columnWidths;
-              window_heights = concatStringsSep " " cfg.hyprscroller.settings.windowHeights;
-              jump_labels_color = cfg.hyprscroller.settings.jumpLabels.color;
-              jump_labels_scale = cfg.hyprscroller.settings.jumpLabels.scale;
-              jump_labels_keys = concatStrings cfg.hyprscroller.settings.jumpLabels.keys;
-              gesture_scroll_enable = cfg.hyprscroller.settings.gestures.scroll.enable;
-              gesture_scroll_fingers = cfg.hyprscroller.settings.gestures.scroll.fingers;
-              gesture_scroll_distance = cfg.hyprscroller.settings.gestures.scroll.distance;
-              gesture_overview_enable = cfg.hyprscroller.settings.gestures.overview.enable;
-              gesture_overview_fingers = cfg.hyprscroller.settings.gestures.overview.fingers;
-              gesture_overview_distance = cfg.hyprscroller.settings.gestures.overview.distance;
-              gesture_workspace_switch_prefix = cfg.hyprscroller.settings.gestures.workspaceSwitchPrefix;
-              col.selection_border = cfg.hyprscroller.settings.selectionBorderColor;
+              column_default_width = hyprscrollerCfg.settings.defaultColumnWidth;
+              window_default_height = hyprscrollerCfg.settings.defaultWindowHeight;
+              focus_wrap = hyprscrollerCfg.settings.focusWrap;
+              center_row_if_space_available = hyprscrollerCfg.settings.centerRowIfSpaceAvailable;
+              overview_scale_content = hyprscrollerCfg.settings.overviewScaleContent;
+              column_widths = concatStringsSep " " hyprscrollerCfg.settings.columnWidths;
+              window_heights = concatStringsSep " " hyprscrollerCfg.settings.windowHeights;
+              jump_labels_scale = hyprscrollerCfg.settings.jumpLabels.scale;
+              jump_labels_keys = concatStrings hyprscrollerCfg.settings.jumpLabels.keys;
+              gesture_scroll_enable = hyprscrollerCfg.settings.gestures.scroll.enable;
+              gesture_scroll_fingers = hyprscrollerCfg.settings.gestures.scroll.fingers;
+              gesture_scroll_distance = hyprscrollerCfg.settings.gestures.scroll.distance;
+              gesture_overview_enable = hyprscrollerCfg.settings.gestures.overview.enable;
+              gesture_overview_fingers = hyprscrollerCfg.settings.gestures.overview.fingers;
+              gesture_overview_distance = hyprscrollerCfg.settings.gestures.overview.distance;
+              gesture_workspace_switch_prefix = hyprscrollerCfg.settings.gestures.workspaceSwitchPrefix;
             };
           };
 
@@ -498,10 +590,11 @@ in {
             # Pin Windows
             "$mainMod SHIFT, P, scroller:pin,"
 
-            # Windows copy/paste
-            "$mainMod, Insert, scroller:selectiontoggle,"
-            "$mainMod CTRL, Insert, scroller:selectionreset,"
-            "$mainMod SHIFT, Insert, scroller:selectionmove, right"
+            # Reset Marks
+            "$mainMod SHIFT, apostrophe, scroller:marksreset"
+
+            # Jump
+            "$mainMod, G, scroller:jump,"
           ];
         })
         binds

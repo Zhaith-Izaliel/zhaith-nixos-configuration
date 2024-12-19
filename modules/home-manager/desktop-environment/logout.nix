@@ -42,7 +42,7 @@
       }
       {
         label = "logout";
-        action = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch exit 0";
+        action = "${getExe pkgs.uwsm} stop";
         text = "Logout";
         keybind = "e";
       }

@@ -21,12 +21,28 @@
 
   finalPackage = cfg.package.override {enableXWayland = true;};
 
+  obsSceneBindsType = types.submodule {
+    options = {
+      scene = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "The name of the scene in OBS to switch to with the actual keybind.";
+      };
+
+      keys = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "The actual keys to bind. See https://wiki.hyprland.org/Configuring/Binds";
+      };
+    };
+  };
+
   extraBindsType = types.submodule {
     options = {
-      binds = mkOption {
-        type = types.listOf types.nonEmptyStr;
-        default = [];
-        description = "The actual binds to add. See https://wiki.hyprland.org/Configuring/Binds";
+      bind = mkOption {
+        type = types.nonEmptyStr;
+        default = "";
+        description = "The actual bind to add. See https://wiki.hyprland.org/Configuring/Binds";
       };
 
       flags = mkOption {
@@ -219,6 +235,39 @@ in {
       description = "Defines all progressive web-apps to be run on startup as well as their own window rules.";
     };
 
+    submaps = {
+      enabled = mkOption {
+        type = types.bool;
+        default = builtins.any (item: item) [
+          cfg.submaps.obs.enable
+          cfg.hyprscroller.enable
+          cfg.submaps.discord.enable
+        ];
+        description = "Read-only option to know if any submap is enabled";
+        readOnly = true;
+      };
+
+      obs = {
+        enable =
+          mkEnableOption "OBS Studio submap"
+          // {
+            default = config.hellebore.multimedia.obs-studio.cli.enable;
+          };
+
+        sceneBinds = mkOption {
+          type = types.listOf obsSceneBindsType;
+          default = [];
+          description = "Extra binds to switch between scenes. Keep in mind this is a submap so the binds can be minimal (i.e. only one key).";
+        };
+      };
+
+      discord.enable =
+        mkEnableOption "Discord submap"
+        // {
+          default = config.hellebore.tools.discord.enable;
+        };
+    };
+
     input = {
       keyboard = extra-types.keyboard {
         inherit (config.hellebore.locale.keyboard) layout variant;
@@ -408,29 +457,24 @@ in {
           description = "Determines the set of window heights hyprscroller will cycle through when resizing the height of a window in column mode.";
         };
 
-        selectionBorderColor = mkOption {
-          type = types.nonEmptyStr;
-          default = "0xff9e1515";
-          description = "Color of the text for the jump labels.";
-        };
-
         jumpLabels = {
-          color = mkOption {
-            type = types.nonEmptyStr;
-            default = "0x80159e30";
-            description = "Color of the text for the jump labels.";
-          };
-
           scale = mkOption {
             type = types.numbers.between 0.1 1.0;
-            default = 0.5;
+            default = 0.1;
             description = "jump labels will be centered in each window, and this parameter scales their size.";
           };
 
           keys = mkOption {
             type = types.listOf types.nonEmptyStr;
-            default = ["1" "2" "3" "4"];
-            description = "It is a string with the keys that will be used for the labels. The default is 1234, which means labels will show a unique combination of 1, 2, 3 and 4. The more keys you set on this option, the shorter the combination of key presses to reach any window, but some times, reaching for those keys can be slower.";
+            default = [
+              "a"
+              "z"
+              "e"
+              "r"
+              "t"
+              "y"
+            ];
+            description = "It is a string with the keys that will be used for the labels. For example, 1234 means labels will show a unique combination of 1, 2, 3 and 4. The more keys you set on this option, the shorter the combination of key presses to reach any window, but some times, reaching for those keys can be slower.";
           };
         };
 
@@ -548,6 +592,10 @@ in {
       {
         assertion = cfg.layout == "scroller" -> cfg.hyprscroller.enable;
         message = "You need to enable Hyprscroller to use the scroller layout.";
+      }
+      {
+        assertion = cfg.submaps.obs.enable -> config.hellebore.multimedia.obs-studio.cli.enable;
+        message = "You need to enable the OBS CLI through `config.hellebore.multimedia.obs-studio.cli.enable` for the OBS Studio submap to work.";
       }
     ];
 

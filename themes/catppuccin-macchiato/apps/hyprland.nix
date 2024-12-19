@@ -71,5 +71,10 @@
         "workspaces, 1, 3, easeInOutSine"
       ];
     };
+
+    plugin.scroller = {
+      jump_labels_color = "$teal";
+      "col.selection_border" = "$peach";
+    };
   };
 }

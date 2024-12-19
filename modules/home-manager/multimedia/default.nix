@@ -10,6 +10,7 @@
 in {
   imports = [
     ./art.nix
+    ./davinci-resolve.nix
     ./mpd.nix
     ./obs.nix
     ./sonobus.nix

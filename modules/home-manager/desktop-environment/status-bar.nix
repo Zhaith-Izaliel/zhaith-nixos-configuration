@@ -11,7 +11,6 @@
     mkIf
     mkOption
     mkEnableOption
-    elemAt
     types
     getExe
     recursiveUpdate
@@ -73,9 +72,9 @@ in {
       description = "Set the status bar theme used.";
     };
 
-    monitor = mkOption {
-      type = types.nonEmptyStr;
-      default = (elemAt config.hellebore.monitors 0).name;
+    monitors = mkOption {
+      type = types.listOf types.nonEmptyStr;
+      default = [];
       description = "Defines the monitor on which the status bar should be rendered";
     };
 
@@ -93,7 +92,11 @@ in {
       };
     };
 
-    enableSubmap = mkEnableOption "the submap module";
+    enableSubmap =
+      mkEnableOption "the submap module"
+      // {
+        default = config.hellebore.desktop-environment.hyprland.submaps.enabled;
+      };
 
     backlight-device = mkOption {
       type = types.nonEmptyStr;
@@ -137,85 +140,88 @@ in {
       };
 
       settings = recursiveUpdate waybar-theme.settings {
-        mainBar = {
-          inherit (cfg) tray;
-          output = cfg.monitor;
+        mainBar =
+          {
+            inherit (cfg) tray;
 
-          "custom/weather" = {
-            tooltip = true;
-            interval = 3600;
-            exec = "${getExe pkgs.wttrbar} --custom-indicator '{ICON} {temp_C}°C'";
-            return-type = "json";
+            "custom/weather" = {
+              tooltip = true;
+              interval = 3600;
+              exec = "${getExe pkgs.wttrbar} --custom-indicator '{ICON} {temp_C}°C'";
+              return-type = "json";
+            };
+
+            "custom/quit" = {
+              on-click = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch exit 0";
+            };
+
+            "custom/lock" = {
+              on-click = "${getExe config.hellebore.desktop-environment.lockscreen.package} -fF";
+            };
+
+            "custom/reboot" = {
+              on-click = "systemctl reboot";
+            };
+
+            "custom/power" = {
+              on-click = "systemctl poweroff";
+            };
+
+            "custom/notifications" = {
+              exec = "${getExe pkgs.dunstbar} --history=10 -i";
+              restart-interval = 5;
+              on-click = "${getExe pkgs.dunstbar} -p";
+              on-click-right = "${getExe pkgs.dunstbar} -c";
+              return-type = "json";
+            };
+
+            "custom/power-profiles" = {
+              exec = "${getExe pkgs.power-profilesbar} -i";
+              restart-interval = 30;
+              return-type = "json";
+            };
+
+            bluetooth = {
+              on-click = "${getExe pkgs.toggle-bluetooth}";
+              on-click-right = "${pkgs.blueberry}/bin/blueberry";
+            };
+
+            backlight = {
+              device = cfg.backlight-device;
+              on-scroll-up = "${getExe pkgs.volume-brightness} -b 1%+";
+              on-scroll-down = "${getExe pkgs.volume-brightness} -b 1%-";
+            };
+
+            clock = {
+              timezone = os-config.time.timeZone;
+            };
+
+            wireplumber = {
+              on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+              on-click-right = "${getExe pkgs.pavucontrol}";
+              on-scroll-up = "${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
+              on-scroll-down = "${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
+            };
+
+            "hyprland/window" =
+              {
+                format = "{}";
+                rewrite = {
+                  "(.*) — Mozilla Firefox" = "${mkBig ""} $1";
+                  "Zellij (.*)" = "${mkBig ""} $1";
+                  "Discord (.*)" = "${mkBig "󰙯"} Discord";
+                  "(.*) - Mozilla Thunderbird" = "${mkBig ""} $1";
+                  "Cartridges" = "${mkBig "󰊗"} Cartridges";
+                  "Steam" = "${mkBig "󰓓"} Steam";
+                };
+              }
+              // (optionalAttrs cfg.enableSubmap {
+                max-length = 20;
+              });
+          }
+          // optionalAttrs (builtins.length cfg.monitors > 0) {
+            output = cfg.monitors;
           };
-
-          "custom/quit" = {
-            on-click = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch exit 0";
-          };
-
-          "custom/lock" = {
-            on-click = "${getExe config.hellebore.desktop-environment.lockscreen.package} -fF";
-          };
-
-          "custom/reboot" = {
-            on-click = "systemctl reboot";
-          };
-
-          "custom/power" = {
-            on-click = "systemctl poweroff";
-          };
-
-          "custom/notifications" = {
-            exec = "${getExe pkgs.dunstbar} --history=10 -i";
-            restart-interval = 5;
-            on-click = "${getExe pkgs.dunstbar} -p";
-            on-click-right = "${getExe pkgs.dunstbar} -c";
-            return-type = "json";
-          };
-
-          "custom/power-profiles" = {
-            exec = "${getExe pkgs.power-profilesbar} -i";
-            restart-interval = 30;
-            return-type = "json";
-          };
-
-          bluetooth = {
-            on-click = "${getExe pkgs.toggle-bluetooth}";
-            on-click-right = "${pkgs.blueberry}/bin/blueberry";
-          };
-
-          backlight = {
-            device = cfg.backlight-device;
-            on-scroll-up = "${getExe pkgs.volume-brightness} -b 1%+";
-            on-scroll-down = "${getExe pkgs.volume-brightness} -b 1%-";
-          };
-
-          clock = {
-            timezone = os-config.time.timeZone;
-          };
-
-          wireplumber = {
-            on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-            on-click-right = "${getExe pkgs.pavucontrol}";
-            on-scroll-up = "${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%+";
-            on-scroll-down = "${getExe pkgs.volume-brightness} -v 1.5 @DEFAULT_AUDIO_SINK@ 1%-";
-          };
-
-          "hyprland/window" =
-            {
-              format = "{}";
-              rewrite = {
-                "(.*) — Mozilla Firefox" = "${mkBig ""} $1";
-                "Zellij (.*)" = "${mkBig ""} $1";
-                "Discord (.*)" = "${mkBig "󰙯"} Discord";
-                "(.*) - Mozilla Thunderbird" = "${mkBig ""} $1";
-                "Cartridges" = "${mkBig "󰊗"} Cartridges";
-                "Steam" = "${mkBig "󰓓"} Steam";
-              };
-            }
-            // (optionalAttrs cfg.enableSubmap {
-              max-length = 20;
-            });
-        };
       };
 
       style = concatStringsSep "\n" [

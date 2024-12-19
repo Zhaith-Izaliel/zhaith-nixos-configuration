@@ -74,7 +74,7 @@ in {
         };
 
         "hyprland/submap" = {
-          format = "<span text-transform='capitalize'> {}</span>";
+          format = "${mkBig ""} <span text-transform='capitalize'>{}</span>";
           default-submap = "normal";
           tooltip = false;
           always-on = true;

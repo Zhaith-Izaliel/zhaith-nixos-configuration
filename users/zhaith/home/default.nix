@@ -6,7 +6,7 @@
   os-config,
   ...
 }: let
-  inherit (lib) optionalString getExe optional range cleanSource flatten;
+  inherit (lib) optionalString getExe optional optionals range cleanSource flatten;
 in {
   hellebore = {
     theme.name = "catppuccin-macchiato";
@@ -89,7 +89,7 @@ in {
         extraWorkspaceRules = builtins.map (
           item: {
             selector = toString item;
-            rules = ["persistent:true"] ++ (optional (item == 1) "default:true");
+            rules = ["persistent:true"] ++ (optionals (item == 1) ["default:true" "monitor:${(builtins.elemAt config.hellebore.monitors 1).name}"]);
           }
         ) (range 1 5);
 
@@ -107,7 +107,7 @@ in {
             ];
             windowRules = [
               "workspace 2"
-              "maximize"
+              "plugin:scroller:columnwidth one"
             ];
           };
         };
@@ -131,7 +131,7 @@ in {
             (optional (config.hellebore.desktop-environment.mail.enable || config.hellebore.tools.discord.enable) {
               regex = "class:(thunderbird-esr|vesktop)";
               rules = [
-                "maximize"
+                "plugin:scroller:columnwidth one"
               ];
             })
 
@@ -231,7 +231,6 @@ in {
 
       status-bar = {
         enable = true;
-        enableSubmap = true;
         font.size = 11;
         backlight-device = "amdgpu_bl1";
         tray = {
@@ -313,6 +312,8 @@ in {
         enable = true;
         cli.enable = true;
       };
+
+      davinci-resolve.enable = true;
 
       mpd = {
         enable = true;

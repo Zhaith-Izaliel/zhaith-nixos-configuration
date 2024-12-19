@@ -155,6 +155,21 @@ tooltip label {
   border-color: @yellow;
 }
 
+#submap.selection {
+  color: @peach;
+  border-color: @peach;
+}
+
+#submap.obs {
+  color: @blue;
+  border-color: @blue;
+}
+
+#submap.discord {
+  color: @lavender;
+  border-color: @lavender;
+}
+
 #custom-power-profiles {
   padding: 0 0.4em;
   margin: 0.3em 0.5em;
