@@ -147,7 +147,7 @@ in {
             "custom/weather" = {
               tooltip = true;
               interval = 3600;
-              exec = "${getExe pkgs.wttrbar} --custom-indicator '{ICON} {temp_C}°C'";
+              exec = "${getExe pkgs.wttrbar} --custom-indicator '{ICON} {temp_C}°C ({FeelsLikeC}°C)'";
               return-type = "json";
             };
 

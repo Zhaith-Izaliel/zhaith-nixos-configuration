@@ -80,6 +80,7 @@ in {
         extraExecOnce = [
           (optionalString config.hellebore.desktop-environment.browsers.enable "[workspace 1] ${getExe config.hellebore.desktop-environment.browsers.package}")
           (optionalString config.hellebore.shell.emulator.enable "[workspace 1] ${config.hellebore.shell.emulator.bin}")
+          (optionalString config.hellebore.tools.affine.enable "[workspace 2] ${getExe config.hellebore.tools.affine.package}")
           (optionalString config.hellebore.tools.discord.enable "[workspace 3] ${getExe config.hellebore.tools.discord.finalPackage}")
           (optionalString config.hellebore.desktop-environment.mail.enable "[workspace 4] ${getExe config.hellebore.desktop-environment.mail.package}")
           (optionalString os-config.hellebore.games.steam.enable "[workspace 5] ${getExe os-config.hellebore.games.steam.package}")

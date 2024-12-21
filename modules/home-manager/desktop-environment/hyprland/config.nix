@@ -220,19 +220,19 @@ in {
             bind = , bracketleft, scroller:trailprevious,
             bind = , semicolon, scroller:trailnew,
             bind = , semicolon, submap, reset
-            bind = , d, scroller:traildelete,
-            bind = , d, submap, reset
-            bind = , c, scroller:trailclear,
-            bind = , c, submap, reset
-            bind = , Insert, scroller:trailtoselection,
-            bind = , Insert, submap, reset
+            bind = , D, scroller:traildelete,
+            bind = , D, submap, reset
+            bind = , C, scroller:trailclear,
+            bind = , C, submap, reset
+            bind = , V, scroller:trailtoselection,
+            bind = , V, submap, reset
             bind = , escape, submap, reset
             submap = reset
 
             bind = $mainMod, semicolon, submap, trailmark
             submap = trailmark
-            bind = , bracketright, scroller:trailmarknext,
-            bind = , bracketleft, scroller:trailmarkprevious,
+            bind = , parenright, scroller:trailmarknext,
+            bind = , parenleft, scroller:trailmarkprevious,
             bind = , semicolon, scroller:trailmarktoggle,
             bind = , semicolon, submap, reset
             bind = , escape, submap, reset

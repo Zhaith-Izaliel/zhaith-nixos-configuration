@@ -23,8 +23,11 @@
     ];
 
     general = {
+      # By having a gaps_out smaller than gaps_in, the 'prev' or 'next' window
+      # is not seen at all, so you can use follow_mouse = 1 and scrolling won't
+      # happen when the mouse is at the edge of the monitor.
       gaps_in = 5;
-      gaps_out = 20;
+      gaps_out = "20, 4, 20, 4";
       border_size = 2;
       "col.active_border" = "$mauve $sapphire 45deg";
       "col.inactive_border" = "$surface0 0x80$mauveAlpha 45deg";

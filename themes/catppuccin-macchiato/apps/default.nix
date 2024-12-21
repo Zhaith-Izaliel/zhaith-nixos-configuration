@@ -6,7 +6,6 @@
   extra-utils,
 }: rec {
   bat = import ./bat.nix {inherit pkgs lib inputs;};
-  contour = import ./contour.nix {inherit colors;};
   dunst = import ./dunst.nix {inherit colors;};
   fcitx5 = import ./fctix5.nix {inherit pkgs inputs colors;};
   gitui = import ./gitui.nix {inherit pkgs lib inputs;};

@@ -51,8 +51,8 @@ in {
         layer = "top";
         position = "top";
         margin-top = 20;
-        margin-right = 20;
-        margin-left = 20;
+        margin-right = 4;
+        margin-left = 4;
         spacing = 0;
 
         gamemode = {
